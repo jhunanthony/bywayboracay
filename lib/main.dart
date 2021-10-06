@@ -1,4 +1,7 @@
+import 'package:bywayborcay/LogInPage.dart';
 import 'package:flutter/material.dart';
+
+import 'SplashPage.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,7 +25,9 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
+      home: LogInPage()
+     //home: SplashPage(duration: 3, goToPage: LogInPage()),
     );
   }
 }
