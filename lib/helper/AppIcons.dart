@@ -1,8 +1,11 @@
 //helps map icons
 class AppIcons {
-  static const String Profile = 'Profile';
-  static const String ToStay = 'ToStay';
-  static const String ToEatandDrink = 'ToEatandDrink';
-  static const String ToSee = 'ToSee';
-  static const String ToDo = 'ToDo';
+  static const String ItineraryIcon = 'ItineraryIcon';
+  static const String ExploreIcon = 'ExploreIcon';
+  static const String BagIcon = 'BagIcon';
+  static const String ProfileIcon = 'Profile';
+  static const String ToStayIcon = 'ToStay';
+  static const String ToEatandDrinkIcon = 'ToEatandDrink';
+  static const String ToSeeIcon = 'ToSee';
+  static const String ToDoIcon = 'ToDo';
 }
