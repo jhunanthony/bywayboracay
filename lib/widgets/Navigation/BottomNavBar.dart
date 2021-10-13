@@ -1,4 +1,3 @@
-
 import 'package:bywayborcay/helper/AppIcons.dart';
 
 import 'package:flutter/material.dart';
@@ -15,9 +14,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 10),
-        child: 
-        Container(
+      padding: EdgeInsets.only(left: 13, right: 13, bottom: 10, top: 10),
+      child: Container(
           height: 80,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
@@ -71,6 +69,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ),
             ],
           )),
-        );
+    );
   }
 }

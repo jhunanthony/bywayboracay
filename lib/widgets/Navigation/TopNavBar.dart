@@ -30,30 +30,29 @@ class TopNavBarState extends State<TopNavBar> {
       centerTitle: true,
       title: Visibility(
         visible: widget.showTopLogo,
-        child: Image.asset(
-          "assets/images/Test_Logo.png",
-          height: 40,
-          width: 40,
-          fit: BoxFit.scaleDown,
+        child: ClipOval(
+          child: Image.asset(
+            "assets/images/Test_Logo.png",
+            height: 40,
+            width: 40,
+            fit: BoxFit.scaleDown,
+          ),
         ),
       ),
       backgroundColor: widget.colorbackground,
       elevation: 0,
       iconTheme: IconThemeData(color: widget.theme),
       actions: [
-        
         Visibility(
           visible: widget.showTopProfile,
           child: Container(
-            margin: EdgeInsets.only(right: 13),
-            padding: EdgeInsets.all(8),
-             child: SvgPicture.asset('assets/icons/Profile.svg',
-             height: 40,
-                          width: 40,
-                          fit: BoxFit.scaleDown,
-                color: Colors.blue)
-          ),
-        )
+              margin: EdgeInsets.only(right: 20),
+              child: SvgPicture.asset('assets/icons/Profile.svg',
+                  height: 20,
+                  width: 20,
+                  fit: BoxFit.contain,
+                  color: Colors.blue)),
+        ),
 
         /*Visibility(
             visible: widget.showTopProfile,

@@ -2,13 +2,13 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryCard.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
+import 'package:bywayborcay/widgets/Navigation/BotNavBar2.dart';
 import 'package:bywayborcay/widgets/Navigation/BottomNavBar.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:bywayborcay/widgets/VideoPlayerWidgets/VideoAssetPlayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
-import 'CategoryPage.dart';
+import 'ItemsPage.dart';
 import '../helper/Utils.dart';
 import '../models/CategoryModel.dart';
 
@@ -60,7 +60,7 @@ class _ExplorePageState extends State<ExplorePage> {
             showTopLogo: false,
           )),
       //show bottom navigation bar
-      Positioned(bottom: 10, left: 10, right: 15, child: BottomNavBar())
+      Positioned(bottom: 0, left: 0, right: 0, child: BottomNavBar())
     ])));
   }
 }
@@ -189,7 +189,7 @@ class CategoryButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-        height: 150,
+        height: 175,
         width: MediaQuery.of(context).size.width,
         color: Colors.white,
         //column
@@ -198,10 +198,20 @@ class CategoryButtons extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Explore Boracay Island!',
+                'Explore Now!',
                 style: TextStyle(
                     fontSize: 20,
                     color: Colors.blue,
+                    fontWeight: FontWeight.w300),
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Add something to your itinerary.',
+                style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
                     fontWeight: FontWeight.w300),
               ),
             ),
@@ -222,7 +232,9 @@ class CategoryButtons extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => CategoryPage()));
+                                builder: (context) => ItemsPage(
+                                  selectedCategory: this.categories[index],
+                                )));
                       });
                 },
               ),
@@ -244,124 +256,135 @@ class ScrollButtons extends StatelessWidget {
     return Container(
       color: Colors.white,
       width: MediaQuery.of(context).size.width,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            SizedBox(width: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.blue, //background
-                  onPrimary: Colors.white, //foreground
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50))),
-              child: Container(
-                height: 13,
-                width: 50,
-                alignment: Alignment.center,
-                child: Text(
-                  'Geography',
-                  style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w300),
-                ),
+      child: Column(
+        children: [
+         Text(
+                'Read about Boracay',
+                style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w300),
               ),
-              onPressed: () =>
-                  _goToElement(3), // on press animate to 6 th element
-            ),
-            SizedBox(width: 5),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.blue, //background
-                  onPrimary: Colors.white, //foreground
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50))),
-              child: Container(
-                height: 13,
-                width: 50,
-                alignment: Alignment.center,
-                child: Text(
-                  'Highlights',
-                  style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w300),
+            
+          SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(width: 20),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.blue, //background
+                    onPrimary: Colors.white, //foreground
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50))),
+                child: Container(
+                  height: 13,
+                  width: 50,
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Geography',
+                    style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w300),
+                  ),
                 ),
+                onPressed: () =>
+                    _goToElement(3), // on press animate to 6 th element
               ),
-              onPressed: () =>
-                  _goToElement(4), // on press animate to 6 th element
-            ),
-            SizedBox(width: 5),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.blue, //background
-                  onPrimary: Colors.white, //foreground
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50))),
-              child: Container(
-                height: 13,
-                width: 40,
-                alignment: Alignment.center,
-                child: Text(
-                  'Awards',
-                  style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w300),
+              SizedBox(width: 5),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.blue, //background
+                    onPrimary: Colors.white, //foreground
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50))),
+                child: Container(
+                  height: 13,
+                  width: 50,
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Highlights',
+                    style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w300),
+                  ),
                 ),
+                onPressed: () =>
+                    _goToElement(4), // on press animate to 6 th element
               ),
-              onPressed: () =>
-                  _goToElement(5), // on press animate to 6 th element
-            ),
-            SizedBox(width: 5),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.blue, //background
-                  onPrimary: Colors.white, //foreground
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50))),
-              child: Container(
-                height: 13,
-                width: 40,
-                alignment: Alignment.center,
-                child: Text(
-                  'Culture',
-                  style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w300),
+              SizedBox(width: 5),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.blue, //background
+                    onPrimary: Colors.white, //foreground
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50))),
+                child: Container(
+                  height: 13,
+                  width: 40,
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Awards',
+                    style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w300),
+                  ),
                 ),
+                onPressed: () =>
+                    _goToElement(5), // on press animate to 6 th element
               ),
-              onPressed: () =>
-                  _goToElement(6), // on press animate to 6 th element
-            ),
-            SizedBox(width: 5),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.blue, //background
-                  onPrimary: Colors.white, //foreground
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50))),
-              child: Container(
-                height: 13,
-                width: 40,
-                alignment: Alignment.center,
-                child: Text(
-                  'History',
-                  style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w300),
+              SizedBox(width: 5),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.blue, //background
+                    onPrimary: Colors.white, //foreground
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50))),
+                child: Container(
+                  height: 13,
+                  width: 40,
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Culture',
+                    style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w300),
+                  ),
                 ),
+                onPressed: () =>
+                    _goToElement(6), // on press animate to 6 th element
               ),
-              onPressed: () =>
-                  _goToElement(7), // on press animate to 6 th element
-            ),
-            SizedBox(width: 20),
-          ],
-        ),
+              SizedBox(width: 5),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.blue, //background
+                    onPrimary: Colors.white, //foreground
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50))),
+                child: Container(
+                  height: 13,
+                  width: 40,
+                  alignment: Alignment.center,
+                  child: Text(
+                    'History',
+                    style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w300),
+                  ),
+                ),
+                onPressed: () =>
+                    _goToElement(7), // on press animate to 6 th element
+              ),
+              SizedBox(width: 20),
+            ],
+          ),
+        ),]
       ),
     );
   }
@@ -394,7 +417,7 @@ class Header extends StatelessWidget {
     return Container(
         color: Colors.blue[50],
         //35%* of screen
-        height: MediaQuery.of(context).size.height * 0.34,
+        height: MediaQuery.of(context).size.height * 0.36,
         width: MediaQuery.of(context).size.width,
         /*decoration: BoxDecoration(
           borderRadius: BorderRadius.only(

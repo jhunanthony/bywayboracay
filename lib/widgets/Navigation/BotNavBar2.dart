@@ -12,7 +12,7 @@ class BotNavBar2 extends StatefulWidget {
 }
 
 class _BotNavBar2State extends State<BotNavBar2> {
-  int _currentindex = 1;
+  int _currentIndex = 0;
   PageController _pageController;
 
   @override
@@ -21,7 +21,6 @@ class _BotNavBar2State extends State<BotNavBar2> {
     _pageController = PageController();
   }
 
-  //dispose method when another page is accessed
   @override
   void dispose() {
     _pageController.dispose();
@@ -37,8 +36,11 @@ class _BotNavBar2State extends State<BotNavBar2> {
           backgroundColor: Colors.yellow[50],
           containerHeight: 80,
           itemCornerRadius: 50,
-          selectedIndex: _currentindex,
-          onItemSelected: (index) => setState(() => _currentindex = index),
+          selectedIndex: _currentIndex,
+           onItemSelected: (index) {
+          setState(() => _currentIndex = index);
+          _pageController.jumpToPage(index);
+        },
           items: <BottomNavyBarItem>[
             BottomNavyBarItem(
               icon: SvgPicture.asset(
@@ -72,7 +74,7 @@ class _BotNavBar2State extends State<BotNavBar2> {
   }
 
   Widget buildPages() {
-    switch (_currentindex) {
+    switch (_currentIndex) {
       case 2:
         return BagPage();
       case 0:

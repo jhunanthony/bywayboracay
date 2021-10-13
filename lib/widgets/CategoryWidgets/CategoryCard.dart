@@ -13,15 +13,7 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      SizedBox(height: 5),
-      Padding(
-        padding: EdgeInsets.only(right: 10),
-        child: Text(
-          this.category.name,
-          style: TextStyle(
-              fontSize: 12, color: Colors.black, fontWeight: FontWeight.w300),
-        ),
-      ),
+      SizedBox(height: 5,),
       GestureDetector(
         onTap: () {
           this.onCardClick();
@@ -63,6 +55,16 @@ class CategoryCard extends StatelessWidget {
           ]),
         ),
       ),
+      SizedBox(height: 5),
+      Padding(
+        padding: EdgeInsets.only(right: 10),
+        child: Text(
+          this.category.name,
+          style: TextStyle(
+              fontSize: 12, color: Colors.black, fontWeight: FontWeight.w300),
+        ),
+      ),
+      SizedBox(height: 5),
     ]);
   }
 }

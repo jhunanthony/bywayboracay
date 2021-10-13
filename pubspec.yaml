@@ -34,6 +34,13 @@ dependencies:
   video_player: ^1.0.1
   #for animated bottom nav bar
   bottom_navy_bar: ^6.0.0
+  #for scroll indicator
+  smooth_page_indicator: ^1.0.0+2
+  #for expanding text 
+  expandable_text: ^2.2.0
+  #url luncher
+  url_launcher: ^6.0.6
+  
   
 
 

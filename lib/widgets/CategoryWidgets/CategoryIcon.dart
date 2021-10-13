@@ -19,6 +19,6 @@ class CategoryIcon extends StatelessWidget {
           color: this.color,
           shape: BoxShape.circle,
         ),
-        child: SvgPicture.asset('assets/icons/' + this.iconName + '.svg', color: Colors.white));
+        child: SvgPicture.asset('assets/icons/' + this.iconName + '.svg', color: Colors.white, height: this.size * 0.40, width: this.size *0.40, ));
   }
 }
