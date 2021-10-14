@@ -56,7 +56,7 @@ class AdvancedOverlayWidget extends StatelessWidget {
                   SizedBox(width: 10),
                 ],
               )),
-          if (controller != null && controller.value.initialized)
+          if (controller != null && controller.value.isInitialized)
             Positioned(
               right: 0,
               top: 30,
