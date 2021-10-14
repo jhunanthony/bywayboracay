@@ -40,6 +40,8 @@ dependencies:
   expandable_text: ^2.2.0
   #url luncher
   url_launcher: ^6.0.6
+  #to lunch http
+  http: ^0.13.3
   
   
 

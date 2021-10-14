@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -47,11 +48,16 @@ class TopNavBarState extends State<TopNavBar> {
           visible: widget.showTopProfile,
           child: Container(
               margin: EdgeInsets.only(right: 20),
-              child: SvgPicture.asset('assets/icons/Profile.svg',
+              child: Icon(CupertinoIcons.profile_circled,
+                  size: 40, color: Colors.blue[200])
+
+              /*SvgPicture.asset('assets/icons/Profile.svg',
                   height: 20,
                   width: 20,
                   fit: BoxFit.contain,
-                  color: Colors.blue)),
+                  color: Colors.blue)*/
+
+              ),
         ),
 
         /*Visibility(

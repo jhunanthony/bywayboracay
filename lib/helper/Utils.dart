@@ -34,7 +34,7 @@ class Utils {
                 itememail: "boracay@shangri-la.com",
                 itemwebsite:
                     "https://www.shangri-la.com/en/boracay/boracayresort/",
-                itemsocialmedia: "https://web.facebook.com/ShangriLaBoracay/",
+                itemsocialmedia: "https://web.facebook.com/ShangriLaBoracay",
                 itemlikes: 0,
                 itemsaves: 0,
                 itemrating: 0,
@@ -136,7 +136,7 @@ class Utils {
                 itememail: "boracay@shangri-la.com",
                 itemwebsite:
                     "https://www.shangri-la.com/en/boracay/boracayresort/",
-                itemsocialmedia: "https://web.facebook.com/ShangriLaBoracay/",
+                itemsocialmedia: "https://web.facebook.com/ShangriLaBoracay",
                 itemlikes: 200,
                 itemsaves: 0,
                 itemrating: 0,

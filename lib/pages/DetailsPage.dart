@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart';
 
 class DetailsPage extends StatefulWidget {
   //pass the values
@@ -34,6 +35,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 Container(
                   height: 300,
                   width: MediaQuery.of(context).size.width,
+
                   //wrap with stack to overlay other components
                   child: ListView.builder(
                       controller: _imagepageController,
@@ -79,46 +81,82 @@ class _DetailsPageState extends State<DetailsPage> {
                         ]);
                       }),
                 ),
-                Positioned(
+                /*Positioned(
                     bottom: 10,
                     left: 20,
                     child: CategoryIcon(
                       iconName: widget.items.iconName,
                       color: widget.items.color,
                       size: 50,
-                    )),
+                    )),*/
+
+                //add like button
                 Positioned(
-                    bottom: 10,
+                    bottom: 90,
                     right: 20,
                     child: Column(children: [
                       //wrap with gesture detector
-                      Icon(
-                        Icons.favorite,
-                        color: Colors.white,
-                        size: 30,
+                      InkWell(
+                        splashColor: Colors.white,
+                        borderRadius: BorderRadius.circular(100),
+                        child: Container(
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withOpacity(0.4),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.favorite,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                            )),
+                        onTap: () {},
                       ),
                       SizedBox(
                         height: 2,
                       ),
                       Text(
-                        widget.items.likes.toString(),
+                        'Like',
                         style: TextStyle(
                             fontSize: 12,
                             color: Colors.white,
                             fontWeight: FontWeight.w300),
                       ),
+                      /*Text(
+                        widget.items.likes.toString(),
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w300),
+                      ),*/
                     ])),
-                /*Positioned(
+                //add save button
+                Positioned(
                     bottom: 10,
-                    right: 10,
+                    right: 20,
                     child: Column(children: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.bookmark,
-                          color: Colors.blue[200],
-                          size: 30,
+                      InkWell(
+                        splashColor: Colors.white,
+                        borderRadius: BorderRadius.circular(100),
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withOpacity(0.4),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.bookmark,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                          ),
                         ),
-                        onPressed: () {},
+                        onTap: () {},
                       ),
                       SizedBox(height: 3),
                       Text(
@@ -129,10 +167,27 @@ class _DetailsPageState extends State<DetailsPage> {
                             color: Colors.white,
                             fontWeight: FontWeight.w300),
                       ),
-                    ])),*/
+                    ])),
+                //page indicator
+                Positioned.fill(
+                  bottom: 10,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SmoothPageIndicator(
+                      controller: _imagepageController,
+                      count: widget.items.detailsimages.length,
+                      effect: ExpandingDotsEffect(
+                          activeDotColor: widget.items.color,
+                          dotColor: Colors.white,
+                          dotHeight: 5,
+                          dotWidth: 5,
+                          spacing: 4.8),
+                    ),
+                  ),
+                )
               ]),
               //show page indicator
-              Center(
+              /*Center(
                 child: Padding(
                   padding: EdgeInsets.only(top: 10, bottom: 5),
                   child: SmoothPageIndicator(
@@ -142,20 +197,20 @@ class _DetailsPageState extends State<DetailsPage> {
                         activeDotColor: widget.items.color,
                         dotColor: Colors.grey[400],
                         dotHeight: 5,
-                        dotWidth: 6,
+                        dotWidth: 5,
                         spacing: 4.8),
                   ),
                 ),
-              ),
-              //show name
+              ),*/
+              //show name of item
               Padding(
-                padding: EdgeInsets.only(top: 5, bottom: 5),
+                padding: EdgeInsets.only(top: 10, bottom: 5),
                 child: Text(
                   widget.items.name,
                   style: TextStyle(
                       fontSize: 25,
                       color: Colors.grey,
-                      fontWeight: FontWeight.w300),
+                      fontWeight: FontWeight.normal),
                 ),
               ),
               //Use EXapnding text widget
@@ -166,15 +221,58 @@ class _DetailsPageState extends State<DetailsPage> {
                   "       " + widget.items.description,
                   expandText: 'show more',
                   collapseText: 'show less',
-                  maxLines: 3,
+                  maxLines: 4,
                   linkColor: Colors.blue,
                   textAlign: TextAlign.justify,
                   style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 14,
                       color: Colors.grey,
-                      fontWeight: FontWeight.w300),
+                      fontWeight: FontWeight.normal),
                 ),
               ),
+              Padding(
+                padding:
+                    EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.timer,
+                            color: Colors.blue,
+                            size: 20,
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            widget.items.opentime,
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            CupertinoIcons.money_dollar_circle,
+                            color: Colors.blue,
+                            size: 20,
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            'min. ₱' + widget.items.pricemin,
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ]),
+              ),
+
               //show location here
               Align(
                 alignment: Alignment.topLeft,
@@ -191,9 +289,9 @@ class _DetailsPageState extends State<DetailsPage> {
                       Text(
                         widget.items.address,
                         style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 14,
                             color: Colors.grey,
-                            fontWeight: FontWeight.w300),
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -208,7 +306,10 @@ class _DetailsPageState extends State<DetailsPage> {
                     child: Container(
                         height: 100,
                         width: MediaQuery.of(context).size.width,
-                        color: Colors.red)),
+                        color: Colors.blue[200],
+                        child: Center(child:Text('map here',))
+                        
+                        )),
               ),
 
               //add contact information
@@ -264,7 +365,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           borderRadius: BorderRadius.circular(100),
                           child: Icon(
                             Icons.phone,
-                            size: 30,
+                            size: 20,
                             color: Colors.blue,
                           ),
                           onTap: () async {
@@ -283,7 +384,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             borderRadius: BorderRadius.circular(100),
                             child: Icon(
                               Icons.circle,
-                              size: 30,
+                              size: 20,
                               color: Colors.blue,
                             ),
                             onTap: () async {
@@ -322,7 +423,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             borderRadius: BorderRadius.circular(100),
                             child: Icon(
                               Icons.email,
-                              size: 30,
+                              size: 20,
                               color: Colors.blue,
                             ),
                             onTap: () async {
@@ -342,7 +443,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             borderRadius: BorderRadius.circular(100),
                             child: Icon(
                               Icons.web_asset_rounded,
-                              size: 30,
+                              size: 20,
                               color: Colors.blue,
                             ),
                             onTap: () async {
@@ -357,6 +458,9 @@ class _DetailsPageState extends State<DetailsPage> {
                     )
                   ],
                 ),
+              ),
+              SizedBox(
+                height: 100,
               )
             ],
           ),
