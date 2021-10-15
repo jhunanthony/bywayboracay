@@ -78,10 +78,12 @@ class ItemsPage extends StatelessWidget {
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(
-                              context, MaterialPageRoute(
-                                builder: (context) => 
-                                DetailsPage(items: this.selectedCategory.items[index])
-                                ));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DetailsPage(
+                                        items: this
+                                            .selectedCategory
+                                            .items[index])));
                           },
                           child: Column(children: [
                             Container(
@@ -103,7 +105,8 @@ class ItemsPage extends StatelessWidget {
                                 ),
                               ),
                               //stack all descriptions values etc. here
-                              child: Stack(children: [
+                              child: Stack(
+                                children: [
                                 Positioned.fill(
                                   child: Container(
                                       decoration: BoxDecoration(
@@ -155,41 +158,58 @@ class ItemsPage extends StatelessWidget {
                                 Positioned(
                                   bottom: 10,
                                   left: 10,
-                                  child: Column(children: [
-                                    FittedBox(
-                                      child: Text(
-                                        this.selectedCategory.items[index].name,
-                                        overflow: TextOverflow.fade,
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Row(
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Icon(
-                                          Icons.location_pin,
-                                          color: Colors.white,
-                                          size: 10,
+                                        //wrap to expand if too long
+                                        Wrap(
+                                            direction: Axis.horizontal,
+                                            children: [
+                                              Text(
+                                                this
+                                                    .selectedCategory
+                                                    .items[index]
+                                                    .name,
+                                                overflow: TextOverflow.fade,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ]),
+
+                                        SizedBox(
+                                          height: 5,
                                         ),
-                                        SizedBox(width: 3),
-                                        Text(
-                                          this
-                                              .selectedCategory
-                                              .items[index]
-                                              .address,
-                                          style: TextStyle(
-                                              fontSize: 10,
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.location_pin,
                                               color: Colors.white,
-                                              fontWeight: FontWeight.w300),
+                                              size: 10,
+                                            ),
+                                            SizedBox(width: 3),
+                                            Wrap(
+                                                direction: Axis.horizontal,
+                                                children: [
+                                                  Text(
+                                                    this
+                                                        .selectedCategory
+                                                        .items[index]
+                                                        .address,
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w300),
+                                                  ),
+                                                ]),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ]),
+                                      ]),
                                 )
                               ]),
                             ),
@@ -247,7 +267,7 @@ class ItemsPage extends StatelessWidget {
                                         ],
                                       ),
                                       //show save number
-                                      Column(
+                                      /*Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
@@ -276,7 +296,7 @@ class ItemsPage extends StatelessWidget {
                                                 fontWeight: FontWeight.w300),
                                           ),
                                         ],
-                                      )
+                                      )*/
                                     ],
                                   )),
                             )

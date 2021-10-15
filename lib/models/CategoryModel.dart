@@ -23,7 +23,8 @@ class Category {
   String socialmedia;
   int likes;
   int saves;
-  double rating;
+  double rating1;
+  double rating2;
   String opentime;
   String pricemin;
 
@@ -46,7 +47,8 @@ class Category {
     this.socialmedia,
     this.likes,
     this.saves,
-    this.rating,
+    this.rating1,
+     this.rating2,
     this.opentime,
     this.pricemin,
   });

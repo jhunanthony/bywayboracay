@@ -1,13 +1,16 @@
 import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
+import 'package:bywayborcay/widgets/LikeButtonWidgetdart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:like_button/like_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart';
-
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:bywayborcay/widgets/LikeButtonWidgetdart';
 class DetailsPage extends StatefulWidget {
   //pass the values
   Items items;
@@ -19,6 +22,11 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage> {
+  //to change button color when pressed
+
+  //indicator if button is liked or not
+  //bool isLiked = false;
+
   final _imagepageController = PageController(viewportFraction: 0.877);
   @override
   Widget build(BuildContext context) {
@@ -33,7 +41,7 @@ class _DetailsPageState extends State<DetailsPage> {
               //wrap with stack to add components above images
               Stack(children: [
                 Container(
-                  height: 300,
+                  height: 325,
                   width: MediaQuery.of(context).size.width,
 
                   //wrap with stack to overlay other components
@@ -45,7 +53,7 @@ class _DetailsPageState extends State<DetailsPage> {
                         //show photos here
                         return Row(children: [
                           Container(
-                              height: 300,
+                              height: 325,
                               width: MediaQuery.of(context).size.width,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
@@ -81,96 +89,86 @@ class _DetailsPageState extends State<DetailsPage> {
                         ]);
                       }),
                 ),
-                /*Positioned(
-                    bottom: 10,
-                    left: 20,
-                    child: CategoryIcon(
-                      iconName: widget.items.iconName,
-                      color: widget.items.color,
-                      size: 50,
-                    )),*/
 
                 //add like button
                 Positioned(
-                    bottom: 90,
+                    top: 80,
                     right: 20,
-                    child: Column(children: [
-                      //wrap with gesture detector
-                      InkWell(
-                        splashColor: Colors.white,
-                        borderRadius: BorderRadius.circular(100),
-                        child: Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white.withOpacity(0.4),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: Column(children: [
+
+                        /*LikeButton(
+                            countPostion: CountPostion.top,
+                            size: 30,
+                            circleColor: CircleColor(
+                                start: Colors.pink[50], end: Colors.pink),
+                            bubblesColor: BubblesColor(
+                              dotPrimaryColor: Colors.pink[100],
+                              dotSecondaryColor: Colors.pink,
                             ),
-                            child: Center(
-                              child: Icon(
+
+                            //bool here
+                            //isLiked: isLiked,
+                            //edit looks here
+
+                            likeBuilder: (isLiked) {
+                              return Icon(
                                 Icons.favorite,
-                                color: Colors.white,
+                                color: isLiked ? Colors.pink : Colors.white,
                                 size: 30,
-                              ),
-                            )),
-                        onTap: () {},
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Text(
-                        'Like',
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w300),
-                      ),
-                      /*Text(
-                        widget.items.likes.toString(),
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w300),
-                      ),*/
-                    ])),
-                //add save button
-                Positioned(
-                    bottom: 10,
-                    right: 20,
-                    child: Column(children: [
-                      InkWell(
-                        splashColor: Colors.white,
-                        borderRadius: BorderRadius.circular(100),
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white.withOpacity(0.4),
-                          ),
-                          child: Center(
-                            child: Icon(
-                              Icons.bookmark,
-                              color: Colors.white,
-                              size: 30,
+                              );
+                            },
+                            likeCount: widget.items.likes,
+                            likeCountPadding: EdgeInsets.only(
+                              bottom: 5,
                             ),
-                          ),
+                            countBuilder:
+                                (int count, bool isLiked, String text) {
+                              var color =
+                                  isLiked ? Colors.pink[300] : Colors.white;
+                              Widget result;
+                              if (count == 0) {
+                                result = Text(
+                                  "love",
+                                  style: TextStyle(color: color, fontSize: 12),
+                                );
+                              } else
+                                result = Text(
+                                  text,
+                                  style: TextStyle(color: color, fontSize: 12),
+                                );
+                              return result;
+                            },
+                            onTap: (isLiked) async {
+                              this.isLiked = !isLiked;
+                              widget.items.likes += this.isLiked ? 1 : -1;
+
+                              //TO DO: server request push new value likes
+
+                              return !isLiked;
+                            }),*/
+
+                        
+
+                        SizedBox(
+                          height: 2,
                         ),
-                        onTap: () {},
-                      ),
-                      SizedBox(height: 3),
-                      Text(
-                        'Save to \nitinerary',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w300),
-                      ),
-                    ])),
+                        Text(
+                          'Like',
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w300),
+                        ),
+                      
+                      ]),
+                    )),
+               
                 //page indicator
-                Positioned.fill(
-                  bottom: 10,
+                Positioned(
+                  right: 20,
+                  bottom: 20,
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: SmoothPageIndicator(
@@ -181,42 +179,150 @@ class _DetailsPageState extends State<DetailsPage> {
                           dotColor: Colors.white,
                           dotHeight: 5,
                           dotWidth: 5,
-                          spacing: 4.8),
+                          spacing: 3),
                     ),
                   ),
-                )
-              ]),
-              //show page indicator
-              /*Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 10, bottom: 5),
-                  child: SmoothPageIndicator(
-                    controller: _imagepageController,
-                    count: widget.items.detailsimages.length,
-                    effect: ExpandingDotsEffect(
-                        activeDotColor: widget.items.color,
-                        dotColor: Colors.grey[400],
-                        dotHeight: 5,
-                        dotWidth: 5,
-                        spacing: 4.8),
+                ),
+                //icon
+                Positioned(
+                  left: 20,
+                  bottom: 20,
+                  child: CategoryIcon(
+                    iconName: widget.items.iconName,
+                    color: widget.items.color,
+                    size: 40,
                   ),
                 ),
-              ),*/
+              ]),
+              //show page indicator
+
               //show name of item
               Padding(
-                padding: EdgeInsets.only(top: 10, bottom: 5),
-                child: Text(
-                  widget.items.name,
-                  style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.normal),
-                ),
+                padding:
+                    EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+                //use wrap horizontal to auto expand text
+                child: Wrap(direction: Axis.horizontal, children: [
+                  Text(
+                    widget.items.name,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ]),
               ),
+
+              //category icon
+
+              //show ratings1 here
+              Padding(
+                  padding: EdgeInsets.only(bottom: 10, left: 20, right: 20),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                  'TripAdvisor ',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                //for rating
+                                RatingBarIndicator(
+                                  rating: widget.items.rating1,
+                                  itemBuilder: (context, index) => Icon(
+                                    Icons.circle,
+                                    color: Colors.green[300],
+                                  ),
+                                  itemCount: 5,
+                                  itemSize: 12.0,
+                                  direction: Axis.horizontal,
+                                ),
+                                Text(
+                                  " " + widget.items.rating1.toString(),
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.green[300],
+                                      fontWeight: FontWeight.normal),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                  'Expedia ',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                //for rating
+                                RatingBarIndicator(
+                                  rating: widget.items.rating2.toDouble(),
+                                  itemBuilder: (context, index) => Icon(
+                                    Icons.star,
+                                    color: Colors.yellow[800],
+                                  ),
+                                  itemCount: 5,
+                                  itemSize: 12.0,
+                                  direction: Axis.horizontal,
+                                ),
+                                Text(
+                                  " " + widget.items.rating2.toString(),
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.yellow[800],
+                                      fontWeight: FontWeight.normal),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        //save button
+                        Column(children: [
+                          ClipOval(
+                            child: Material(
+                              color: Colors.transparent,
+                              child: IconButton(
+                                padding: EdgeInsets.all(0),
+                                icon: Icon(Icons.bookmark),
+                                color: Colors.blue[200],
+                                iconSize: 30,
+                                splashColor: Colors.blue,
+                                onPressed: () {},
+                              ),
+                            ),
+                          ),
+                          Text(
+                            'Save to Itinerary',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        ])
+                      ])),
+
               //Use EXapnding text widget
               Padding(
-                padding:
-                    EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
+                padding: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  bottom: 15,
+                ),
                 child: ExpandableText(
                   "       " + widget.items.description,
                   expandText: 'show more',
@@ -231,8 +337,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 ),
               ),
               Padding(
-                padding:
-                    EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
+                padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -256,7 +361,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       Row(
                         children: [
                           Icon(
-                            CupertinoIcons.money_dollar_circle,
+                            CupertinoIcons.tag,
                             color: Colors.blue,
                             size: 20,
                           ),
@@ -277,7 +382,7 @@ class _DetailsPageState extends State<DetailsPage> {
               Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 20, top: 5, bottom: 5),
+                  padding: EdgeInsets.only(left: 20, bottom: 10, right: 20),
                   child: Row(
                     children: [
                       Icon(
@@ -301,15 +406,36 @@ class _DetailsPageState extends State<DetailsPage> {
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Padding(
-                    padding:
-                        EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
+                    padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
                     child: Container(
                         height: 100,
                         width: MediaQuery.of(context).size.width,
                         color: Colors.blue[200],
-                        child: Center(child:Text('map here',))
-                        
-                        )),
+                        child: Center(child: Text('map here')))),
+              ),
+              //show get direction button here
+              Padding(
+                padding: EdgeInsets.only(left: 20, bottom: 10, right: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Icon(
+                      Icons.directions,
+                      color: Colors.blue,
+                      size: 20,
+                    ),
+                    SizedBox(width: 5),
+                    GestureDetector(
+                        child: Text(
+                          'Get Directions',
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        onTap: () {}),
+                  ],
+                ),
               ),
 
               //add contact information
@@ -318,16 +444,15 @@ class _DetailsPageState extends State<DetailsPage> {
                 child: Padding(
                   padding: EdgeInsets.only(
                     left: 20,
-                    top: 5,
-                    bottom: 5,
+                    bottom: 10,
                     right: 20,
                   ),
                   child: Text(
-                    'Contacts',
+                    'Direct Booking here!',
                     style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 14,
                         color: Colors.grey,
-                        fontWeight: FontWeight.w300),
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -338,10 +463,11 @@ class _DetailsPageState extends State<DetailsPage> {
                 padding:
                     EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     //column for text call and fb
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(' Call  ',
                             style: TextStyle(
@@ -400,6 +526,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                     //column for email and website
                     Column(
+                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(' Email  ',
                             style: TextStyle(

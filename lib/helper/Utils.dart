@@ -21,7 +21,8 @@ class Utils {
             Items(
                 itemcolor: AppColors.ToStayColor,
                 itemicon: AppIcons.ToStayIcon,
-                itemname: 'Boracay Hotel 1',
+                itemname:
+                    'Boracay Hotel 1',
                 itemaddress: 'Balabag, Malay, Aklan',
                 itemstation: 'Balabag',
                 itemlat: '11.987426774719031',
@@ -35,9 +36,10 @@ class Utils {
                 itemwebsite:
                     "https://www.shangri-la.com/en/boracay/boracayresort/",
                 itemsocialmedia: "https://web.facebook.com/ShangriLaBoracay",
-                itemlikes: 0,
-                itemsaves: 0,
-                itemrating: 0,
+                itemlikes: 563,
+                itemsaves: 146,
+                itemrating1: 4.5,
+                itemrating2: 4.8,
                 itemopentime: '8am - 10pm',
                 itempricemin: '2,000.00',
                 detailsimages: [
@@ -73,7 +75,8 @@ class Utils {
                 itemsocialmedia: "https://web.facebook.com/ShangriLaBoracay/",
                 itemlikes: 245,
                 itemsaves: 565,
-                itemrating: 0,
+                itemrating1: 4.5,
+                itemrating2: 5,
                 itemopentime: '9am - 10pm',
                 itempricemin: '5,000.00'),
             Items(
@@ -95,7 +98,8 @@ class Utils {
                 itemsocialmedia: "https://web.facebook.com/ShangriLaBoracay/",
                 itemlikes: 86,
                 itemsaves: 135,
-                itemrating: 0,
+                itemrating1: 4.5,
+                itemrating2: 5,
                 itemopentime: '9am - 10pm',
                 itempricemin: '8,000.00'),
             Items(
@@ -117,7 +121,8 @@ class Utils {
                 itemsocialmedia: "https://web.facebook.com/ShangriLaBoracay/",
                 itemlikes: 87,
                 itemsaves: 146,
-                itemrating: 0,
+                itemrating1: 4.5,
+                itemrating2: 5,
                 itemopentime: '9am - 10pm',
                 itempricemin: '10,000.00'),
             Items(
@@ -139,7 +144,8 @@ class Utils {
                 itemsocialmedia: "https://web.facebook.com/ShangriLaBoracay",
                 itemlikes: 200,
                 itemsaves: 0,
-                itemrating: 0,
+                itemrating1: 4.5,
+                itemrating2: 5,
                 itemopentime: '9am - 10pm',
                 itempricemin: '5,000.00'),
           ]),

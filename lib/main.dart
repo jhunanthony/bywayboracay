@@ -22,10 +22,10 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       //use this to debug pages that needs data
-      home: DetailsPage(
+      /*home: DetailsPage(
         items: Utils.getMockedCategory()[0].items[0],
-      )
-     //home: SplashPage(duration: 3, goToPage: LogInPage()),
+      )*/
+     home: SplashPage(duration: 3, goToPage: LogInPage()),
     );
   }
 }

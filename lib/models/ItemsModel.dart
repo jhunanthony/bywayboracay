@@ -26,7 +26,9 @@ class Items extends Category {
     String itemsocialmedia,
     int itemlikes,
     int itemsaves,
-    double itemrating,
+    double itemrating1,
+    double itemrating2,
+    
     String itemopentime,
     String itempricemin,
   }) :
@@ -50,7 +52,8 @@ class Items extends Category {
           socialmedia: itemsocialmedia,
           likes: itemlikes,
           saves: itemsaves,
-          rating: itemrating,
+          rating1: itemrating1,
+          rating2: itemrating2,
           opentime: itemopentime,
           pricemin: itempricemin,
         );

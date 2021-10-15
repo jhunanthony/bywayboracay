@@ -43,7 +43,12 @@ dependencies:
   #to lunch http
   http: ^0.13.4
   #for google map 
-  google_maps_flutter: ^2.0.11
+  #google_maps_flutter: ^2.0.11
+  #for rating indicators
+  flutter_rating_bar: ^4.0.0
+  #for like button
+  like_button: ^2.0.3
+  
   
   
 

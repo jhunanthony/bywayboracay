@@ -28,6 +28,7 @@ class TopNavBarState extends State<TopNavBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      toolbarHeight: 80,
       centerTitle: true,
       title: Visibility(
         visible: widget.showTopLogo,
@@ -49,7 +50,7 @@ class TopNavBarState extends State<TopNavBar> {
           child: Container(
               margin: EdgeInsets.only(right: 20),
               child: Icon(CupertinoIcons.profile_circled,
-                  size: 40, color: Colors.blue[200])
+                  size: 40, color: Colors.white)
 
               /*SvgPicture.asset('assets/icons/Profile.svg',
                   height: 20,
