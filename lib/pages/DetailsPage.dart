@@ -98,6 +98,8 @@ class _DetailsPageState extends State<DetailsPage> {
                       padding: const EdgeInsets.only(right: 5),
                       child: Column(children: [
 
+                        LikeButtonWidget(items: widget.items),
+
                         /*LikeButton(
                             countPostion: CountPostion.top,
                             size: 30,

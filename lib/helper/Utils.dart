@@ -3,12 +3,35 @@
 import 'package:bywayborcay/models/CategoryModel.dart';
 import 'package:bywayborcay/models/DetailImages.dart';
 import 'package:bywayborcay/models/ItemsModel.dart';
+import 'package:bywayborcay/models/OnBoardingModel.dart';
 import 'package:video_player/video_player.dart';
 
 import 'AppColors.dart';
 import 'AppIcons.dart';
 
 class Utils {
+  //create static onboardingcontent the will return content ref
+  static List<OnBoardingContent> getOnBoarding() {
+    return [
+      OnBoardingContent(
+        message: 'This product is for flexibility',
+        imgName: 'Test_Image_1',
+      ),
+      OnBoardingContent(
+        message: 'This product is for Navigation',
+        imgName: 'Test_Image_2',
+      ),
+      OnBoardingContent(
+        message: 'This product is for Budget',
+        imgName: 'Test_Image_3',
+      ),
+      OnBoardingContent(
+        message: 'This product is for Communication',
+        imgName: 'Test_Image_4',
+      )
+    ];
+  }
+
   //create static method that will return categories with data
   static List<Category> getMockedCategory() {
     return [
@@ -21,8 +44,7 @@ class Utils {
             Items(
                 itemcolor: AppColors.ToStayColor,
                 itemicon: AppIcons.ToStayIcon,
-                itemname:
-                    'Boracay Hotel 1',
+                itemname: 'Boracay Hotel 1',
                 itemaddress: 'Balabag, Malay, Aklan',
                 itemstation: 'Balabag',
                 itemlat: '11.987426774719031',

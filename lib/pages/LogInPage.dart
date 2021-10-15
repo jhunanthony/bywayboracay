@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'ExplorePage.dart';
+import 'OnBoardingPage.dart';
 class LogInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -82,7 +83,7 @@ class LogInPage extends StatelessWidget {
                         fontWeight: FontWeight.w300),
                   ),
                 ),
-                onPressed: () {Navigator.push(context, MaterialPageRoute(builder:(context)=>ExplorePage()));},
+                onPressed: () {Navigator.push(context, MaterialPageRoute(builder:(context)=>OnBoardingPage()));},
               ),
               SizedBox(height: 25),
               ElevatedButton(

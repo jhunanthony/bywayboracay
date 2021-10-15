@@ -1,5 +1,6 @@
 //helps map icons
 class AppIcons {
+  static const String LogoIcon = 'Test_Logo';
   static const String ItineraryIcon = 'ItineraryIcon';
   static const String ExploreIcon = 'ExploreIcon';
   static const String BagIcon = 'BagIcon';

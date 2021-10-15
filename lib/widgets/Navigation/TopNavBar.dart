@@ -1,3 +1,4 @@
+import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -34,7 +35,7 @@ class TopNavBarState extends State<TopNavBar> {
         visible: widget.showTopLogo,
         child: ClipOval(
           child: Image.asset(
-            "assets/images/Test_Logo.png",
+            "assets/images/" + AppIcons.LogoIcon + ".png",
             height: 40,
             width: 40,
             fit: BoxFit.scaleDown,
