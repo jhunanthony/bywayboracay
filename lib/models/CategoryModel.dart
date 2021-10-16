@@ -14,10 +14,11 @@ class Category {
   String description;
   String address;
   String station;
-  String lat;
-  String long;
+  double lat;
+  double long;
   String contactnumber;
   String categoryName;
+  String subcategoryName;
   String email;
   String website;
   String socialmedia;
@@ -42,6 +43,7 @@ class Category {
     this.long,
     this.contactnumber,
     this.categoryName,
+    this.subcategoryName,
     this.email,
     this.website,
     this.socialmedia,

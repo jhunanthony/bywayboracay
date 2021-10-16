@@ -1,6 +1,7 @@
 import 'package:bywayborcay/pages/DetailsPage.dart';
 import 'package:bywayborcay/pages/ItemsPage.dart';
 import 'package:bywayborcay/pages/LogInPage.dart';
+import 'package:bywayborcay/pages/MapPage.dart';
 import 'package:bywayborcay/pages/OnBoardingPage.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         //use this to debug pages that needs data
-        /*home: DetailsPage(
+    /*home: MapPage(
         items: Utils.getMockedCategory()[0].items[0],
       )*/
         //home: OnBoardingPage()

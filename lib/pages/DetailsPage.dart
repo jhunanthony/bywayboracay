@@ -1,16 +1,18 @@
+import 'dart:async';
+
 import 'package:bywayborcay/models/ItemsModel.dart';
+import 'package:bywayborcay/pages/MapPage.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
 import 'package:bywayborcay/widgets/LikeButtonWidgetdart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:like_button/like_button.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:http/http.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:bywayborcay/widgets/LikeButtonWidgetdart';
+
 class DetailsPage extends StatefulWidget {
   //pass the values
   Items items;
@@ -22,7 +24,37 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage> {
-  //to change button color when pressed
+  Completer<GoogleMapController> _controller = Completer();
+  BitmapDescriptor destinationIcon;
+  Set<Marker> _markers = Set<Marker>();
+  LatLng destinationLocation;
+
+  void setSourceAndDestinationMarkerIcons(BuildContext context) async {
+    String parentCategory = widget.items.categoryName;
+
+    destinationIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.0),
+        'assets/images/' + parentCategory + '_Marker.png');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    //instantiate the polyline reference to call API
+
+    this.setInitialLocation();
+  }
+
+  //set up initial Locations & invoke the method
+  void setInitialLocation() {
+    //add latlong value here
+
+    LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
+    //display latlong value here
+
+    destinationLocation =
+        LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
+  }
 
   //indicator if button is liked or not
   //bool isLiked = false;
@@ -30,6 +62,17 @@ class _DetailsPageState extends State<DetailsPage> {
   final _imagepageController = PageController(viewportFraction: 0.877);
   @override
   Widget build(BuildContext context) {
+    //pull marker icon
+    this.setSourceAndDestinationMarkerIcons(context);
+    //initialize needed values for map
+
+    CameraPosition initialCameraPosition = CameraPosition(
+        zoom: CAMERA_ZOOM,
+        tilt: CAMERA_TILT,
+        bearing: CAMERA_BEARING,
+        target: destinationLocation);
+
+    //canvas starts here
     return SafeArea(
         child: Scaffold(
       body: Stack(children: [
@@ -97,7 +140,6 @@ class _DetailsPageState extends State<DetailsPage> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 5),
                       child: Column(children: [
-
                         LikeButtonWidget(items: widget.items),
 
                         /*LikeButton(
@@ -151,8 +193,6 @@ class _DetailsPageState extends State<DetailsPage> {
                               return !isLiked;
                             }),*/
 
-                        
-
                         SizedBox(
                           height: 2,
                         ),
@@ -163,10 +203,9 @@ class _DetailsPageState extends State<DetailsPage> {
                               color: Colors.white,
                               fontWeight: FontWeight.w300),
                         ),
-                      
                       ]),
                     )),
-               
+
                 //page indicator
                 Positioned(
                   right: 20,
@@ -408,12 +447,37 @@ class _DetailsPageState extends State<DetailsPage> {
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Padding(
-                    padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                  padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
                     child: Container(
-                        height: 100,
-                        width: MediaQuery.of(context).size.width,
-                        color: Colors.blue[200],
-                        child: Center(child: Text('map here')))),
+                      height: 200,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.transparent,
+                      alignment: Alignment.center,
+                      child: GoogleMap(
+                        myLocationEnabled: true,
+                        compassEnabled: false,
+                        zoomControlsEnabled: true,
+                        tiltGesturesEnabled: false,
+
+                        mapToolbarEnabled: false,
+                        myLocationButtonEnabled: false,
+
+                        markers: _markers,
+                        mapType: MapType.normal,
+                        initialCameraPosition: initialCameraPosition,
+
+                        //tapping will hide the bottom info //grab custom pins //grab the polylines
+                        onMapCreated: (GoogleMapController controller) {
+                          _controller.complete(controller);
+
+                          showPinsOnMap();
+                        },
+                      ),
+                    ),
+                  ),
+                ),
               ),
               //show get direction button here
               Padding(
@@ -435,7 +499,12 @@ class _DetailsPageState extends State<DetailsPage> {
                               color: Colors.grey,
                               fontWeight: FontWeight.bold),
                         ),
-                        onTap: () {}),
+                        onTap: () {
+                          Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MapPage(
+                                          items: widget.items)));}),
                   ],
                 ),
               ),
@@ -528,7 +597,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                     //column for email and website
                     Column(
-                       crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(' Email  ',
                             style: TextStyle(
@@ -605,5 +674,16 @@ class _DetailsPageState extends State<DetailsPage> {
             )),
       ]),
     ));
+  }
+
+  //to show pins or markers on map
+  void showPinsOnMap() {
+    setState(() {
+      _markers.add(Marker(
+        markerId: MarkerId('destinationPin'),
+        position: destinationLocation,
+        icon: destinationIcon,
+      ));
+    });
   }
 }
