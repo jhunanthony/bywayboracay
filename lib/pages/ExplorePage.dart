@@ -17,8 +17,7 @@ ScrollController _controller = new ScrollController();
 
 void _goToElement(int index) {
   _controller.animateTo((350.0 * index),
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.fastLinearToSlowEaseIn);
+      duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
 }
 
 class ExplorePage extends StatefulWidget {
@@ -33,35 +32,35 @@ class _ExplorePageState extends State<ExplorePage> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+            backgroundColor: Colors.white,
             body: Stack(children: [
-      ListView(controller: _controller, children: [
-        Header(),
-        PromotionalVideo(),
-        CategoryButtons(),
-        ScrollButtons(),
-        ForYouTabs(),
-        Highlights(),
-        Geography(),
-        AwardsAndRecognition(),
-        Culture(),
-        History(),
-        SizedBox(
-          height: 100,
-        )
-      ]),
+              ListView(controller: _controller, children: [
+                Header(),
+                PromotionalVideo(),
+                CategoryButtons(),
+                ScrollButtons(),
+                ForYouTabs(),
+                Highlights(),
+                Geography(),
+                AwardsAndRecognition(),
+                Culture(),
+                History(),
+                SizedBox(
+                  height: 100,
+                )
+              ]),
 
-      //show top navigation bar
-      Positioned(
-          top: 0,
-          right: 0,
-          left: 0,
-          child: TopNavBar(
-            colorbackground: Colors.transparent,
-            showTopLogo: false,
-          )),
-      //show bottom navigation bar
-      Positioned(bottom: 0, left: 0, right: 0, child: BottomNavBar())
-    ])));
+              //show top navigation bar
+              Positioned(
+                  top: 0,
+                  right: 0,
+                  left: 0,
+                  child: TopNavBar(
+                    colorbackground: Colors.transparent,
+                  )),
+              //show bottom navigation bar
+              Positioned(bottom: 0, left: 0, right: 0, child: BottomNavBar())
+            ])));
   }
 }
 
@@ -188,10 +187,14 @@ class CategoryButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+        margin: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 10),
+        padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 0),
         height: 175,
         width: MediaQuery.of(context).size.width,
-        color: Colors.white,
+        decoration: BoxDecoration(
+          color: Colors.yellow[50],
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
         //column
         child: Column(
           children: [
@@ -208,7 +211,7 @@ class CategoryButtons extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Add something to your itinerary.',
+                'Add something in your itinerary.',
                 style: TextStyle(
                     fontSize: 12,
                     color: Colors.grey,
@@ -233,8 +236,8 @@ class CategoryButtons extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ItemsPage(
-                                  selectedCategory: this.categories[index],
-                                )));
+                                      selectedCategory: this.categories[index],
+                                    )));
                       });
                 },
               ),
@@ -256,17 +259,13 @@ class ScrollButtons extends StatelessWidget {
     return Container(
       color: Colors.white,
       width: MediaQuery.of(context).size.width,
-      child: Column(
-        children: [
-         Text(
-                'Read about Boracay',
-                style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w300),
-              ),
-            
-          SingleChildScrollView(
+      child: Column(children: [
+        Text(
+          'Read about Boracay',
+          style: TextStyle(
+              fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w300),
+        ),
+        SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -384,8 +383,8 @@ class ScrollButtons extends StatelessWidget {
               SizedBox(width: 20),
             ],
           ),
-        ),]
-      ),
+        ),
+      ]),
     );
   }
 }
@@ -417,7 +416,7 @@ class Header extends StatelessWidget {
     return Container(
         color: Colors.blue[50],
         //35%* of screen
-        height: MediaQuery.of(context).size.height * 0.36,
+        height: MediaQuery.of(context).size.height * 0.35,
         width: MediaQuery.of(context).size.width,
         /*decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -429,19 +428,7 @@ class Header extends StatelessWidget {
         child: Stack(
           children: [
             //align all to center
-            Align(
-                //represents a point that is horizontally centered with respect to the rectangle and vertically half way between the top edge and the center.
-                alignment: Alignment(0.0, -0.5),
-                child: Container(
-                  height: 80,
-                  width: 80,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      image: DecorationImage(
-                        image: AssetImage("assets/images/Test_Image_2.png"),
-                        fit: BoxFit.cover,
-                      )),
-                )),
+
             Positioned(
                 bottom: 0,
                 left: 0,
@@ -464,10 +451,10 @@ class Header extends StatelessWidget {
                             fontSize: 25,
                             fontWeight: FontWeight.w200)),
                     SizedBox(
-                      height: 5,
+                      height: 10,
                     ),
                     Container(
-                      height: 50,
+                      height: 40,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(

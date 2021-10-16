@@ -7,10 +7,11 @@ import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 //construct a widget that passes user location as source location
-const LatLng SOURCE_LOCATION = LatLng(11.98189918417696, 121.9151854334716);
-//const LatLng DEST_LOCATION = LatLng(11.987426774719031, 121.90622655889455);
+//const LatLng DEST_LOCATION = LatLng(11.98189918417696, 121.9151854334716);
+const LatLng DEFAULT_LOCATION = LatLng(11.96151239329021, 121.92470019282162);
 
 const double CAMERA_ZOOM = 16;
 const double CAMERA_TILT = 0;
@@ -31,6 +32,8 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   //Google map Controller that controlls single instance of the google map
   Completer<GoogleMapController> _controller = Completer();
+
+  //for costum marker pin
   //custom marker to costumize assets to be used
   BitmapDescriptor sourceIcon;
   BitmapDescriptor destinationIcon;
@@ -42,13 +45,29 @@ class _MapPageState extends State<MapPage> {
   //control the state color of user info
   bool userInfoSelected = false;
 
+
   LatLng sourceLocation;
   LatLng destinationLocation;
+
+  
+
+  // the user's initial location and current location
+  // as it moves
+  LocationData currentLocationref;
+  // a reference to the destination location
+  LocationData destinationLocationref;
+  // wrapper around the location API
+  Location locationref;
+
+  
+
+
 
   //this will hold each polylines that if connected together will form the route
   //store each coordinates since polylines consist of multiple coordinates
   //a way to fetch the coordinates
 
+  //for drawn routes on map
   Set<Polyline> _polylines = Set<Polyline>();
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints;
@@ -56,6 +75,20 @@ class _MapPageState extends State<MapPage> {
   @override
   void initState() {
     super.initState();
+
+    // create an instance of Location
+    locationref = new Location();
+
+    // subscribe to changes in the user's location
+    // by "listening" to the location's onLocationChanged event
+    locationref.onLocationChanged.listen((LocationData cLoc) {
+      // cLoc contains the lat and long of the
+      // current user's position in real time,
+      // so we're holding on to it
+      currentLocationref = cLoc;
+      updatePinOnMap();
+    });
+
     //instantiate the polyline reference to call API
     polylinePoints = PolylinePoints();
 
@@ -65,7 +98,7 @@ class _MapPageState extends State<MapPage> {
 
   // location custom marker
   void setSourceAndDestinationMarkerIcons(BuildContext context) async {
-    String parentCategory = widget.items.categoryName;
+    String parentCategory = widget.items.markerName;
 
     sourceIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.0),
@@ -73,17 +106,20 @@ class _MapPageState extends State<MapPage> {
 
     destinationIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.0),
-        'assets/images/' + parentCategory + '_Marker.png');
+        'assets/images/' + parentCategory + '.png');
   }
 
   //create a method to instantiate from const to hard coded coordinates
-  void setInitialLocation() {
+  void setInitialLocation() async {
     //add latlong value here
 
     LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
+    // set the initial location by pulling the user's
+    // current location from the location's getLocation()
+    currentLocationref = await locationref.getLocation();
 
-    sourceLocation =
-        LatLng(SOURCE_LOCATION.latitude, SOURCE_LOCATION.longitude);
+    /*sourceLocation =
+        LatLng(SOURCE_LOCATION.latitude, SOURCE_LOCATION.longitude);*/
     //display latlong value here
 
     destinationLocation =
@@ -100,7 +136,18 @@ class _MapPageState extends State<MapPage> {
         zoom: CAMERA_ZOOM,
         tilt: CAMERA_TILT,
         bearing: CAMERA_BEARING,
-        target: SOURCE_LOCATION);
+        target: DEFAULT_LOCATION);
+
+    if (currentLocationref != null) {
+      initialCameraPosition = CameraPosition(
+          target:
+              LatLng(currentLocationref.latitude, currentLocationref.longitude),
+          zoom: CAMERA_ZOOM,
+          tilt: CAMERA_TILT,
+          bearing: CAMERA_BEARING);
+    }
+
+    
 
     return Scaffold(
         body: Stack(children: [
@@ -138,6 +185,9 @@ class _MapPageState extends State<MapPage> {
           right: 0,
           child: MapUserInformation(
             isSelected: this.userInfoSelected,
+
+            
+            currentLocationLatlong: this.currentLocationref,
           )),
       AnimatedPositioned(
           //animate the bottom Info
@@ -160,10 +210,16 @@ class _MapPageState extends State<MapPage> {
 
   //create two marker reference and surround inside set state to trigger rebuild
   void showPinsOnMap() {
+
+     // get a LatLng for the source location
+   // from the LocationData currentLocation object
+   var pinPosition = LatLng(currentLocationref.latitude,
+   currentLocationref.longitude);
+
     setState(() {
       _markers.add(Marker(
           markerId: MarkerId('sourcePin'),
-          position: sourceLocation,
+          position: pinPosition,
           icon: sourceIcon,
           onTap: () {
             setState(() {
@@ -185,9 +241,10 @@ class _MapPageState extends State<MapPage> {
 
   //this method will perform network call from the API
   void setPolylines() async {
+
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       "AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE",
-      PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
+      PointLatLng(currentLocationref.latitude, currentLocationref.longitude),
       PointLatLng(destinationLocation.latitude, destinationLocation.longitude),
       travelMode: TravelMode.walking,
       //wayPoints: [PolylineWayPoint(location: "Philippines")]
@@ -208,5 +265,40 @@ class _MapPageState extends State<MapPage> {
             points: polylineCoordinates));
       });
     }
+  }
+
+  void updatePinOnMap() async {
+    // create a new CameraPosition instance
+    // every time the location changes, so the camera
+    // follows the pin as it moves with an animation
+    CameraPosition cPosition = CameraPosition(
+      zoom: CAMERA_ZOOM,
+      tilt: CAMERA_TILT,
+      bearing: CAMERA_BEARING,
+      target: LatLng(currentLocationref.latitude, currentLocationref.longitude),
+    );
+
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
+    // do this inside the setState() so Flutter gets notified
+    // that a widget update is due
+    setState(() {
+      // updated position
+      var pinPosition =
+          LatLng(currentLocationref.latitude, currentLocationref.longitude);
+
+      // the trick is to remove the marker (by id)
+      // and add it again at the updated location
+      _markers.removeWhere((m) => m.markerId.value == 'sourcePin');
+      _markers.add(Marker(
+          markerId: MarkerId('sourcePin'),
+          position: pinPosition,
+          icon: sourceIcon,
+          onTap: () {
+            setState(() {
+              this.userInfoSelected = true;
+            });
+          }));
+    });
   }
 }

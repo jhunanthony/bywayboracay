@@ -1,9 +1,16 @@
+// ignore_for_file: unnecessary_statements
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
+
 // ignore: must_be_immutable
 class MapUserInformation extends StatelessWidget {
   bool isSelected;
+  // get the location data with this
+  LocationData currentLocationLatlong;
 
-  MapUserInformation({this.isSelected});
+  MapUserInformation({this.isSelected, this.currentLocationLatlong});
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +52,14 @@ class MapUserInformation extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: this.isSelected ? Colors.white : Colors.grey,
                     )),
-                Text('My Location',
-                    style: TextStyle(
-                        color: Color(
-                      0xFFFF4B4B,
-                    ))),
+                Text('Lat: ' + this.currentLocationLatlong.latitude.toString(),
+                    style: TextStyle(color: Colors.green)),
+                Text(
+                    'Long: ' + this.currentLocationLatlong.longitude.toString(),
+                    style: TextStyle(color: Colors.green)),
               ])),
-          Image.asset("assets/images/User_Location_Marker.png", height: 30, width: 30),
+          Image.asset("assets/images/User_Location_Marker.png",
+              height: 30, width: 30),
         ]));
   }
 }

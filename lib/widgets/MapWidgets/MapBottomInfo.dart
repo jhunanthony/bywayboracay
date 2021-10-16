@@ -78,8 +78,8 @@ class MapBottomInfoState extends State<MapBottomInfo> {
                 ),
                 Image.asset(
                       'assets/images/' +
-                          widget.items.categoryName +
-                          '_Marker.png',
+                          widget.items.markerName +
+                          '.png',
                       fit: BoxFit.contain,
                       width: 50,
                       height: 50),
@@ -124,7 +124,7 @@ class MapBottomInfoState extends State<MapBottomInfo> {
                   ])),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF5F5F5F), //background
+                      primary: Colors.blue[200], //background
                       onPrimary: Colors.white,
                       padding: EdgeInsets.symmetric(
                           horizontal: 15, vertical: 15), //foreground
@@ -133,7 +133,7 @@ class MapBottomInfoState extends State<MapBottomInfo> {
                     child: Icon(
                       CupertinoIcons.car_fill,
                       size: 25,
-                      color: Color(0xFFFFB157),
+                      color: Colors.white,
                     ),
                   ),
                   onPressed: () {}),

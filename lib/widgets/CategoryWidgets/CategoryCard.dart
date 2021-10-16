@@ -13,7 +13,9 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      SizedBox(height: 5,),
+      SizedBox(
+        height: 5,
+      ),
       GestureDetector(
         onTap: () {
           this.onCardClick();

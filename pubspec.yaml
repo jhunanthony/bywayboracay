@@ -46,6 +46,12 @@ dependencies:
   google_maps_flutter: ^2.0.11
   #For polylines
   flutter_polyline_points: ^1.0.0
+  #for location stream
+  location: ^4.3.0
+  #for API request
+  dio: ^4.0.0
+  #for app setting
+  app_settings: ^4.1.1
   #for rating indicators
   flutter_rating_bar: ^4.0.0
   #for like button

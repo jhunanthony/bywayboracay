@@ -18,6 +18,7 @@ class Category {
   double long;
   String contactnumber;
   String categoryName;
+  String markerName;
   String subcategoryName;
   String email;
   String website;
@@ -43,6 +44,7 @@ class Category {
     this.long,
     this.contactnumber,
     this.categoryName,
+    this.markerName,
     this.subcategoryName,
     this.email,
     this.website,

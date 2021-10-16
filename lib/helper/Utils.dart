@@ -55,7 +55,9 @@ class Utils {
                 itemdescription:
                     "Nestled in a sheltered bay on Boracay’s pristine northern coastline, Shangri-La’s Boracay Resort & Spa, Philippines exudes tropical island luxury. It has 219 rooms and villas showcasing contemporary style, enriched with Filipino touches. The resort’s layout offers spectacular vistas of lush green scenery and azure ocean views from every vantage point.",
                 itemcontactnumber: "(63 36) 288 4988",
-                itemcategoryName: 'To_Stay',
+                itemcategoryName: 'To Stay',
+                itemmarkerName: 'To_Stay_Marker',
+
                 itemsubcategoryName: 'Hotels',
                 itememail: "boracay@shangri-la.com",
                 itemwebsite:
@@ -94,7 +96,8 @@ class Utils {
                 itemdescription:
                     "Nestled in a sheltered bay on Boracay’s pristine northern coastline, Shangri-La’s Boracay Resort & Spa, Philippines exudes tropical island luxury. It has 219 rooms and villas showcasing contemporary style, enriched with Filipino touches. The resort’s layout offers spectacular vistas of lush green scenery and azure ocean views from every vantage point.",
                 itemcontactnumber: "(63 36) 288 4988",
-                itemcategoryName: 'To_Stay',
+                 itemcategoryName: 'To Stay',
+                itemmarkerName: 'To_Stay_Marker',
                 itemsubcategoryName: 'Hotels',
                 itememail: "boracay@shangri-la.com",
                 itemwebsite:
@@ -132,7 +135,8 @@ class Utils {
                 itemdescription:
                     "Nestled in a sheltered bay on Boracay’s pristine northern coastline, Shangri-La’s Boracay Resort & Spa, Philippines exudes tropical island luxury. It has 219 rooms and villas showcasing contemporary style, enriched with Filipino touches. The resort’s layout offers spectacular vistas of lush green scenery and azure ocean views from every vantage point.",
                 itemcontactnumber: "(63 36) 288 4988",
-                itemcategoryName: 'To_Stay',
+                 itemcategoryName: 'To Stay',
+                itemmarkerName: 'To_Stay_Marker',
                 itemsubcategoryName: 'Hotels',
                 itememail: "boracay@shangri-la.com",
                 itemwebsite:
@@ -156,7 +160,8 @@ class Utils {
                 itemdescription:
                     "Nestled in a sheltered bay on Boracay’s pristine northern coastline, Shangri-La’s Boracay Resort & Spa, Philippines exudes tropical island luxury. It has 219 rooms and villas showcasing contemporary style, enriched with Filipino touches. The resort’s layout offers spectacular vistas of lush green scenery and azure ocean views from every vantage point.",
                 itemcontactnumber: "(63 36) 288 4988",
-                itemcategoryName: 'To_Stay',
+                 itemcategoryName: 'To Stay',
+                itemmarkerName: 'To_Stay_Marker',
                 itemsubcategoryName: 'Hotels',
                 itememail: "boracay@shangri-la.com",
                 itemwebsite:
@@ -180,7 +185,8 @@ class Utils {
                 itemdescription:
                     "Nestled in a sheltered bay on Boracay’s pristine northern coastline, Shangri-La’s Boracay Resort & Spa, Philippines exudes tropical island luxury. It has 219 rooms and villas showcasing contemporary style, enriched with Filipino touches. The resort’s layout offers spectacular vistas of lush green scenery and azure ocean views from every vantage point.",
                 itemcontactnumber: "(63 36) 288 4988",
-                itemcategoryName: 'To_Stay',
+                 itemcategoryName: 'To Stay',
+                itemmarkerName: 'To_Stay_Marker',
                 itemsubcategoryName: 'Hotels',
                 itememail: "boracay@shangri-la.com",
                 itemwebsite:

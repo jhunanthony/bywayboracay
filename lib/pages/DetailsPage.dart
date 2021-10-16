@@ -30,11 +30,11 @@ class _DetailsPageState extends State<DetailsPage> {
   LatLng destinationLocation;
 
   void setSourceAndDestinationMarkerIcons(BuildContext context) async {
-    String parentCategory = widget.items.categoryName;
+    String parentCategory = widget.items.markerName;
 
     destinationIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.0),
-        'assets/images/' + parentCategory + '_Marker.png');
+        'assets/images/' + parentCategory + '.png');
   }
 
   @override
@@ -347,7 +347,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             ),
                           ),
                           Text(
-                            'Save to Itinerary',
+                            'Save to \nItinerary',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 12,
@@ -449,7 +449,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 child: Padding(
                   padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(10),
                     child: Container(
                       height: 200,
                       width: MediaQuery.of(context).size.width,
@@ -501,10 +501,11 @@ class _DetailsPageState extends State<DetailsPage> {
                         ),
                         onTap: () {
                           Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MapPage(
-                                          items: widget.items)));}),
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      MapPage(items: widget.items)));
+                        }),
                   ],
                 ),
               ),
@@ -540,19 +541,39 @@ class _DetailsPageState extends State<DetailsPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(' Call  ',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold)),
+                        GestureDetector(
+                          child: Text(' Call  ',
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold)),
+                          onTap: () async {
+                            String sms = "tel:" + widget.items.contactnumber;
+                            if (await canLaunch(sms)) {
+                              await launch(sms);
+                            } else {
+                              throw 'Could not launch $sms';
+                            }
+                          },
+                        ),
                         SizedBox(
                           height: 10,
                         ),
-                        Text(' Facebook  ',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold)),
+                        GestureDetector(
+                            child: Text(' Facebook  ',
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold)),
+                            onTap: () async {
+                              String socialmedia = "fb://facewebmodal/f?href=" +
+                                  widget.items.socialmedia;
+                              if (await canLaunch(socialmedia)) {
+                                await launch(socialmedia);
+                              } else {
+                                throw 'Could not launch $socialmedia';
+                              }
+                            }),
                       ],
                     ),
                     //column for buttons for call and fb
@@ -599,19 +620,39 @@ class _DetailsPageState extends State<DetailsPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(' Email  ',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold)),
+                        GestureDetector(
+                            child: Text(' Email  ',
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold)),
+                            onTap: () async {
+                              String mailto = "mailto:" +
+                                  widget.items.email +
+                                  "?subject=Inquiry&body=Greetings!";
+                              if (await canLaunch(mailto)) {
+                                await launch(mailto);
+                              } else {
+                                throw 'Could not launch $mailto';
+                              }
+                            }),
                         SizedBox(
                           height: 10,
                         ),
-                        Text(' Website  ',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold)),
+                        GestureDetector(
+                            child: Text(' Website  ',
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold)),
+                            onTap: () async {
+                              String url = widget.items.website;
+                              if (await canLaunch(url)) {
+                                await launch(url);
+                              } else {
+                                throw 'Could not launch $url';
+                              }
+                            }),
                       ],
                     ),
                     //column for button email and web
