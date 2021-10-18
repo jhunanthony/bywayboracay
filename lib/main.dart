@@ -3,7 +3,9 @@ import 'package:bywayborcay/pages/ItemsPage.dart';
 import 'package:bywayborcay/pages/LogInPage.dart';
 import 'package:bywayborcay/pages/MapPage.dart';
 import 'package:bywayborcay/pages/OnBoardingPage.dart';
+import 'package:bywayborcay/services/loginservice.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'helper/Utils.dart';
 import 'pages/ExplorePage.dart';
@@ -18,7 +20,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    //add provider at the very root
+    return Provider(
+      create: (_) => LoginService(),
+      child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
@@ -31,6 +36,9 @@ class MyApp extends StatelessWidget {
         //home: OnBoardingPage()
         home: SplashPage(duration: 3, goToPage: LogInPage()),
        
-        );
+        )
+    );
+    
+    
   }
 }

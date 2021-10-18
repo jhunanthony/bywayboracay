@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../ProfilePicHeader.dart';
+
 // ignore: must_be_immutable
 class TopNavBar extends StatefulWidget implements PreferredSizeWidget {
   Color colorbackground;
@@ -46,7 +48,7 @@ class TopNavBarState extends State<TopNavBar> {
       elevation: 0,
       iconTheme: IconThemeData(color: widget.theme),
       actions: [
-        Visibility(
+       /* Visibility(
           visible: widget.showTopProfile,
           child: Container(
               margin: EdgeInsets.only(right: 20),
@@ -57,23 +59,11 @@ class TopNavBarState extends State<TopNavBar> {
                   height: 20,
                   width: 20,
                   fit: BoxFit.contain,
-                  color: Colors.blue)*/
+                  color: Colors.blue)*/,,*/
 
-              ),
-        ),
-
-        /*Visibility(
-            visible: widget.showTopProfile,
-            child: Container(
-                margin: EdgeInsets.only(right: 13),
-                padding: EdgeInsets.all(8),
-                child: ClipOval(
-                    child: Image.asset('assets/icons/Profile.svg',
-                        color: Colors.black,
-                        height: 40,
-                        width: 40,
-                        fit: BoxFit.cover))))*/
+        ProfilePicHeader(showProfilePic: widget.showTopProfile)
       ],
     );
   }
 }
+

@@ -18,7 +18,6 @@ const double CAMERA_TILT = 0;
 const double CAMERA_BEARING = 30;
 const double PIN_VISIBLE_POSITION = 20;
 const double PIN_NOTVISIBLE_POSITION = -300;
-const String googleAPI = 'AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE';
 
 // ignore: must_be_immutable
 class MapPage extends StatefulWidget {
@@ -40,6 +39,8 @@ class _MapPageState extends State<MapPage> {
   BitmapDescriptor destinationIcon;
   //set to hold list of markers
   Set<Marker> _markers = Set<Marker>();
+
+  String googleAPI = 'AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE';
 
   //control the state of bottom info position
   double pinBottomInfoPosition = PIN_VISIBLE_POSITION;
@@ -75,7 +76,6 @@ class _MapPageState extends State<MapPage> {
     // subscribe to changes in the user's location
     // by "listening" to the location's onLocationChanged event
     locationref.onLocationChanged.listen((LocationData cLoc) {
-      
       // cLoc contains the lat and long of the
       // current user's position in real time,
       // so we're holding on to it
@@ -154,18 +154,17 @@ class _MapPageState extends State<MapPage> {
             compassEnabled: true,
             zoomControlsEnabled: false,
             tiltGesturesEnabled: false,
-            mapToolbarEnabled: false,
+            mapToolbarEnabled: true,
             myLocationButtonEnabled: false,
             polylines: _polylines,
             markers: _markers,
-            
+
             mapType: MapType.normal,
             initialCameraPosition: initialCameraPosition,
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
               setPolylines();
               showPinsOnMap();
-             
             },
             onTap: (LatLng loc) {
               setState(() {
@@ -207,7 +206,8 @@ class _MapPageState extends State<MapPage> {
           child: GestureDetector(
             child: Row(children: [
               Icon(Icons.directions, size: 20, color: Colors.blue[200]),
-              Text('Open on Google Map App', style: TextStyle(color:Colors.grey[600])),
+              Text('Open on Google Map App',
+                  style: TextStyle(color: Colors.grey[600])),
             ]),
             onTap: () async {
               String googleUrl =
@@ -257,7 +257,7 @@ class _MapPageState extends State<MapPage> {
   }
 
   //create two marker reference and surround inside set state to trigger rebuild
-  void showPinsOnMap() async {
+  void showPinsOnMap() {
     // get a LatLng for the source location
     // from the LocationData currentLocation object
 
@@ -315,15 +315,11 @@ class _MapPageState extends State<MapPage> {
       // and add it again at the updated location
       _markers.removeWhere((m) => m.markerId.value == 'sourcePin');
       _markers.add(Marker(
-          markerId: MarkerId('sourcePin'),
-          position: currentPosition,
-          icon: sourceIcon,
-          infoWindow: InfoWindow(title: 'User'),
-          onTap: () {
-            setState(() {
-              this.userInfoSelected = true;
-            });
-          }));
+        markerId: MarkerId('sourcePin'),
+        position: currentPosition,
+        icon: sourceIcon,
+        infoWindow: InfoWindow(title: 'User'),
+      ));
     });
   }
 }

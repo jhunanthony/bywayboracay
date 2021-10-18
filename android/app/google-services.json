@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "816417034831",
+    "project_id": "bywayboracay-329114",
+    "storage_bucket": "bywayboracay-329114.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:816417034831:android:630508ef0cc9a00a66903a",
+        "android_client_info": {
+          "package_name": "com.example.bywayborcay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "816417034831-49qeiv0vllp92f277im2ttvfnghgpa9o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bywayborcay",
+            "certificate_hash": "c845c1c3bd5113f695ffa83424e2f1a4f877a7e2"
+          }
+        },
+        {
+          "client_id": "816417034831-h8sjv678v5m9v29sqgbhin6at6ttsptg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAA9-lS0JqAphZTt--0DlSM3s1o3IvMiB0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "816417034831-h8sjv678v5m9v29sqgbhin6at6ttsptg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

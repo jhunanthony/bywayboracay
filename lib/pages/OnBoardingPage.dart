@@ -38,6 +38,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           appBar: TopNavBar(
             colorbackground: Colors.transparent,
             showTopProfile: false,
+            showTopLogo: false,
           ),
           body: Container(
               child: Padding(

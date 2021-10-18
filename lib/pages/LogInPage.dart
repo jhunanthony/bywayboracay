@@ -1,9 +1,17 @@
+import 'package:bywayborcay/services/loginservice.dart';
 import 'package:flutter/material.dart';
-import 'ExplorePage.dart';
+import 'package:provider/provider.dart';
+
 import 'OnBoardingPage.dart';
+
 class LogInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    //fetch login service via provider
+    LoginService loginService =
+        Provider.of<LoginService>(context, listen: false);
+
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,
@@ -16,7 +24,7 @@ class LogInPage extends StatelessWidget {
               //60%* of screen
               height: MediaQuery.of(context).size.height * 0.60,
               width: MediaQuery.of(context).size.width,
-              /**decoration: BoxDecoration(
+              /*decoration: BoxDecoration(
                               image: DecorationImage(
                             image: AssetImage("assets/images/Test_Image_1.png"),
                             fit: BoxFit.cover,
@@ -29,17 +37,16 @@ class LogInPage extends StatelessWidget {
                       //represents a point that is horizontally centered with respect to the rectangle and vertically half way between the top edge and the center.
                       alignment: Alignment(0.0, -0.3),
                       child: Container(
-                            height: 200,
-                            width: 200,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                                image: DecorationImage(
+                        height: 200,
+                        width: 200,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            image: DecorationImage(
                               image:
                                   AssetImage("assets/images/Test_Image_2.png"),
                               fit: BoxFit.cover,
                             )),
-                          )),
+                      )),
                   //use this as spacer
                   Align(
                     alignment: Alignment(0.0, 0.6),
@@ -83,7 +90,12 @@ class LogInPage extends StatelessWidget {
                         fontWeight: FontWeight.w300),
                   ),
                 ),
-                onPressed: () {Navigator.push(context, MaterialPageRoute(builder:(context)=>OnBoardingPage()));},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => OnBoardingPage()));
+                },
               ),
               SizedBox(height: 25),
               ElevatedButton(
@@ -109,7 +121,17 @@ class LogInPage extends StatelessWidget {
                       color: Colors.blue,
                     ),
                   ),
-                  onPressed: () {}),
+                  //capture the success flag with async and await
+                  onPressed: () async {
+                    bool success = await loginService.signInWithGoogle();
+
+                    if (success) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OnBoardingPage()));
+                    }
+                  }),
               SizedBox(height: 25),
               Text(
                 '- Login with Google - ',
