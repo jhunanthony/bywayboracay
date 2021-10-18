@@ -2,26 +2,29 @@ import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
 //create the transit/tariff features here
 class MapBottomInfo extends StatefulWidget {
   Items items;
-  MapBottomInfo({this.items});
+  
+
+  MapBottomInfo(
+      {this.items, });
   @override
   MapBottomInfoState createState() => MapBottomInfoState();
 }
 
 class MapBottomInfoState extends State<MapBottomInfo> {
   String farevalue = 'Tourist';
-  var fareitems = [
+  /*var fareitems = [
     'Tourist',
     'Local',
     'Under Age',
     'Student',
     'Senior',
-  ];
+  ];*/
 
   @override
   Widget build(BuildContext context) {
@@ -54,10 +57,10 @@ class MapBottomInfoState extends State<MapBottomInfo> {
                         bottom: -10,
                         right: -10,
                         child: CategoryIcon(
-                            color: widget.items.color,
-                            iconName: widget.items.iconName,
-                            size: 30,
-                            )),
+                          color: widget.items.color,
+                          iconName: widget.items.iconName,
+                          size: 30,
+                        )),
                   ],
                 ),
                 SizedBox(width: 20),
@@ -76,19 +79,40 @@ class MapBottomInfoState extends State<MapBottomInfo> {
                         Text(widget.items.address),
                       ]),
                 ),
-                Image.asset(
-                      'assets/images/' +
-                          widget.items.markerName +
-                          '.png',
-                      fit: BoxFit.contain,
-                      width: 50,
-                      height: 50),
+                 Column(
+                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                   children: [ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.blue[200], //background
+                        onPrimary: Colors.white,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 15), //foreground
+                        shape: CircleBorder()),
+                    child: Center(
+                      child: Icon(
+                        CupertinoIcons.car_fill,
+                        size: 25,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: () {}),
+                    SizedBox(height: 5),
+                     Text(
+                          'Transit Fare',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 10,
+                          ),
+                        ),
+              ]),
                 
+
                 /*Icon(Icons.location_pin,
                     color: AppColors.accomodations, size: 50)*/
               ])),
-          SizedBox(height: 20),
-          Container(
+          SizedBox(height: 10),
+          /*Container(
               child: Column(children: [
             Row(children: [
               SizedBox(width: 10),
@@ -96,12 +120,7 @@ class MapBottomInfoState extends State<MapBottomInfo> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                    Text(
-                      'Distance: 1km',
-                    ),
-                    Text(
-                      'Durantion: 5 min',
-                    ),
+                    
                     Row(children: [
                       //add drop down to personalize fare
                       DropdownButton(
@@ -138,7 +157,7 @@ class MapBottomInfoState extends State<MapBottomInfo> {
                   ),
                   onPressed: () {}),
             ])
-          ]))
+          ]))*/
         ]));
   }
 }

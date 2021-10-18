@@ -33,7 +33,7 @@ class _DetailsPageState extends State<DetailsPage> {
     String parentCategory = widget.items.markerName;
 
     destinationIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.0),
+        ImageConfiguration(devicePixelRatio: 0.5),
         'assets/images/' + parentCategory + '.png');
   }
 
@@ -268,66 +268,72 @@ class _DetailsPageState extends State<DetailsPage> {
                             SizedBox(
                               height: 15,
                             ),
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  'TripAdvisor ',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                                //for rating
-                                RatingBarIndicator(
-                                  rating: widget.items.rating1,
-                                  itemBuilder: (context, index) => Icon(
-                                    Icons.circle,
-                                    color: Colors.green[300],
+                            Visibility(
+                              visible:  widget.items.rating1  == null ? false : true,
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                    'TripAdvisor ',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.normal),
                                   ),
-                                  itemCount: 5,
-                                  itemSize: 12.0,
-                                  direction: Axis.horizontal,
-                                ),
-                                Text(
-                                  " " + widget.items.rating1.toString(),
-                                  style: TextStyle(
-                                      fontSize: 12,
+                                  //for rating
+                                  RatingBarIndicator(
+                                    rating: widget.items.rating1,
+                                    itemBuilder: (context, index) => Icon(
+                                      Icons.circle,
                                       color: Colors.green[300],
-                                      fontWeight: FontWeight.normal),
-                                ),
-                              ],
+                                    ),
+                                    itemCount: 5,
+                                    itemSize: 12.0,
+                                    direction: Axis.horizontal,
+                                  ),
+                                  Text(
+                                    " " + widget.items.rating1.toString(),
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.green[300],
+                                        fontWeight: FontWeight.normal),
+                                  ),
+                                ],
+                              ),
                             ),
                             SizedBox(
                               height: 15,
                             ),
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  'Expedia ',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                                //for rating
-                                RatingBarIndicator(
-                                  rating: widget.items.rating2.toDouble(),
-                                  itemBuilder: (context, index) => Icon(
-                                    Icons.star,
-                                    color: Colors.yellow[800],
+                            Visibility(
+                               visible:  widget.items.rating1  == null ? false : true,
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                    'Expedia ',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.normal),
                                   ),
-                                  itemCount: 5,
-                                  itemSize: 12.0,
-                                  direction: Axis.horizontal,
-                                ),
-                                Text(
-                                  " " + widget.items.rating2.toString(),
-                                  style: TextStyle(
-                                      fontSize: 12,
+                                  //for rating
+                                  RatingBarIndicator(
+                                    rating: widget.items.rating2.toDouble(),
+                                    itemBuilder: (context, index) => Icon(
+                                      Icons.star,
                                       color: Colors.yellow[800],
-                                      fontWeight: FontWeight.normal),
-                                ),
-                              ],
+                                    ),
+                                    itemCount: 5,
+                                    itemSize: 12.0,
+                                    direction: Axis.horizontal,
+                                  ),
+                                  Text(
+                                    " " + widget.items.rating2.toString(),
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.yellow[800],
+                                        fontWeight: FontWeight.normal),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),

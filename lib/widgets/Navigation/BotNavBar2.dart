@@ -12,76 +12,69 @@ class BotNavBar2 extends StatefulWidget {
 }
 
 class _BotNavBar2State extends State<BotNavBar2> {
-  int _currentIndex = 0;
-  PageController _pageController;
+  int currentIndex = 1;
+ 
+ final screens =[
+   ItineraryPage(),
+   ExplorePage(),
+   BagPage(),
+ ];
 
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController();
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
+  
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(50),
-      child: BottomNavyBar(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          backgroundColor: Colors.yellow[50],
-          containerHeight: 80,
-          itemCornerRadius: 50,
-          selectedIndex: _currentIndex,
-           onItemSelected: (index) {
-          setState(() => _currentIndex = index);
-          _pageController.jumpToPage(index);
-        },
-          items: <BottomNavyBarItem>[
-            BottomNavyBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/' + AppIcons.ItineraryIcon + '.svg',
-                color: Colors.blue,
+    return Scaffold(
+      body: IndexedStack(
+        index: currentIndex,
+        children: screens,
+      ),
+      bottomNavigationBar: ClipRRect(
+        borderRadius: BorderRadius.circular(50),
+        child: BottomNavyBar(
+          iconSize: 30,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            backgroundColor: Colors.yellow[50],
+            containerHeight: 80,
+            itemCornerRadius: 50,
+            selectedIndex: currentIndex,
+             onItemSelected: (index) {
+            setState(() => currentIndex = index);
+            
+          },
+            items: <BottomNavyBarItem>[
+              BottomNavyBarItem(
+                icon: SvgPicture.asset(
+                  'assets/icons/' + AppIcons.ItineraryIcon + '.svg',
+                  color: Colors.blue,
+                ),
+                title: Text('Itinerary'),
+                textAlign: TextAlign.center,
+                activeColor: Colors.pink,
               ),
-              title: Text('Itinerary'),
-              textAlign: TextAlign.center,
-              activeColor: Colors.pink,
-            ),
-            BottomNavyBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/' + AppIcons.ExploreIcon + '.svg',
-                color: Colors.blue,
+              BottomNavyBarItem(
+                icon: SvgPicture.asset(
+                  'assets/icons/' + AppIcons.ExploreIcon + '.svg',
+                  color: Colors.blue,
+                ),
+                title: Text('Explore'),
+                textAlign: TextAlign.center,
+                activeColor: Colors.blue,
               ),
-              title: Text('Explore'),
-              textAlign: TextAlign.center,
-              activeColor: Colors.blue,
-            ),
-            BottomNavyBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/' + AppIcons.BagIcon + '.svg',
-                color: Colors.blue,
+              BottomNavyBarItem(
+                icon: SvgPicture.asset(
+                  'assets/icons/' + AppIcons.BagIcon + '.svg',
+                  color: Colors.blue,
+                  
+                ),
+                title: Text('Bag'),
+                textAlign: TextAlign.center,
+                activeColor: Colors.green,
               ),
-              title: Text('Bag'),
-              textAlign: TextAlign.center,
-              activeColor: Colors.green,
-            ),
-          ]),
+            ]),
+      ),
     );
   }
 
-  Widget buildPages() {
-    switch (_currentIndex) {
-      case 2:
-        return BagPage();
-      case 0:
-        return ItineraryPage();
-      case 1:
-      default:
-        return ExplorePage();
-    }
-  }
-}*/
+}
+*/

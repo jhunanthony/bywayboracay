@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'helper/Utils.dart';
 import 'pages/ExplorePage.dart';
 import 'pages/SplashPage.dart';
+import 'widgets/Navigation/BotNavBar2.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
       )*/
         //home: OnBoardingPage()
         home: SplashPage(duration: 3, goToPage: LogInPage()),
+       
         );
   }
 }

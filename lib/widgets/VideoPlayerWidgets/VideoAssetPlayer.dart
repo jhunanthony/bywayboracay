@@ -19,6 +19,9 @@ class _VideoAssetPlayerState extends State<VideoAssetPlayer> {
     controller = VideoPlayerController.asset(asset)
       ..addListener(() => setState(() {}))
       ..setLooping(false)
+  
+    
+      
       ..initialize().then((_) => controller.play());
   }
 

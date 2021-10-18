@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/widgets/MapWidgets/MapBottomInfo.dart';
 import 'package:bywayborcay/widgets/MapWidgets/MapUpperInfo.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 //construct a widget that passes user location as source location
 //const LatLng DEST_LOCATION = LatLng(11.98189918417696, 121.9151854334716);
@@ -18,6 +18,7 @@ const double CAMERA_TILT = 0;
 const double CAMERA_BEARING = 30;
 const double PIN_VISIBLE_POSITION = 20;
 const double PIN_NOTVISIBLE_POSITION = -300;
+const String googleAPI = 'AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE';
 
 // ignore: must_be_immutable
 class MapPage extends StatefulWidget {
@@ -45,23 +46,15 @@ class _MapPageState extends State<MapPage> {
   //control the state color of user info
   bool userInfoSelected = false;
 
-
-  LatLng sourceLocation;
-  LatLng destinationLocation;
-
-  
+  //LatLng destinationLocation;
 
   // the user's initial location and current location
   // as it moves
   LocationData currentLocationref;
-  // a reference to the destination location
   LocationData destinationLocationref;
+
   // wrapper around the location API
   Location locationref;
-
-  
-
-
 
   //this will hold each polylines that if connected together will form the route
   //store each coordinates since polylines consist of multiple coordinates
@@ -82,6 +75,7 @@ class _MapPageState extends State<MapPage> {
     // subscribe to changes in the user's location
     // by "listening" to the location's onLocationChanged event
     locationref.onLocationChanged.listen((LocationData cLoc) {
+      
       // cLoc contains the lat and long of the
       // current user's position in real time,
       // so we're holding on to it
@@ -101,11 +95,11 @@ class _MapPageState extends State<MapPage> {
     String parentCategory = widget.items.markerName;
 
     sourceIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.0),
+        ImageConfiguration(devicePixelRatio: 0.5),
         'assets/images/User_Location_Marker.png');
 
     destinationIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.0),
+        ImageConfiguration(devicePixelRatio: 0.5),
         'assets/images/' + parentCategory + '.png');
   }
 
@@ -122,8 +116,12 @@ class _MapPageState extends State<MapPage> {
         LatLng(SOURCE_LOCATION.latitude, SOURCE_LOCATION.longitude);*/
     //display latlong value here
 
-    destinationLocation =
-        LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
+    /*destinationLocation =
+        LatLng(destinationlatlong.latitude, destinationlatlong.longitude);*/
+    destinationLocationref = LocationData.fromMap({
+      "latitude": destinationlatlong.latitude,
+      "longitude": destinationlatlong.longitude
+    });
   }
 
   @override
@@ -147,106 +145,97 @@ class _MapPageState extends State<MapPage> {
           bearing: CAMERA_BEARING);
     }
 
-    
-
-    return Scaffold(
-        body: Stack(children: [
-      Positioned.fill(
-        child: GoogleMap(
-          myLocationEnabled: true,
-          compassEnabled: false,
-          zoomControlsEnabled: false,
-          tiltGesturesEnabled: false,
-
-          mapToolbarEnabled: false,
-          myLocationButtonEnabled: false,
-          polylines: _polylines,
-          markers: _markers,
-          mapType: MapType.normal,
-          initialCameraPosition: initialCameraPosition,
-          onTap: (LatLng loc) {
-            setState(() {
-              this.pinBottomInfoPosition = PIN_NOTVISIBLE_POSITION;
-              this.userInfoSelected = false;
-            });
-          },
-          //tapping will hide the bottom info //grab custom pins //grab the polylines
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-
-            showPinsOnMap();
-            setPolylines();
-          },
-        ),
-      ),
-      Positioned(
-          top: 90,
-          left: 0,
-          right: 0,
-          child: MapUserInformation(
-            isSelected: this.userInfoSelected,
-
+    return SafeArea(
+      child: Scaffold(
+          body: Stack(children: [
+        Positioned.fill(
+          child: GoogleMap(
+            myLocationEnabled: true,
+            compassEnabled: true,
+            zoomControlsEnabled: false,
+            tiltGesturesEnabled: false,
+            mapToolbarEnabled: false,
+            myLocationButtonEnabled: false,
+            polylines: _polylines,
+            markers: _markers,
             
-            currentLocationLatlong: this.currentLocationref,
-          )),
-      AnimatedPositioned(
-          //animate the bottom Info
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
-          left: 0,
-          right: 0,
-          bottom: this.pinBottomInfoPosition,
-          child: MapBottomInfo(items: widget.items)),
-      Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: TopNavBar(
-            colorbackground: Colors.transparent,
-            showTopProfile: false,
-          ))
-    ]));
-  }
+            mapType: MapType.normal,
+            initialCameraPosition: initialCameraPosition,
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+              setPolylines();
+              showPinsOnMap();
+             
+            },
+            onTap: (LatLng loc) {
+              setState(() {
+                this.pinBottomInfoPosition = PIN_NOTVISIBLE_POSITION;
+                this.userInfoSelected = false;
+              });
+            },
+            //tapping will hide the bottom info //grab custom pins //grab the polylines
+          ),
+        ),
+        Positioned(
+            top: 80,
+            left: 0,
+            right: 0,
+            child: MapUserInformation(
+              isSelected: this.userInfoSelected,
+            )),
+        AnimatedPositioned(
+            //animate the bottom Info
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+            left: 0,
+            right: 0,
+            bottom: this.pinBottomInfoPosition,
+            child: MapBottomInfo(
+              items: widget.items,
+            )),
+        Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: TopNavBar(
+              colorbackground: Colors.transparent,
+              showTopProfile: false,
+            )),
+        Positioned(
+          bottom: 10,
+          right: 10,
+          child: GestureDetector(
+            child: Row(children: [
+              Icon(Icons.directions, size: 20, color: Colors.blue[200]),
+              Text('Open on Google Map App', style: TextStyle(color:Colors.grey[600])),
+            ]),
+            onTap: () async {
+              String googleUrl =
+                  'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocationref.latitude},${destinationLocationref.longitude}&travelmode=walking&dir_action=navigate';
 
-  //create two marker reference and surround inside set state to trigger rebuild
-  void showPinsOnMap() {
+              if (await canLaunch(googleUrl)) {
+                await launch(googleUrl);
+              } else {
+                throw 'Could not launch $googleUrl';
+              }
+            },
 
-     // get a LatLng for the source location
-   // from the LocationData currentLocation object
-   var pinPosition = LatLng(currentLocationref.latitude,
-   currentLocationref.longitude);
-
-    setState(() {
-      _markers.add(Marker(
-          markerId: MarkerId('sourcePin'),
-          position: pinPosition,
-          icon: sourceIcon,
-          onTap: () {
-            setState(() {
-              this.userInfoSelected = true;
-            });
-          }));
-
-      _markers.add(Marker(
-          markerId: MarkerId('destinationPin'),
-          position: destinationLocation,
-          icon: destinationIcon,
-          onTap: () {
-            setState(() {
-              this.pinBottomInfoPosition = PIN_VISIBLE_POSITION;
-            });
-          }));
-    });
+            //return info to redirect to google direction
+          ),
+        )
+      ])),
+    );
   }
 
   //this method will perform network call from the API
   void setPolylines() async {
-
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      "AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE",
+      googleAPI,
       PointLatLng(currentLocationref.latitude, currentLocationref.longitude),
-      PointLatLng(destinationLocation.latitude, destinationLocation.longitude),
+      PointLatLng(
+          destinationLocationref.latitude, destinationLocationref.longitude),
       travelMode: TravelMode.walking,
+      optimizeWaypoints: true,
       //wayPoints: [PolylineWayPoint(location: "Philippines")]
     );
 
@@ -267,6 +256,41 @@ class _MapPageState extends State<MapPage> {
     }
   }
 
+  //create two marker reference and surround inside set state to trigger rebuild
+  void showPinsOnMap() async {
+    // get a LatLng for the source location
+    // from the LocationData currentLocation object
+
+    var currentPosition =
+        LatLng(currentLocationref.latitude, currentLocationref.longitude);
+    var distinationPosition = LatLng(
+        destinationLocationref.latitude, destinationLocationref.longitude);
+
+    setState(() {
+      _markers.add(Marker(
+          markerId: MarkerId('sourcePin'),
+          position: currentPosition,
+          icon: sourceIcon,
+          infoWindow: InfoWindow(title: 'User'),
+          onTap: () {
+            setState(() {
+              this.userInfoSelected = true;
+            });
+          }));
+
+      _markers.add(Marker(
+          markerId: MarkerId('destinationPin'),
+          position: distinationPosition,
+          icon: destinationIcon,
+          infoWindow: InfoWindow(title: this.widget.items.name),
+          onTap: () {
+            setState(() {
+              this.pinBottomInfoPosition = PIN_VISIBLE_POSITION;
+            });
+          }));
+    });
+  }
+
   void updatePinOnMap() async {
     // create a new CameraPosition instance
     // every time the location changes, so the camera
@@ -284,7 +308,7 @@ class _MapPageState extends State<MapPage> {
     // that a widget update is due
     setState(() {
       // updated position
-      var pinPosition =
+      var currentPosition =
           LatLng(currentLocationref.latitude, currentLocationref.longitude);
 
       // the trick is to remove the marker (by id)
@@ -292,8 +316,9 @@ class _MapPageState extends State<MapPage> {
       _markers.removeWhere((m) => m.markerId.value == 'sourcePin');
       _markers.add(Marker(
           markerId: MarkerId('sourcePin'),
-          position: pinPosition,
+          position: currentPosition,
           icon: sourceIcon,
+          infoWindow: InfoWindow(title: 'User'),
           onTap: () {
             setState(() {
               this.userInfoSelected = true;
