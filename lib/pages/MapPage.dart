@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bywayborcay/models/ItemsModel.dart';
+import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/widgets/MapWidgets/MapBottomInfo.dart';
 import 'package:bywayborcay/widgets/MapWidgets/MapUpperInfo.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 //construct a widget that passes user location as source location
@@ -68,6 +70,9 @@ class _MapPageState extends State<MapPage> {
 
   @override
   void initState() {
+    CategorySelectionService catSelection =
+        Provider.of<CategorySelectionService>(context, listen: false);
+    widget.items = catSelection.items;
     super.initState();
 
     // create an instance of Location
@@ -91,7 +96,12 @@ class _MapPageState extends State<MapPage> {
   }
 
   // location custom marker
+
   void setSourceAndDestinationMarkerIcons(BuildContext context) async {
+    CategorySelectionService catSelection =
+        Provider.of<CategorySelectionService>(context, listen: false);
+    widget.items = catSelection.items;
+
     String parentCategory = widget.items.markerName;
 
     sourceIcon = await BitmapDescriptor.fromAssetImage(
@@ -105,6 +115,9 @@ class _MapPageState extends State<MapPage> {
 
   //create a method to instantiate from const to hard coded coordinates
   void setInitialLocation() async {
+    CategorySelectionService catSelection =
+        Provider.of<CategorySelectionService>(context, listen: false);
+    widget.items = catSelection.items;
     //add latlong value here
 
     LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
@@ -126,20 +139,25 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
+    CategorySelectionService catSelection =
+        Provider.of<CategorySelectionService>(context, listen: false);
+    widget.items = catSelection.items;
+
     // set up the marker icons & invoke the method
     this.setSourceAndDestinationMarkerIcons(context);
+
+    
 
     //create a camera position instance to feed to the map
     CameraPosition initialCameraPosition = CameraPosition(
         zoom: CAMERA_ZOOM,
         tilt: CAMERA_TILT,
         bearing: CAMERA_BEARING,
-        target: DEFAULT_LOCATION);
+        target: LatLng(widget.items.lat, widget.items.long));
 
     if (currentLocationref != null) {
       initialCameraPosition = CameraPosition(
-          target:
-              LatLng(currentLocationref.latitude, currentLocationref.longitude),
+          target: LatLng(currentLocationref.latitude, currentLocationref.longitude),
           zoom: CAMERA_ZOOM,
           tilt: CAMERA_TILT,
           bearing: CAMERA_BEARING);
@@ -151,10 +169,10 @@ class _MapPageState extends State<MapPage> {
         Positioned.fill(
           child: GoogleMap(
             myLocationEnabled: true,
-            compassEnabled: true,
+            compassEnabled: false,
             zoomControlsEnabled: false,
             tiltGesturesEnabled: false,
-            mapToolbarEnabled: true,
+            mapToolbarEnabled: false,
             myLocationButtonEnabled: false,
             polylines: _polylines,
             markers: _markers,
@@ -189,9 +207,7 @@ class _MapPageState extends State<MapPage> {
             left: 0,
             right: 0,
             bottom: this.pinBottomInfoPosition,
-            child: MapBottomInfo(
-              items: widget.items,
-            )),
+            child: MapBottomInfo()),
         Positioned(
             top: 0,
             left: 0,
@@ -206,7 +222,7 @@ class _MapPageState extends State<MapPage> {
           child: GestureDetector(
             child: Row(children: [
               Icon(Icons.directions, size: 20, color: Colors.blue[200]),
-              Text('Open on Google Map App',
+              Text('Open on Google Map',
                   style: TextStyle(color: Colors.grey[600])),
             ]),
             onTap: () async {
@@ -230,7 +246,7 @@ class _MapPageState extends State<MapPage> {
   //this method will perform network call from the API
   void setPolylines() async {
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      googleAPI,
+      'AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE',
       PointLatLng(currentLocationref.latitude, currentLocationref.longitude),
       PointLatLng(
           destinationLocationref.latitude, destinationLocationref.longitude),

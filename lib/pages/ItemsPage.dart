@@ -1,7 +1,9 @@
 import 'package:bywayborcay/models/CategoryModel.dart';
+import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'DetailsPage.dart';
 
@@ -17,6 +19,11 @@ class ItemsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    CategorySelectionService catSelection =
+        Provider.of<CategorySelectionService>(context, listen: false);
+    selectedCategory = catSelection.selectedCategory;
+
     return SafeArea(
       child: Scaffold(
           backgroundColor: Colors.white,
@@ -77,13 +84,9 @@ class ItemsPage extends StatelessWidget {
                           this.selectedCategory.items.length, (index) {
                         return GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DetailsPage(
-                                        items: this
-                                            .selectedCategory
-                                            .items[index])));
+                            catSelection.items =
+                                this.selectedCategory.items[index];
+                             Navigator.of(context).pushNamed('/detailspage');    
                           },
                           child: Column(children: [
                             Container(
@@ -105,8 +108,7 @@ class ItemsPage extends StatelessWidget {
                                 ),
                               ),
                               //stack all descriptions values etc. here
-                              child: Stack(
-                                children: [
+                              child: Stack(children: [
                                 Positioned.fill(
                                   child: Container(
                                       decoration: BoxDecoration(

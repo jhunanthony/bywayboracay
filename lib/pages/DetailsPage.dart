@@ -2,12 +2,15 @@ import 'dart:async';
 
 import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/pages/MapPage.dart';
+import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
-import 'package:bywayborcay/widgets/LikeButtonWidgetdart';
+import 'package:bywayborcay/widgets/LikeButtonWidget.dart';
+
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -37,24 +40,8 @@ class _DetailsPageState extends State<DetailsPage> {
         'assets/images/' + parentCategory + '.png');
   }
 
-  @override
-  void initState() {
-    super.initState();
-    //instantiate the polyline reference to call API
+ 
 
-    this.setInitialLocation();
-  }
-
-  //set up initial Locations & invoke the method
-  void setInitialLocation() {
-    //add latlong value here
-
-    LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
-    //display latlong value here
-
-    destinationLocation =
-        LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
-  }
 
   //indicator if button is liked or not
   //bool isLiked = false;
@@ -62,15 +49,27 @@ class _DetailsPageState extends State<DetailsPage> {
   final _imagepageController = PageController(viewportFraction: 0.877);
   @override
   Widget build(BuildContext context) {
+
+      CategorySelectionService catSelection =
+        Provider.of<CategorySelectionService>(context, listen: false);
+    widget.items = catSelection.items;
+
+    
     //pull marker icon
     this.setSourceAndDestinationMarkerIcons(context);
     //initialize needed values for map
+
+     LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
+    destinationLocation =LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
+    
 
     CameraPosition initialCameraPosition = CameraPosition(
         zoom: CAMERA_ZOOM,
         tilt: CAMERA_TILT,
         bearing: CAMERA_BEARING,
         target: destinationLocation);
+
+  
 
     //canvas starts here
     return SafeArea(
@@ -510,7 +509,7 @@ class _DetailsPageState extends State<DetailsPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      MapPage(items: widget.items)));
+                                      MapPage()));
                         }),
                   ],
                 ),
@@ -725,6 +724,11 @@ class _DetailsPageState extends State<DetailsPage> {
 
   //to show pins or markers on map
   void showPinsOnMap() {
+
+    LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
+    destinationLocation =LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
+
+
     setState(() {
       _markers.add(Marker(
         markerId: MarkerId('destinationPin'),

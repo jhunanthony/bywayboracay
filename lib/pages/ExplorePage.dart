@@ -1,13 +1,11 @@
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
-import 'package:bywayborcay/helper/AppIcons.dart';
+import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryCard.dart';
-import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
-import 'package:bywayborcay/widgets/Navigation/BotNavBar2.dart';
 import 'package:bywayborcay/widgets/Navigation/BottomNavBar.dart';
+import 'package:bywayborcay/widgets/Navigation/SideMenuBar.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:bywayborcay/widgets/VideoPlayerWidgets/VideoAssetPlayer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'ItemsPage.dart';
 import '../helper/Utils.dart';
 import '../models/CategoryModel.dart';
@@ -30,8 +28,13 @@ class _ExplorePageState extends State<ExplorePage> {
 
   @override
   Widget build(BuildContext context) {
+    //grab the instances from the provider
+
     return SafeArea(
         child: Scaffold(
+          drawer: Drawer(
+            elevation: 6,
+            child: SideMenuBar()),
             backgroundColor: Colors.white,
             body: Stack(children: [
               ListView(controller: _controller, children: [
@@ -186,6 +189,9 @@ class CategoryButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    CategorySelectionService catSelection =Provider.of<CategorySelectionService>(context, listen: false);
+
     return Container(
         margin: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 10),
         padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 0),
@@ -232,12 +238,8 @@ class CategoryButtons extends StatelessWidget {
                       //populate the CategoryCard
                       category: categories[index],
                       onCardClick: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ItemsPage(
-                                      selectedCategory: this.categories[index],
-                                    )));
+                        catSelection.selectedCategory = this.categories[index];
+                        Navigator.of(context).pushNamed('/itemspage');
                       });
                 },
               ),

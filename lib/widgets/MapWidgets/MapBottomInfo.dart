@@ -1,22 +1,14 @@
 import 'package:bywayborcay/models/ItemsModel.dart';
+import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 //create the transit/tariff features here
-class MapBottomInfo extends StatefulWidget {
-  Items items;
-  
 
-  MapBottomInfo(
-      {this.items, });
-  @override
-  MapBottomInfoState createState() => MapBottomInfoState();
-}
-
-class MapBottomInfoState extends State<MapBottomInfo> {
+class MapBottomInfo extends StatelessWidget {
   String farevalue = 'Tourist';
   /*var fareitems = [
     'Tourist',
@@ -26,8 +18,14 @@ class MapBottomInfoState extends State<MapBottomInfo> {
     'Senior',
   ];*/
 
+  Items items;
+
   @override
   Widget build(BuildContext context) {
+    CategorySelectionService catSelection =
+        Provider.of<CategorySelectionService>(context, listen: false);
+    this.items = catSelection.items;
+
     return Container(
         margin: EdgeInsets.all(20),
         padding: EdgeInsets.all(15),
@@ -49,7 +47,7 @@ class MapBottomInfoState extends State<MapBottomInfo> {
                   children: [
                     ClipOval(
                         child: Image.asset(
-                            'assets/images/${widget.items.imgName}.png',
+                            'assets/images/${this.items.imgName}.png',
                             width: 60,
                             height: 60,
                             fit: BoxFit.cover)),
@@ -57,8 +55,8 @@ class MapBottomInfoState extends State<MapBottomInfo> {
                         bottom: -10,
                         right: -10,
                         child: CategoryIcon(
-                          color: widget.items.color,
-                          iconName: widget.items.iconName,
+                          color: this.items.color,
+                          iconName: this.items.iconName,
                           size: 30,
                         )),
                   ],
@@ -69,44 +67,44 @@ class MapBottomInfoState extends State<MapBottomInfo> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.items.name,
+                          this.items.name,
                           style: TextStyle(
                             color: Colors.grey,
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
                           ),
                         ),
-                        Text(widget.items.address),
+                        Text(this.items.address),
                       ]),
                 ),
-                 Column(
-                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                   children: [ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.blue[200], //background
-                        onPrimary: Colors.white,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 15), //foreground
-                        shape: CircleBorder()),
-                    child: Center(
-                      child: Icon(
-                        CupertinoIcons.car_fill,
-                        size: 25,
-                        color: Colors.white,
-                      ),
-                    ),
-                    onPressed: () {}),
-                    SizedBox(height: 5),
-                     Text(
-                          'Transit Fare',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 10,
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.blue[200], //background
+                              onPrimary: Colors.white,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 15), //foreground
+                              shape: CircleBorder()),
+                          child: Center(
+                            child: Icon(
+                              CupertinoIcons.car_fill,
+                              size: 25,
+                              color: Colors.white,
+                            ),
                           ),
+                          onPressed: () {}),
+                      SizedBox(height: 5),
+                      Text(
+                        'Transit Fare',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 10,
                         ),
-              ]),
-                
+                      ),
+                    ]),
 
                 /*Icon(Icons.location_pin,
                     color: AppColors.accomodations, size: 50)*/

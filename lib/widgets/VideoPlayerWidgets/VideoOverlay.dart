@@ -63,7 +63,10 @@ class AdvancedOverlayWidget extends StatelessWidget {
               child: Container(
                 height: 30,
                 width: 40,
-                color: Colors.white38,
+                decoration: BoxDecoration(
+                  color: Colors.white38,
+                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10))
+                ),
                 alignment: Alignment.center,
                 child: IconButton(
                   icon: Icon(

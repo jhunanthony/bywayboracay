@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../ProfilePicHeader.dart';
+import 'ProfilePicHeader.dart';
 
 // ignore: must_be_immutable
 class TopNavBar extends StatefulWidget implements PreferredSizeWidget {
@@ -33,14 +33,21 @@ class TopNavBarState extends State<TopNavBar> {
     return AppBar(
       toolbarHeight: 80,
       centerTitle: true,
-      title: Visibility(
-        visible: widget.showTopLogo,
-        child: ClipOval(
-          child: Image.asset(
-            "assets/images/" + AppIcons.LogoIcon + ".png",
-            height: 40,
-            width: 40,
-            fit: BoxFit.scaleDown,
+      //able to tap and return to landing page
+      title: GestureDetector(
+        onTap: () {
+          Navigator.of(context)
+              .popUntil((route) => route.settings.name == '/explorepage');
+        },
+        child: Visibility(
+          visible: widget.showTopLogo,
+          child: ClipOval(
+            child: Image.asset(
+              "assets/images/" + AppIcons.LogoIcon + ".png",
+              height: 40,
+              width: 40,
+              fit: BoxFit.scaleDown,
+            ),
           ),
         ),
       ),
@@ -48,7 +55,7 @@ class TopNavBarState extends State<TopNavBar> {
       elevation: 0,
       iconTheme: IconThemeData(color: widget.theme),
       actions: [
-       /* Visibility(
+        /* Visibility(
           visible: widget.showTopProfile,
           child: Container(
               margin: EdgeInsets.only(right: 20),
@@ -66,4 +73,3 @@ class TopNavBarState extends State<TopNavBar> {
     );
   }
 }
-

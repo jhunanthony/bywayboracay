@@ -91,10 +91,7 @@ class LogInPage extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => OnBoardingPage()));
+                  Navigator.of(context).pushReplacementNamed('/explorepage');
                 },
               ),
               SizedBox(height: 25),
@@ -126,10 +123,7 @@ class LogInPage extends StatelessWidget {
                     bool success = await loginService.signInWithGoogle();
 
                     if (success) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => OnBoardingPage()));
+                       Navigator.of(context).pushReplacementNamed('/explorepage');
                     }
                   }),
               SizedBox(height: 25),

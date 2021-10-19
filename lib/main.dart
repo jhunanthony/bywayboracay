@@ -1,8 +1,11 @@
+import 'package:bywayborcay/pages/BagPage.dart';
 import 'package:bywayborcay/pages/DetailsPage.dart';
 import 'package:bywayborcay/pages/ItemsPage.dart';
+import 'package:bywayborcay/pages/ItineraryPage.dart';
 import 'package:bywayborcay/pages/LogInPage.dart';
 import 'package:bywayborcay/pages/MapPage.dart';
 import 'package:bywayborcay/pages/OnBoardingPage.dart';
+import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,8 +24,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //add provider at the very root
-    return Provider(
-      create: (_) => LoginService(),
+    return MultiProvider(
+      providers:[
+      Provider(
+      create: (_) => LoginService(),),
+      Provider(
+        create:(_) => CategorySelectionService(
+      ))
+      ],
+    
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -34,8 +44,19 @@ class MyApp extends StatelessWidget {
         items: Utils.getMockedCategory()[0].items[0],
       )*/
         //home: OnBoardingPage()
-        home: SplashPage(duration: 3, goToPage: LogInPage()),
-       
+        //home: SplashPage(duration: 3, goToPage: LogInPage()),
+       initialRoute: '/',
+       routes:{
+        '/': (context)=>SplashPage(duration: 3, goToPage: LogInPage()),
+        '/loginpage' : (context)=> LogInPage(),
+        '/explorepage' : (context)=> ExplorePage(),
+        '/itemspage':(context)=> ItemsPage(),
+        '/detailspage':(context)=> DetailsPage(),
+        '/mappage':(context)=> MapPage(),
+        '/onboardingpage':(context)=> OnBoardingPage(),
+        '/itinerarypage':(context)=> ItineraryPage(),
+        '/bagpage':(context)=> BagPage(),
+       }
         )
     );
     

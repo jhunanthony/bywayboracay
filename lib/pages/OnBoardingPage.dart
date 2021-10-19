@@ -74,7 +74,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                                       child: Column(
                                     children: [
                                       Align(
-                                        alignment: Alignment.centerRight,
+                                        alignment: Alignment.center,
                                         child: ClipOval(
                                           child: Image.asset(
                                             "assets/images/" +

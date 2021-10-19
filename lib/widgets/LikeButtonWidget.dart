@@ -1,6 +1,8 @@
 import 'package:bywayborcay/models/ItemsModel.dart';
+import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
+import 'package:provider/provider.dart';
 
 class LikeButtonWidget extends StatefulWidget {
  
@@ -12,9 +14,14 @@ LikeButtonWidget({this.items});
 }
 
 class _LikeButtonWidgetState extends State<LikeButtonWidget> {
+   
   bool isLiked = false;
   @override
   Widget build(BuildContext context) {
+    CategorySelectionService catSelection =
+        Provider.of<CategorySelectionService>(context, listen: false);
+    widget.items = catSelection.items;
+    
     return LikeButton(
                             countPostion: CountPostion.top,
                             size: 30,
