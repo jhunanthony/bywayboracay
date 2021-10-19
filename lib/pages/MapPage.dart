@@ -13,9 +13,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 //construct a widget that passes user location as source location
 //const LatLng DEST_LOCATION = LatLng(11.98189918417696, 121.9151854334716);
+//default location is central boracay
 const LatLng DEFAULT_LOCATION = LatLng(11.96151239329021, 121.92470019282162);
 
-const double CAMERA_ZOOM = 16;
+const double CAMERA_ZOOM = 20;
 const double CAMERA_TILT = 0;
 const double CAMERA_BEARING = 30;
 const double PIN_VISIBLE_POSITION = 20;
@@ -245,11 +246,13 @@ class _MapPageState extends State<MapPage> {
 
   //this method will perform network call from the API
   void setPolylines() async {
+
+    LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       'AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE',
       PointLatLng(currentLocationref.latitude, currentLocationref.longitude),
       PointLatLng(
-          destinationLocationref.latitude, destinationLocationref.longitude),
+          destinationlatlong.latitude, destinationlatlong.longitude),
       travelMode: TravelMode.walking,
       optimizeWaypoints: true,
       //wayPoints: [PolylineWayPoint(location: "Philippines")]

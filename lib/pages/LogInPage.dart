@@ -91,7 +91,7 @@ class LogInPage extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushReplacementNamed('/explorepage');
+                  Navigator.of(context).pushReplacementNamed('/onboardingpage');
                 },
               ),
               SizedBox(height: 25),

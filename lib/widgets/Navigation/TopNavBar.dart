@@ -14,7 +14,7 @@ class TopNavBar extends StatefulWidget implements PreferredSizeWidget {
   Color theme;
 
   TopNavBar({
-    this.theme = Colors.blue,
+    this.theme = Colors.blueAccent,
     this.colorbackground,
     this.showTopProfile = true,
     this.showTopLogo = true,

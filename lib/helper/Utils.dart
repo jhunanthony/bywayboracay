@@ -61,8 +61,8 @@ class Utils {
                 itemwebsite:
                     "https://www.shangri-la.com/en/boracay/boracayresort/",
                 itemsocialmedia: "https://web.facebook.com/ShangriLaBoracay",
-                itemlikes: 563,
-                itemsaves: 146,
+               
+                itemlikes: 0,
                 itemrating1: 4.5,
                 itemrating2: 4.8,
                 itemopentime: '8am - 10pm',
@@ -101,8 +101,8 @@ class Utils {
                 itemwebsite:
                     "https://www.shangri-la.com/en/boracay/boracayresort/",
                 itemsocialmedia: "https://web.facebook.com/ShangriLaBoracay",
-                itemlikes: 563,
-                itemsaves: 146,
+            
+                itemlikes: 0,
                 itemrating1: 4.5,
                 itemrating2: 4.8,
                 itemopentime: '8am - 10pm',
@@ -125,7 +125,7 @@ class Utils {
           ]),
       Category(
           color: AppColors.ToEatandDrinkColor,
-          name: 'To Eat & Drink',
+          name: 'To Eat&Drink',
           imgName: 'Test_Image_2',
           iconName: AppIcons.ToEatandDrinkIcon,
           items: []),

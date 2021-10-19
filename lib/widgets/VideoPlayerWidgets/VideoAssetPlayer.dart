@@ -19,17 +19,23 @@ class _VideoAssetPlayerState extends State<VideoAssetPlayer> {
     controller = VideoPlayerController.asset(asset)
       ..addListener(() => setState(() {}))
       ..setLooping(false)
+      
+      
   
     
       
       ..initialize().then((_) => controller.play());
   }
 
+  
+
   @override
   void dispose() {
-    controller.dispose();
     super.dispose();
+    controller.dispose();
+    
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,4 +45,6 @@ class _VideoAssetPlayerState extends State<VideoAssetPlayer> {
       ]);
   
   }
+
+  
 }

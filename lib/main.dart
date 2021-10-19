@@ -7,10 +7,12 @@ import 'package:bywayborcay/pages/MapPage.dart';
 import 'package:bywayborcay/pages/OnBoardingPage.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
+import 'package:bywayborcay/services/likeservice.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'helper/Utils.dart';
+import 'models/LikedItemsModel.dart';
 import 'pages/ExplorePage.dart';
 import 'pages/SplashPage.dart';
 import 'widgets/Navigation/BotNavBar2.dart';
@@ -28,9 +30,12 @@ class MyApp extends StatelessWidget {
       providers:[
       Provider(
       create: (_) => LoginService(),),
-      Provider(
+      ChangeNotifierProvider(
         create:(_) => CategorySelectionService(
-      ))
+      )),
+      //tells all widget if there's a need for revuild
+      ChangeNotifierProvider(
+        create: (_) => LikeService())
       ],
     
       child: MaterialApp(

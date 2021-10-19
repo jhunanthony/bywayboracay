@@ -23,8 +23,8 @@ class Category {
   String email;
   String website;
   String socialmedia;
+ 
   int likes;
-  int saves;
   double rating1;
   double rating2;
   String opentime;
@@ -49,8 +49,8 @@ class Category {
     this.email,
     this.website,
     this.socialmedia,
+  
     this.likes,
-    this.saves,
     this.rating1,
      this.rating2,
     this.opentime,

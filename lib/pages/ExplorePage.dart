@@ -32,9 +32,7 @@ class _ExplorePageState extends State<ExplorePage> {
 
     return SafeArea(
         child: Scaffold(
-          drawer: Drawer(
-            elevation: 6,
-            child: SideMenuBar()),
+            drawer: Drawer(elevation: 6, child: SideMenuBar()),
             backgroundColor: Colors.white,
             body: Stack(children: [
               ListView(controller: _controller, children: [
@@ -189,12 +187,12 @@ class CategoryButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    CategorySelectionService catSelection =Provider.of<CategorySelectionService>(context, listen: false);
+    CategorySelectionService catSelection =
+        Provider.of<CategorySelectionService>(context, listen: false);
 
     return Container(
-        margin: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 10),
-        padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 0),
+        margin: EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 10),
+        padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 0),
         height: 175,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
@@ -464,6 +462,13 @@ class Header extends StatelessWidget {
                           topLeft: Radius.circular(50),
                         ),
                         color: Colors.white,
+                         boxShadow: [
+      BoxShadow(
+         color: Colors.grey.withOpacity(0.3),
+                                        blurRadius: 5,
+        offset: Offset(4, 0), // Shadow position
+      ),
+    ],
                       ),
                       child: Center(
                         child: Text('Saylo Kamo Iya!',

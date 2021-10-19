@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:bywayborcay/models/ItemsModel.dart';
+import 'package:bywayborcay/models/LikedItemsModel.dart';
 import 'package:bywayborcay/pages/MapPage.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
+import 'package:bywayborcay/services/likeservice.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
-import 'package:bywayborcay/widgets/LikeButtonWidget.dart';
-
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +15,12 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
+
+
+const double CAMERA_ZOOM_DETAILSPAGE = 16;
+const double CAMERA_TILT_DETAILSPAGE = 0;
+const double CAMERA_BEARING_DETAILSPAGE = 30;
 
 class DetailsPage extends StatefulWidget {
   //pass the values
@@ -40,38 +46,35 @@ class _DetailsPageState extends State<DetailsPage> {
         'assets/images/' + parentCategory + '.png');
   }
 
- 
-
-
   //indicator if button is liked or not
   //bool isLiked = false;
 
   final _imagepageController = PageController(viewportFraction: 0.877);
   @override
   Widget build(BuildContext context) {
-
-      CategorySelectionService catSelection =
+    CategorySelectionService catSelection =
         Provider.of<CategorySelectionService>(context, listen: false);
     widget.items = catSelection.items;
 
-    
     //pull marker icon
     this.setSourceAndDestinationMarkerIcons(context);
     //initialize needed values for map
 
-     LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
-    destinationLocation =LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
-    
+    LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
+    destinationLocation =
+        LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
 
     CameraPosition initialCameraPosition = CameraPosition(
-        zoom: CAMERA_ZOOM,
-        tilt: CAMERA_TILT,
-        bearing: CAMERA_BEARING,
+        zoom: CAMERA_ZOOM_DETAILSPAGE,
+        tilt: CAMERA_TILT_DETAILSPAGE,
+        bearing: CAMERA_BEARING_DETAILSPAGE,
         target: destinationLocation);
 
-  
+    //to activate change notifier on saves
+    LikeService saveService = Provider.of<LikeService>(context, listen: false);
 
     //canvas starts here
+
     return SafeArea(
         child: Scaffold(
       body: Stack(children: [
@@ -132,76 +135,86 @@ class _DetailsPageState extends State<DetailsPage> {
                       }),
                 ),
 
-                //add like button
+                //add save button
                 Positioned(
-                    top: 80,
-                    right: 20,
+                    top: 70,
+                    right: 10,
                     child: Padding(
                       padding: const EdgeInsets.only(right: 5),
                       child: Column(children: [
-                        LikeButtonWidget(items: widget.items),
+                        /*Consumer<LikeService>(
+                            //a function called when notifier changes
+                            builder: (context, save, child) {
+                          return Text(
+                            '${save.items.length} likes',
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w300),
+                          );
+                        }),*/
+                        Consumer<LikeService>(builder: (context, like, child) {
+                          //check if saved
+                          Widget renderedButton;
 
-                        /*LikeButton(
-                            countPostion: CountPostion.top,
-                            size: 30,
-                            circleColor: CircleColor(
-                                start: Colors.pink[50], end: Colors.pink),
-                            bubblesColor: BubblesColor(
-                              dotPrimaryColor: Colors.pink[100],
-                              dotSecondaryColor: Colors.pink,
-                            ),
+                          //check is it is saved then display regular button
 
-                            //bool here
-                            //isLiked: isLiked,
-                            //edit looks here
+                          if (!like.isLiked(widget.items)) {
+                            renderedButton = ClipOval(
+                              child: Material(
+                                color: Colors.transparent,
+                                child: IconButton(
+                                  padding: EdgeInsets.all(0),
+                                  icon: Icon(Icons.favorite_rounded),
+                                  color: Colors.white,
+                                  iconSize: 30,
+                                  splashColor: Colors.pink[300],
+                                  onPressed: () {
+                                    saveService
+                                        .add(LikedItem(category: widget.items));
+                                  },
+                                ),
+                              ),
+                            );
+                          } else {
+                            renderedButton = Container(
+                              padding: EdgeInsets.all(10),
+                              child: Icon(Icons.favorite_rounded,
+                                  color: Colors.pink[300], size: 30),
+                            );
+                          }
 
-                            likeBuilder: (isLiked) {
-                              return Icon(
-                                Icons.favorite,
-                                color: isLiked ? Colors.pink : Colors.white,
-                                size: 30,
-                              );
-                            },
-                            likeCount: widget.items.likes,
-                            likeCountPadding: EdgeInsets.only(
-                              bottom: 5,
-                            ),
-                            countBuilder:
-                                (int count, bool isLiked, String text) {
-                              var color =
-                                  isLiked ? Colors.pink[300] : Colors.white;
-                              Widget result;
-                              if (count == 0) {
-                                result = Text(
-                                  "love",
-                                  style: TextStyle(color: color, fontSize: 12),
-                                );
-                              } else
-                                result = Text(
-                                  text,
-                                  style: TextStyle(color: color, fontSize: 12),
-                                );
-                              return result;
-                            },
-                            onTap: (isLiked) async {
-                              this.isLiked = !isLiked;
-                              widget.items.likes += this.isLiked ? 1 : -1;
-
-                              //TO DO: server request push new value likes
-
-                              return !isLiked;
-                            }),*/
-
+                          return renderedButton;
+                        }),
                         SizedBox(
-                          height: 2,
+                          height: 3,
                         ),
-                        Text(
-                          'Like',
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w300),
-                        ),
+                        Consumer<LikeService>(builder: (context, like, child) {
+                          //check if saved
+                          Widget savedtext;
+
+                          //check is it is saved then display regular button
+
+                          if (!like.isLiked(widget.items)) {
+                            savedtext = Text(
+                              'Like',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w300),
+                            );
+                          } else {
+                            savedtext = Text(
+                              'Liked',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w300),
+                            );
+                          }
+
+                          return savedtext;
+                        }),
                       ]),
                     )),
 
@@ -268,7 +281,8 @@ class _DetailsPageState extends State<DetailsPage> {
                               height: 15,
                             ),
                             Visibility(
-                              visible:  widget.items.rating1  == null ? false : true,
+                              visible:
+                                  widget.items.rating1 == null ? false : true,
                               child: Row(
                                 children: <Widget>[
                                   Text(
@@ -303,7 +317,8 @@ class _DetailsPageState extends State<DetailsPage> {
                               height: 15,
                             ),
                             Visibility(
-                               visible:  widget.items.rating1  == null ? false : true,
+                              visible:
+                                  widget.items.rating1 == null ? false : true,
                               child: Row(
                                 children: <Widget>[
                                   Text(
@@ -336,14 +351,14 @@ class _DetailsPageState extends State<DetailsPage> {
                             ),
                           ],
                         ),
-                        //save button
+                        //save button here
                         Column(children: [
                           ClipOval(
                             child: Material(
                               color: Colors.transparent,
                               child: IconButton(
                                 padding: EdgeInsets.all(0),
-                                icon: Icon(Icons.bookmark),
+                                icon: Icon(CupertinoIcons.calendar),
                                 color: Colors.blue[200],
                                 iconSize: 30,
                                 splashColor: Colors.blue,
@@ -508,8 +523,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      MapPage()));
+                                  builder: (context) => MapPage()));
                         }),
                   ],
                 ),
@@ -724,10 +738,9 @@ class _DetailsPageState extends State<DetailsPage> {
 
   //to show pins or markers on map
   void showPinsOnMap() {
-
     LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
-    destinationLocation =LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
-
+    destinationLocation =
+        LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
 
     setState(() {
       _markers.add(Marker(
