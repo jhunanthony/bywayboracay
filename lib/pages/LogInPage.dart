@@ -123,7 +123,7 @@ class LogInPage extends StatelessWidget {
                     bool success = await loginService.signInWithGoogle();
 
                     if (success) {
-                       Navigator.of(context).pushReplacementNamed('/explorepage');
+                       Navigator.of(context).pushReplacementNamed('/onboardingpage');
                     }
                   }),
               SizedBox(height: 25),

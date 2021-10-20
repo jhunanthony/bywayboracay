@@ -34,9 +34,13 @@ class MapPage extends StatefulWidget {
   _MapPageState createState() => _MapPageState();
 }
 
-class _MapPageState extends State<MapPage> {
+class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
   //Google map Controller that controlls single instance of the google map
   Completer<GoogleMapController> _controller = Completer();
+  void onMapCreated(GoogleMapController controller) {
+    controller.setMapStyle(null);
+    _controller.complete(controller);
+  }
 
   //for costum marker pin
   //custom marker to costumize assets to be used
@@ -96,6 +100,7 @@ class _MapPageState extends State<MapPage> {
 
     //set up initial Locations & invoke the method
     this.setInitialLocation();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   // location custom marker
@@ -114,6 +119,29 @@ class _MapPageState extends State<MapPage> {
     destinationIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 0.5),
         'assets/images/' + parentCategory + '.png');
+  }
+
+  // lifecycle
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.inactive:
+        print('appLifeCycleState inactive');
+        break;
+      case AppLifecycleState.resumed:
+        //Add These lines
+        final GoogleMapController controller = await _controller.future;
+        onMapCreated(controller);
+        print('appLifeCycleState resumed');
+        break;
+      case AppLifecycleState.paused:
+        print('appLifeCycleState paused');
+        break;
+      case AppLifecycleState.detached:
+        print('appLifeCycleState detached');
+        break;
+    }
   }
 
   //create a method to instantiate from const to hard coded coordinates
@@ -272,7 +300,6 @@ class _MapPageState extends State<MapPage> {
             points: polylineCoordinates));
       });
     }
-
   }
 
   //create two marker reference and surround inside set state to trigger rebuild
@@ -372,6 +399,7 @@ class _MapPageState extends State<MapPage> {
               this.pinBottomInfoPosition = PIN_VISIBLE_POSITION;
             });
           }));
+
       
     });
   }

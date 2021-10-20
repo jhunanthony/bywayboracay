@@ -8,11 +8,11 @@ class BagPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(children: [
-        Center(child:Text("itinerary page")),
+        Center(child:Text("bag page")),
        
       
       ]),
-      
+      //bottomNavigationBar: BottomNavBar(),
       );
   }
 }

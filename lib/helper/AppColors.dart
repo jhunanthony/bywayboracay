@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class AppColors {
+
   static const Color ToStayColor = Colors.purple;
   static const Color ToEatandDrinkColor = Colors.red;
   static const Color ToSeeColor = Colors.green;

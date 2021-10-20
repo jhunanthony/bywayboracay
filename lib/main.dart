@@ -14,8 +14,9 @@ import 'package:provider/provider.dart';
 import 'helper/Utils.dart';
 import 'models/LikedItemsModel.dart';
 import 'pages/ExplorePage.dart';
+import 'pages/LikedPage.dart';
 import 'pages/SplashPage.dart';
-import 'widgets/Navigation/BotNavBar2.dart';
+import 'pages/MainPage.dart';
 
 void main() {
   runApp(MyApp());
@@ -54,12 +55,14 @@ class MyApp extends StatelessWidget {
        routes:{
         '/': (context)=>SplashPage(duration: 3, goToPage: LogInPage()),
         '/loginpage' : (context)=> LogInPage(),
+        '/mainpage' : (context)=> MainPage(),
         '/explorepage' : (context)=> ExplorePage(),
         '/itemspage':(context)=> ItemsPage(),
         '/detailspage':(context)=> DetailsPage(),
         '/mappage':(context)=> MapPage(),
         '/onboardingpage':(context)=> OnBoardingPage(),
         '/itinerarypage':(context)=> ItineraryPage(),
+        '/likedpage':(context)=> LikedPage(),
         '/bagpage':(context)=> BagPage(),
        }
         )

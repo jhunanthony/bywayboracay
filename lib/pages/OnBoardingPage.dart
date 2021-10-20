@@ -1,6 +1,7 @@
 import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/helper/Utils.dart';
 import 'package:bywayborcay/models/OnBoardingModel.dart';
+import 'package:bywayborcay/pages/MainPage.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:flutter/material.dart';
 
@@ -35,16 +36,13 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: TopNavBar(
-            colorbackground: Colors.transparent,
-            showTopProfile: false,
-            showTopLogo: false,
-          ),
+          
           body: Container(
               child: Padding(
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.only(bottom: 20, left:20, right:20),
             child: Column(
               children: [
+                SizedBox(height: 80,),
                 Expanded(
                     child: PageView(
                   controller: _controller,
@@ -55,108 +53,104 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     });
                   },
                   children: List.generate(
-                      _content.length,
-                      (index) => Container(
-                              margin: EdgeInsets.all(20),
-                              padding: EdgeInsets.all(20),
-                              decoration: BoxDecoration(
-                                  color: Colors.grey[50],
-                                  borderRadius: BorderRadius.circular(30),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        blurRadius: 20,
-                                        offset: Offset.zero)
-                                  ]),
+                    _content.length,
+                    (index) => Container(
+                      margin: EdgeInsets.all(20),
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          color: Colors.grey[50],
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                blurRadius: 20,
+                                offset: Offset.zero)
+                          ]),
+                      child: Column(
+                        children: [
+                          Expanded(
                               child: Column(
-                                children: [
-                                  Expanded(
-                                      child: Column(
-                                    children: [
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: ClipOval(
-                                          child: Image.asset(
-                                            "assets/images/" +
-                                                AppIcons.LogoIcon +
-                                                ".png",
-                                            height: 40,
-                                            width: 40,
-                                            fit: BoxFit.scaleDown,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Image.asset(
-                                          'assets/images/${_content[index].imgName}.png'),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Text(
-                                        _content[index].message,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-
-                                  //enter button
-                                  Visibility(
-                                    //use this to only show it on the last screen
-                                    visible: index == _content.length - 1,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          primary: Colors.blue, //background
-                                          onPrimary: Colors.white, //foreground
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(50))),
-                                      child: Container(
-                                        height: 40,
-                                        width: 80,
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          'Enter App',
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w300),
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ExplorePage()));
-                                      },
-                                    ),
+                            children: [
+                              Align(
+                                alignment: Alignment.center,
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    "assets/images/" +
+                                        AppIcons.LogoIcon +
+                                        ".png",
+                                    height: 40,
+                                    width: 40,
+                                    fit: BoxFit.scaleDown,
                                   ),
-                                ],
+                                ),
                               ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Image.asset(
+                                  'assets/images/${_content[index].imgName}.png'),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                _content[index].message,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          )),
+
+                          //enter button
+                          Visibility(
+                            //use this to only show it on the last screen
+                            visible: index == _content.length - 1,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.blue, //background
+                                  onPrimary: Colors.white, //foreground
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50))),
+                              child: Container(
+                                height: 40,
+                                width: 80,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Enter App',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w300),
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MainPage()));
+                              },
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+                  ),
                 )),
                 //indicator
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
                         _content.length,
-                        (index) => 
-                          GestureDetector(
-                            onTap: () {
-                              _controller.animateTo(
-                                MediaQuery.of(context).size.width * index,
-                                duration: Duration(milliseconds: 400),
-                              curve: Curves.easeInOut
-                              );
-                            },
-                          child: Container(
+                        (index) => GestureDetector(
+                              onTap: () {
+                                _controller.animateTo(
+                                    MediaQuery.of(context).size.width * index,
+                                    duration: Duration(milliseconds: 400),
+                                    curve: Curves.easeInOut);
+                              },
+                              child: Container(
                                 width: 20,
                                 height: 20,
                                 margin: EdgeInsets.all(10),
@@ -169,7 +163,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                                             ? Colors.blue[50]
                                             : Theme.of(context).canvasColor)),
                               ),
-                        ))),
+                            ))),
                 //skip button
                 Align(
                   alignment: Alignment.bottomRight,
@@ -195,7 +189,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ExplorePage()));
+                              builder: (context) => MainPage()));
                     },
                   ),
                 )

@@ -1,5 +1,4 @@
 import 'package:bywayborcay/helper/AppIcons.dart';
-import 'package:bywayborcay/helper/Utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,7 +14,7 @@ class TopNavBar extends StatefulWidget implements PreferredSizeWidget {
   Color theme;
 
   TopNavBar({
-    this.theme = Colors.blueAccent,
+    this.theme = Colors.blue,
     this.colorbackground,
     this.showTopProfile = true,
     this.showTopLogo = true,
@@ -32,16 +31,41 @@ class TopNavBarState extends State<TopNavBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      
       toolbarHeight: 80,
       centerTitle: true,
       //able to tap and return to landing page
-      title: Visibility(
-        visible: widget.showTopLogo,
-        child: GestureDetector(
-          onTap: () {
-            Utils.mainAppNav.currentState
-                .popUntil((route) => route.settings.name == '/defaultpage');
-          },
+      
+      /*leading: GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+        child: Padding(
+          padding: EdgeInsets.all(7),
+          child: Container(
+           
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(Icons.arrow_back, color: Colors.white, size: 30),
+          ),
+        ),
+      ),*/
+
+
+          
+    
+        
+      
+      title: 
+      Visibility(
+          visible: widget.showTopLogo,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).pushReplacementNamed('/mainpage');
+          /*Navigator.of(context)
+              .popUntil((route) => route.settings.name == '/mainpage');*/
+        },
+        
           child: ClipOval(
             child: Image.asset(
               "assets/images/" + AppIcons.LogoIcon + ".png",
@@ -50,8 +74,8 @@ class TopNavBarState extends State<TopNavBar> {
               fit: BoxFit.scaleDown,
             ),
           ),
-        ),
-      ),
+        
+      ),),
       backgroundColor: widget.colorbackground,
       elevation: 0,
       iconTheme: IconThemeData(color: widget.theme),

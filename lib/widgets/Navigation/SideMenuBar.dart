@@ -1,5 +1,4 @@
 import 'package:bywayborcay/helper/AppIcons.dart';
-import 'package:bywayborcay/helper/Utils.dart';
 import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:flutter/material.dart';
@@ -61,12 +60,12 @@ class SideMenuBar extends StatelessWidget {
                           SizedBox(height: 12),
                           Text('Welcome to Boracay!',
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 20)),
+                                  TextStyle(color: Colors.white, fontSize: 14)),
                           SizedBox(height: 12),
                           Text(userName,
                               textAlign: TextAlign.center,
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 30))
+                                  TextStyle(color: Colors.white, fontSize: 25))
                         ]),
                   ),
                 ]),
@@ -75,13 +74,12 @@ class SideMenuBar extends StatelessWidget {
                   onPressed: () async {
                     if (userLoggedIn) {
                       await loginService.signOut();
-                      Utils.mainAppNav.currentState
-                          .pushReplacementNamed('/loginpage');
+                      Navigator.of(context).pushReplacementNamed('/loginpage');
                     } else {
                       bool success = await loginService.signInWithGoogle();
                       if (success) {
-                        Utils.mainAppNav.currentState
-                            .pushReplacementNamed('/defaultpage');
+                        Navigator.of(context)
+                            .pushReplacementNamed('/mainpage');
                       }
                     }
                   },

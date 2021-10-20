@@ -1,6 +1,8 @@
+import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePicHeader extends StatelessWidget {
@@ -29,8 +31,18 @@ class ProfilePicHeader extends StatelessWidget {
               imgPath,
             )))
         : SizedBox(
-            width: 30,
             height: 30,
+            width: 30,
           );
+
+    /*Padding(
+          padding: const EdgeInsets.all(15),
+          child: SvgPicture.asset(
+              'assets/icons/' + AppIcons.UserIcon + '.svg',
+              color: Colors.blue,
+              height: 30,
+              width: 30,
+            ),
+        );*/
   }
 }

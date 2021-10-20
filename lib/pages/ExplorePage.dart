@@ -29,39 +29,41 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   Widget build(BuildContext context) {
     //grab the instances from the provider
+   
 
-    return SafeArea(
+       return SafeArea(
         child: Scaffold(
-            drawer: Drawer(elevation: 6, child: SideMenuBar()),
-            backgroundColor: Colors.white,
-            body: Stack(children: [
+            body: 
               ListView(controller: _controller, children: [
-                Header(),
-                PromotionalVideo(),
-                CategoryButtons(),
-                ScrollButtons(),
-                ForYouTabs(),
-                Highlights(),
-                Geography(),
-                AwardsAndRecognition(),
-                Culture(),
-                History(),
-                SizedBox(
-                  height: 100,
-                )
-              ]),
-
-              //show top navigation bar
-              Positioned(
-                  top: 0,
-                  right: 0,
-                  left: 0,
-                  child: TopNavBar(
+                  Header(),
+                  PromotionalVideo(),
+                  CategoryButtons(),
+                  ScrollButtons(),
+                  ForYouTabs(),
+                  Highlights(),
+                  Geography(),
+                  AwardsAndRecognition(),
+                  Culture(),
+                  History(),
+                  SizedBox(
+                    height: 100,
+                  )
+                ]),
+                
+                //show top bar
+                /*Positioned(top: 0, left:0,right:0, child: TopNavBar(
                     colorbackground: Colors.transparent,
-                  )),
-              //show bottom navigation bar
-              Positioned(bottom: 0, left: 0, right: 0, child: BottomNavBar())
-            ])));
+                  ),),
+                Positioned(bottom: 0, left:0,right:0, child: BottomNavBar(
+                    
+                  ),)*/
+               
+
+          
+            )
+            
+            );
+ 
   }
 }
 
