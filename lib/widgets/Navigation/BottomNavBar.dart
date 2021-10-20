@@ -1,4 +1,5 @@
 import 'package:bywayborcay/helper/AppIcons.dart';
+import 'package:bywayborcay/helper/Utils.dart';
 import 'package:bywayborcay/services/likeservice.dart';
 
 import 'package:flutter/material.dart';
@@ -11,12 +12,13 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  int currentindex = 1;
+ 
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(left: 13, right: 13, bottom: 10, top: 10),
+     
       child: Container(
           height: 65,
           width: MediaQuery.of(context).size.width,
@@ -43,7 +45,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           color: Colors.blue,
                           height: 30,
                           width: 30),
-                      onPressed: () {},
+                      onPressed: () {
+                        Utils.mainListNav.currentState
+                            .pushReplacementNamed('/mainpage/explorepage');
+                      },
                     )),
               ),
               ClipOval(
@@ -57,52 +62,60 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           color: Colors.blue,
                           height: 30,
                           width: 30),
-                      onPressed: () {},
+                      onPressed: () {
+                         Utils.mainListNav.currentState
+                            .pushReplacementNamed('/mainpage/itinerarypage');
+                      },
                     )),
               ),
               Padding(
-                padding:  EdgeInsets.only(left:5, right:5, top:8, bottom:8),
+                padding: EdgeInsets.only(left: 5, right: 5, top: 8, bottom: 8),
                 child: ClipOval(
                   child: Material(
-                      color: Colors.transparent,
-                      child: Container(
+                    color: Colors.transparent,
+                    child: Container(
+                      child: Stack(
+                        children: [
+                          Center(
+                              child: IconButton(
+                            highlightColor: Colors.blue.withOpacity(0.3),
+                            splashColor: Colors.white.withOpacity(0.3),
+                            icon: Icon(
+                              Icons.favorite_border_rounded,
+                              size: 30,
+                            ),
+                            color: Colors.blue,
+                            onPressed: () {
 
-                        child: Stack(
-                                  children: [
-                                    Center(
-                                        child: IconButton(
-                                          highlightColor: Colors.blue.withOpacity(0.3),
-                          splashColor: Colors.white.withOpacity(0.3),
-                                          icon: Icon(Icons.favorite_border_rounded, size: 30,),
-                                            color: Colors.blue, 
-                                         onPressed: () {},
-                                           )),
-                                    Positioned(
-                                      top: 5,
-                                      right: 5,
-                                      child: Consumer<LikeService>(
-                                          //a function called when notifier changes
-                                          builder: (context, like, child) {
-                                        return
-                                            //hide if 0 likes
-                                            Visibility(
-                                          visible: like.items.length > 0,
-                                          child: Text(
-                                            '${like.items.length}',
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.blue[100],
-                                                fontWeight: FontWeight.w300),
-                                          ),
-                                        );
-                                      }),
-                                    )
-                                  ],
+                              Utils.mainListNav.currentState
+                            .pushReplacementNamed('/mainpage/likepage');
+                            },
+                          )),
+                          Positioned(
+                            top: 5,
+                            right: 5,
+                            child: Consumer<LikeService>(
+                                //a function called when notifier changes
+                                builder: (context, like, child) {
+                              return
+                                  //hide if 0 likes
+                                  Visibility(
+                                visible: like.items.length > 0,
+                                child: Text(
+                                  '${like.items.length}',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.blue[100],
+                                      fontWeight: FontWeight.w300),
                                 ),
+                              );
+                            }),
+                          )
+                        ],
                       ),
-                        
+                    ),
 
-                            /*Consumer<LikeService>(
+                    /*Consumer<LikeService>(
                               //a function called when notifier changes
                               builder: (context, like, child) {
                             return Row(children: [
@@ -124,9 +137,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                               ),
                             ]);
                           }),*/
-                            
-                       
-                      ),
+                  ),
                 ),
               ),
               ClipOval(
@@ -141,7 +152,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
                         height: 30,
                         width: 30,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Utils.mainListNav.currentState
+                            .pushReplacementNamed('/mainpage/bagpage');
+                      },
                     )),
               ),
             ],

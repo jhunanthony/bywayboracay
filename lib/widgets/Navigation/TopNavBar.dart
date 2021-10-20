@@ -1,4 +1,5 @@
 import 'package:bywayborcay/helper/AppIcons.dart';
+import 'package:bywayborcay/helper/Utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -34,13 +35,13 @@ class TopNavBarState extends State<TopNavBar> {
       toolbarHeight: 80,
       centerTitle: true,
       //able to tap and return to landing page
-      title: GestureDetector(
-        onTap: () {
-          Navigator.of(context)
-              .popUntil((route) => route.settings.name == '/explorepage');
-        },
-        child: Visibility(
-          visible: widget.showTopLogo,
+      title: Visibility(
+        visible: widget.showTopLogo,
+        child: GestureDetector(
+          onTap: () {
+            Utils.mainAppNav.currentState
+                .popUntil((route) => route.settings.name == '/defaultpage');
+          },
           child: ClipOval(
             child: Image.asset(
               "assets/images/" + AppIcons.LogoIcon + ".png",

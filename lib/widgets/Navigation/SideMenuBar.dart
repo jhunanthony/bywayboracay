@@ -1,4 +1,5 @@
 import 'package:bywayborcay/helper/AppIcons.dart';
+import 'package:bywayborcay/helper/Utils.dart';
 import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:flutter/material.dart';
@@ -74,12 +75,13 @@ class SideMenuBar extends StatelessWidget {
                   onPressed: () async {
                     if (userLoggedIn) {
                       await loginService.signOut();
-                      Navigator.of(context).pushReplacementNamed('/loginpage');
+                      Utils.mainAppNav.currentState
+                          .pushReplacementNamed('/loginpage');
                     } else {
                       bool success = await loginService.signInWithGoogle();
                       if (success) {
-                        Navigator.of(context)
-                            .pushReplacementNamed('/explorepage');
+                        Utils.mainAppNav.currentState
+                            .pushReplacementNamed('/defaultpage');
                       }
                     }
                   },

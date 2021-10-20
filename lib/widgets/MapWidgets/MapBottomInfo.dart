@@ -52,13 +52,11 @@ class MapBottomInfo extends StatelessWidget {
                             height: 60,
                             fit: BoxFit.cover)),
                     Positioned(
-                        bottom: -10,
-                        right: -10,
-                        child: CategoryIcon(
-                          color: this.items.color,
-                          iconName: this.items.iconName,
-                          size: 30,
-                        )),
+                      bottom: -10,
+                      right: -10,
+                      child: Image.asset('assets/images/'+ this.items.markerName +'.png',
+                          height: 30, width: 30),
+                    ),
                   ],
                 ),
                 SizedBox(width: 20),

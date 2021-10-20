@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:bywayborcay/models/ItemsModel.dart';
+import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
+import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/MapWidgets/MapBottomInfo.dart';
 import 'package:bywayborcay/widgets/MapWidgets/MapUpperInfo.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
@@ -147,8 +149,6 @@ class _MapPageState extends State<MapPage> {
     // set up the marker icons & invoke the method
     this.setSourceAndDestinationMarkerIcons(context);
 
-    
-
     //create a camera position instance to feed to the map
     CameraPosition initialCameraPosition = CameraPosition(
         zoom: CAMERA_ZOOM,
@@ -158,7 +158,8 @@ class _MapPageState extends State<MapPage> {
 
     if (currentLocationref != null) {
       initialCameraPosition = CameraPosition(
-          target: LatLng(currentLocationref.latitude, currentLocationref.longitude),
+          target:
+              LatLng(currentLocationref.latitude, currentLocationref.longitude),
           zoom: CAMERA_ZOOM,
           tilt: CAMERA_TILT,
           bearing: CAMERA_BEARING);
@@ -246,13 +247,11 @@ class _MapPageState extends State<MapPage> {
 
   //this method will perform network call from the API
   void setPolylines() async {
-
     LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       'AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE',
       PointLatLng(currentLocationref.latitude, currentLocationref.longitude),
-      PointLatLng(
-          destinationlatlong.latitude, destinationlatlong.longitude),
+      PointLatLng(destinationlatlong.latitude, destinationlatlong.longitude),
       travelMode: TravelMode.walking,
       optimizeWaypoints: true,
       //wayPoints: [PolylineWayPoint(location: "Philippines")]
@@ -273,10 +272,18 @@ class _MapPageState extends State<MapPage> {
             points: polylineCoordinates));
       });
     }
+
   }
 
   //create two marker reference and surround inside set state to trigger rebuild
   void showPinsOnMap() {
+    //get user information from loginservice to display name on user pin
+    LoginService loginService =
+        Provider.of<LoginService>(context, listen: false);
+    //grab the
+    UserLogInModel userModel = loginService.loggedInUserModel;
+    String userName = userModel != null ? userModel.displayName : 'User';
+
     // get a LatLng for the source location
     // from the LocationData currentLocation object
 
@@ -290,7 +297,7 @@ class _MapPageState extends State<MapPage> {
           markerId: MarkerId('sourcePin'),
           position: currentPosition,
           icon: sourceIcon,
-          infoWindow: InfoWindow(title: 'User'),
+          infoWindow: InfoWindow(title: userName),
           onTap: () {
             setState(() {
               this.userInfoSelected = true;
@@ -311,6 +318,13 @@ class _MapPageState extends State<MapPage> {
   }
 
   void updatePinOnMap() async {
+    //get user information from loginservice to display name on user pin
+    LoginService loginService =
+        Provider.of<LoginService>(context, listen: false);
+    //grab the
+    UserLogInModel userModel = loginService.loggedInUserModel;
+    String userName = userModel != null ? userModel.displayName : 'User';
+
     // create a new CameraPosition instance
     // every time the location changes, so the camera
     // follows the pin as it moves with an animation
@@ -329,16 +343,36 @@ class _MapPageState extends State<MapPage> {
       // updated position
       var currentPosition =
           LatLng(currentLocationref.latitude, currentLocationref.longitude);
+      var distinationPosition = LatLng(
+          destinationLocationref.latitude, destinationLocationref.longitude);
 
       // the trick is to remove the marker (by id)
       // and add it again at the updated location
       _markers.removeWhere((m) => m.markerId.value == 'sourcePin');
       _markers.add(Marker(
-        markerId: MarkerId('sourcePin'),
-        position: currentPosition,
-        icon: sourceIcon,
-        infoWindow: InfoWindow(title: 'User'),
-      ));
+          markerId: MarkerId('sourcePin'),
+          position: currentPosition,
+          icon: sourceIcon,
+          infoWindow: InfoWindow(title: userName),
+          onTap: () {
+            setState(() {
+              this.userInfoSelected = true;
+            });
+          }));
+
+      //display position marker again
+
+      _markers.add(Marker(
+          markerId: MarkerId('destinationPin'),
+          position: distinationPosition,
+          icon: destinationIcon,
+          infoWindow: InfoWindow(title: this.widget.items.name),
+          onTap: () {
+            setState(() {
+              this.pinBottomInfoPosition = PIN_VISIBLE_POSITION;
+            });
+          }));
+      
     });
   }
 }
