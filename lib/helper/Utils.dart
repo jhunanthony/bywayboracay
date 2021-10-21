@@ -66,7 +66,7 @@ class Utils {
                 itemrating1: 4.5,
                 itemrating2: 4.8,
                 itemopentime: '8am - 10pm',
-                itempricemin: '2,000.00',
+                itempricemin: 2000.00,
                 detailsimages: [
                   DetailsImages(
                     imgName: 'Test_Image_1',
@@ -106,7 +106,7 @@ class Utils {
                 itemrating1: 4.5,
                 itemrating2: 4.8,
                 itemopentime: '8am - 10pm',
-                itempricemin: '2,000.00',
+                itempricemin: 2000.00,
                 detailsimages: [
                   DetailsImages(
                     imgName: 'Test_Image_1',

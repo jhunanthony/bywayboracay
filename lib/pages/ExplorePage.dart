@@ -33,6 +33,7 @@ class _ExplorePageState extends State<ExplorePage> {
 
        return SafeArea(
         child: Scaffold(
+          backgroundColor: Colors.white,
             body: 
               ListView(controller: _controller, children: [
                   Header(),

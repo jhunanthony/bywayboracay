@@ -32,7 +32,7 @@ class Items extends Category {
     double itemrating2,
     
     String itemopentime,
-    String itempricemin,
+    double itempricemin,
   }) :
         //use super to refer to a class to transer same value
         super(

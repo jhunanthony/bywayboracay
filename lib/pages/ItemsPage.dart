@@ -27,6 +27,9 @@ class ItemsPage extends StatelessWidget {
     //to activate change notifier on saves
     //SaveService saveService = Provider.of<SaveService>(context, listen: false);
 
+    //access like service
+    LikeService likedService = Provider.of<LikeService>(context, listen: false);
+
     return SafeArea(
       child: Scaffold(
           backgroundColor: Colors.white,
@@ -87,54 +90,56 @@ class ItemsPage extends StatelessWidget {
                           this.selectedCategory.items.length, (index) {
                         return GestureDetector(
                           onTap: () {
+                            //check if added already or not
+                            var itemcat = this.selectedCategory.items[index];
                             catSelection.items =
-                                this.selectedCategory.items[index];
+                                likedService.getCategoryFromLikedItems(itemcat);
                             Navigator.of(context).pushNamed('/detailspage');
                           },
                           //user physicalmodel to add shadow in a combined widgets
                           child: Column(children: [
-                              Container(
-                                height: 200,
-                                width: 150,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage('assets/images/' +
+                            Container(
+                              height: 200,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage('assets/images/' +
+                                      this
+                                          .selectedCategory
+                                          .items[index]
+                                          .imgName +
+                                      '.png'),
+                                  fit: BoxFit.cover,
+                                ),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                ),
+                              ),
+                              //stack all descriptions values etc. here
+                              child: Stack(children: [
+                                Positioned.fill(
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                    ),
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: <Color>[
+                                        Colors.transparent,
                                         this
                                             .selectedCategory
-                                            .items[index]
-                                            .imgName +
-                                        '.png'),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20),
-                                  ),
+                                            .color
+                                            .withOpacity(0.5),
+                                      ],
+                                    ),
+                                  )),
                                 ),
-                                //stack all descriptions values etc. here
-                                child: Stack(children: [
-                                  Positioned.fill(
-                                    child: Container(
-                                        decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(20),
-                                      ),
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: <Color>[
-                                          Colors.transparent,
-                                          this
-                                              .selectedCategory
-                                              .color
-                                              .withOpacity(0.5),
-                                        ],
-                                      ),
-                                    )),
-                                  ),
-                                  //add likes and number of likes
-                                  /*Positioned(
+                                //add likes and number of likes
+                                /*Positioned(
                                     top: 10,
                                     right: 10,
                                     child: Column(children: [
@@ -159,121 +164,122 @@ class ItemsPage extends StatelessWidget {
                                       }),*/
                                     ]),
                                   ),*/
-                                  //showname
-                                  // add sub cat name
-                                  Positioned(
-                                    bottom: 10,
-                                    left: 10,
-                                    child: Column(
+                                //showname
+                                // add sub cat name
+                                Positioned(
+                                  bottom: 10,
+                                  left: 10,
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        //wrap to expand if too long
+                                        Wrap(
+                                            direction: Axis.horizontal,
+                                            children: [
+                                              Text(
+                                                this
+                                                    .selectedCategory
+                                                    .items[index]
+                                                    .name,
+                                                overflow: TextOverflow.fade,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ]),
+
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.location_pin,
+                                              color: Colors.white,
+                                              size: 10,
+                                            ),
+                                            SizedBox(width: 3),
+                                            Wrap(
+                                                direction: Axis.horizontal,
+                                                children: [
+                                                  Text(
+                                                    this
+                                                        .selectedCategory
+                                                        .items[index]
+                                                        .address,
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w300),
+                                                  ),
+                                                ]),
+                                          ],
+                                        ),
+                                      ]),
+                                )
+                              ]),
+                            ),
+                            //bottom card
+                            Container(
+                              height: 60,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                color: Colors.blue[200],
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(20),
+                                  bottomRight: Radius.circular(20),
+                                ),
+                              ),
+                              child: Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 5, left: 10, right: 10, bottom: 5),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      //show open time and min price
+                                      Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                            MainAxisAlignment.start,
                                         children: [
-                                          //wrap to expand if too long
-                                          Wrap(
-                                              direction: Axis.horizontal,
-                                              children: [
-                                                Text(
-                                                  this
-                                                      .selectedCategory
-                                                      .items[index]
-                                                      .name,
-                                                  overflow: TextOverflow.fade,
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ]),
-                          
                                           SizedBox(
                                             height: 5,
                                           ),
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                Icons.location_pin,
+                                          Text(
+                                            "Open " +
+                                                this
+                                                    .selectedCategory
+                                                    .items[index]
+                                                    .opentime,
+                                            style: TextStyle(
+                                                fontSize: 12,
                                                 color: Colors.white,
-                                                size: 10,
-                                              ),
-                                              SizedBox(width: 3),
-                                              Wrap(
-                                                  direction: Axis.horizontal,
-                                                  children: [
-                                                    Text(
-                                                      this
-                                                          .selectedCategory
-                                                          .items[index]
-                                                          .address,
-                                                      style: TextStyle(
-                                                          fontSize: 10,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w300),
-                                                    ),
-                                                  ]),
-                                            ],
+                                                fontWeight: FontWeight.normal),
                                           ),
-                                        ]),
-                                  )
-                                ]),
-                              ),
-                              //bottom card
-                              Container(
-                                height: 60,
-                                width: 150,
-                                decoration: BoxDecoration(
-                                  color: Colors.blue[200],
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(20),
-                                    bottomRight: Radius.circular(20),
-                                  ),
-                                ),
-                                child: Padding(
-                                    padding: EdgeInsets.only(
-                                        top: 5, left: 10, right: 10, bottom: 5),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        //show open time and min price
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              "Open " +
-                                                  this
-                                                      .selectedCategory
-                                                      .items[index]
-                                                      .opentime,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.normal),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              "min. ₱ " +
-                                                  this
-                                                      .selectedCategory
-                                                      .items[index]
-                                                      .pricemin,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.normal),
-                                            ),
-                                          ],
-                                        ),
-                                        //show save number
-                                        /*Column(
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            "min. ₱ " +
+                                                this
+                                                    .selectedCategory
+                                                    .items[index]
+                                                    .pricemin
+                                                    .toString(),
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                        ],
+                                      ),
+                                      //show save number
+                                      /*Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
@@ -303,11 +309,10 @@ class ItemsPage extends StatelessWidget {
                                             ),
                                           ],
                                         )*/
-                                      ],
-                                    )),
-                              )
-                            ]),
-                         
+                                    ],
+                                  )),
+                            )
+                          ]),
                         );
                       }))),
             ]),

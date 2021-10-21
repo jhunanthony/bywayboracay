@@ -19,9 +19,37 @@ class LikeService extends ChangeNotifier {
   }
 
   //if an item is already in saveditem then false the button
-  bool isLiked(Items cat){
-    return _items.length > 0? _items.any(
-      (LikedItem item) => item.category.name == cat.name) : false;
-   
+  bool isLiked(Items cat) {
+    return _items.length > 0
+        ? _items.any((LikedItem item) => item.category.name == cat.name)
+        : false;
+  }
+
+  //method to remove item individually
+  void remove(LikedItem item) {
+    _items.remove(item);
+    notifyListeners();
+  }
+
+  //method to remove all item on the list
+  void removeAll() {
+    _items.clear();
+    notifyListeners();
+  }
+
+  //fetch item out of the likedpage
+  Items getCategoryFromLikedItems(Items cat) {
+    Items itemcat = cat;
+    if (_items.length > 0 &&
+        _items.any((LikedItem item) => item.category.name == cat.name)) {
+      LikedItem likedItem =
+          _items.firstWhere((LikedItem item) => item.category.name == cat.name);
+
+      if (likedItem != null) {
+        itemcat = likedItem.category;
+      }
+    }
+
+    return itemcat;
   }
 }

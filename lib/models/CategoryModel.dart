@@ -28,7 +28,7 @@ class Category {
   double rating1;
   double rating2;
   String opentime;
-  String pricemin;
+  double pricemin;
 
 //Contructor to hydrate the model
   Category({

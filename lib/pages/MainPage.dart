@@ -5,6 +5,7 @@ import 'package:bywayborcay/pages/BagPage.dart';
 import 'package:bywayborcay/pages/ExplorePage.dart';
 import 'package:bywayborcay/pages/ItineraryPage.dart';
 import 'package:bywayborcay/pages/LikedPage.dart';
+import 'package:bywayborcay/services/likeservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,8 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int currentIndex = 0;
 
+  String likes;
+
   /*final screens = [
     ExplorePage(),
     ItineraryPage(),
@@ -30,7 +33,6 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
- 
     return SafeArea(
       child: Scaffold(
         drawer: Drawer(elevation: 6, child: SideMenuBar()),
@@ -83,12 +85,43 @@ class _MainPageState extends State<MainPage> {
                       activeColor: Colors.blue,
                     ),
                     BottomNavyBarItem(
-                      icon: SvgPicture.asset(
-                        'assets/icons/' + AppIcons.LikesIcon + '.svg',
-                        color: Colors.blue,
-                        height: 30,
-                        width: 30,
-                      ),
+                      icon: Consumer<LikeService>(
+                          //a function called when notifier changes
+                          builder: (context, like, child) {
+                        return
+                            //hide if 0 likes
+                            Stack(children: [
+                          SvgPicture.asset(
+                            'assets/icons/' + AppIcons.LikesIcon + '.svg',
+                            color: Colors.blue,
+                            height: 30,
+                            width: 30,
+                          ),
+                          //get the number of like values
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: Visibility(
+                              visible: like.items.length > 0,
+                              child: Container(
+                               
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Colors.yellow[50],
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: Text(
+                                    '${like.items.length}',
+                                    style: TextStyle(fontSize: 10, color: Colors.blue,
+                                    
+                                    ),
+                                  ),
+                              ),
+                              
+                            ),
+                          ),
+                        ]);
+                      }),
                       title: Text('Likes'),
                       textAlign: TextAlign.center,
                       inactiveColor: Colors.blue,
@@ -124,7 +157,6 @@ class _MainPageState extends State<MainPage> {
       case 0:
       default:
         return ExplorePage();
-      
     }
   }
 }

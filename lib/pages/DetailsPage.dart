@@ -428,7 +428,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                           SizedBox(width: 5),
                           Text(
-                            'min. ₱' + widget.items.pricemin,
+                            'min. ₱' + widget.items.pricemin.toString(),
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey,
