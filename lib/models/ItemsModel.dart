@@ -10,7 +10,7 @@ class Items extends Category {
   Items({
     this.detailsimages,
     String itemname,
-    String itemicon,
+    String itemiconName,
     Color itemcolor,
     String itemimgName,
     //initialized other variables to pass to itemmodel
@@ -19,25 +19,25 @@ class Items extends Category {
     String itemstation,
     double itemlat,
     double itemlong,
-    String itemcontactnumber,
+    String itemcontactNumber,
     String itemsubcategoryName,
     String itemmarkerName,
     String itemcategoryName,
     String itememail,
     String itemwebsite,
-    String itemsocialmedia,
+    String itemsocialMedia,
   
     int itemlikes,
     double itemrating1,
     double itemrating2,
     
-    String itemopentime,
-    double itempricemin,
+    String itemopenTime,
+    double itempriceMin,
   }) :
         //use super to refer to a class to transer same value
         super(
           name: itemname,
-          iconName: itemicon,
+          iconName: itemiconName,
           color: itemcolor,
           imgName: itemimgName,
 
@@ -47,18 +47,18 @@ class Items extends Category {
           station: itemstation,
           lat: itemlat,
           long: itemlong,
-          contactnumber: itemcontactnumber,
+          contactNumber: itemcontactNumber,
           markerName: itemmarkerName,
           subcategoryName: itemsubcategoryName,
           categoryName: itemcategoryName,
           email: itememail,
           website: itemwebsite,
-          socialmedia: itemsocialmedia,
+          socialMedia: itemsocialMedia,
         
           likes: itemlikes,
           rating1: itemrating1,
           rating2: itemrating2,
-          opentime: itemopentime,
-          pricemin: itempricemin,
+          openTime: itemopenTime,
+          priceMin: itempriceMin,
         );
 }

@@ -35,7 +35,9 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        drawer: Drawer(elevation: 6, child: SideMenuBar()),
+        drawer: Container(
+          width: MediaQuery.of(context).size.width * 0.60,
+          child: Drawer(elevation: 6, child: SideMenuBar())),
         body: Stack(children: [
           buildPages(),
           Positioned(

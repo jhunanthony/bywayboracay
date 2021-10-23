@@ -16,19 +16,19 @@ class Category {
   String station;
   double lat;
   double long;
-  String contactnumber;
+  String contactNumber;
   String categoryName;
   String markerName;
   String subcategoryName;
   String email;
   String website;
-  String socialmedia;
+  String socialMedia;
  
   int likes;
   double rating1;
   double rating2;
-  String opentime;
-  double pricemin;
+  String openTime;
+  double priceMin;
 
 //Contructor to hydrate the model
   Category({
@@ -42,18 +42,18 @@ class Category {
     this.station,
     this.lat,
     this.long,
-    this.contactnumber,
+    this.contactNumber,
     this.categoryName,
     this.markerName,
     this.subcategoryName,
     this.email,
     this.website,
-    this.socialmedia,
+    this.socialMedia,
   
     this.likes,
     this.rating1,
      this.rating2,
-    this.opentime,
-    this.pricemin,
+    this.openTime,
+    this.priceMin,
   });
 }

@@ -85,9 +85,11 @@ class LikedPage extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
+                    //remove all items
                     likeService.removeAll();
                   },
                   child: Container(
+
                       margin: EdgeInsets.only(right: 20, top:10),
                       decoration: BoxDecoration(
                         color: Colors.blue[50],
@@ -121,7 +123,7 @@ class LikedPage extends StatelessWidget {
               if (like.items.length > 0) {
                 like.items.forEach((LikedItem item) {
                   Items itemslistinfo = (item.category as Items);
-                  double total = itemslistinfo.pricemin;
+                  double total = itemslistinfo.priceMin;
                   mainTotal += total;
 
                   likeditems.add(
@@ -168,7 +170,7 @@ class LikedPage extends StatelessWidget {
                                     ),
                                     Text(
                                       'min. ₱ ' +
-                                          itemslistinfo.pricemin.toString(),
+                                          itemslistinfo.priceMin.toString(),
                                       style: TextStyle(
                                         color: Colors.blue,
                                         fontSize: 12,

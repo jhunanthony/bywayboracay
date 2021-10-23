@@ -16,8 +16,6 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-
-
 const double CAMERA_ZOOM_DETAILSPAGE = 16;
 const double CAMERA_TILT_DETAILSPAGE = 0;
 const double CAMERA_BEARING_DETAILSPAGE = 30;
@@ -411,7 +409,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                           SizedBox(width: 5),
                           Text(
-                            widget.items.opentime,
+                            widget.items.openTime,
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey,
@@ -428,7 +426,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                           SizedBox(width: 5),
                           Text(
-                            'min. ₱' + widget.items.pricemin.toString(),
+                            'min. ₱' + widget.items.priceMin.toString(),
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey,
@@ -520,10 +518,9 @@ class _DetailsPageState extends State<DetailsPage> {
                               fontWeight: FontWeight.bold),
                         ),
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MapPage()));
+                          //use push replacement
+
+                          Navigator.of(context).pushNamed('/mappage');
                         }),
                   ],
                 ),
@@ -567,7 +564,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold)),
                           onTap: () async {
-                            String sms = "tel:" + widget.items.contactnumber;
+                            String sms = "tel:" + widget.items.contactNumber;
                             if (await canLaunch(sms)) {
                               await launch(sms);
                             } else {
@@ -586,7 +583,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                     fontWeight: FontWeight.bold)),
                             onTap: () async {
                               String socialmedia = "fb://facewebmodal/f?href=" +
-                                  widget.items.socialmedia;
+                                  widget.items.socialMedia;
                               if (await canLaunch(socialmedia)) {
                                 await launch(socialmedia);
                               } else {
@@ -606,7 +603,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             color: Colors.blue,
                           ),
                           onTap: () async {
-                            String sms = "tel:" + widget.items.contactnumber;
+                            String sms = "tel:" + widget.items.contactNumber;
                             if (await canLaunch(sms)) {
                               await launch(sms);
                             } else {
@@ -626,7 +623,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             ),
                             onTap: () async {
                               String socialmedia = "fb://facewebmodal/f?href=" +
-                                  widget.items.socialmedia;
+                                  widget.items.socialMedia;
                               if (await canLaunch(socialmedia)) {
                                 await launch(socialmedia);
                               } else {
@@ -750,4 +747,7 @@ class _DetailsPageState extends State<DetailsPage> {
       ));
     });
   }
+
+  //use this to reload map page
+
 }

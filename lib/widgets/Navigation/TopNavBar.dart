@@ -61,7 +61,7 @@ class TopNavBarState extends State<TopNavBar> {
           visible: widget.showTopLogo,
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).pushReplacementNamed('/mainpage');
+          Navigator.of(context).pushNamedAndRemoveUntil('/mainpage', (Route<dynamic> route) => false);
           /*Navigator.of(context)
               .popUntil((route) => route.settings.name == '/mainpage');*/
         },

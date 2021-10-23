@@ -26,7 +26,8 @@ class SideMenuBar extends StatelessWidget {
 
     return Scaffold(
         body: Container(
-            padding: EdgeInsets.all(50),
+         
+            padding: EdgeInsets.only(top: 50),
             color: Colors.blue[200],
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,31 +47,46 @@ class SideMenuBar extends StatelessWidget {
                   //user visibility to hide if empty
                   Visibility(
                     visible: showUserInfo,
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          //user image
-                          ClipOval(
-                            child: Image.network(
-                              userImg,
-                              height: 80,
-                              width: 80,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                        
+                          children: [
+                            //user image
+                            ClipOval(
+                              child: Image.network(
+                                userImg,
+                                height: 80,
+                                width: 80,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 12),
-                          Text('Welcome to Boracay!',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 14)),
-                          SizedBox(height: 12),
-                          Text(userName,
-                              textAlign: TextAlign.center,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 25))
-                        ]),
+                            SizedBox(height: 12),
+                            /*Text('Welcome to Boracay!',
+                             textAlign: TextAlign.center,
+                                style:
+                                    TextStyle(color: Colors.white, fontSize: 20)),*/
+                            SizedBox(height: 12),
+                            Text('Hi, ' + userName,
+                                textAlign: TextAlign.center,
+                                style:
+                                    TextStyle(color: Colors.white, fontSize: 15))
+                          ]),
+                    ),
                   ),
                 ]),
 
-                TextButton(
+                ElevatedButton(
+                   style: ElevatedButton.styleFrom(
+                    primary: Colors.white, //background
+                    onPrimary: Colors.blue,
+                    //foreground
+                    //remove border radius
+                    shape: new RoundedRectangleBorder(
+               borderRadius: new BorderRadius.circular(0),
+               ),
+               ),
+               
                   onPressed: () async {
                     if (userLoggedIn) {
                       await loginService.signOut();
@@ -83,16 +99,20 @@ class SideMenuBar extends StatelessWidget {
                       }
                     }
                   },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      //use userLoggedIn flag to change icon and text
-                      Icon(userLoggedIn ? Icons.logout : Icons.login,
-                          color: Colors.white, size: 20),
-                      SizedBox(width: 10),
-                      Text(userLoggedIn ? 'Sign Out' : 'Sign In',
-                          style: TextStyle(color: Colors.white, fontSize: 25))
-                    ],
+                  child: Container(
+                    padding: EdgeInsets.only(left: 10, right:10, top:20, bottom:20),
+                   
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        //use userLoggedIn flag to change icon and text
+                        Icon(userLoggedIn ? Icons.logout : Icons.login,
+                            color: Colors.blue, size: 20),
+                        SizedBox(width: 5),
+                        Text(userLoggedIn ? 'Sign Out' : 'Sign In',
+                            style: TextStyle(color: Colors.blue, fontSize: 20))
+                      ],
+                    ),
                   ),
                 ),
               ],

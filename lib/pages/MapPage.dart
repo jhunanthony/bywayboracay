@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'package:bywayborcay/widgets/MapWidgets/DistanceAndDurationWidget.dart';
 import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
@@ -12,6 +14,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 //construct a widget that passes user location as source location
 //const LatLng DEST_LOCATION = LatLng(11.98189918417696, 121.9151854334716);
@@ -49,6 +53,9 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
   //set to hold list of markers
   Set<Marker> _markers = Set<Marker>();
 
+  //call the distance info model
+  Future<DistanceAndDurationInfo> futuredistanceandduration;
+
   String googleAPI = 'AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE';
 
   //control the state of bottom info position
@@ -56,15 +63,18 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
   //control the state color of user info
   bool userInfoSelected = false;
 
-  //LatLng destinationLocation;
+  LatLng destinationLocation;
 
   // the user's initial location and current location
   // as it moves
   LocationData currentLocationref;
-  LocationData destinationLocationref;
+  //LocationData destinationLocationref;
 
   // wrapper around the location API
   Location locationref;
+
+  //String durationref;
+  //String distanceref;
 
   //this will hold each polylines that if connected together will form the route
   //store each coordinates since polylines consist of multiple coordinates
@@ -100,6 +110,10 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
 
     //set up initial Locations & invoke the method
     this.setInitialLocation();
+
+    //for api distance and duration
+    futuredistanceandduration = getdistanceandduration();
+
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -122,6 +136,32 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
   }
 
   // lifecycle
+
+  //create a method to instantiate from const to hard coded coordinates
+  void setInitialLocation() async {
+    CategorySelectionService catSelection =
+        Provider.of<CategorySelectionService>(context, listen: false);
+    widget.items = catSelection.items;
+    //add latlong value here
+
+    LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
+    // set the initial location by pulling the user's
+    // current location from the location's getLocation()
+    currentLocationref = await locationref.getLocation();
+
+    /*sourceLocation =
+        LatLng(SOURCE_LOCATION.latitude, SOURCE_LOCATION.longitude);*/
+    //display latlong value here
+
+    destinationLocation =
+        LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
+    /*destinationLocationref = LocationData.fromMap({
+      "latitude": destinationlatlong.latitude,
+      "longitude": destinationlatlong.longitude
+    });*/
+  }
+
+  //observe phone status
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
@@ -144,28 +184,44 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
     }
   }
 
-  //create a method to instantiate from const to hard coded coordinates
-  void setInitialLocation() async {
+  //get distance and duration using dio
+
+  Future<DistanceAndDurationInfo> getdistanceandduration() async {
+
     CategorySelectionService catSelection =
         Provider.of<CategorySelectionService>(context, listen: false);
     widget.items = catSelection.items;
-    //add latlong value here
+    /*Dio dio = new Dio();
+    Response response = await dio.get(
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocation.latitude},${destinationLocation.latitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE");
+    print(response.data);*/
 
-    LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
-    // set the initial location by pulling the user's
-    // current location from the location's getLocation()
-    currentLocationref = await locationref.getLocation();
+    /*if (response.data.status == "OK") {
+    return getdistanceandduration.fro(jsonDecode(response.data));
+  } else {
+    throw Exception("Error Leoading request URL info.");
+  }  */
+  LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
+  destinationLocation =
+        LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
+  currentLocationref = await locationref.getLocation();
 
-    /*sourceLocation =
-        LatLng(SOURCE_LOCATION.latitude, SOURCE_LOCATION.longitude);*/
-    //display latlong value here
 
-    /*destinationLocation =
-        LatLng(destinationlatlong.latitude, destinationlatlong.longitude);*/
-    destinationLocationref = LocationData.fromMap({
-      "latitude": destinationlatlong.latitude,
-      "longitude": destinationlatlong.longitude
-    });
+    
+    final requestURL =
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocation.latitude},${destinationLocation.longitude}&key=$googleAPI";
+    //"https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${currentlocationlatlong.latitude},${currentlocationlatlong.longitude}&destinations=${destinationlatlong.latitude},${destinationlatlong.longitude}&travelmode=walking&dir_action=navigate&key=$googleAPI";
+    /*"https://maps.googleapis.com/maps/api/directions/json?origin=${currentlocationlatlong.latitude},${currentlocationlatlong.longitude}&destination=${destinationlatlong.latitude},${destinationlatlong.longitude}&key=$googleAPI";*/
+   
+    final response = await http.get(Uri.parse(requestURL));
+
+
+      
+    if (response.statusCode == 200) {
+    return DistanceAndDurationInfo.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception("Error Leoading request URL info.");
+  }
   }
 
   @override
@@ -257,7 +313,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
             ]),
             onTap: () async {
               String googleUrl =
-                  'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocationref.latitude},${destinationLocationref.longitude}&travelmode=walking&dir_action=navigate';
+                  'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&travelmode=walking&dir_action=navigate';
 
               if (await canLaunch(googleUrl)) {
                 await launch(googleUrl);
@@ -268,6 +324,32 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
 
             //return info to redirect to google direction
           ),
+        ),
+        Positioned(
+          top: 180,
+          right:0,
+          left:0,
+          
+          child: Align(
+            alignment: Alignment.center,
+            child: Container(
+             
+              child: FutureBuilder<DistanceAndDurationInfo>(
+                  future: futuredistanceandduration,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return DistanceAndDurationWidget(
+                        distancevalue: snapshot.data.distancevalue,
+                        distance: snapshot.data.distance,
+                        duration: snapshot.data.duration,
+                      );
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text("${snapshot.error}"));
+                    }
+                    return CircularProgressIndicator();
+                  }),
+            ),
+          ),
         )
       ])),
     );
@@ -275,13 +357,15 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
 
   //this method will perform network call from the API
   void setPolylines() async {
+    var currentPosition =
+        LatLng(currentLocationref.latitude, currentLocationref.longitude);
+
     LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      'AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE',
-      PointLatLng(currentLocationref.latitude, currentLocationref.longitude),
+      googleAPI,
+      PointLatLng(currentPosition.latitude, currentPosition.longitude),
       PointLatLng(destinationlatlong.latitude, destinationlatlong.longitude),
-      travelMode: TravelMode.walking,
-      optimizeWaypoints: true,
+
       //wayPoints: [PolylineWayPoint(location: "Philippines")]
     );
 
@@ -316,8 +400,8 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
 
     var currentPosition =
         LatLng(currentLocationref.latitude, currentLocationref.longitude);
-    var distinationPosition = LatLng(
-        destinationLocationref.latitude, destinationLocationref.longitude);
+    var distinationPosition =
+        LatLng(destinationLocation.latitude, destinationLocation.longitude);
 
     setState(() {
       _markers.add(Marker(
@@ -370,8 +454,6 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
       // updated position
       var currentPosition =
           LatLng(currentLocationref.latitude, currentLocationref.longitude);
-      var distinationPosition = LatLng(
-          destinationLocationref.latitude, destinationLocationref.longitude);
 
       // the trick is to remove the marker (by id)
       // and add it again at the updated location
@@ -386,21 +468,29 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
               this.userInfoSelected = true;
             });
           }));
-
-      //display position marker again
-
-      _markers.add(Marker(
-          markerId: MarkerId('destinationPin'),
-          position: distinationPosition,
-          icon: destinationIcon,
-          infoWindow: InfoWindow(title: this.widget.items.name),
-          onTap: () {
-            setState(() {
-              this.pinBottomInfoPosition = PIN_VISIBLE_POSITION;
-            });
-          }));
-
-      
     });
+  }
+}
+
+class DistanceAndDurationInfo {
+  final distancevalue;
+  final distance;
+  final duration;
+
+  DistanceAndDurationInfo({
+    @required this.distancevalue,
+    @required this.distance,
+    @required this.duration,
+  });
+
+  factory DistanceAndDurationInfo.fromJson(Map<String, dynamic> json) {
+    return DistanceAndDurationInfo(
+      /*distancevalue: json['routes'][2]['legs'][0]['distance']['value'],
+      distance: json['routes'][2]['legs'][0]['distance']['text'],
+      duration: json['routes'][2]['legs'][1]['duration']['text'],*/
+      distancevalue: json['rows'][0]['elements'][0]['distance']['value'],
+      distance: json['rows'][0]['elements'][0]['distance']['text'],
+      duration: json['rows'][0]['elements'][0]['duration']['text'],
+    );
   }
 }

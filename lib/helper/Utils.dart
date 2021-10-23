@@ -43,7 +43,7 @@ class Utils {
           items: [
             Items(
                 itemcolor: AppColors.ToStayColor,
-                itemicon: AppIcons.ToStayIcon,
+                itemiconName: AppIcons.ToStayIcon,
                 itemname: 'Boracay Hotel 1',
                 itemaddress: 'Balabag, Malay, Aklan',
                 itemstation: 'Balabag',
@@ -52,21 +52,22 @@ class Utils {
                 itemimgName: 'Test_Image_3',
                 itemdescription:
                     "Nestled in a sheltered bay on Boracay’s pristine northern coastline, Shangri-La’s Boracay Resort & Spa, Philippines exudes tropical island luxury. It has 219 rooms and villas showcasing contemporary style, enriched with Filipino touches. The resort’s layout offers spectacular vistas of lush green scenery and azure ocean views from every vantage point.",
-                itemcontactnumber: "(63 36) 288 4988",
+                itemcontactNumber: "(63 36) 288 4988",
                 itemcategoryName: 'To Stay',
                 itemmarkerName: 'To_Stay_Marker',
 
-                itemsubcategoryName: 'Hotels',
+                itemsubcategoryName: 'Hotel',
                 itememail: "boracay@shangri-la.com",
                 itemwebsite:
                     "https://www.shangri-la.com/en/boracay/boracayresort/",
-                itemsocialmedia: "https://web.facebook.com/ShangriLaBoracay",
+                itemsocialMedia: "https://web.facebook.com/ShangriLaBoracay",
                
+                //erase likes
                 itemlikes: 0,
                 itemrating1: 4.5,
                 itemrating2: 4.8,
-                itemopentime: '8am - 10pm',
-                itempricemin: 2000.00,
+                itemopenTime: '8am - 10pm',
+                itempriceMin: 2000.00,
                 detailsimages: [
                   DetailsImages(
                     imgName: 'Test_Image_1',
@@ -83,7 +84,7 @@ class Utils {
                 ]),
             Items(
                 itemcolor: AppColors.ToStayColor,
-                itemicon: AppIcons.ToStayIcon,
+                itemiconName: AppIcons.ToStayIcon,
                 itemname: 'Boracay Hotel 2',
                 itemaddress: 'Balabag, Malay, Aklan',
                 itemstation: 'Balabag',
@@ -93,20 +94,20 @@ class Utils {
                 itemimgName: 'Test_Image_2',
                 itemdescription:
                     "Nestled in a sheltered bay on Boracay’s pristine northern coastline, Shangri-La’s Boracay Resort & Spa, Philippines exudes tropical island luxury. It has 219 rooms and villas showcasing contemporary style, enriched with Filipino touches. The resort’s layout offers spectacular vistas of lush green scenery and azure ocean views from every vantage point.",
-                itemcontactnumber: "(63 36) 288 4988",
+                itemcontactNumber: "(63 36) 288 4988",
                  itemcategoryName: 'To Stay',
                 itemmarkerName: 'To_Stay_Marker',
                 itemsubcategoryName: 'Hotels',
                 itememail: "boracay@shangri-la.com",
                 itemwebsite:
                     "https://www.shangri-la.com/en/boracay/boracayresort/",
-                itemsocialmedia: "https://web.facebook.com/ShangriLaBoracay",
+                itemsocialMedia: "https://web.facebook.com/ShangriLaBoracay",
             
                 itemlikes: 0,
                 itemrating1: 4.5,
                 itemrating2: 4.8,
-                itemopentime: '8am - 10pm',
-                itempricemin: 2000.00,
+                itemopenTime: '8am - 10pm',
+                itempriceMin: 2000.00,
                 detailsimages: [
                   DetailsImages(
                     imgName: 'Test_Image_1',

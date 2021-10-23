@@ -255,7 +255,7 @@ class ItemsPage extends StatelessWidget {
                                                 this
                                                     .selectedCategory
                                                     .items[index]
-                                                    .opentime,
+                                                    .openTime,
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 color: Colors.white,
@@ -269,7 +269,7 @@ class ItemsPage extends StatelessWidget {
                                                 this
                                                     .selectedCategory
                                                     .items[index]
-                                                    .pricemin
+                                                    .priceMin
                                                     .toString(),
                                             style: TextStyle(
                                                 fontSize: 12,
