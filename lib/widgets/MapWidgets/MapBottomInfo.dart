@@ -54,7 +54,7 @@ class MapBottomInfo extends StatelessWidget {
                     Positioned(
                       bottom: -10,
                       right: -10,
-                      child: Image.asset('assets/images/'+ this.items.markerName +'.png',
+                      child: Image.asset('assets/images/'+ this.items.itemmarkerName +'.png',
                           height: 30, width: 30),
                     ),
                   ],
@@ -65,14 +65,14 @@ class MapBottomInfo extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          this.items.name,
+                          this.items.catname,
                           style: TextStyle(
                             color: Colors.grey,
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
                           ),
                         ),
-                        Text(this.items.address),
+                        Text(this.items.itemaddress),
                       ]),
                 ),
                 Column(

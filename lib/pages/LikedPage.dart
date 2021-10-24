@@ -123,7 +123,7 @@ class LikedPage extends StatelessWidget {
               if (like.items.length > 0) {
                 like.items.forEach((LikedItem item) {
                   Items itemslistinfo = (item.category as Items);
-                  double total = itemslistinfo.priceMin;
+                  double total = itemslistinfo.itempriceMin;
                   mainTotal += total;
 
                   likeditems.add(
@@ -157,12 +157,12 @@ class LikedPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      itemslistinfo.name,
+                                      itemslistinfo.catname,
                                       style: TextStyle(
                                           color: Colors.blue, fontSize: 12),
                                     ),
                                     Text(
-                                      itemslistinfo.address,
+                                      itemslistinfo.itemaddress,
                                       style: TextStyle(
                                         color: Colors.blue,
                                         fontSize: 12,
@@ -170,7 +170,7 @@ class LikedPage extends StatelessWidget {
                                     ),
                                     Text(
                                       'min. ₱ ' +
-                                          itemslistinfo.priceMin.toString(),
+                                          itemslistinfo.itempriceMin.toString(),
                                       style: TextStyle(
                                         color: Colors.blue,
                                         fontSize: 12,

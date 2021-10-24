@@ -66,6 +66,9 @@ dependencies:
   #for state management
   provider: ^6.0.1
 
+  #for firestore api
+  cloud_firestore: ^2.5.4
+
   
 
 
