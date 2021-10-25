@@ -157,7 +157,7 @@ class LikedPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      itemslistinfo.catname,
+                                      itemslistinfo.name,
                                       style: TextStyle(
                                           color: Colors.blue, fontSize: 12),
                                     ),

@@ -21,7 +21,7 @@ class LikeService extends ChangeNotifier {
   //if an item is already in saveditem then false the button
   bool isLiked(Items cat) {
     return _items.length > 0
-        ? _items.any((LikedItem item) => item.category.catname == cat.catname)
+        ? _items.any((LikedItem item) => item.category.name == cat.name)
         : false;
   }
 
@@ -41,9 +41,9 @@ class LikeService extends ChangeNotifier {
   Items getCategoryFromLikedItems(Items cat) {
     Items itemcat = cat;
     if (_items.length > 0 &&
-        _items.any((LikedItem item) => item.category.catname == cat.catname)) {
+        _items.any((LikedItem item) => item.category.name == cat.name)) {
       LikedItem likedItem =
-          _items.firstWhere((LikedItem item) => item.category.catname == cat.catname);
+          _items.firstWhere((LikedItem item) => item.category.name == cat.name);
 
       if (likedItem != null) {
         itemcat = likedItem.category;

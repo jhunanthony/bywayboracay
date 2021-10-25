@@ -65,7 +65,7 @@ class MapBottomInfo extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          this.items.catname,
+                          this.items.name,
                           style: TextStyle(
                             color: Colors.grey,
                             fontWeight: FontWeight.bold,

@@ -254,7 +254,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 //use wrap horizontal to auto expand text
                 child: Wrap(direction: Axis.horizontal, children: [
                   Text(
-                    widget.items.catname,
+                    widget.items.name,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 25,

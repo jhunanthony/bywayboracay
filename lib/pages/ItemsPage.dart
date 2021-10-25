@@ -64,7 +64,7 @@ class ItemsPage extends StatelessWidget {
                   bottom: 40,
                   left: 0,
                   right: 0,
-                  child: Text(this.selectedCategory.catname,
+                  child: Text(this.selectedCategory.name,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white,
@@ -183,7 +183,7 @@ class ItemsPage extends StatelessWidget {
                                                 this
                                                     .selectedCategory
                                                     .items[index]
-                                                    .catname,
+                                                    .name,
                                                 overflow: TextOverflow.fade,
                                                 style: TextStyle(
                                                     color: Colors.white,

@@ -419,7 +419,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
           markerId: MarkerId('destinationPin'),
           position: distinationPosition,
           icon: destinationIcon,
-          infoWindow: InfoWindow(title: this.widget.items.catname),
+          infoWindow: InfoWindow(title: this.widget.items.name),
           onTap: () {
             setState(() {
               this.pinBottomInfoPosition = PIN_VISIBLE_POSITION;

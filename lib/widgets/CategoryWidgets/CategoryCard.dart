@@ -65,7 +65,7 @@ class CategoryCard extends StatelessWidget {
       Padding(
         padding: EdgeInsets.only(right: 10),
         child: Text(
-          this.category.catname,
+          this.category.name,
           style: TextStyle(
               fontSize: 12, color: Colors.black, fontWeight: FontWeight.w300),
         ),

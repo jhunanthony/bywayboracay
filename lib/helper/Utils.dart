@@ -10,8 +10,6 @@ import 'AppColors.dart';
 import 'AppIcons.dart';
 
 class Utils {
-
-
   //create static onboardingcontent the will return content ref
   static List<OnBoardingContent> getOnBoarding() {
     return [
@@ -35,22 +33,24 @@ class Utils {
   }
 
   //create static method that will return categories with data
-  /*static List<Category> getMockedCategory() {
+  static List<Category> getMockedCategory() {
     return [
       Category(
           color: AppColors.ToStayColor,
-          catname: 'To Stay',
+          name: 'To Stay',
           imgName: 'Test_Image_1',
           iconName: AppIcons.ToStayIcon,
           items: [
             Items(
-         
+            
+                itemcolor: AppColors.ToStayColor,
+                itemiconName: AppIcons.ToStayIcon,
                 itemname: 'Boracay Hotel 1',
                 itemaddress: 'Balabag, Malay, Aklan',
                 itemstation: 'Balabag',
                 itemlat: 11.987426774719031,
                 itemlong: 121.90622655889455,
-             
+                itemimgName: 'Test_Image_3',
                 itemdescription:
                     "Nestled in a sheltered bay on Boracay’s pristine northern coastline, Shangri-La’s Boracay Resort & Spa, Philippines exudes tropical island luxury. It has 219 rooms and villas showcasing contemporary style, enriched with Filipino touches. The resort’s layout offers spectacular vistas of lush green scenery and azure ocean views from every vantage point.",
                 itemcontactNumber: "(63 36) 288 4988",
@@ -85,13 +85,16 @@ class Utils {
                 ]),
             Items(
               
+                itemcolor: AppColors.ToStayColor,
+                itemiconName: AppIcons.ToStayIcon,
                 itemname: 'Boracay Hotel 2',
                 itemaddress: 'Balabag, Malay, Aklan',
                 itemstation: 'Balabag',
+                
              
                 itemlat: 11.9719344536077,
                 itemlong: 121.91660472762166,
-               
+                itemimgName: 'Test_Image_2',
                 itemdescription:
                     "Nestled in a sheltered bay on Boracay’s pristine northern coastline, Shangri-La’s Boracay Resort & Spa, Philippines exudes tropical island luxury. It has 219 rooms and villas showcasing contemporary style, enriched with Filipino touches. The resort’s layout offers spectacular vistas of lush green scenery and azure ocean views from every vantage point.",
                 itemcontactNumber: "(63 36) 288 4988",
@@ -103,7 +106,6 @@ class Utils {
                     "https://www.shangri-la.com/en/boracay/boracayresort/",
                 itemsocialMedia: "https://web.facebook.com/ShangriLaBoracay",
             
-
                 itemrating1: 4.5,
                 itemrating2: 4.8,
                 itemopenTime: '8am - 10pm',
@@ -126,24 +128,24 @@ class Utils {
           ]),
       Category(
           color: AppColors.ToEatandDrinkColor,
-          catname: 'To Eat&Drink',
+          name: 'To Eat&Drink',
           imgName: 'Test_Image_2',
           iconName: AppIcons.ToEatandDrinkIcon,
           items: []),
       Category(
           color: AppColors.ToSeeColor,
-          catname: 'To See',
+          name: 'To See',
           imgName: 'Test_Image_3',
           iconName: AppIcons.ToSeeIcon,
           items: []),
       Category(
           color: AppColors.ToDoColor,
-          catname: 'To Do',
+          name: 'To Do',
           imgName: 'Test_Image_4',
           iconName: AppIcons.ToDoIcon,
           items: []),
     ];
-  }*/
+  }
 
   
 }

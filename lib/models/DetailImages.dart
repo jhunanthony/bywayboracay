@@ -5,7 +5,7 @@ class DetailsImages {
   DetailsImages({this.imgName});
 
   //create method like categor
-  factory DetailsImages.fromJson(Map<String, dynamic> json) {
+  /*factory DetailsImages.fromJson(Map<String, dynamic> json) {
     return DetailsImages(imgName: json['imgName']);
   }
 
@@ -16,5 +16,5 @@ class DetailsImages {
       detailsimages.add(DetailsImages.fromJson(jsonData));
     });
     return detailsimages;
-  }
+  }*/
 }
