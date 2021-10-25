@@ -24,7 +24,7 @@ class Category {
   String website;
   String socialMedia;
  
-  int likes;
+ 
   double rating1;
   double rating2;
   String openTime;
@@ -50,7 +50,7 @@ class Category {
     this.website,
     this.socialMedia,
   
-    this.likes,
+   
     this.rating1,
      this.rating2,
     this.openTime,

@@ -63,7 +63,7 @@ class Utils {
                 itemsocialMedia: "https://web.facebook.com/ShangriLaBoracay",
                
                 //erase likes
-                itemlikes: 0,
+           
                 itemrating1: 4.5,
                 itemrating2: 4.8,
                 itemopenTime: '8am - 10pm',
@@ -103,7 +103,6 @@ class Utils {
                     "https://www.shangri-la.com/en/boracay/boracayresort/",
                 itemsocialMedia: "https://web.facebook.com/ShangriLaBoracay",
             
-                itemlikes: 0,
                 itemrating1: 4.5,
                 itemrating2: 4.8,
                 itemopenTime: '8am - 10pm',
