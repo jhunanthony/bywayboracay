@@ -41,7 +41,7 @@ class Category {
     this.color,
     this.imgName,
     this.items,
-    
+
     this.itemname,
     this.itemiconName,
     this.itemcolor,
@@ -65,4 +65,16 @@ class Category {
     this.itemopenTime,
     this.itempriceMin,
   });
+
+  //factory method to mapp json structure and hidrate all the value
+  factory Category.fromJson(Map<String, dynamic> json) {
+    
+    return Category(
+      color: Color(int.parse('0xFF' + json['color'])),
+      iconName: json['iconName'],
+      name: json['name'],
+      imgName: json['imgName'],
+      items: Items.fromJsonArray(json['items']),
+    );
+  }
 }

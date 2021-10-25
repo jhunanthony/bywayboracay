@@ -1,4 +1,5 @@
 import 'package:bywayborcay/services/categoryselectionservice.dart';
+import 'package:bywayborcay/services/categoryservice.dart';
 
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryCard.dart';
 import 'package:bywayborcay/widgets/Navigation/BottomNavBar.dart';
@@ -179,13 +180,17 @@ class ForYouTabs extends StatelessWidget {
 // ignore: must_be_immutable
 class CategoryButtons extends StatelessWidget {
 //create a member variable that will hold reference to the list of category
-  List<Category> categories = Utils.getMockedCategory();
-
+  //List<Category> categories = Utils.getMockedCategory();
+  List<Category> categories = [];
   @override
   Widget build(BuildContext context) {
     CategorySelectionService catSelection =
         Provider.of<CategorySelectionService>(context, listen: false);
 
+    CategoryService catService =
+        Provider.of<CategoryService>(context, listen: false);
+    categories = catService.getCategories();
+    
     return Container(
         margin: EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 10),
         padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 0),

@@ -6,6 +6,7 @@ import 'package:bywayborcay/pages/LogInPage.dart';
 import 'package:bywayborcay/pages/MapPage.dart';
 import 'package:bywayborcay/pages/OnBoardingPage.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
+import 'package:bywayborcay/services/categoryservice.dart';
 
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/services/likeservice.dart';
@@ -40,6 +41,9 @@ class MyApp extends StatelessWidget {
         create: (_) => LikeService()),
       //import instances from provider firebase
      
+      Provider(
+        create: (_) => CategoryService(),
+      )
       ],
     
       child: MaterialApp(

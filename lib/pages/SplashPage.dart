@@ -1,4 +1,5 @@
 import 'package:bywayborcay/pages/LogInPage.dart';
+import 'package:bywayborcay/services/categoryservice.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -15,26 +16,25 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //retrieve instance of categoryservice
-    /*CategoryService catService =
-        Provider.of<CategoryService>(context, listen: false);*/
+    CategoryService catService =
+        Provider.of<CategoryService>(context, listen: false);
 
     Future.delayed(Duration(seconds: this.duration), () async {
       //wait for the firebase initialization to occur if fetched start pulling data from online database
-      //FirebaseApp app = await Firebase.initializeApp();
+      FirebaseApp app = await Firebase.initializeApp();
 
       //fetch data from firebase
-      //catService.getCategoriesCollectionFromFirebase().then((value) {
+      catService.getCategoriesCollectionFromFirebase().then((value) {
         
-        /*Navigator.of(context).pushNamed('/loginpage');*/
-      /*Navigator.push(
+        Navigator.of(context).pushNamed('/loginpage');
+      Navigator.push(
             context, MaterialPageRoute(builder: (context) => this.goToPage));
-           
-      });*/
- Navigator.push(
-            context, MaterialPageRoute(builder: (context) => this.goToPage));
+             });
+     });
+ 
       
 
-    });
+  
 
     return SafeArea(
         child: Scaffold(

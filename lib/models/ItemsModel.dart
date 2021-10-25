@@ -66,4 +66,43 @@ class Items extends Category {
           itemopenTime: itemopenTime,
           itempriceMin: itempriceMin,
         );
+
+
+        //factory constructor
+  factory Items.fromJson(Map<String, dynamic> json) {
+    return Items(
+      itemaddress: json['itemaddress'],
+      itemcategoryName: json['itemcategoryName'],
+      itemcolor: Color(int.parse('0xFF' + json['itemcolor'])),
+      itemcontactNumber: json['itemcontactNumber'],
+      itemdescription: json['itemdescription'],
+      detailsimages: DetailsImages.fromJsonArray(json['itemdetailsimages']),
+      itememail: json['itememail'],
+      itemiconName: json['itemiconName'],
+      itemimgName: json['itemimgName'],
+      itemlat: double.parse(json['itemlat']),
+      itemlong: double.parse(json['itemlong']),
+      itemmarkerName: json['itemmarkerName'],
+      itemname: json['itemname'],
+      itemopenTime: json['itemopenTime'],
+      itempriceMin: double.parse(json['itempriceMin']),
+      itemrating1: double.parse(json['itemrating1']),
+      itemrating2: double.parse(json['itemrating2']),
+      itemsocialMedia: json['itemsocialMedia'],
+      itemstation: json['itemstation'],
+      itemsubcategoryName: json['itemsubcategoryName'],
+      itemwebsite: json['itemwebsite'],
+    );
+  }
+
+  //add the json array
+  static List<Items> fromJsonArray(List<dynamic> jsonArray) {
+    List<Items> itemsFromJson = [];
+
+    jsonArray.forEach((jsonData) {
+      itemsFromJson.add(Items.fromJson(jsonData));
+    });
+
+    return itemsFromJson;
+  }
 }
