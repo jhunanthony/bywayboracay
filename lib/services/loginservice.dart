@@ -6,9 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 class LoginService {
   //encapsulate firebase hooks to project from the cloud
 
-  LoginService() {
-    Firebase.initializeApp();
-  }
+  
 
   UserLogInModel _userModel;
 

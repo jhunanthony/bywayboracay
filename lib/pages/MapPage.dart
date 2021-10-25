@@ -124,7 +124,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
         Provider.of<CategorySelectionService>(context, listen: false);
     widget.items = catSelection.items;
 
-    String parentCategory = widget.items.markerName;
+    String parentCategory = widget.items.itemmarkerName;
 
     sourceIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 0.5),
@@ -144,7 +144,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
     widget.items = catSelection.items;
     //add latlong value here
 
-    LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
+    LatLng destinationlatlong = LatLng(widget.items.itemlat, widget.items.itemlong);
     // set the initial location by pulling the user's
     // current location from the location's getLocation()
     currentLocationref = await locationref.getLocation();
@@ -201,7 +201,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
   } else {
     throw Exception("Error Leoading request URL info.");
   }  */
-  LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
+  LatLng destinationlatlong = LatLng(widget.items.itemlat, widget.items.itemlong);
   destinationLocation =
         LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
   currentLocationref = await locationref.getLocation();
@@ -238,7 +238,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
         zoom: CAMERA_ZOOM,
         tilt: CAMERA_TILT,
         bearing: CAMERA_BEARING,
-        target: LatLng(widget.items.lat, widget.items.long));
+        target: LatLng(widget.items.itemlat, widget.items.itemlong));
 
     if (currentLocationref != null) {
       initialCameraPosition = CameraPosition(
@@ -360,7 +360,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
     var currentPosition =
         LatLng(currentLocationref.latitude, currentLocationref.longitude);
 
-    LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
+    LatLng destinationlatlong = LatLng(widget.items.itemlat, widget.items.itemlong);
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       googleAPI,
       PointLatLng(currentPosition.latitude, currentPosition.longitude),
@@ -419,7 +419,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
           markerId: MarkerId('destinationPin'),
           position: distinationPosition,
           icon: destinationIcon,
-          infoWindow: InfoWindow(title: this.widget.items.name),
+          infoWindow: InfoWindow(title: this.widget.items.catname),
           onTap: () {
             setState(() {
               this.pinBottomInfoPosition = PIN_VISIBLE_POSITION;

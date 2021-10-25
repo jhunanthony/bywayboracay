@@ -1,4 +1,5 @@
 import 'package:bywayborcay/services/categoryselectionservice.dart';
+import 'package:bywayborcay/services/categoryservice.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryCard.dart';
 import 'package:bywayborcay/widgets/Navigation/BottomNavBar.dart';
 import 'package:bywayborcay/widgets/Navigation/SideMenuBar.dart';
@@ -29,42 +30,34 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   Widget build(BuildContext context) {
     //grab the instances from the provider
-   
 
-       return SafeArea(
+    return SafeArea(
         child: Scaffold(
-          backgroundColor: Colors.white,
-            body: 
-              ListView(controller: _controller, children: [
-                  Header(),
-                  PromotionalVideo(),
-                  CategoryButtons(),
-                  ScrollButtons(),
-                  ForYouTabs(),
-                  Highlights(),
-                  Geography(),
-                  AwardsAndRecognition(),
-                  Culture(),
-                  History(),
-                  SizedBox(
-                    height: 100,
-                  )
-                ]),
-                
-                //show top bar
-                /*Positioned(top: 0, left:0,right:0, child: TopNavBar(
+      backgroundColor: Colors.white,
+      body: ListView(controller: _controller, children: [
+        Header(),
+        PromotionalVideo(),
+        CategoryButtons(),
+        ScrollButtons(),
+        ForYouTabs(),
+        Highlights(),
+        Geography(),
+        AwardsAndRecognition(),
+        Culture(),
+        History(),
+        SizedBox(
+          height: 100,
+        )
+      ]),
+
+      //show top bar
+      /*Positioned(top: 0, left:0,right:0, child: TopNavBar(
                     colorbackground: Colors.transparent,
                   ),),
                 Positioned(bottom: 0, left:0,right:0, child: BottomNavBar(
                     
                   ),)*/
-               
-
-          
-            )
-            
-            );
- 
+    ));
   }
 }
 
@@ -186,12 +179,18 @@ class ForYouTabs extends StatelessWidget {
 // ignore: must_be_immutable
 class CategoryButtons extends StatelessWidget {
 //create a member variable that will hold reference to the list of category
-  List<Category> categories = Utils.getMockedCategory();
-
+  
   @override
   Widget build(BuildContext context) {
     CategorySelectionService catSelection =
         Provider.of<CategorySelectionService>(context, listen: false);
+   
+    
+
+    //fetch data from service
+    CategoryService catService =
+        Provider.of<CategoryService>(context, listen: false);
+    List<Category> categories = catService.getCategories();
 
     return Container(
         margin: EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 10),
@@ -239,7 +238,7 @@ class CategoryButtons extends StatelessWidget {
                       //populate the CategoryCard
                       category: categories[index],
                       onCardClick: () {
-                        catSelection.selectedCategory = this.categories[index];
+                        catSelection.selectedCategory = categories[index];
                         Navigator.of(context).pushNamed('/itemspage');
                       });
                 },
@@ -465,13 +464,13 @@ class Header extends StatelessWidget {
                           topLeft: Radius.circular(50),
                         ),
                         color: Colors.white,
-                         boxShadow: [
-      BoxShadow(
-         color: Colors.grey.withOpacity(0.3),
-                                        blurRadius: 5,
-        offset: Offset(4, 0), // Shadow position
-      ),
-    ],
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            blurRadius: 5,
+                            offset: Offset(4, 0), // Shadow position
+                          ),
+                        ],
                       ),
                       child: Center(
                         child: Text('Saylo Kamo Iya!',

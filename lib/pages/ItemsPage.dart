@@ -64,7 +64,7 @@ class ItemsPage extends StatelessWidget {
                   bottom: 40,
                   left: 0,
                   right: 0,
-                  child: Text(this.selectedCategory.name,
+                  child: Text(this.selectedCategory.catname,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white,
@@ -183,7 +183,7 @@ class ItemsPage extends StatelessWidget {
                                                 this
                                                     .selectedCategory
                                                     .items[index]
-                                                    .name,
+                                                    .catname,
                                                 overflow: TextOverflow.fade,
                                                 style: TextStyle(
                                                     color: Colors.white,
@@ -210,7 +210,7 @@ class ItemsPage extends StatelessWidget {
                                                     this
                                                         .selectedCategory
                                                         .items[index]
-                                                        .address,
+                                                        .itemaddress,
                                                     style: TextStyle(
                                                         fontSize: 10,
                                                         color: Colors.white,
@@ -255,7 +255,7 @@ class ItemsPage extends StatelessWidget {
                                                 this
                                                     .selectedCategory
                                                     .items[index]
-                                                    .openTime,
+                                                    .itemopenTime,
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 color: Colors.white,
@@ -269,7 +269,7 @@ class ItemsPage extends StatelessWidget {
                                                 this
                                                     .selectedCategory
                                                     .items[index]
-                                                    .priceMin
+                                                    .itempriceMin
                                                     .toString(),
                                             style: TextStyle(
                                                 fontSize: 12,

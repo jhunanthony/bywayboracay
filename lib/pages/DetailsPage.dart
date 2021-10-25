@@ -37,7 +37,7 @@ class _DetailsPageState extends State<DetailsPage> {
   LatLng destinationLocation;
 
   void setSourceAndDestinationMarkerIcons(BuildContext context) async {
-    String parentCategory = widget.items.markerName;
+    String parentCategory = widget.items.itemmarkerName;
 
     destinationIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 0.5),
@@ -58,7 +58,7 @@ class _DetailsPageState extends State<DetailsPage> {
     this.setSourceAndDestinationMarkerIcons(context);
     //initialize needed values for map
 
-    LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
+    LatLng destinationlatlong = LatLng(widget.items.itemlat, widget.items.itemlong);
     destinationLocation =
         LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
 
@@ -254,7 +254,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 //use wrap horizontal to auto expand text
                 child: Wrap(direction: Axis.horizontal, children: [
                   Text(
-                    widget.items.name,
+                    widget.items.catname,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 25,
@@ -280,7 +280,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             ),
                             Visibility(
                               visible:
-                                  widget.items.rating1 == null ? false : true,
+                                  widget.items.itemrating1 == null ? false : true,
                               child: Row(
                                 children: <Widget>[
                                   Text(
@@ -292,7 +292,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   ),
                                   //for rating
                                   RatingBarIndicator(
-                                    rating: widget.items.rating1,
+                                    rating: widget.items.itemrating1,
                                     itemBuilder: (context, index) => Icon(
                                       Icons.circle,
                                       color: Colors.green[300],
@@ -302,7 +302,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                     direction: Axis.horizontal,
                                   ),
                                   Text(
-                                    " " + widget.items.rating1.toString(),
+                                    " " + widget.items.itemrating1.toString(),
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: Colors.green[300],
@@ -316,7 +316,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             ),
                             Visibility(
                               visible:
-                                  widget.items.rating1 == null ? false : true,
+                                  widget.items.itemrating1 == null ? false : true,
                               child: Row(
                                 children: <Widget>[
                                   Text(
@@ -328,7 +328,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   ),
                                   //for rating
                                   RatingBarIndicator(
-                                    rating: widget.items.rating2.toDouble(),
+                                    rating: widget.items.itemrating2.toDouble(),
                                     itemBuilder: (context, index) => Icon(
                                       Icons.star,
                                       color: Colors.yellow[800],
@@ -338,7 +338,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                     direction: Axis.horizontal,
                                   ),
                                   Text(
-                                    " " + widget.items.rating2.toString(),
+                                    " " + widget.items.itemrating2.toString(),
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: Colors.yellow[800],
@@ -383,7 +383,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   bottom: 15,
                 ),
                 child: ExpandableText(
-                  "       " + widget.items.description,
+                  "       " + widget.items.itemdescription,
                   expandText: 'show more',
                   collapseText: 'show less',
                   maxLines: 4,
@@ -409,7 +409,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                           SizedBox(width: 5),
                           Text(
-                            widget.items.openTime,
+                            widget.items.itemopenTime,
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey,
@@ -426,7 +426,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                           SizedBox(width: 5),
                           Text(
-                            'min. ₱' + widget.items.priceMin.toString(),
+                            'min. ₱' + widget.items.itempriceMin.toString(),
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey,
@@ -451,7 +451,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       ),
                       SizedBox(width: 5),
                       Text(
-                        widget.items.address,
+                        widget.items.itemaddress,
                         style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey,
@@ -564,7 +564,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold)),
                           onTap: () async {
-                            String sms = "tel:" + widget.items.contactNumber;
+                            String sms = "tel:" + widget.items.itemcontactNumber;
                             if (await canLaunch(sms)) {
                               await launch(sms);
                             } else {
@@ -583,7 +583,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                     fontWeight: FontWeight.bold)),
                             onTap: () async {
                               String socialmedia = "fb://facewebmodal/f?href=" +
-                                  widget.items.socialMedia;
+                                  widget.items.itemsocialMedia;
                               if (await canLaunch(socialmedia)) {
                                 await launch(socialmedia);
                               } else {
@@ -603,7 +603,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             color: Colors.blue,
                           ),
                           onTap: () async {
-                            String sms = "tel:" + widget.items.contactNumber;
+                            String sms = "tel:" + widget.items.itemcontactNumber;
                             if (await canLaunch(sms)) {
                               await launch(sms);
                             } else {
@@ -623,7 +623,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             ),
                             onTap: () async {
                               String socialmedia = "fb://facewebmodal/f?href=" +
-                                  widget.items.socialMedia;
+                                  widget.items.itemsocialMedia;
                               if (await canLaunch(socialmedia)) {
                                 await launch(socialmedia);
                               } else {
@@ -644,7 +644,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                     fontWeight: FontWeight.bold)),
                             onTap: () async {
                               String mailto = "mailto:" +
-                                  widget.items.email +
+                                  widget.items.itememail +
                                   "?subject=Inquiry&body=Greetings!";
                               if (await canLaunch(mailto)) {
                                 await launch(mailto);
@@ -662,7 +662,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold)),
                             onTap: () async {
-                              String url = widget.items.website;
+                              String url = widget.items.itemwebsite;
                               if (await canLaunch(url)) {
                                 await launch(url);
                               } else {
@@ -683,7 +683,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             ),
                             onTap: () async {
                               String mailto = "mailto:" +
-                                  widget.items.email +
+                                  widget.items.itememail +
                                   "?subject=Inquiry&body=Greetings!";
                               if (await canLaunch(mailto)) {
                                 await launch(mailto);
@@ -702,7 +702,7 @@ class _DetailsPageState extends State<DetailsPage> {
                               color: Colors.blue,
                             ),
                             onTap: () async {
-                              String url = widget.items.website;
+                              String url = widget.items.itemwebsite;
                               if (await canLaunch(url)) {
                                 await launch(url);
                               } else {
@@ -735,7 +735,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
   //to show pins or markers on map
   void showPinsOnMap() {
-    LatLng destinationlatlong = LatLng(widget.items.lat, widget.items.long);
+    LatLng destinationlatlong = LatLng(widget.items.itemlat, widget.items.itemlong);
     destinationLocation =
         LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
 
