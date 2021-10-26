@@ -57,7 +57,7 @@ class LikedPage extends StatelessWidget {
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
-                'Hi $userName,',
+                'Hi $userName, \n',
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.blue[100],

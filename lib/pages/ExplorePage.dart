@@ -28,6 +28,29 @@ class ExplorePage extends StatefulWidget {
 class _ExplorePageState extends State<ExplorePage> {
   int pageindex = 1;
 
+  bool _showBackToTopButton = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = ScrollController()
+      ..addListener(() {
+        setState(() {
+          if (_controller.offset >= 400) {
+            _showBackToTopButton = true; // show the back-to-top button
+          } else {
+            _showBackToTopButton = false; // hide the back-to-top button
+          }
+        });
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose(); // dispose the controller
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     //grab the instances from the provider
@@ -35,20 +58,48 @@ class _ExplorePageState extends State<ExplorePage> {
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,
-      body: ListView(controller: _controller, children: [
-        Header(),
-        PromotionalVideo(),
-        CategoryButtons(),
-        ScrollButtons(),
-        ForYouTabs(),
-        Highlights(),
-        Geography(),
-        AwardsAndRecognition(),
-        Culture(),
-        History(),
-        SizedBox(
-          height: 100,
-        )
+      body: Stack(children: [
+        ListView(controller: _controller, children: [
+          Header(),
+          PromotionalVideo(),
+          CategoryButtons(),
+          ScrollButtons(),
+          ForYouTabs(),
+          Highlights(),
+          Geography(),
+          AwardsAndRecognition(),
+          Culture(),
+          History(),
+          SizedBox(
+            height: 100,
+          ),
+        ]),
+        Positioned(
+            bottom: 80,
+            right: 10,
+            child: _showBackToTopButton == false
+          ? SizedBox()
+          :ElevatedButton(
+                onPressed: () => _goToElement(0),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.white, //background
+                  onPrimary: Colors.blue,
+                  //foreground
+                  shape: CircleBorder(),
+                ),
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 25,
+                  width: 25,
+                  child: Icon(
+                    Icons.arrow_upward_rounded,
+                    size: 20,
+                    color: Colors.blue,
+                  ),
+                ),
+                //capture the success flag with async and await
+              ),
+            )
       ]),
 
       //show top bar
@@ -58,6 +109,16 @@ class _ExplorePageState extends State<ExplorePage> {
                 Positioned(bottom: 0, left:0,right:0, child: BottomNavBar(
                     
                   ),)*/
+      /*floatingActionButton: _showBackToTopButton == false
+          ? null
+          : FloatingActionButton(
+              
+               onPressed: () =>
+                    _goToElement(0), 
+              
+              child: Icon(Icons.arrow_upward),
+            ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterTop,*/
     ));
   }
 }
@@ -190,7 +251,7 @@ class CategoryButtons extends StatelessWidget {
     CategoryService catService =
         Provider.of<CategoryService>(context, listen: false);
     categories = catService.getCategories();
-    
+
     return Container(
         margin: EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 10),
         padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 0),
