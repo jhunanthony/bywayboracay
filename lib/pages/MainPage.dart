@@ -33,11 +33,16 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    //implement a method that clears likeitems when users log out and new user come in
+     LikeService likeService = Provider.of<LikeService>(context, listen: false);
+    //fetch liked items and load on likepage
+    likeService.loadLikedItemsFromFirebase(context);
+
     return SafeArea(
       child: Scaffold(
         drawer: Container(
-          width: MediaQuery.of(context).size.width * 0.60,
-          child: Drawer(elevation: 6, child: SideMenuBar())),
+            width: MediaQuery.of(context).size.width * 0.60,
+            child: Drawer(elevation: 6, child: SideMenuBar())),
         body: Stack(children: [
           buildPages(),
           Positioned(
@@ -106,20 +111,19 @@ class _MainPageState extends State<MainPage> {
                             child: Visibility(
                               visible: like.items.length > 0,
                               child: Container(
-                               
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   color: Colors.yellow[50],
                                   borderRadius: BorderRadius.circular(50),
                                 ),
                                 child: Text(
-                                    '${like.items.length}',
-                                    style: TextStyle(fontSize: 10, color: Colors.blue,
-                                    
-                                    ),
+                                  '${like.items.length}',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: Colors.blue,
                                   ),
+                                ),
                               ),
-                              
                             ),
                           ),
                         ]);

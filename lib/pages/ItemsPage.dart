@@ -270,7 +270,7 @@ class ItemsPage extends StatelessWidget {
                                                     .selectedCategory
                                                     .items[index]
                                                     .itempriceMin
-                                                    .toString(),
+                                                    .toStringAsFixed(2),
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 color: Colors.white,

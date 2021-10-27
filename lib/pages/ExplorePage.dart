@@ -70,8 +70,9 @@ class _ExplorePageState extends State<ExplorePage> {
           ),
         ]),
         Positioned(
-            bottom: 80,
-            right: 0,
+              bottom: 80,
+              right: 0,
+              left: 0,
             child: _showBackToTopButton == false
           ? SizedBox()
           :ElevatedButton(

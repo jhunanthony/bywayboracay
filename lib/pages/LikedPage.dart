@@ -55,9 +55,10 @@ class LikedPage extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
-                'Hi $userName, \n',
+                'Hi $userName',
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.blue[100],
@@ -71,7 +72,7 @@ class LikedPage extends StatelessWidget {
                     Visibility(
                   visible: like.items.length > 0,
                   child: Text(
-                    'you have ${like.items.length} liked items!',
+                    'you have ${like.items.length} liked item!',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.blue[100],
@@ -86,7 +87,7 @@ class LikedPage extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     //remove all items
-                    likeService.removeAll();
+                    likeService.removeAll(context);
                   },
                   child: Container(
 
@@ -159,7 +160,10 @@ class LikedPage extends StatelessWidget {
                                     Text(
                                       itemslistinfo.name,
                                       style: TextStyle(
-                                          color: Colors.blue, fontSize: 12),
+                                          color: Colors.blue, fontSize: 12,
+                                          fontWeight: FontWeight.bold
+                                          
+                                          ),
                                     ),
                                     Text(
                                       itemslistinfo.itemaddress,
@@ -170,7 +174,7 @@ class LikedPage extends StatelessWidget {
                                     ),
                                     Text(
                                       'min. ₱ ' +
-                                          itemslistinfo.itempriceMin.toString(),
+                                          itemslistinfo.itempriceMin.toStringAsFixed(2),
                                       style: TextStyle(
                                         color: Colors.blue,
                                         fontSize: 12,
@@ -181,7 +185,7 @@ class LikedPage extends StatelessWidget {
                               ),
                               IconButton(
                                   onPressed: () {
-                                    like.remove(item);
+                                    like.remove(context, item);
                                   },
                                   icon: Icon(
                                     Icons.highlight_off,

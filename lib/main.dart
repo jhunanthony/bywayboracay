@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
     //add provider at the very root
     return MultiProvider(
       providers:[
-      Provider(
+      ChangeNotifierProvider(
       create: (_) => LoginService(),),
       ChangeNotifierProvider(
         create:(_) => CategorySelectionService(

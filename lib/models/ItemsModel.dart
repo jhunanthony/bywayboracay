@@ -6,9 +6,12 @@ import 'DetailImages.dart';
 //create a model that represents subcat that derives from category model
 class Items extends Category {
   List<DetailsImages> detailsimages;
+    int amount;
+
 
   Items({
     this.detailsimages,
+     this.amount = 0,
     String itemname,
     String itemiconName,
     Color itemcolor,
@@ -71,6 +74,7 @@ class Items extends Category {
         //factory constructor
   factory Items.fromJson(Map<String, dynamic> json) {
     return Items(
+      amount: 0,
       itemaddress: json['itemaddress'],
       itemcategoryName: json['itemcategoryName'],
       itemcolor: Color(int.parse('0xFF' + json['itemcolor'])),

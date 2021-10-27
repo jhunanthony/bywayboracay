@@ -1,12 +1,11 @@
 import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class LoginService {
+class LoginService extends ChangeNotifier {
   //encapsulate firebase hooks to project from the cloud
-
-  
 
   UserLogInModel _userModel;
 
@@ -45,8 +44,13 @@ class LoginService {
         displayName: userCreds.user.displayName,
         photoUrl: userCreds.user.photoURL,
         email: userCreds.user.email,
+        //extract user id
+
+        uid: userCreds.user.uid,
       );
     }
+
+    notifyListeners();
 
     return true;
   }
@@ -55,5 +59,10 @@ class LoginService {
   void signOut() async {
     await GoogleSignIn().signOut();
     _userModel = null;
+  }
+
+  //check if user is logged or not
+  bool isUserLoggedIn(){
+    return _userModel != null;
   }
 }

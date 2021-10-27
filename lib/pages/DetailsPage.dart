@@ -69,7 +69,7 @@ class _DetailsPageState extends State<DetailsPage> {
         target: destinationLocation);
 
     //to activate change notifier on saves
-    LikeService saveService = Provider.of<LikeService>(context, listen: false);
+    LikeService likeService = Provider.of<LikeService>(context, listen: false);
 
     //canvas starts here
 
@@ -168,8 +168,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                   iconSize: 30,
                                   splashColor: Colors.pink[300],
                                   onPressed: () {
-                                    saveService
-                                        .add(LikedItem(category: widget.items));
+                                    likeService
+                                        .add(context, LikedItem(category: widget.items));
                                   },
                                 ),
                               ),
@@ -189,12 +189,12 @@ class _DetailsPageState extends State<DetailsPage> {
                         ),
                         Consumer<LikeService>(builder: (context, like, child) {
                           //check if saved
-                          Widget savedtext;
+                          Widget likedtext;
 
                           //check is it is saved then display regular button
 
                           if (!like.isLiked(widget.items)) {
-                            savedtext = Text(
+                            likedtext = Text(
                               'Like',
                               style: TextStyle(
                                   fontSize: 12,
@@ -202,7 +202,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   fontWeight: FontWeight.w300),
                             );
                           } else {
-                            savedtext = Text(
+                            likedtext = Text(
                               'Liked',
                               style: TextStyle(
                                   fontSize: 12,
@@ -211,7 +211,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             );
                           }
 
-                          return savedtext;
+                          return likedtext;
                         }),
                       ]),
                     )),
@@ -320,7 +320,7 @@ class _DetailsPageState extends State<DetailsPage> {
                               child: Row(
                                 children: <Widget>[
                                   Text(
-                                    'Expedia ',
+                                    'Google ',
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: Colors.grey,
@@ -426,7 +426,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                           SizedBox(width: 5),
                           Text(
-                            'min. ₱' + widget.items.itempriceMin.toString(),
+                            'min. ₱' + widget.items.itempriceMin.toStringAsFixed(2),
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey,

@@ -2,9 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DistanceAndDurationWidget extends StatelessWidget {
-  final distance;
-  final distancevalue;
-  final duration;
   //final startlocation;
 
   DistanceAndDurationWidget({
@@ -13,6 +10,10 @@ class DistanceAndDurationWidget extends StatelessWidget {
     @required this.duration,
     //@required this.startlocation,
   });
+
+  final distance;
+  final distancevalue;
+  final duration;
 
   @override
   Widget build(BuildContext context) {
@@ -158,10 +159,6 @@ class DistanceAndDurationWidget extends StatelessWidget {
 }
 
 class DistanceAndDurationInfo {
-  final distancevalue;
-  final distance;
-  final duration;
-
   //final startlocation;
 
   DistanceAndDurationInfo({
@@ -183,4 +180,8 @@ class DistanceAndDurationInfo {
       //startlocation: json['origin_addresses'][0],
     );
   }
+
+  final distance;
+  final distancevalue;
+  final duration;
 }
