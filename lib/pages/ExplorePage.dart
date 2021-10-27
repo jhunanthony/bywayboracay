@@ -2,14 +2,9 @@ import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/categoryservice.dart';
 
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryCard.dart';
-import 'package:bywayborcay/widgets/Navigation/BottomNavBar.dart';
-import 'package:bywayborcay/widgets/Navigation/SideMenuBar.dart';
-import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:bywayborcay/widgets/VideoPlayerWidgets/VideoAssetPlayer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'ItemsPage.dart';
-import '../helper/Utils.dart';
 import '../models/CategoryModel.dart';
 
 //create scroll controller
@@ -76,7 +71,7 @@ class _ExplorePageState extends State<ExplorePage> {
         ]),
         Positioned(
             bottom: 80,
-            right: 10,
+            right: 0,
             child: _showBackToTopButton == false
           ? SizedBox()
           :ElevatedButton(

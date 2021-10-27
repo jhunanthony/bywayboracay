@@ -23,7 +23,7 @@ class MapBottomInfo extends StatefulWidget {
 }
 
 class _MapBottomInfoState extends State<MapBottomInfo> {
-  String farevalue = 'Tourist';
+  //String farevalue = 'Tourist';
 
   Items items;
 
@@ -77,7 +77,7 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
     currentLocationref = await locationref.getLocation();
 
     final requestURL =
-        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=walking&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocation.latitude},${destinationLocation.longitude}&key=$googleAPI";
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocation.latitude},${destinationLocation.longitude}&key=$googleAPI";
     //"https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${currentlocationlatlong.latitude},${currentlocationlatlong.longitude}&destinations=${destinationlatlong.latitude},${destinationlatlong.longitude}&travelmode=walking&dir_action=navigate&key=$googleAPI";
     //"https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&key=$googleAPI";
 
@@ -136,6 +136,7 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
                 SizedBox(width: 20),
                 Expanded(
                   child: Column(
+                    
                       crossAxisAlignment: CrossAxisAlignment.start,
                       
                       children: [

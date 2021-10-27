@@ -13,9 +13,6 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import 'package:http/http.dart' as http;
 
 //construct a widget that passes user location as source location
 //const LatLng DEST_LOCATION = LatLng(11.98189918417696, 121.9151854334716);
@@ -73,8 +70,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
   // wrapper around the location API
   Location locationref;
 
-  //String durationref;
-  //String distanceref;
+  
 
   //this will hold each polylines that if connected together will form the route
   //store each coordinates since polylines consist of multiple coordinates
