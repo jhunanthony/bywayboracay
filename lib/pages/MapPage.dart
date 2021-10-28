@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:bywayborcay/widgets/MapWidgets/DistanceAndDurationWidget.dart';
 import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
@@ -35,7 +33,7 @@ class MapPage extends StatefulWidget {
   _MapPageState createState() => _MapPageState();
 }
 
-class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
+class _MapPageState extends State<MapPage> with WidgetsBindingObserver{
   //Google map Controller that controlls single instance of the google map
   Completer<GoogleMapController> _controller = Completer();
   void onMapCreated(GoogleMapController controller) {
@@ -53,24 +51,20 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
   //call the distance info model
   //Future<DistanceAndDurationInfo> futuredistanceandduration;
 
-  String googleAPI = 'AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE';
-
   //control the state of bottom info position
   double pinBottomInfoPosition = PIN_VISIBLE_POSITION;
   //control the state color of user info
   bool userInfoSelected = false;
 
-  LatLng destinationLocation;
+  //LatLng destinationLocation;
 
   // the user's initial location and current location
   // as it moves
   LocationData currentLocationref;
-  //LocationData destinationLocationref;
+  LocationData destinationLocationref;
 
   // wrapper around the location API
   Location locationref;
-
-  
 
   //this will hold each polylines that if connected together will form the route
   //store each coordinates since polylines consist of multiple coordinates
@@ -94,11 +88,13 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
     // subscribe to changes in the user's location
     // by "listening" to the location's onLocationChanged event
     locationref.onLocationChanged.listen((LocationData cLoc) {
+      locationref.enableBackgroundMode(enable: true);
       // cLoc contains the lat and long of the
       // current user's position in real time,
       // so we're holding on to it
       currentLocationref = cLoc;
       updatePinOnMap();
+      
     });
 
     //instantiate the polyline reference to call API
@@ -108,10 +104,12 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
     this.setInitialLocation();
 
     //for api distance and duration
-   // futuredistanceandduration = getdistanceandduration();
+    // futuredistanceandduration = getdistanceandduration();
 
     WidgetsBinding.instance.addObserver(this);
   }
+
+  /// Disposes of the platform resources
 
   // location custom marker
 
@@ -140,7 +138,8 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
     widget.items = catSelection.items;
     //add latlong value here
 
-    LatLng destinationlatlong = LatLng(widget.items.itemlat, widget.items.itemlong);
+    LatLng destinationlatlong =
+        LatLng(widget.items.itemlat, widget.items.itemlong);
     // set the initial location by pulling the user's
     // current location from the location's getLocation()
     currentLocationref = await locationref.getLocation();
@@ -149,12 +148,12 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
         LatLng(SOURCE_LOCATION.latitude, SOURCE_LOCATION.longitude);*/
     //display latlong value here
 
-    destinationLocation =
-        LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
-    /*destinationLocationref = LocationData.fromMap({
+    /*destinationLocation =
+        LatLng(destinationlatlong.latitude, destinationlatlong.longitude);*/
+    destinationLocationref = LocationData.fromMap({
       "latitude": destinationlatlong.latitude,
       "longitude": destinationlatlong.longitude
-    });*/
+    });
   }
 
   //observe phone status
@@ -280,8 +279,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
             left: 0,
             right: 0,
             bottom: this.pinBottomInfoPosition,
-            child: MapBottomInfo(
-            )),
+            child: MapBottomInfo()),
         Positioned(
             top: 0,
             left: 0,
@@ -349,9 +347,10 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
     var currentPosition =
         LatLng(currentLocationref.latitude, currentLocationref.longitude);
 
-    LatLng destinationlatlong = LatLng(widget.items.itemlat, widget.items.itemlong);
+    LatLng destinationlatlong =
+        LatLng(widget.items.itemlat, widget.items.itemlong);
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      googleAPI,
+      'AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE',
       PointLatLng(currentPosition.latitude, currentPosition.longitude),
       PointLatLng(destinationlatlong.latitude, destinationlatlong.longitude),
 
@@ -367,7 +366,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
 
       setState(() {
         _polylines.add(Polyline(
-            width: 5,
+            width: 3,
             polylineId: PolylineId('polyLine'),
             color: widget.items.color,
             points: polylineCoordinates));
@@ -389,7 +388,8 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
 
     var currentPosition =
         LatLng(currentLocationref.latitude, currentLocationref.longitude);
-  
+    var destinationlatlong =
+        LatLng(widget.items.itemlat, widget.items.itemlong);
 
     setState(() {
       _markers.add(Marker(
@@ -405,7 +405,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
 
       _markers.add(Marker(
           markerId: MarkerId('destinationPin'),
-          position: destinationLocation,
+          position: destinationlatlong,
           icon: destinationIcon,
           infoWindow: InfoWindow(title: this.widget.items.name),
           onTap: () {
@@ -459,5 +459,3 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
     });
   }
 }
-
-

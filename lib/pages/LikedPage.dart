@@ -55,8 +55,7 @@ class LikedPage extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center, children: [
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
                 'Hi $userName',
                 style: TextStyle(
@@ -84,32 +83,37 @@ class LikedPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    //remove all items
-                    likeService.removeAll(context);
-                  },
-                  child: Container(
+                Consumer<LikeService>(builder: (context, like, child) {
+                  if (like.items.length > 0) {
+                    return GestureDetector(
+                      onTap: () {
+                        //remove all items
+                        likeService.removeAll(context);
+                      },
+                      child: Container(
+                          margin: EdgeInsets.only(right: 20, top: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.blue[50],
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          padding: EdgeInsets.only(
+                              top: 5, bottom: 5, left: 20, right: 20),
+                          child: Row(
+                            children: [
+                              Icon(Icons.delete, color: Colors.blue),
+                              SizedBox(width: 5),
+                              Text('Delete All',
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 12,
+                                  ))
+                            ],
+                          )),
+                    );
+                  }
 
-                      margin: EdgeInsets.only(right: 20, top:10),
-                      decoration: BoxDecoration(
-                        color: Colors.blue[50],
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      padding: EdgeInsets.only(
-                          top: 5, bottom: 5, left: 20, right: 20),
-                      child: Row(
-                        children: [
-                          Icon(Icons.delete, color: Colors.blue),
-                          SizedBox(width: 5),
-                          Text('Delete All',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 12,
-                              ))
-                        ],
-                      )),
-                ),
+                  return SizedBox();
+                })
               ],
             ),
           ],
@@ -160,10 +164,9 @@ class LikedPage extends StatelessWidget {
                                     Text(
                                       itemslistinfo.name,
                                       style: TextStyle(
-                                          color: Colors.blue, fontSize: 12,
-                                          fontWeight: FontWeight.bold
-                                          
-                                          ),
+                                          color: Colors.blue,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     Text(
                                       itemslistinfo.itemaddress,
@@ -174,7 +177,8 @@ class LikedPage extends StatelessWidget {
                                     ),
                                     Text(
                                       'min. ₱ ' +
-                                          itemslistinfo.itempriceMin.toStringAsFixed(2),
+                                          itemslistinfo.itempriceMin
+                                              .toStringAsFixed(2),
                                       style: TextStyle(
                                         color: Colors.blue,
                                         fontSize: 12,

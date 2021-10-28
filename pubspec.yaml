@@ -69,6 +69,9 @@ dependencies:
   #for firestore api
   cloud_firestore: ^2.5.4
 
+  #for calendar
+  table_calendar: ^3.0.3
+
   
 
 
