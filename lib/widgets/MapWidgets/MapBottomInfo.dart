@@ -116,8 +116,8 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
                   clipBehavior: Clip.none,
                   children: [
                     ClipOval(
-                        child: Image.asset(
-                            'assets/images/${this.items.imgName}.png',
+                        child: Image.network(
+                           this.items.imgName,
                             width: 60,
                             height: 60,
                             fit: BoxFit.cover)),

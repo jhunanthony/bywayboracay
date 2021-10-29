@@ -149,10 +149,10 @@ class LikedPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ClipOval(
-                                  child: Image.asset(
-                                      'assets/images/' +
-                                          itemslistinfo.imgName +
-                                          '.png',
+                                  child: Image.network(
+                                    
+                                          itemslistinfo.imgName 
+                                      ,
                                       width: 50,
                                       height: 50,
                                       fit: BoxFit.cover)),

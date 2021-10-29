@@ -41,9 +41,9 @@ class ItemsPage extends StatelessWidget {
                   height: 150,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/images/' +
-                          this.selectedCategory.imgName +
-                          '.png'),
+                      image: NetworkImage(
+                          this.selectedCategory.imgName 
+                         ),
                       fit: BoxFit.fill,
                     ),
                   ),
@@ -103,12 +103,12 @@ class ItemsPage extends StatelessWidget {
                               width: 150,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: AssetImage('assets/images/' +
+                                  image: NetworkImage(
                                       this
                                           .selectedCategory
                                           .items[index]
-                                          .imgName +
-                                      '.png'),
+                                          .imgName 
+                                   ),
                                   fit: BoxFit.cover,
                                 ),
                                 borderRadius: BorderRadius.only(

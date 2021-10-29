@@ -103,9 +103,9 @@ class _DetailsPageState extends State<DetailsPage> {
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: AssetImage('assets/images/' +
-                                    widget.items.detailsimages[index].imgName +
-                                    '.png'),
+                                image: NetworkImage(
+                                    widget.items.detailsimages[index].imgName 
+                                    ),
                                 fit: BoxFit.fitHeight,
                               ),
                             ),

@@ -38,8 +38,8 @@ class CategoryCard extends StatelessWidget {
                   width: 70,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage(
-                            'assets/images/' + this.category.imgName + '.png'),
+                        image: NetworkImage(
+                            this.category.imgName),
                         fit: BoxFit.cover,
                       ),
                       shape: BoxShape.circle,
