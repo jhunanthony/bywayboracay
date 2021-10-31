@@ -1,8 +1,15 @@
 import 'package:bywayborcay/models/UserLogInModel.dart';
+import 'package:bywayborcay/pages/LogInPage.dart';
+import 'package:bywayborcay/pages/MainPage.dart';
+import 'package:bywayborcay/widgets/CalendarWidget/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+final databaseReference = FirebaseFirestore.instance;
 
 class LoginService extends ChangeNotifier {
   //encapsulate firebase hooks to project from the cloud
@@ -13,8 +20,13 @@ class LoginService extends ChangeNotifier {
 
   //create method that return
   Future<bool> signInWithGoogle() async {
+
+
     //Trigger the authentication flow
     GoogleSignIn googleSignIn = GoogleSignIn();
+
+     
+
 
     //fetch account information by calling sign in method
     final GoogleSignInAccount googleUser = await googleSignIn.signIn();
@@ -55,14 +67,24 @@ class LoginService extends ChangeNotifier {
     return true;
   }
 
+
+  /*void googleSignIn()  {
+    Auth().signInWithGoogle().then((user) async {
+     await databaseReference.collection('Users').doc(user.uid).get();
+    });
+  }*/
+
   //for sign out
   void signOut() async {
     await GoogleSignIn().signOut();
+    Auth().signOut();
     _userModel = null;
   }
 
+   
+
   //check if user is logged or not
-  bool isUserLoggedIn(){
+  bool isUserLoggedIn() {
     return _userModel != null;
   }
 }

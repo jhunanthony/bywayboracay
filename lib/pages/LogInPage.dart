@@ -1,11 +1,28 @@
 import 'package:bywayborcay/services/loginservice.dart';
+import 'package:bywayborcay/widgets/CalendarWidget/LogIn.dart';
+import 'package:bywayborcay/widgets/CalendarWidget/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 
 import 'OnBoardingPage.dart';
 
-class LogInPage extends StatelessWidget {
+class LogInPage extends StatefulWidget {
+ //final formKey = GlobalKey<FormState>();
   @override
+  State<LogInPage> createState() => _LogInPageState();
+}
+
+class _LogInPageState extends State<LogInPage> {
+  
+
+  @override
+
+
+
+
   Widget build(BuildContext context) {
 
     //fetch login service via provider
@@ -120,10 +137,20 @@ class LogInPage extends StatelessWidget {
                   ),
                   //capture the success flag with async and await
                   onPressed: () async {
-                    bool success = await loginService.signInWithGoogle();
+                    bool success = await loginService.signInWithGoogle(
+                      
+                    );
 
                     if (success) {
-                       Navigator.of(context).pushReplacementNamed('/onboardingpage');
+                   
+    Auth().signInWithGoogle().then((user) {
+      checkIfExists(user);
+    });
+  
+
+
+
+                      // Navigator.of(context).pushReplacementNamed('/onboardingpage');
                     }
                   }),
               SizedBox(height: 25),
@@ -141,5 +168,18 @@ class LogInPage extends StatelessWidget {
         ],
       ),
     ));
+  }
+
+   void checkIfExists(User user) async {
+    final snapShot =
+    await databaseReference.collection('Users').doc(user.uid).get();
+    if (snapShot == null || !snapShot.exists) {
+      DocumentReference newData =
+      databaseReference.collection("Users").doc(user.uid);
+      newData.set({'Name': user.displayName, 'Email': user.email});
+       Navigator.of(context).pushReplacementNamed('/onboardingpage');
+    } else {
+      Navigator.of(context).pushReplacementNamed('/onboardingpage');
+    }
   }
 }

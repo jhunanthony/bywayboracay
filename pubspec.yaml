@@ -72,6 +72,15 @@ dependencies:
   #for calendar
   table_calendar: ^3.0.3
 
+  syncfusion_flutter_calendar: ^19.3.47
+  googleapis: ^6.0.0
+  googleapis_auth: ^1.2.0
+  date_utils: ^0.2.0
+  intl: ^0.17.0
+  overlay_support: ^1.2.1
+  mailer: ^5.0.2
+
+
   
 
 

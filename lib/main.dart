@@ -10,6 +10,7 @@ import 'package:bywayborcay/services/categoryservice.dart';
 
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/services/likeservice.dart';
+import 'package:bywayborcay/widgets/CalendarWidget/Itinerarypage2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
       ],
     
       child: MaterialApp(
+        
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,

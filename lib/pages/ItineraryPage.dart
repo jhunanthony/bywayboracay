@@ -1,69 +1,149 @@
-import 'package:bywayborcay/widgets/Navigation/BottomNavBar.dart';
-import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
+/*import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:googleapis/calendar/v3.dart' as googleAPI;
+import 'package:http/io_client.dart';
+import 'package:http/http.dart';
+
 
 class ItineraryPage extends StatefulWidget {
-
   @override
-  State<ItineraryPage> createState() => _ItineraryPageState();
+  ItineraryPageState createState() => ItineraryPageState();
 }
 
-class _ItineraryPageState extends State<ItineraryPage> {
- /* CalendarController _controller;
-
-  @override
-  void initState() {
-    
-    super.initState();
-    _controller = CalendarController();
-  }*/
+class ItineraryPageState extends State<ItineraryPage> {
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+   clientId:
+        "816417034831-49qeiv0vllp92f277im2ttvfnghgpa9o.apps.googleusercontent.com",
+    scopes: <String>[
+      googleAPI.CalendarApi.calendarScope,
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: [
-        SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TableCalendar(
-                firstDay: DateTime.utc(2020, 1, 1),
-                    lastDay: DateTime.utc(2030, 12, 21),
-                    focusedDay: DateTime.now(),
-                calendarFormat: CalendarFormat.week,
-                headerStyle: HeaderStyle(
-                  formatButtonDecoration: BoxDecoration(
-                    color: Colors.blue
-                  ),
-                  formatButtonTextStyle: TextStyle(
-                    color: Colors.white
-                  )
-                ),
-                calendarStyle: CalendarStyle(
-                  
-                  todayDecoration: BoxDecoration(
-                    color: Colors.blue[50]
-                  ),
-                  todayTextStyle: TextStyle(
-                    color: Colors.blue
-                  ),
-                  selectedDecoration: BoxDecoration(
-                    color: Colors.yellow[50]
-                  ),
-                   selectedTextStyle: TextStyle(
-                    color: Colors.blue,
-                    fontWeight: FontWeight.bold
+      appBar: new AppBar(
+        title: Text('Event Calendar'),
+      ),
+      body: Container(
+        child: FutureBuilder(
+          future: getGoogleEventsData(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            return Container(
+                child: Stack(
+              children: [
+                Container(
+                  child: SfCalendar(
+                    view: CalendarView.month,
+                    initialDisplayDate: DateTime(2020,5,15),
+                    dataSource: GoogleDataSource(events: snapshot.data),
+                    monthViewSettings: MonthViewSettings(
+                        appointmentDisplayMode:
+                            MonthAppointmentDisplayMode.appointment),
                   ),
                 ),
-               
-                
-              )
-            ],)
+                snapshot.data != null
+                    ? Container()
+                    : Center(
+                        child: CircularProgressIndicator(),
+                      )
+              ],
+            ));
+          },
         ),
-        
-      
-      ]),
-      //bottomNavigationBar: BottomNavBar(),
-      );
+      ),
+    );
+  }
+
+  @override
+  void dispose(){
+    if(_googleSignIn.currentUser != null) {
+      _googleSignIn.disconnect();
+      _googleSignIn.signOut();
+    }
+
+    super.dispose();
+  }
+
+  Future<List<googleAPI.Event>> getGoogleEventsData() async {
+    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    final GoogleAPIClient httpClient =
+        GoogleAPIClient(await googleUser.authHeaders);
+    final googleAPI.CalendarApi calendarAPI = googleAPI.CalendarApi(httpClient);
+    final googleAPI.Events calEvents = await calendarAPI.events.list(
+      "primary",
+    );
+    final List<googleAPI.Event> appointments = <googleAPI.Event>[];
+    if (calEvents != null && calEvents.items != null) {
+      for (int i = 0; i < calEvents.items.length; i++) {
+        final googleAPI.Event event = calEvents.items[i];
+        if (event.start == null) {
+          continue;
+        }
+        appointments.add(event);
+      }
+    }
+    return appointments;
   }
 }
+
+class GoogleDataSource extends CalendarDataSource {
+  GoogleDataSource({List<googleAPI.Event> events}) {
+    this.appointments = events;
+  }
+
+  @override
+  DateTime getStartTime(int index) {
+    final googleAPI.Event event = appointments[index];
+    return event.start.date ?? event.start.dateTime.toLocal();
+  }
+
+  @override
+  bool isAllDay(int index) {
+    return appointments[index].start.date != null;
+  }
+
+  @override
+  DateTime getEndTime(int index) {
+    final googleAPI.Event event = appointments[index];
+    return event.endTimeUnspecified != null && event.endTimeUnspecified
+        ? (event.start.date ?? event.start.dateTime.toLocal())
+        : (event.end.date != null
+            ? event.end.date.add(Duration(days: -1))
+            : event.end.dateTime.toLocal());
+  }
+
+  @override
+  String getLocation(int index) {
+    return appointments[index].location;
+  }
+
+  @override
+  String getNotes(int index) {
+    return appointments[index].description;
+  }
+
+  @override
+  String getSubject(int index) {
+    final googleAPI.Event event = appointments[index];
+    return event.summary == null || event.summary.isEmpty
+        ? 'No Title'
+        : event.summary;
+  }
+}
+
+class GoogleAPIClient extends IOClient {
+  Map<String, String> _headers;
+
+  GoogleAPIClient(this._headers) : super();
+
+  @override
+  Future<IOStreamedResponse> send(BaseRequest request) =>
+      super.send(request..headers.addAll(_headers));
+
+  @override
+  Future<Response> head(Object url, {Map<String, String> headers}) =>
+      super.head(url, headers: headers..addAll(_headers));
+}*/

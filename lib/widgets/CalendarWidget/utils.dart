@@ -1,0 +1,87 @@
+import 'dart:ui';
+import 'package:bywayborcay/models/UserLogInModel.dart';
+import 'package:bywayborcay/services/loginservice.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
+import 'package:overlay_support/overlay_support.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'auth.dart';
+
+/// Example event class.
+class Event {
+  final String title;
+  final List users;
+  final String desc;
+  final String timer;
+  final String creator;
+  const Event(this.title, this.users, this.desc, this.timer, this.creator);
+
+  @override
+  String toString() => title;
+}
+
+final kNow = DateTime.now();
+final kFirstDay = DateTime(kNow.year, 1, 1);
+final kLastDay = DateTime(kNow.year + 1, 1, 1);
+
+abstract class Functions {
+  Future sendEmail(String s, String d, String t, String u);
+  Future<List> eventUsers(List w);
+  int calculateDifference(DateTime date);
+}
+
+class FunctionUtils implements Functions {
+  final databaseRef = FirebaseFirestore.instance
+      .collection("Users")
+      .doc(Auth().getCurrentUser().uid)
+      .get();
+
+  Future sendEmail(String s, String d, String t, String u) async {
+    
+    String username = 'bywayboracay2k21@gmail.com';
+    String password = 'Capstone002';
+    final smtpServer = gmailSaslXoauth2(username, password);
+    // Create our message.
+    final message = Message()
+      ..from = Address(username, 'Your CalendarApp')
+      ..recipients.add(s)
+      ..subject = 'Event Reminder :: Date :: $d'
+      ..html =
+          "<h1>Reminder</h1>\n<p>This is to remind to attend the event scheduled with $u at time $t .</p>";
+    try {
+      final sendReport = await send(message, smtpServer);
+      showSimpleNotification(Text("Email Successfully Sent !!"),
+          background: Color(0xff29a39d));
+      print(sendReport);
+      
+    } on MailerException catch (e) {
+      showSimpleNotification(Text(e.toString()), background: Color(0xff29a39d));
+    }
+  }
+
+  int calculateDifference(DateTime date) {
+    DateTime now = DateTime.now();
+    return DateTime(date.year, date.month, date.day)
+        .difference(DateTime(now.year, now.month, now.day))
+        .inDays;
+  }
+
+  Future<List> eventUsers(List w) async {
+    List temp = [];
+    final users = await FirebaseFirestore.instance.collection("Users").get();
+    for (int i = 0; i < users.docs.length; i++) {
+      var t = users.docs[i].get("Email");
+      if (w.contains(t)) {
+        temp.add(users.docs[i].id);
+      }
+    }
+    return temp;
+  }
+
+  int getHashCode(DateTime key) {
+    return key.day * 1000000 + key.month * 10000 + key.year;
+  }
+}
