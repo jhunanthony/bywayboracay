@@ -43,17 +43,17 @@ class _EmailInputState extends State<EmailInput> {
                           .map(
                             (email) => Chip(
                           avatar: CircleAvatar(
-                            backgroundColor: Colors.black,
+                            backgroundColor: Colors.white,
                             child: Text(
                               email.substring(0, 1),
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.blue),
                             ),
                           ),
                           labelPadding: EdgeInsets.all(4),
-                          backgroundColor: Color.fromRGBO(255, 197, 1, 1),
+                          backgroundColor: Colors.blue[50],
                           label: Text(
                             email,
-                            style: TextStyle(fontSize: 16, color: Colors.white),
+                            style: TextStyle(fontSize: 16, color: Colors.blue),
                           ),
                           onDeleted: () => {
                             setState(() {

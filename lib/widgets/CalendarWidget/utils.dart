@@ -28,6 +28,8 @@ final kFirstDay = DateTime(kNow.year, 1, 1);
 final kLastDay = DateTime(kNow.year + 1, 1, 1);
 
 abstract class Functions {
+
+  
   Future sendEmail(String s, String d, String t, String u);
   Future<List> eventUsers(List w);
   int calculateDifference(DateTime date);
@@ -40,9 +42,12 @@ class FunctionUtils implements Functions {
       .get();
 
   Future sendEmail(String s, String d, String t, String u) async {
-    
-    String username = 'bywayboracay2k21@gmail.com';
-    String password = 'Capstone002';
+   
+
+
+
+    String username = 'jhunanthonysacapano@gmail.com';
+    String password = 'sadfredjhun02';
     final smtpServer = gmailSaslXoauth2(username, password);
     // Create our message.
     final message = Message()

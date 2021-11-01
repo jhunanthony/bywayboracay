@@ -4,6 +4,7 @@ import 'package:bywayborcay/widgets/CalendarWidget/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 
@@ -129,11 +130,11 @@ class _LogInPageState extends State<LogInPage> {
                           color: Colors.blue,
                           width: 2,
                         )),
-                    child: Icon(
-                      Icons.android,
-                      size: 25,
-                      color: Colors.blue,
-                    ),
+                    child: SvgPicture.asset(
+                          'assets/icons/google.svg',
+                          
+                          height: 30,
+                          width: 30),
                   ),
                   //capture the success flag with async and await
                   onPressed: () async {

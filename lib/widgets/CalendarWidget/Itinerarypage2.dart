@@ -32,7 +32,18 @@ class ItineraryPage extends StatelessWidget {
           if (Auth().getCurrentUser() != null) {
             return CalendarPage();
           } else {
-            return LogInPage();
+            return Container(decoration: BoxDecoration(color: Colors.white), child:  Center(
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                      Icon(Icons.calendar_today_rounded,
+                          size: 20, color: Colors.grey[400]),
+                      Text(' Login and Start Planning!',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontSize: 20,
+                          )),
+                    ]))   );
             //Container(child: Center(child: Text('Log In to access Itinerary')));
           }
         }

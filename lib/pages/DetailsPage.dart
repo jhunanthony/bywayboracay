@@ -36,7 +36,6 @@ class _DetailsPageState extends State<DetailsPage> {
   BitmapDescriptor destinationIcon;
   Set<Marker> _markers = Set<Marker>();
   LatLng destinationLocation;
- 
 
   void setSourceAndDestinationMarkerIcons(BuildContext context) async {
     String parentCategory = widget.items.itemmarkerName;
@@ -104,8 +103,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: NetworkImage(
-                                    widget.items.detailsimages[index].imgName 
-                                    ),
+                                    widget.items.detailsimages[index].imgName),
                                 fit: BoxFit.fitHeight,
                               ),
                             ),
@@ -149,6 +147,14 @@ class _DetailsPageState extends State<DetailsPage> {
                                 fontWeight: FontWeight.w300),
                           );
                         }),*/
+                        CategoryIcon(
+                          iconName: widget.items.iconName,
+                          color: widget.items.color,
+                          size: 40,
+                        ),
+                         SizedBox(
+                          height: 10,
+                        ),
                         Consumer<LoginService>(
                             builder: (context, loginService, child) {
                           if (loginService.isUserLoggedIn()) {
@@ -192,6 +198,8 @@ class _DetailsPageState extends State<DetailsPage> {
                         SizedBox(
                           height: 3,
                         ),
+                       
+                        
                         Consumer<LoginService>(
                             builder: (context, loginService, child) {
                           if (loginService.isUserLoggedIn()) {
@@ -225,14 +233,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           }
                           return SizedBox();
                         }),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        CategoryIcon(
-                          iconName: widget.items.iconName,
-                          color: widget.items.color,
-                          size: 40,
-                        ),
+                        
                       ]),
                     )),
 
@@ -265,6 +266,8 @@ class _DetailsPageState extends State<DetailsPage> {
                     size: 40,
                   ),
                 ),*/
+
+                //title and calendar button
 
                 Positioned(
                     bottom: 0,
@@ -322,19 +325,25 @@ class _DetailsPageState extends State<DetailsPage> {
                                         fontWeight: FontWeight.normal),
                                   ),
                                 ]),
-                                ClipOval(
-                                  child: Material(
-                                    color: Colors.transparent,
-                                    child: IconButton(
-                                      padding: EdgeInsets.all(0),
-                                      icon: Icon(CupertinoIcons.calendar),
-                                      color: Colors.blue[200],
-                                      iconSize: 30,
-                                      splashColor: Colors.blue,
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                ),
+                                Consumer<LoginService>(
+                                    builder: (context, loginService, child) {
+                                  if (loginService.isUserLoggedIn()) {
+                                    return ClipOval(
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        child: IconButton(
+                                          padding: EdgeInsets.all(0),
+                                          icon: Icon(CupertinoIcons.calendar),
+                                          color: Colors.blue[200],
+                                          iconSize: 30,
+                                          splashColor: Colors.blue,
+                                          onPressed: () {},
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  return SizedBox();
+                                }),
                               ]),
                         ),
                       ),
