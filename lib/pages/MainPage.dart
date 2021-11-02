@@ -16,12 +16,16 @@ import 'package:provider/provider.dart';
 import '../widgets/Navigation/SideMenuBar.dart';
 
 class MainPage extends StatefulWidget {
+
+  int currentIndex;
+
+  MainPage({this.currentIndex = 0});
   @override
   _MainPageState createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  int currentIndex = 0;
+  
 
   String likes;
 
@@ -65,9 +69,9 @@ class _MainPageState extends State<MainPage> {
                   backgroundColor: Colors.yellow[50],
                   containerHeight: 65,
                   itemCornerRadius: 50,
-                  selectedIndex: currentIndex,
+                  selectedIndex: widget.currentIndex,
                   onItemSelected: (index) {
-                    setState(() => currentIndex = index);
+                    setState(() => widget.currentIndex = index);
                   },
                   items: <BottomNavyBarItem>[
                     BottomNavyBarItem(
@@ -154,7 +158,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget buildPages() {
-    switch (currentIndex) {
+    switch (widget.currentIndex) {
       case 1:
         return ItineraryPage();
       case 2:

@@ -23,7 +23,9 @@ class LoginService extends ChangeNotifier {
 
 
     //Trigger the authentication flow
-    GoogleSignIn googleSignIn = GoogleSignIn();
+    GoogleSignIn googleSignIn = GoogleSignIn(
+     
+    );
 
      
 

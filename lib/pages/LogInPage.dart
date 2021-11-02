@@ -11,21 +11,14 @@ import 'package:provider/provider.dart';
 import 'OnBoardingPage.dart';
 
 class LogInPage extends StatefulWidget {
- //final formKey = GlobalKey<FormState>();
+  //final formKey = GlobalKey<FormState>();
   @override
   State<LogInPage> createState() => _LogInPageState();
 }
 
 class _LogInPageState extends State<LogInPage> {
-  
-
   @override
-
-
-
-
   Widget build(BuildContext context) {
-
     //fetch login service via provider
     LoginService loginService =
         Provider.of<LoginService>(context, listen: false);
@@ -38,50 +31,70 @@ class _LogInPageState extends State<LogInPage> {
         children: [
           //use Flexible and FractionallySizedBox for resposiveness
           Container(
-              color: Colors.blue[50],
+
               //60%* of screen
               height: MediaQuery.of(context).size.height * 0.60,
               width: MediaQuery.of(context).size.width,
-              /*decoration: BoxDecoration(
-                              image: DecorationImage(
-                            image: AssetImage("assets/images/Test_Image_1.png"),
-                            fit: BoxFit.cover,
-                          )
-                          ),*/
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                image: AssetImage("assets/images/Login_Beach.jpg"),
+                fit: BoxFit.fitHeight,
+              )),
               child: Stack(
                 children: [
+                  Positioned.fill(
+                      child: Container(
+                          decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.center,
+                      end: Alignment.bottomCenter,
+                      colors: <Color>[
+                        Colors.transparent,
+                        Colors.blue.withOpacity(0.5),
+                      ],
+                    ),
+                  ))),
                   //align all to center
                   Align(
                       //represents a point that is horizontally centered with respect to the rectangle and vertically half way between the top edge and the center.
                       alignment: Alignment(0.0, -0.3),
                       child: Container(
-                        height: 200,
-                        width: 200,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            image: DecorationImage(
-                              image:
-                                  AssetImage("assets/images/Test_Image_2.png"),
-                              fit: BoxFit.cover,
-                            )),
-                      )),
+                          padding: EdgeInsets.all(10),
+                          height: 200,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(
+                              begin: Alignment.center,
+                              end: Alignment.bottomCenter,
+                              colors: <Color>[
+                                Colors.transparent,
+                                Colors.white.withOpacity(0.5),
+                                Colors.white,
+                              ],
+                            ),
+                          ),
+                          child: Image.asset(
+                            "assets/images/Logo_Test.png",
+                          ))),
                   //use this as spacer
                   Align(
                     alignment: Alignment(0.0, 0.6),
-                    child: Text('Brand Name',
+                    child: Text('Byway Boracay',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: Colors.grey[700],
+                            color: Colors.white,
                             fontSize: 40,
                             fontWeight: FontWeight.w400)),
                   ),
                   Align(
                     alignment: Alignment(0.0, 0.8),
-                    child: Text('Brand Slogan',
+                    child: Text('Venture with Precision',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: Colors.grey[700],
-                            fontSize: 25,
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontStyle: FontStyle.italic,
                             fontWeight: FontWeight.w200)),
                   ),
                 ],
@@ -113,6 +126,14 @@ class _LogInPageState extends State<LogInPage> {
                 },
               ),
               SizedBox(height: 25),
+              Text(
+                '- Login with Google - ',
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey[700],
+                    fontWeight: FontWeight.w200),
+              ),
+              SizedBox(height: 25),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: Colors.white, //background
@@ -130,38 +151,21 @@ class _LogInPageState extends State<LogInPage> {
                           color: Colors.blue,
                           width: 2,
                         )),
-                    child: SvgPicture.asset(
-                          'assets/icons/google.svg',
-                          
-                          height: 30,
-                          width: 30),
+                    child: SvgPicture.asset('assets/icons/google.svg',
+                        height: 30, width: 30),
                   ),
                   //capture the success flag with async and await
                   onPressed: () async {
-                    bool success = await loginService.signInWithGoogle(
-                      
-                    );
+                    bool success = await loginService.signInWithGoogle();
 
                     if (success) {
-                   
-    Auth().signInWithGoogle().then((user) {
-      checkIfExists(user);
-    });
-  
-
-
+                      Auth().signInWithGoogle().then((user) {
+                        checkIfExists(user);
+                      });
 
                       // Navigator.of(context).pushReplacementNamed('/onboardingpage');
                     }
                   }),
-              SizedBox(height: 25),
-              Text(
-                '- Login with Google - ',
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[700],
-                    fontWeight: FontWeight.w200),
-              ),
             ],
           )
 
@@ -171,14 +175,14 @@ class _LogInPageState extends State<LogInPage> {
     ));
   }
 
-   void checkIfExists(User user) async {
+  void checkIfExists(User user) async {
     final snapShot =
-    await databaseReference.collection('Users').doc(user.uid).get();
+        await databaseReference.collection('Users').doc(user.uid).get();
     if (snapShot == null || !snapShot.exists) {
       DocumentReference newData =
-      databaseReference.collection("Users").doc(user.uid);
+          databaseReference.collection("Users").doc(user.uid);
       newData.set({'Name': user.displayName, 'Email': user.email});
-       Navigator.of(context).pushReplacementNamed('/onboardingpage');
+      Navigator.of(context).pushReplacementNamed('/onboardingpage');
     } else {
       Navigator.of(context).pushReplacementNamed('/onboardingpage');
     }

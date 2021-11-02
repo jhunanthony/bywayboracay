@@ -31,11 +31,10 @@ class TopNavBarState extends State<TopNavBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      
       toolbarHeight: 80,
       centerTitle: true,
       //able to tap and return to landing page
-      
+
       /*leading: GestureDetector(
         onTap: () => Navigator.of(context).pop(),
         child: Padding(
@@ -51,31 +50,37 @@ class TopNavBarState extends State<TopNavBar> {
         ),
       ),*/
 
-
-          
-    
-        
-      
-      title: 
-      Visibility(
-          visible: widget.showTopLogo,
-      child: GestureDetector(
-        onTap: () {
-          Navigator.of(context).pushNamedAndRemoveUntil('/mainpage', (Route<dynamic> route) => false);
-          /*Navigator.of(context)
+      title: Visibility(
+        visible: widget.showTopLogo,
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/mainpage', (Route<dynamic> route) => false);
+            /*Navigator.of(context)
               .popUntil((route) => route.settings.name == '/mainpage');*/
-        },
-        
-          child: ClipOval(
+          },
+          child: Container(
+            padding: EdgeInsets.all(3),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.center,
+                end: Alignment.bottomCenter,
+                colors: <Color>[
+                  Colors.white.withOpacity(0.3),
+                  Colors.white,
+                ],
+              ),
+              shape: BoxShape.circle,
+            ),
             child: Image.asset(
-              "assets/images/" + AppIcons.LogoIcon + ".png",
-              height: 40,
-              width: 40,
+              "assets/images/Logo_Test.png",
+              height: 35,
+              width: 35,
               fit: BoxFit.scaleDown,
             ),
           ),
-        
-      ),),
+        ),
+      ),
       backgroundColor: widget.colorbackground,
       elevation: 0,
       iconTheme: IconThemeData(color: widget.theme),

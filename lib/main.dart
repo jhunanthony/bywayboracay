@@ -52,6 +52,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          fontFamily: 'ProductSans'
         ),
         debugShowCheckedModeBanner: false,
         //use this to debug pages that needs data

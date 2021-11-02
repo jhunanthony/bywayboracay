@@ -229,7 +229,7 @@ class CalendarState extends State<CalendarPage> {
 
                   Navigator.of(context).pushReplacement(
                       new MaterialPageRoute(builder: (BuildContext context) {
-                    return new MainPage();
+                    return new MainPage(currentIndex: 1);
                   }));
                 } else {
                   for (int i = 0; i < e.users.length; i++) {
@@ -241,7 +241,9 @@ class CalendarState extends State<CalendarPage> {
                   }
                   Navigator.of(context).pushReplacement(
                       new MaterialPageRoute(builder: (BuildContext context) {
-                    return new MainPage();
+                    return new MainPage(
+                      currentIndex: 1,
+                    );
                   }));
                 }
               },
@@ -339,7 +341,12 @@ class CalendarState extends State<CalendarPage> {
                 event.clear();
                 desc.clear();
                 timer.clear();
-                Navigator.of(context).pop();
+                Navigator.of(context).pushReplacement(
+                    new MaterialPageRoute(builder: (BuildContext context) {
+                  return new MainPage(
+                    currentIndex: 1,
+                  );
+                }));
               },
               child: const Text(
                 'CANCEL',
@@ -364,7 +371,12 @@ class CalendarState extends State<CalendarPage> {
                   setEvents().whenComplete(() {
                     event.clear();
                     desc.clear();
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pushReplacement(
+                        new MaterialPageRoute(builder: (BuildContext context) {
+                      return new MainPage(
+                        currentIndex: 1,
+                      );
+                    }));
                   });
                 }
               },
@@ -401,7 +413,6 @@ class CalendarState extends State<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return WillPopScope(
       onWillPop: () async => null,
       child: Scaffold(
@@ -413,20 +424,13 @@ class CalendarState extends State<CalendarPage> {
                 SizedBox(
                   height: 80,
                 ),
-                
+
                 Container(
-                  child: 
-                  
-                      Text(
-                        "Hi, ${Auth().getCurrentUser().displayName}",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.grey[700]
-                        ),
-                      ),
-                    
-                 
+                  child: Text(
+                    "Hi, ${Auth().getCurrentUser().displayName}",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20, color: Colors.grey[700]),
+                  ),
                 ),
                 Divider(
                   thickness: 2,
@@ -438,10 +442,7 @@ class CalendarState extends State<CalendarPage> {
                   weekendDays: [DateTime.sunday, 6],
                   // default is Sunday but can be changed according to locale
                   startingDayOfWeek: StartingDayOfWeek.sunday,
-                  // height between the day row and 1st date row, default is 16.0
-                  daysOfWeekHeight: 30.0,
-                  // height between the date rows, default is 52.0
-                  rowHeight: 50.0,
+                  
                   firstDay: kFirstDay,
                   lastDay: kLastDay,
                   daysOfWeekVisible: true,
@@ -515,7 +516,9 @@ class CalendarState extends State<CalendarPage> {
                     ),
                     selectedTextStyle: TextStyle(color: Colors.blue),
                     markerDecoration: BoxDecoration(
+                      
                         color: Colors.blue, shape: BoxShape.circle),
+                    markerSize: 5.00,
                   ),
                   headerStyle: HeaderStyle(
                     formatButtonVisible: true,
@@ -561,6 +564,7 @@ class CalendarState extends State<CalendarPage> {
                   },
                 ),
                 const SizedBox(height: 8.0),
+                //list of events here
                 Expanded(
                   child: ValueListenableBuilder<List<Event>>(
                     valueListenable: _selectedEvents,
@@ -574,52 +578,59 @@ class CalendarState extends State<CalendarPage> {
                               vertical: 4.0,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.blue[50],
+                              color: Colors.yellow[50],
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: ListTile(
-                              onLongPress: () {
-                                if (value[index].creator == emails[0]) {
-                                  _tapEvents(value[index], 0);
-                                } else {
-                                  showSimpleNotification(
-                                      Text(
-                                          "You can't delete event since you aren't the owner of it"),
-                                      background: Color(0xff29a39d));
-                                }
-                              },
-                              onTap: () {
-                                if (value[index].creator == emails[0]) {
-                                  _tapEvents(value[index], 1);
-                                } else {
-                                  showSimpleNotification(
-                                      Text(
-                                          "You can't send reminders since you didn't create the event"),
-                                      background: Color(0xff29a39d));
-                                }
-                              },
-                              leading: Text('\n' +
-                                value[index].timer,
-                                style: TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              ),
-                              isThreeLine: false,
-                              //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
-                              title: Text(
-                                '${value[index].title}',
-                                style: TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              ),
-                              subtitle: Text(
-                                value[index].desc,
-                                style: TextStyle(color: Colors.blue),
-                              ),
-                              //trailing: Text(value[index].timer,style: TextStyle(color: Colors.blue),),
-                            ),
+                                onLongPress: () {
+                                  if (value[index].creator == emails[0]) {
+                                    _tapEvents(value[index], 0);
+                                  } else {
+                                    showSimpleNotification(
+                                        Text(
+                                            "You can't delete event since you aren't the owner of it"),
+                                        background: Color(0xff29a39d));
+                                  }
+                                },
+                                onTap: () {
+                                  if (value[index].creator == emails[0]) {
+                                    _tapEvents(value[index], 1);
+                                  } else {
+                                    showSimpleNotification(
+                                        Text(
+                                            "You can't send reminders since you didn't create the event"),
+                                        background: Color(0xff29a39d));
+                                  }
+                                },
+                                leading: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Icon(Icons.notifications_rounded,
+                                        color: Colors.grey[700]),
+                                    Text(
+                                      value[index].timer,
+                                      style: TextStyle(
+                                          color: Colors.blue, fontSize: 14),
+                                    ),
+                                  ],
+                                ),
+                                isThreeLine: false,
+                                //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
+                                title: Text(
+                                  '${value[index].title}',
+                                  style: TextStyle(
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                                subtitle: Text(
+                                  value[index].desc,
+                                  style: TextStyle(color: Colors.blue),
+                                ),
+                                //trailing: Text(value[index].timer,style: TextStyle(color: Colors.blue),),
+                                trailing: Icon(Icons.highlight_off,
+                                      color: Colors.red[200])),
                           );
                         },
                       );

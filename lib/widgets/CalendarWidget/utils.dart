@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:bywayborcay/services/loginservice.dart';
@@ -28,8 +29,6 @@ final kFirstDay = DateTime(kNow.year, 1, 1);
 final kLastDay = DateTime(kNow.year + 1, 1, 1);
 
 abstract class Functions {
-
-  
   Future sendEmail(String s, String d, String t, String u);
   Future<List> eventUsers(List w);
   int calculateDifference(DateTime date);
@@ -41,29 +40,32 @@ class FunctionUtils implements Functions {
       .doc(Auth().getCurrentUser().uid)
       .get();
 
+
+  //edit this
   Future sendEmail(String s, String d, String t, String u) async {
-   
+    final user = await Auth().signInWithGoogle();
+    if (user == null) return;
+    final email = user.email;
+    
+    final token = user.getIdToken().toString();
 
-
-
-    String username = 'jhunanthonysacapano@gmail.com';
-    String password = 'sadfredjhun02';
-    final smtpServer = gmailSaslXoauth2(username, password);
+    //String password = 'Tourplanner2k21';
+    final smtpServer = gmailSaslXoauth2(email, token);
     // Create our message.
     final message = Message()
-      ..from = Address(username, 'Your CalendarApp')
+      ..from = Address(email, 'Byway Boracay App')
       ..recipients.add(s)
       ..subject = 'Event Reminder :: Date :: $d'
       ..html =
-          "<h1>Reminder</h1>\n<p>This is to remind to attend the event scheduled with $u at time $t .</p>";
+          "<h1>Reminder</h1>\n<p>This is to remind you to attend the event scheduled $u at time $t .</p>";
     try {
       final sendReport = await send(message, smtpServer);
       showSimpleNotification(Text("Email Successfully Sent !!"),
           background: Color(0xff29a39d));
       print(sendReport);
-      
     } on MailerException catch (e) {
-      showSimpleNotification(Text(e.toString()), background: Color(0xff29a39d));
+      showSimpleNotification(Text(e.toString() + ' not sent'),
+          background: Color(0xff29a39d));
     }
   }
 

@@ -472,20 +472,30 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Colors.blue[50],
+        //color: Colors.blue[50],
         //35%* of screen
         height: MediaQuery.of(context).size.height * 0.35,
         width: MediaQuery.of(context).size.width,
-        /*decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(10),
-            topLeft: Radius.circular(10),
-            ),                   
-                          color: Colors.blue[50],
-                          ),*/
+        decoration: BoxDecoration(
+          image: DecorationImage(image: AssetImage( 'assets/images/Explore_Beach.jpg',),
+           fit: BoxFit.fitHeight,
+          )
+                          ),
         child: Stack(
           children: [
             //align all to center
+            Positioned.fill(
+                      child: Container(
+                          decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.center,
+                      end: Alignment.bottomCenter,
+                      colors: <Color>[
+                        Colors.transparent,
+                        Colors.blue.withOpacity(0.5),
+                      ],
+                    ),
+                  ))),
 
             Positioned(
                 bottom: 0,
@@ -493,19 +503,21 @@ class Header extends StatelessWidget {
                 right: 0,
                 child: Column(
                   children: [
-                    Text('Brand Name',
+                    Text('Byway Boracay',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: Colors.grey[700],
+                            color: Colors.white,
                             fontSize: 40,
                             fontWeight: FontWeight.w400)),
                     SizedBox(
                       height: 5,
                     ),
-                    Text('Brand Slogan',
+                    Text('Venture with Precision',
                         textAlign: TextAlign.center,
+
                         style: TextStyle(
-                            color: Colors.grey[700],
+                            color: Colors.white,
+                            fontStyle: FontStyle.italic,
                             fontSize: 25,
                             fontWeight: FontWeight.w200)),
                     SizedBox(
