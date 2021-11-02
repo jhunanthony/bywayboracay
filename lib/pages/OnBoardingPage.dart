@@ -39,6 +39,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           
           body: Container(
               child: Padding(
+              
             padding: EdgeInsets.only(bottom: 20, left:20, right:20),
             child: Column(
               children: [
@@ -58,7 +59,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                       margin: EdgeInsets.all(20),
                       padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                          color: Colors.grey[50],
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(30),
                           boxShadow: [
                             BoxShadow(
@@ -73,16 +74,26 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             children: [
                               Align(
                                 alignment: Alignment.center,
-                                child: ClipOval(
-                                  child: Image.asset(
-                                    "assets/images/" +
-                                        AppIcons.LogoIcon +
-                                        ".png",
-                                    height: 40,
-                                    width: 40,
-                                    fit: BoxFit.scaleDown,
-                                  ),
-                                ),
+                                child: Container(
+            padding: EdgeInsets.all(3),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.center,
+                end: Alignment.bottomCenter,
+                colors: <Color>[
+                  Colors.white.withOpacity(0.3),
+                  Colors.white,
+                ],
+              ),
+              shape: BoxShape.circle,
+            ),
+            child: Image.asset(
+              "assets/images/Logo_Test.png",
+              height: 35,
+              width: 35,
+              fit: BoxFit.scaleDown,
+            ),
+          ),
                               ),
                               SizedBox(
                                 height: 20,

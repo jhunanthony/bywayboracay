@@ -126,14 +126,12 @@ class ItemsPage extends StatelessWidget {
                                       topRight: Radius.circular(20),
                                     ),
                                     gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
+                                      begin: Alignment.center,
                                       end: Alignment.bottomCenter,
                                       colors: <Color>[
                                         Colors.transparent,
-                                        this
-                                            .selectedCategory
-                                            .color
-                                            .withOpacity(0.5),
+                                        Colors.black.withOpacity(0.5),
+                                         Colors.black.withOpacity(0.3),
                                       ],
                                     ),
                                   )),

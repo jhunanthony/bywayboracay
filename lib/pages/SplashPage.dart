@@ -25,45 +25,48 @@ class SplashPage extends StatelessWidget {
 
       //fetch data from firebase
       catService.getCategoriesCollectionFromFirebase().then((value) {
-        
         Navigator.of(context).pushNamed('/loginpage');
-      Navigator.push(
+        Navigator.push(
             context, MaterialPageRoute(builder: (context) => this.goToPage));
-             });
-     });
- 
-      
-
-  
+      });
+    });
 
     return SafeArea(
         child: Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.blue,
             body: Stack(children: [
               Align(
                 alignment: Alignment.center,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                   Container(
-                          alignment: Alignment.center,
-                          width: 150,
-                          height: 150,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              image: DecorationImage(
-                                image: AssetImage(
-                                    "assets/images/Test_Image_1.png"),
-                                fit: BoxFit.cover,
-                              ))),
-                    
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.center,
+                          end: Alignment.bottomCenter,
+                          colors: <Color>[
+                            Colors.white.withOpacity(0.3),
+                            Colors.white,
+                          ],
+                        ),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Image.asset(
+                        "assets/images/Logo_Test.png",
+                        height: 150,
+                        width: 150,
+                        fit: BoxFit.fitHeight,
+                      ),
+                    ),
+
                     //use SizedBox for spacing
                     SizedBox(height: 10),
-                    Text('Brand Name',
+                    Text('Byway Boracay',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Colors.grey[700],
+                          color: Colors.white,
                           fontSize: 40,
                         )),
                   ],
@@ -72,8 +75,8 @@ class SplashPage extends StatelessWidget {
               Align(
                 alignment: Alignment.center,
                 child: SizedBox(
-                  height: 150,
-                  width: 150,
+                  height: 50,
+                  width: 50,
                   child: CircularProgressIndicator(
                     strokeWidth: 10,
                     valueColor: AlwaysStoppedAnimation(

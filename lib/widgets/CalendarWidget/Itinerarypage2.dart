@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:overlay_support/overlay_support.dart';
 
 import 'auth.dart';
@@ -32,18 +33,39 @@ class ItineraryPage extends StatelessWidget {
           if (Auth().getCurrentUser() != null) {
             return CalendarPage();
           } else {
-            return Container(decoration: BoxDecoration(color: Colors.white), child:  Center(
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+            return Container(
+                decoration: BoxDecoration(color: Colors.white),
+                child: Center(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                      Icon(Icons.calendar_today_rounded,
-                          size: 20, color: Colors.grey[400]),
-                      Text(' Login and Start Planning!',
-                          style: TextStyle(
-                            color: Colors.grey[400],
-                            fontSize: 20,
-                          )),
-                    ]))   );
+                      Column(children: [SizedBox(height: 80),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.calendar_today_rounded,
+                                size: 30, color: Colors.blue),
+                            Text(
+                              " Itineray",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.blue[100],
+                                  fontWeight: FontWeight.w300),
+                            )
+                          ]),],),
+                      Column(children: [Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.calendar_today_rounded,
+                                size: 20, color: Colors.grey[400]),
+                            Text(' Login and Start Planning!',
+                                style: TextStyle(
+                                  color: Colors.grey[400],
+                                  fontSize: 20,
+                                )),
+                          ]),
+                      SizedBox(height: 305),],)
+                    ])));
             //Container(child: Center(child: Text('Log In to access Itinerary')));
           }
         }

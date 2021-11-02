@@ -6,14 +6,22 @@ import 'package:bywayborcay/pages/MapPage.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/likeservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
+import 'package:bywayborcay/widgets/CalendarWidget/auth.dart';
+import 'package:bywayborcay/widgets/CalendarWidget/datepicker.dart';
+import 'package:bywayborcay/widgets/CalendarWidget/emailtext.dart';
+import 'package:bywayborcay/widgets/CalendarWidget/utils.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:expandable_text/expandable_text.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -98,33 +106,34 @@ class _DetailsPageState extends State<DetailsPage> {
                       itemBuilder: (BuildContext context, int index) {
                         //show photos here
                         return Container(
-                            height: 400,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                    widget.items.detailsimages[index].imgName),
-                                fit: BoxFit.fitHeight,
-                              ),
+                          height: 400,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  widget.items.detailsimages[index].imgName),
+                              fit: BoxFit.fitHeight,
                             ),
-                            child: Stack(
+                          ),
+                          /*child: Stack(
                               children: [
                                 //add gradient
                                 Positioned.fill(
                                   child: Container(
                                       decoration: BoxDecoration(
                                     gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
+                                      begin: Alignment.center,
                                       end: Alignment.bottomCenter,
                                       colors: <Color>[
                                         Colors.transparent,
-                                        widget.items.color.withOpacity(0.3),
+                                        Colors.black.withOpacity(0.3),
                                       ],
                                     ),
                                   )),
                                 ),
                               ],
-                            ));
+                            )*/
+                        );
                         //add spacing
                       }),
                 ),
@@ -147,12 +156,16 @@ class _DetailsPageState extends State<DetailsPage> {
                                 fontWeight: FontWeight.w300),
                           );
                         }),*/
+
+                        SizedBox(
+                          height: 10,
+                        ),
                         CategoryIcon(
                           iconName: widget.items.iconName,
                           color: widget.items.color,
                           size: 40,
                         ),
-                         SizedBox(
+                        SizedBox(
                           height: 10,
                         ),
                         Consumer<LoginService>(
@@ -198,8 +211,6 @@ class _DetailsPageState extends State<DetailsPage> {
                         SizedBox(
                           height: 3,
                         ),
-                       
-                        
                         Consumer<LoginService>(
                             builder: (context, loginService, child) {
                           if (loginService.isUserLoggedIn()) {
@@ -233,39 +244,8 @@ class _DetailsPageState extends State<DetailsPage> {
                           }
                           return SizedBox();
                         }),
-                        
                       ]),
                     )),
-
-                //page indicator
-                /*Positioned(
-                  right: 0,
-                  left:0,
-                  bottom: 70,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: SmoothPageIndicator(
-                      controller: _imagepageController,
-                      count: widget.items.detailsimages.length,
-                      effect: ExpandingDotsEffect(
-                          activeDotColor: widget.items.color,
-                          dotColor: Colors.white,
-                          dotHeight: 5,
-                          dotWidth: 5,
-                          spacing: 3),
-                    ),
-                  ),
-                ),*/
-                //icon
-                /*Positioned(
-                  left: 20,
-                  bottom: 65,
-                  child: CategoryIcon(
-                    iconName: widget.items.iconName,
-                    color: widget.items.color,
-                    size: 40,
-                  ),
-                ),*/
 
                 //title and calendar button
 
@@ -337,7 +317,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                           color: Colors.blue[200],
                                           iconSize: 30,
                                           splashColor: Colors.blue,
-                                          onPressed: () {},
+                                          onPressed: () => _showAction(context),
                                         ),
                                       ),
                                     );
@@ -858,6 +838,245 @@ class _DetailsPageState extends State<DetailsPage> {
     });
   }
 
-  //use this to reload map page
+  //initiate values to add to calendar
+  List<String> emails = [Auth().getCurrentUser().email];
 
+  List<Map<DateTime, List<Event>>> events2 = [];
+  TextEditingController event = TextEditingController();
+  TextEditingController timer = TextEditingController();
+  TextEditingController desc = TextEditingController();
+
+  DateTime _selectedDay = DateTime.now();
+  RegExp time_24H = new RegExp(r"^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$");
+  RegExp time_12H =
+      new RegExp(r"^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]) ?((a|p)m|(A|P)M)$");
+  List tapTitles = [
+    "Are you sure you want to delete the event?",
+    "Are you sure you want to send  the event reminders?"
+  ];
+  Timestamp t;
+  DateTime eventDate;
+  Map res = Map();
+
+  //use this for buildTextField
+  Widget buildTextField(
+      {String hint, @required TextEditingController controller}) {
+    return TextField(
+      controller: controller,
+      textCapitalization: TextCapitalization.words,
+      decoration: InputDecoration(
+        labelText: hint ?? '',
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue, width: 1.5),
+          borderRadius: BorderRadius.circular(
+            10.0,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue, width: 1.5),
+          borderRadius: BorderRadius.circular(
+            10.0,
+          ),
+        ),
+      ),
+    );
+  }
+
+//action dialog
+  static const _actionTitle = 'Add Event';
+  void _showAction(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(_actionTitle),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                MyTextFieldDatePicker(
+                  prefixIcon: Icon(Icons.calendar_today_rounded),
+                  firstDate: kFirstDay,
+                  lastDate: kLastDay,
+                  initialDate: _selectedDay,
+                  onDateChanged: (DateTime value) {
+                    if (mounted)
+                      setState(() {
+                        eventDate = value;
+                      });
+                    print(eventDate);
+                  },
+                ),
+
+                SizedBox(height: 7),
+                TextField(
+                  onTap: () {
+                    setState(() {
+                      showPicker(context).then((value) => timer.text = value);
+                    });
+                  },
+                  controller: timer,
+                  decoration: InputDecoration(
+                      suffixIcon: Icon(Icons.timer_rounded),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                        borderRadius: BorderRadius.circular(
+                          10.0,
+                        ),
+                      ),
+                      labelText: "Time",
+                      hintText: "Enter Time"),
+                ),
+                SizedBox(height: 7),
+                buildTextField(controller: event, hint: 'Event'),
+                SizedBox(height: 7),
+                buildTextField(controller: desc, hint: 'Description'),
+
+                //SizedBox( height: 8),
+
+                /*TextField(
+                       controller: event,
+                       decoration: InputDecoration(
+                           border: OutlineInputBorder(),
+                           labelText: "Event",
+                           hintText: "Enter Event Name"
+                       ),
+                     ),
+                     //SizedBox( height: 8),
+                     TextField(
+                       controller: desc,
+                       decoration: InputDecoration(
+                           border: OutlineInputBorder(),
+                           labelText: "Description",
+                           hintText: "Enter Event Description"
+                       ),
+                     ),*/
+                //SizedBox( height: 8),
+                Container(
+                    child: EmailInput(
+                  parentEmails: emails,
+                  setList: (e) {
+                    setState(() {
+                      emails = e;
+                    });
+                  },
+                ))
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                event.clear();
+                desc.clear();
+                timer.clear();
+
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'CANCEL',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                if (timer.text.isEmpty ||
+                    !(time_12H.hasMatch(timer.text) ||
+                        time_24H.hasMatch(timer.text))) {
+                  showSimpleNotification(
+                      Text("Please enter a valid time to the event"));
+                } else if (event.text.isEmpty) {
+                  showSimpleNotification(
+                      Text("Please enter a valid title to the event"));
+                } else if (desc.text.isEmpty) {
+                  showSimpleNotification(
+                      Text("Please enter description to the event"));
+                } else {
+                  print(emails);
+                  setEvents().whenComplete(() {
+                    event.clear();
+                    desc.clear();
+
+                    Navigator.of(context).pop();
+                  });
+                }
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  //time picker
+  Future<String> showPicker(BuildContext context) async {
+    TimeOfDay initialTime = TimeOfDay.now();
+    TimeOfDay t = await showTimePicker(
+        context: context,
+        initialTime: initialTime,
+        builder: (BuildContext context, Widget child) {
+          return child;
+        });
+    String res = t.format(context);
+    return res;
+  }
+
+  //set events here
+  Future setEvents() async {
+    List temp = await FunctionUtils().eventUsers(emails);
+    int today = FunctionUtils().calculateDifference(_selectedDay);
+    if (today < 0) {
+      showSimpleNotification(Text("You cannot create a event before today!"));
+    } else {
+      for (int i = 0; i < temp.length; i++) {
+        List events = [];
+        print("lol");
+        events.add({
+          "Event": event.text,
+          "description": desc.text,
+          "time": timer.text,
+          "CreatedBy": emails[0],
+          "users": emails
+        });
+        final sp =
+            await databaseReference.collection('Users').doc(temp[i]).get();
+        String name = sp.get("Name");
+        String email = sp.get("Email");
+        String date = DateFormat('yyyy-MM-dd').format(eventDate);
+        final snapShot = databaseReference
+            .collection('Users')
+            .doc(temp[i])
+            .collection("Events")
+            .doc(date);
+        var data = await snapShot.get();
+        int max = !data.exists ? 0 : data.get("EventList").length;
+        if (max <= 3) {
+          if (data.exists) {
+            snapShot.update({"EventList": FieldValue.arrayUnion(events)});
+            showSimpleNotification(Text("Event Added"),
+                background: Color(0xff29a39d));
+            FunctionUtils()
+                .sendEmail(email, date, events[0]["time"], emails[0]);
+          } else {
+            snapShot.set({'EventList': events});
+            showSimpleNotification(
+                Text(
+                  "Event Added",
+                ),
+                background: Color(0xff29a39d));
+            FunctionUtils()
+                .sendEmail(email, date, events[0]["time"], emails[0]);
+          }
+        } else {
+          showSimpleNotification(
+              Text(
+                "$name isn't available",
+              ),
+              background: Color(0xff29a39d));
+          break;
+        }
+      }
+    }
+  }
 }

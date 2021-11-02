@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'auth.dart';
 import 'datepicker.dart';
@@ -40,7 +41,7 @@ class CalendarState extends State<CalendarPage> {
     "Are you sure you want to send  the event reminders?"
   ];
   Timestamp t;
-  DateTime eventDate = DateTime.now();
+  DateTime eventDate;
   Map res = Map();
   Future<void> getEventData(String s) async {
     var d = await databaseReference
@@ -279,6 +280,7 @@ class CalendarState extends State<CalendarPage> {
                     },
                   ),
                 ),
+
                 SizedBox(height: 7),
                 TextField(
                   onTap: () {
@@ -413,7 +415,10 @@ class CalendarState extends State<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
+    return Consumer<LoginService>(builder: (context, loginService, child) {
+      if (loginService.isUserLoggedIn()) {
+        //if logged
+return WillPopScope(
       onWillPop: () async => null,
       child: Scaffold(
         body: Stack(children: [
@@ -422,7 +427,21 @@ class CalendarState extends State<CalendarPage> {
             child: Column(
               children: [
                 SizedBox(
-                  height: 80,
+                  height: 70,
+                ),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Icon(Icons.calendar_today_rounded,
+                      size: 30, color: Colors.blue),
+                  Text(
+                    " Itineray",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.blue[100],
+                        fontWeight: FontWeight.w300),
+                  )
+                ]),
+                SizedBox(
+                  height: 10,
                 ),
 
                 Container(
@@ -442,62 +461,23 @@ class CalendarState extends State<CalendarPage> {
                   weekendDays: [DateTime.sunday, 6],
                   // default is Sunday but can be changed according to locale
                   startingDayOfWeek: StartingDayOfWeek.sunday,
-                  
+                  // height between the day row and 1st date row, default is 16.0
+                  daysOfWeekHeight: 40.0,
+                  // height between the date rows, default is 52.0
+                  rowHeight: 60.0,
+
                   firstDay: kFirstDay,
                   lastDay: kLastDay,
                   daysOfWeekVisible: true,
                   focusedDay: _focusedDay,
                   selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
                   calendarFormat: _calendarFormat,
-                  /*calendarBuilders: CalendarBuilders(
-                    /*singleMarkerBuilder: (context,DateTime t ,Event f){
-                      return Container(
-                        decoration: new BoxDecoration(
-                          color: const Color(0xff082649),
-                          shape: BoxShape.circle,
-                        ),
-                        margin: EdgeInsets.symmetric(horizontal: width/150),
-                        width: width / 80,
-                        height: width / 80,
-                      );
-                    },*/
-                    todayBuilder:  (context,DateTime t ,DateTime f){
-                      return Container(
-                        decoration: new BoxDecoration(
-                          color: Colors.yellow[50],
-                      shape: BoxShape.circle,
-                        ),
-                        margin: EdgeInsets.all(width / 100),
-                        width: width / 11,
-                        height: width / 11,
-                        child: Center(
-                          child: Text(
-                            '${t.day}' ,style: TextStyle(color: Colors.grey[700]),
-                          ),
-                        ),
-                      );
-                    },
-                    selectedBuilder: (context,DateTime t ,DateTime f){
-                      return Container(
-                        decoration: new BoxDecoration(
-                            color: Colors.blue[50],
-                      shape: BoxShape.circle,
-                        ),
-                        margin: EdgeInsets.all(width / 100),
-                        width: width / 11,
-                        height: width / 11,
-                        child: Center(
-                          child: Text(
-                            '${t.day}', style: TextStyle(color: Colors.blue),
-                          ),
-                        ),
-                      );
-                    }
-                  ),*/
+
                   eventLoader: _getEventsForDay,
 
                   calendarStyle: CalendarStyle(
                     outsideDaysVisible: true,
+                  
                     // Weekend dates color (Sat & Sun Column)
                     weekendTextStyle: TextStyle(
                       color: Colors.grey[400],
@@ -516,7 +496,6 @@ class CalendarState extends State<CalendarPage> {
                     ),
                     selectedTextStyle: TextStyle(color: Colors.blue),
                     markerDecoration: BoxDecoration(
-                      
                         color: Colors.blue, shape: BoxShape.circle),
                     markerSize: 5.00,
                   ),
@@ -564,6 +543,17 @@ class CalendarState extends State<CalendarPage> {
                   },
                 ),
                 const SizedBox(height: 8.0),
+                Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  Text(
+                    " Events",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.blue[100],
+                        fontWeight: FontWeight.w300),
+                  )
+                ]),
+                const SizedBox(height: 8.0),
+
                 //list of events here
                 Expanded(
                   child: ValueListenableBuilder<List<Event>>(
@@ -630,18 +620,21 @@ class CalendarState extends State<CalendarPage> {
                                 ),
                                 //trailing: Text(value[index].timer,style: TextStyle(color: Colors.blue),),
                                 trailing: Icon(Icons.highlight_off,
-                                      color: Colors.red[200])),
+                                    color: Colors.red[200])),
                           );
                         },
                       );
                     },
                   ),
+                ),
+                SizedBox(
+                  height: 80,
                 )
               ],
             ),
           ),
           Positioned(
-            right: 5,
+            right: 0,
             bottom: 80,
             child: ElevatedButton(
               onPressed: () => _showAction(context),
@@ -669,5 +662,45 @@ class CalendarState extends State<CalendarPage> {
         ]),
       ),
     );
+      }
+    
+    
+    //iff not logged
+    return Container(
+                decoration: BoxDecoration(color: Colors.white),
+                child: Center(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                      Column(children: [SizedBox(height: 80),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.calendar_today_rounded,
+                                size: 30, color: Colors.blue),
+                            Text(
+                              " Itineray",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.blue[100],
+                                  fontWeight: FontWeight.w300),
+                            )
+                          ]),],),
+                      Column(children: [Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.calendar_today_rounded,
+                                size: 20, color: Colors.grey[400]),
+                            Text(' Login and Start Planning!',
+                                style: TextStyle(
+                                  color: Colors.grey[400],
+                                  fontSize: 20,
+                                )),
+                          ]),
+                      SizedBox(height: 305),],)
+                    ])));
+    });
+
+    
   }
 }

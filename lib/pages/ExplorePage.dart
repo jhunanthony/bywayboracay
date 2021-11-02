@@ -488,9 +488,10 @@ class Header extends StatelessWidget {
                       child: Container(
                           decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      begin: Alignment.center,
+                      begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: <Color>[
+                        Colors.white.withOpacity(0.3),
                         Colors.transparent,
                         Colors.blue.withOpacity(0.5),
                       ],

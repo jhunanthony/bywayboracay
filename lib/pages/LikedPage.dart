@@ -42,7 +42,7 @@ class LikedPage extends StatelessWidget {
             width: 30,
           ),
           Text(
-            "Likes",
+            " Likes",
             style: TextStyle(
                 fontSize: 14,
                 color: Colors.blue[100],
@@ -50,7 +50,7 @@ class LikedPage extends StatelessWidget {
           )
         ]),
         SizedBox(
-          height: 20,
+          height: 15,
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -59,8 +59,8 @@ class LikedPage extends StatelessWidget {
               Text(
                 'Hi $userName',
                 style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.blue[100],
+                  fontSize: 20,
+                  color: Colors.grey[700],
                 ),
               ),
               Consumer<LikeService>(
@@ -248,7 +248,7 @@ class LikedPage extends StatelessWidget {
                         children: [
                       Icon(Icons.favorite_rounded,
                           size: 20, color: Colors.grey[400]),
-                      Text(' Explore Boracay Now!',
+                      Text('Explore Boracay Now!',
                           style: TextStyle(
                             color: Colors.grey[400],
                             fontSize: 20,

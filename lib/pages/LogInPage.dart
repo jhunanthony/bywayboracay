@@ -143,8 +143,8 @@ class _LogInPageState extends State<LogInPage> {
                   ),
                   child: Container(
                     alignment: Alignment.center,
-                    height: 80,
-                    width: 80,
+                    height: 70,
+                    width: 70,
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
