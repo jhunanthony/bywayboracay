@@ -839,7 +839,11 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   //initiate values to add to calendar
+  
   List<String> emails = [Auth().getCurrentUser().email];
+
+ 
+  
 
   List<Map<DateTime, List<Event>>> events2 = [];
   TextEditingController event = TextEditingController();

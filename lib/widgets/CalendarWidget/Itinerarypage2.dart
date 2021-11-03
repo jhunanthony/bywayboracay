@@ -1,3 +1,4 @@
+import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/pages/LogInPage.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/LogIn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -43,8 +44,12 @@ class ItineraryPage extends StatelessWidget {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.calendar_today_rounded,
-                                size: 30, color: Colors.blue),
+                          SvgPicture.asset(
+                        'assets/icons/' + AppIcons.ItineraryIcon + '.svg',
+                        color: Colors.blue,
+                        height: 30,
+                        width: 30,
+                      ),
                             Text(
                               " Itineray",
                               style: TextStyle(
@@ -56,8 +61,12 @@ class ItineraryPage extends StatelessWidget {
                       Column(children: [Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.calendar_today_rounded,
-                                size: 20, color: Colors.grey[400]),
+                             SvgPicture.asset(
+                        'assets/icons/' + AppIcons.ItineraryIcon + '.svg',
+                        color: Colors.grey[700],
+                        height: 20,
+                        width: 20,
+                      ),
                             Text(' Login and Start Planning!',
                                 style: TextStyle(
                                   color: Colors.grey[400],

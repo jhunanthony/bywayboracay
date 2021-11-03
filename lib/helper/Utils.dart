@@ -2,6 +2,7 @@
 
 import 'package:bywayborcay/models/CategoryModel.dart';
 import 'package:bywayborcay/models/DetailImages.dart';
+import 'package:bywayborcay/models/ForYouModel.dart';
 import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/models/OnBoardingModel.dart';
 
@@ -14,26 +15,51 @@ class Utils {
   static List<OnBoardingContent> getOnBoarding() {
     return [
       OnBoardingContent(
-        message: 'This product is for flexibility',
-        imgName: 'Test_Image_1',
+        message: 'Explore Boracay and create your own tour plan with ease and flexibility.',
+        imgName: 'Planning',
       ),
       OnBoardingContent(
-        message: 'This product is for Navigation',
-        imgName: 'Test_Image_2',
+        message: 'Navigation to your desired place with accuracy.',
+        imgName: 'Navigation',
       ),
       OnBoardingContent(
-        message: 'This product is for Budget',
-        imgName: 'Test_Image_3',
+        message: 'No more worries on budgeting hassles.',
+        imgName: 'Budgeting',
       ),
       OnBoardingContent(
-        message: 'This product is for Communication',
-        imgName: 'Test_Image_4',
+        message: 'Freely express your self with Byway Boracay.',
+        imgName: 'Communication',
+      )
+    ];
+  }
+
+  static List<ForYouContent> getForyouContents() {
+    return [
+      ForYouContent(
+        name: 'White Beach',
+        imgName: 'ForYou1',
+        address: 'Balabag, Malay, Aklan',
+      ),
+      ForYouContent(
+        name: 'New Coast Stone Hendge',
+        imgName: 'ForYou2',
+        address: 'Yapak, Malay, Aklan'
+      ),
+      ForYouContent(
+        name: 'Mt. Luho',
+        imgName: 'ForYou3',
+        address: 'Balabag, Malay, Aklan'
+      ),
+      ForYouContent(
+        name: 'Puka Beach',
+        imgName: 'ForYou4',
+        address: 'Yapak, Malay, Aklan'
       )
     ];
   }
 
   //create static method that will return categories with data
-  static List<Category> getMockedCategory() {
+  /*static List<Category> getMockedCategory() {
     return [
       Category(
           color: AppColors.ToStayColor,
@@ -145,7 +171,7 @@ class Utils {
           iconName: AppIcons.ToDoIcon,
           items: []),
     ];
-  }
+  }*/
 
   
 }

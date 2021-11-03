@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:io';
 
+import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/pages/MainPage.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/LogIn.dart';
@@ -9,6 +10,7 @@ import 'package:bywayborcay/widgets/CalendarWidget/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
@@ -665,7 +667,7 @@ return WillPopScope(
       }
     
     
-    //iff not logged
+    //if not logged
     return Container(
                 decoration: BoxDecoration(color: Colors.white),
                 child: Center(
@@ -676,8 +678,12 @@ return WillPopScope(
                       Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.calendar_today_rounded,
-                                size: 30, color: Colors.blue),
+                       SvgPicture.asset(
+                        'assets/icons/' + AppIcons.ItineraryIcon + '.svg',
+                        color: Colors.blue,
+                        height: 14,
+                        width: 14,
+                      ),
                             Text(
                               " Itineray",
                               style: TextStyle(
@@ -689,8 +695,12 @@ return WillPopScope(
                       Column(children: [Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.calendar_today_rounded,
-                                size: 20, color: Colors.grey[400]),
+                            SvgPicture.asset(
+                        'assets/icons/' + AppIcons.ItineraryIcon + '.svg',
+                        color: Colors.grey[700],
+                        height: 25,
+                        width: 25,
+                      ),
                             Text(' Login and Start Planning!',
                                 style: TextStyle(
                                   color: Colors.grey[400],

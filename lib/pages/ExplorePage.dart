@@ -1,10 +1,18 @@
+import 'dart:async';
+import 'dart:ui';
+
+import 'package:bywayborcay/helper/AppExploreContent.dart';
+import 'package:bywayborcay/helper/Utils.dart';
+import 'package:bywayborcay/models/ForYouModel.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/categoryservice.dart';
 
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryCard.dart';
 import 'package:bywayborcay/widgets/VideoPlayerWidgets/VideoAssetPlayer.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../models/CategoryModel.dart';
 
 //create scroll controller
@@ -70,32 +78,31 @@ class _ExplorePageState extends State<ExplorePage> {
           ),
         ]),
         Positioned(
-              bottom: 80,
-              right: 0,
-              left: 0,
-            child: _showBackToTopButton == false
-          ? SizedBox()
-          :ElevatedButton(
-                onPressed: () => _goToElement(0),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.white, //background
-                  onPrimary: Colors.blue,
-                  //foreground
-                  shape: CircleBorder(),
-                ),
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 25,
-                  width: 25,
-                  child: Icon(
-                    Icons.arrow_upward_rounded,
-                    size: 20,
-                    color: Colors.blue,
+          bottom: 350,
+          right: 0,
+          child: _showBackToTopButton == false
+              ? SizedBox()
+              : ElevatedButton(
+                  onPressed: () => _goToElement(0),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white, //background
+                    onPrimary: Colors.blue,
+                    //foreground
+                    shape: CircleBorder(),
                   ),
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 25,
+                    width: 25,
+                    child: Icon(
+                      Icons.arrow_upward_rounded,
+                      size: 20,
+                      color: Colors.blue,
+                    ),
+                  ),
+                  //capture the success flag with async and await
                 ),
-                //capture the success flag with async and await
-              ),
-            )
+        )
       ]),
 
       //show top bar
@@ -177,20 +184,52 @@ class AwardsAndRecognition extends StatelessWidget {
 }
 
 class Geography extends StatelessWidget {
-  const Geography({
-    Key key,
-  }) : super(key: key);
+  Completer<GoogleMapController> googlemapcontroller = Completer();
+  static final CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(11.962116499999999, 121.92994489999998),
+    zoom: 11,
+  );
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 400,
+      padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
       width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-        image: AssetImage("assets/images/Test_Image_2.png"),
-        fit: BoxFit.cover,
-      )),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text('Geography', style: TextStyle(fontSize: 20, color: Colors.blue)),
+        SizedBox(
+          height: 20,
+        ),
+        Row(
+          children: [
+            Icon(Icons.location_on_rounded, color: Colors.blue),
+            Text(' Boracay Island, Malay, Aklan, 5608',
+                style: TextStyle(fontSize: 14, color: Colors.blue)),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            height: 200,
+            child: GoogleMap(
+              mapType: MapType.hybrid,
+              initialCameraPosition: _kGooglePlex,
+              onMapCreated: (GoogleMapController controller) {
+                googlemapcontroller.complete(controller);
+              },
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(AppContent.geography,
+            textAlign: TextAlign.start,
+            style: TextStyle(fontSize: 14, color: Colors.blue)),
+      ]),
     );
   }
 }
@@ -215,21 +254,108 @@ class Highlights extends StatelessWidget {
 }
 
 class ForYouTabs extends StatelessWidget {
-  const ForYouTabs({
-    Key key,
-  }) : super(key: key);
+  final _imagepageController = PageController(viewportFraction: 0.877);
 
+  List<ForYouContent> _foryoucontent = Utils.getForyouContents();
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 400,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-        image: AssetImage("assets/images/Test_Image_5.png"),
-        fit: BoxFit.cover,
-      )),
-    );
+    return Column(children: [
+      SizedBox(
+        height: 20,
+      ),
+      Text('For You!', style: TextStyle(fontSize: 20, color: Colors.blue)),
+      SizedBox(
+        height: 10,
+      ),
+      Container(
+          height: 200,
+          padding: EdgeInsets.only(top: 10, bottom: 10),
+          child: PageView(
+            physics: BouncingScrollPhysics(),
+            controller: _imagepageController,
+            scrollDirection: Axis.horizontal,
+            children: List.generate(
+                _foryoucontent.length,
+                (int index) => Container(
+                      margin: EdgeInsets.only(right: 28.8),
+                      width: MediaQuery.of(context).size.width - 10,
+                      height: 200,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(9.6),
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage(
+                                  'assets/images/${_foryoucontent[index].imgName}.jpg'))),
+                      child: Stack(children: <Widget>[
+                        Positioned(
+                            bottom: 10,
+                            left: 10,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                      borderRadius: BorderRadius.circular(4.8),
+                                      child: BackdropFilter(
+                                          filter: ImageFilter.blur(
+                                              sigmaY: 19.2, sigmaX: 19.2),
+                                          child: Container(
+                                              padding: EdgeInsets.all(10),
+                                              alignment: Alignment.center,
+                                              child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                        _foryoucontent[index]
+                                                            .name,
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 14,
+                                                        )),
+                                                    SizedBox(
+                                                      height: 3,
+                                                    ),
+                                                    Row(
+                                                      children: <Widget>[
+                                                        Icon(
+                                                          Icons.location_on,
+                                                          color: Colors.white,
+                                                          size: 12,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                            _foryoucontent[
+                                                                    index]
+                                                                .address,
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 12,
+                                                            ))
+                                                      ],
+                                                    ),
+                                                  ])))),
+                                ]))
+                      ]),
+                    )),
+          )),
+      //pageindicator
+      SmoothPageIndicator(
+        controller: _imagepageController,
+        count: _foryoucontent.length,
+        effect: ExpandingDotsEffect(
+            activeDotColor: Colors.blue,
+            dotColor: Colors.grey[400],
+            dotHeight: 5,
+            dotWidth: 5,
+            spacing: 3),
+      ),
+      SizedBox(
+        height: 10,
+      ),
+    ]);
   }
 }
 
@@ -340,7 +466,7 @@ class ScrollButtons extends StatelessWidget {
                   width: 50,
                   alignment: Alignment.center,
                   child: Text(
-                    'Geography',
+                    'Highlights',
                     style: TextStyle(
                         fontSize: 10,
                         color: Colors.white,
@@ -362,7 +488,7 @@ class ScrollButtons extends StatelessWidget {
                   width: 50,
                   alignment: Alignment.center,
                   child: Text(
-                    'Highlights',
+                    'Geography',
                     style: TextStyle(
                         fontSize: 10,
                         color: Colors.white,
@@ -372,6 +498,7 @@ class ScrollButtons extends StatelessWidget {
                 onPressed: () =>
                     _goToElement(4), // on press animate to 6 th element
               ),
+              
               SizedBox(width: 5),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -477,26 +604,28 @@ class Header extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.35,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          image: DecorationImage(image: AssetImage( 'assets/images/Explore_Beach.jpg',),
-           fit: BoxFit.fitHeight,
-          )
-                          ),
+            image: DecorationImage(
+          image: AssetImage(
+            'assets/images/Explore_Beach.jpg',
+          ),
+          fit: BoxFit.fitHeight,
+        )),
         child: Stack(
           children: [
             //align all to center
             Positioned.fill(
-                      child: Container(
-                          decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: <Color>[
-                        Colors.white.withOpacity(0.3),
-                        Colors.transparent,
-                        Colors.blue.withOpacity(0.5),
-                      ],
-                    ),
-                  ))),
+                child: Container(
+                    decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: <Color>[
+                  Colors.white.withOpacity(0.3),
+                  Colors.transparent,
+                  Colors.blue.withOpacity(0.5),
+                ],
+              ),
+            ))),
 
             Positioned(
                 bottom: 0,
@@ -515,7 +644,6 @@ class Header extends StatelessWidget {
                     ),
                     Text('Venture with Precision',
                         textAlign: TextAlign.center,
-
                         style: TextStyle(
                             color: Colors.white,
                             fontStyle: FontStyle.italic,

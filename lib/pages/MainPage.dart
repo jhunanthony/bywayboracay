@@ -58,7 +58,7 @@ class _MainPageState extends State<MainPage> {
                 colorbackground: Colors.transparent,
               )),
           Positioned(
-            bottom: 8,
+            bottom: 6,
             right: 15,
             left: 15,
             child: ClipRRect(
@@ -67,7 +67,7 @@ class _MainPageState extends State<MainPage> {
                   iconSize: 30,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   backgroundColor: Colors.yellow[50],
-                  containerHeight: 65,
+                  containerHeight: 68,
                   itemCornerRadius: 50,
                   selectedIndex: widget.currentIndex,
                   onItemSelected: (index) {
