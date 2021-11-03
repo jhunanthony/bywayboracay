@@ -3,8 +3,10 @@
 import 'package:bywayborcay/models/CategoryModel.dart';
 import 'package:bywayborcay/models/DetailImages.dart';
 import 'package:bywayborcay/models/ForYouModel.dart';
+import 'package:bywayborcay/models/HighlightsModel.dart';
 import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/models/OnBoardingModel.dart';
+import 'package:flutter/material.dart';
 
 
 import 'AppColors.dart';
@@ -54,6 +56,33 @@ class Utils {
         name: 'Puka Beach',
         imgName: 'ForYou4',
         address: 'Yapak, Malay, Aklan'
+      )
+    ];
+  }
+
+  //for highlights
+  static List<HighlightModel> getHighlight() {
+    return [
+      HighlightModel(
+        name: 'White Sands',
+        imgName: 'Highlight1',
+       color: Colors.yellow
+      ),
+      HighlightModel(
+        name: 'Crystal Clear Water',
+        imgName: 'Highlight2',
+        color: Colors.blue
+     
+      ),
+      HighlightModel(
+        name: 'Night Life',
+        imgName: 'Highlight3',
+       color: Colors.purple
+      ),
+      HighlightModel(
+        name: 'Sustainable Tourism',
+        imgName: 'Highlight4',
+        color: Colors.green
       )
     ];
   }

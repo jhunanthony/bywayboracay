@@ -4,11 +4,13 @@ import 'dart:ui';
 import 'package:bywayborcay/helper/AppExploreContent.dart';
 import 'package:bywayborcay/helper/Utils.dart';
 import 'package:bywayborcay/models/ForYouModel.dart';
+import 'package:bywayborcay/models/HighlightsModel.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/categoryservice.dart';
 
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryCard.dart';
 import 'package:bywayborcay/widgets/VideoPlayerWidgets/VideoAssetPlayer.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +21,7 @@ import '../models/CategoryModel.dart';
 ScrollController _controller = new ScrollController();
 
 void _goToElement(int index) {
-  _controller.animateTo((350.0 * index),
+  _controller.animateTo((300.0 * index),
       duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
 }
 
@@ -68,8 +70,8 @@ class _ExplorePageState extends State<ExplorePage> {
           CategoryButtons(),
           ScrollButtons(),
           ForYouTabs(),
-          Highlights(),
           Geography(),
+          Highlights(),
           AwardsAndRecognition(),
           Culture(),
           History(),
@@ -77,9 +79,8 @@ class _ExplorePageState extends State<ExplorePage> {
             height: 100,
           ),
         ]),
-        Positioned(
-          bottom: 350,
-          right: 0,
+        Align(
+          alignment: Alignment(0.0, 0.78),
           child: _showBackToTopButton == false
               ? SizedBox()
               : ElevatedButton(
@@ -235,20 +236,129 @@ class Geography extends StatelessWidget {
 }
 
 class Highlights extends StatelessWidget {
-  const Highlights({
-    Key key,
-  }) : super(key: key);
-
+  List<HighlightModel> _highlightmodel = Utils.getHighlight();
+  final _highlightpageController = PageController(viewportFraction: 0.877);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 400,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-        image: AssetImage("assets/images/Test_Image_3.png"),
-        fit: BoxFit.cover,
-      )),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+        height: 10,
+      ),
+      Row(
+        children: [
+          SizedBox(width: 20,),
+          Text('Highlight', style: TextStyle(fontSize: 20, color: Colors.blue)),
+        ],
+      ),
+      SizedBox(
+        height: 10,
+      ),
+        Container(
+          height: 200,
+          
+          //wrap with stack to overlay other components
+          child: ListView.builder(
+            physics: BouncingScrollPhysics(),
+              controller: _highlightpageController,
+              scrollDirection: Axis.horizontal,
+              itemCount: _highlightmodel.length,
+              itemBuilder: (BuildContext context, int index) {
+                //show photos here
+                return Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 10, top: 10, bottom: 10),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                     
+                        height: 200,
+                        width: MediaQuery.of(context).size.width - 40,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(
+                                'assets/images/${_highlightmodel[index].imgName}.jpg'),
+                            fit: BoxFit.cover
+                          ),
+                        ),
+                        child: Stack(
+                          children: [
+                            //add gradient
+                            Positioned.fill(
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.centerRight,
+                                  end: Alignment.centerLeft,
+                                  colors: <Color>[
+                                    Colors.transparent,
+                                    _highlightmodel[index].color.withOpacity(0.5),
+                                    _highlightmodel[index].color,
+                                  ],
+                                ),
+                              )),
+                            ),
+                            Positioned(
+                              bottom: 10,
+                              left: 10,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  color: Colors.white,
+                                  child: Text(' ' + _highlightmodel[index].name + ' '
+                                  ,
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 20,
+                                      )),
+                                ),
+                              ),
+                            )
+                          ],
+                        )),
+                  ),
+                );
+                //add spacing
+              }),
+        ),
+        SizedBox(height: 10,),
+        Align(
+          alignment: Alignment.center,
+          child: SmoothPageIndicator(
+          controller: _highlightpageController,
+          count: _highlightmodel.length,
+          effect: ExpandingDotsEffect(
+              activeDotColor: Colors.blue,
+              dotColor: Colors.grey[400],
+              dotHeight: 5,
+              dotWidth: 5,
+              spacing: 3),
+      ),
+        ),
+       SizedBox(
+          height: 10,
+        ),
+        Padding( 
+          padding: const EdgeInsets.only(right: 20, left: 20, top: 10, bottom:10),
+          child: 
+          ExpandableText(
+                  AppContent.introduction,
+                  expandText: 'MORE',
+                  collapseText: 'LESS',
+                  maxLines: 4,
+                  linkColor: Colors.blue,
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.blue,
+                      fontWeight: FontWeight.normal),
+                ),
+          
+        ),
+
+
+      ],
     );
   }
 }
@@ -466,7 +576,7 @@ class ScrollButtons extends StatelessWidget {
                   width: 50,
                   alignment: Alignment.center,
                   child: Text(
-                    'Highlights',
+                    'Geography',
                     style: TextStyle(
                         fontSize: 10,
                         color: Colors.white,
@@ -488,7 +598,7 @@ class ScrollButtons extends StatelessWidget {
                   width: 50,
                   alignment: Alignment.center,
                   child: Text(
-                    'Geography',
+                    'Highlights',
                     style: TextStyle(
                         fontSize: 10,
                         color: Colors.white,
@@ -498,7 +608,6 @@ class ScrollButtons extends StatelessWidget {
                 onPressed: () =>
                     _goToElement(4), // on press animate to 6 th element
               ),
-              
               SizedBox(width: 5),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
