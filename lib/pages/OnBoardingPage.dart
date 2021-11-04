@@ -1,11 +1,8 @@
-import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/helper/Utils.dart';
 import 'package:bywayborcay/models/OnBoardingModel.dart';
 import 'package:bywayborcay/pages/MainPage.dart';
-import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:flutter/material.dart';
 
-import 'ExplorePage.dart';
 
 class OnBoardingPage extends StatefulWidget {
   @override

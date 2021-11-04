@@ -1,14 +1,11 @@
 import 'package:bywayborcay/services/loginservice.dart';
-import 'package:bywayborcay/widgets/CalendarWidget/LogIn.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 
-import 'OnBoardingPage.dart';
 
 class LogInPage extends StatefulWidget {
   //final formKey = GlobalKey<FormState>();

@@ -1,7 +1,6 @@
 import 'package:bywayborcay/pages/BagPage.dart';
 import 'package:bywayborcay/pages/DetailsPage.dart';
 import 'package:bywayborcay/pages/ItemsPage.dart';
-import 'package:bywayborcay/pages/ItineraryPage.dart';
 import 'package:bywayborcay/pages/LogInPage.dart';
 import 'package:bywayborcay/pages/MapPage.dart';
 import 'package:bywayborcay/pages/OnBoardingPage.dart';
@@ -14,8 +13,6 @@ import 'package:bywayborcay/widgets/CalendarWidget/Itinerarypage2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'helper/Utils.dart';
-import 'models/LikedItemsModel.dart';
 import 'pages/ExplorePage.dart';
 import 'pages/LikedPage.dart';
 import 'pages/SplashPage.dart';

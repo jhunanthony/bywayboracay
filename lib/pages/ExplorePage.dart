@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:async';
 import 'dart:ui';
 
@@ -80,7 +82,7 @@ class _ExplorePageState extends State<ExplorePage> {
           ),
         ]),
         Align(
-          alignment: Alignment(0.0, 0.78),
+          alignment: Alignment(0, 0.79),
           child: _showBackToTopButton == false
               ? SizedBox()
               : ElevatedButton(
@@ -176,10 +178,12 @@ class AwardsAndRecognition extends StatelessWidget {
       height: 400,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-          image: DecorationImage(
+        color: Colors.white
+          /*image: DecorationImage(
         image: AssetImage("assets/images/Test_Image_5.png"),
         fit: BoxFit.cover,
-      )),
+      )*/
+      ),
     );
   }
 }
@@ -244,120 +248,121 @@ class Highlights extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-        height: 10,
-      ),
-      Row(
-        children: [
-          SizedBox(width: 20,),
-          Text('Highlight', style: TextStyle(fontSize: 20, color: Colors.blue)),
-        ],
-      ),
-      SizedBox(
-        height: 10,
-      ),
+          height: 10,
+        ),
+        Row(
+          children: [
+            SizedBox(
+              width: 20,
+            ),
+            Text('Highlight',
+                style: TextStyle(fontSize: 20, color: Colors.blue)),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+        ),
+
+        //wrap with stack to overlay other components
         Container(
-          height: 200,
-          
-          //wrap with stack to overlay other components
-          child: ListView.builder(
-            physics: BouncingScrollPhysics(),
+            height: 200,
+            padding: EdgeInsets.only(top: 10, bottom: 10),
+            child: PageView(
+              physics: BouncingScrollPhysics(),
               controller: _highlightpageController,
               scrollDirection: Axis.horizontal,
-              itemCount: _highlightmodel.length,
-              itemBuilder: (BuildContext context, int index) {
-                //show photos here
-                return Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 10, top: 10, bottom: 10),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Container(
-                     
-                        height: 200,
-                        width: MediaQuery.of(context).size.width - 40,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(
-                                'assets/images/${_highlightmodel[index].imgName}.jpg'),
-                            fit: BoxFit.cover
+              children: List.generate(
+                  _highlightmodel.length,
+                  (int index) => Padding(
+                    padding: const EdgeInsets.only(right:20),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                          
+                          width: MediaQuery.of(context).size.width - 5,
+                          height: 200,
+                          decoration: BoxDecoration(
+                           
+                            image: DecorationImage(
+                                image: AssetImage(
+                                    'assets/images/${_highlightmodel[index].imgName}.jpg'),
+                                fit: BoxFit.cover),
                           ),
-                        ),
-                        child: Stack(
-                          children: [
-                            //add gradient
-                            Positioned.fill(
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.centerRight,
-                                  end: Alignment.centerLeft,
-                                  colors: <Color>[
-                                    Colors.transparent,
-                                    _highlightmodel[index].color.withOpacity(0.5),
-                                    _highlightmodel[index].color,
-                                  ],
-                                ),
-                              )),
-                            ),
-                            Positioned(
-                              bottom: 10,
-                              left: 10,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(50),
+                          child: Stack(
+                            children: [
+                              //add gradient
+                              Positioned.fill(
                                 child: Container(
-                                  padding: EdgeInsets.all(5),
-                                  color: Colors.white,
-                                  child: Text(' ' + _highlightmodel[index].name + ' '
-                                  ,
-                                      style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 20,
-                                      )),
-                                ),
+                                    decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerRight,
+                                    end: Alignment.centerLeft,
+                                    colors: <Color>[
+                                      Colors.transparent,
+                                      _highlightmodel[index].color.withOpacity(0.5),
+                                      _highlightmodel[index].color,
+                                    ],
+                                  ),
+                                )),
                               ),
-                            )
-                          ],
-                        )),
-                  ),
-                );
-                //add spacing
-              }),
+                              Positioned(
+                                bottom: 20,
+                                left: 20,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Container(
+                                    padding: EdgeInsets.all(5),
+                                    color: Colors.white,
+                                    child: Text(
+                                        ' ' + _highlightmodel[index].name + ' ',
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 14,
+                                        )),
+                                  ),
+                                ),
+                              )
+                            ],
+                          )),
+                    ),
+                  )),
+            )),
+
+        SizedBox(
+          height: 10,
         ),
-        SizedBox(height: 10,),
         Align(
           alignment: Alignment.center,
           child: SmoothPageIndicator(
-          controller: _highlightpageController,
-          count: _highlightmodel.length,
-          effect: ExpandingDotsEffect(
-              activeDotColor: Colors.blue,
-              dotColor: Colors.grey[400],
-              dotHeight: 5,
-              dotWidth: 5,
-              spacing: 3),
-      ),
+            controller: _highlightpageController,
+            count: _highlightmodel.length,
+            effect: ExpandingDotsEffect(
+                activeDotColor: Colors.blue,
+                dotColor: Colors.grey[400],
+                dotHeight: 5,
+                dotWidth: 5,
+                spacing: 3),
+          ),
         ),
-       SizedBox(
+        SizedBox(
           height: 10,
         ),
-        Padding( 
-          padding: const EdgeInsets.only(right: 20, left: 20, top: 10, bottom:10),
-          child: 
-          ExpandableText(
-                  AppContent.introduction,
-                  expandText: 'MORE',
-                  collapseText: 'LESS',
-                  maxLines: 4,
-                  linkColor: Colors.blue,
-                  textAlign: TextAlign.justify,
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.blue,
-                      fontWeight: FontWeight.normal),
-                ),
-          
+        Padding(
+          padding:
+              const EdgeInsets.only(right: 20, left: 20, top: 10, bottom: 10),
+          child: ExpandableText(
+            AppContent.introduction,
+            expandText: 'MORE',
+            collapseText: 'LESS',
+            maxLines: 4,
+            linkColor: Colors.blue,
+            textAlign: TextAlign.justify,
+            style: TextStyle(
+                fontSize: 14,
+                color: Colors.blue,
+                fontWeight: FontWeight.normal),
+          ),
         ),
-
-
       ],
     );
   }
@@ -373,7 +378,12 @@ class ForYouTabs extends StatelessWidget {
       SizedBox(
         height: 20,
       ),
-      Text('For You!', style: TextStyle(fontSize: 20, color: Colors.blue)),
+      Row(
+          
+          children: [
+            SizedBox(width: 20),
+            Text('For You!',
+              style: TextStyle(fontSize: 20, color: Colors.blue))]),
       SizedBox(
         height: 10,
       ),
@@ -387,11 +397,11 @@ class ForYouTabs extends StatelessWidget {
             children: List.generate(
                 _foryoucontent.length,
                 (int index) => Container(
-                      margin: EdgeInsets.only(right: 28.8),
-                      width: MediaQuery.of(context).size.width - 10,
+                      margin: EdgeInsets.only(right: 20),
+                      width: MediaQuery.of(context).size.width - 5,
                       height: 200,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(9.6),
+                          borderRadius: BorderRadius.circular(10),
                           image: DecorationImage(
                               fit: BoxFit.cover,
                               image: AssetImage(
@@ -404,7 +414,7 @@ class ForYouTabs extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   ClipRRect(
-                                      borderRadius: BorderRadius.circular(4.8),
+                                      borderRadius: BorderRadius.circular(10),
                                       child: BackdropFilter(
                                           filter: ImageFilter.blur(
                                               sigmaY: 19.2, sigmaX: 19.2),
@@ -442,7 +452,7 @@ class ForYouTabs extends StatelessWidget {
                                                             style: TextStyle(
                                                               color:
                                                                   Colors.white,
-                                                              fontSize: 12,
+                                                              fontSize: 14,
                                                             ))
                                                       ],
                                                     ),

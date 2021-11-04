@@ -6,7 +6,6 @@ import 'package:bywayborcay/models/LikedItemsModel.dart';
 import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:bywayborcay/services/likeservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
-import 'package:bywayborcay/widgets/Navigation/BottomNavBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';

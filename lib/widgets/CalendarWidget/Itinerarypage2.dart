@@ -1,14 +1,10 @@
 import 'package:bywayborcay/helper/AppIcons.dart';
-import 'package:bywayborcay/pages/LogInPage.dart';
-import 'package:bywayborcay/widgets/CalendarWidget/LogIn.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:overlay_support/overlay_support.dart';
 
 import 'auth.dart';
 import 'calendar.dart';

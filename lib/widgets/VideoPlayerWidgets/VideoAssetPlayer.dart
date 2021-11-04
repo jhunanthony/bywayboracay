@@ -24,7 +24,7 @@ class _VideoAssetPlayerState extends State<VideoAssetPlayer> {
   
     
       
-      ..initialize().then((_) => controller.play());
+      ..initialize().then((_) => controller.pause());
   }
 
   

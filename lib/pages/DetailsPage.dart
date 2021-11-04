@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/models/LikedItemsModel.dart';
-import 'package:bywayborcay/pages/MapPage.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/likeservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
@@ -21,7 +20,6 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:expandable_text/expandable_text.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -329,26 +327,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       ),
                     ]))
               ]),
-              //show page indicator
-
-              //show name of item
-              /* Padding(
-                padding:
-                    EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-                //use wrap horizontal to auto expand text
-                child: Wrap(direction: Axis.horizontal, children: [
-                  Text(
-                    widget.items.name,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.normal),
-                  ),
-                ]),
-              ),*/
-
-              //category icon
+            
 
               //show ratings1 here
               Padding(
@@ -863,28 +842,7 @@ class _DetailsPageState extends State<DetailsPage> {
   Map res = Map();
 
   //use this for buildTextField
-  Widget buildTextField(
-      {String hint, @required TextEditingController controller}) {
-    return TextField(
-      controller: controller,
-      textCapitalization: TextCapitalization.words,
-      decoration: InputDecoration(
-        labelText: hint ?? '',
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue, width: 1.5),
-          borderRadius: BorderRadius.circular(
-            10.0,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue, width: 1.5),
-          borderRadius: BorderRadius.circular(
-            10.0,
-          ),
-        ),
-      ),
-    );
-  }
+  
 
 //action dialog
   static const _actionTitle = 'Add Event';
@@ -932,9 +890,49 @@ class _DetailsPageState extends State<DetailsPage> {
                       hintText: "Enter Time"),
                 ),
                 SizedBox(height: 7),
-                buildTextField(controller: event, hint: 'Event'),
+                TextField(
+             
+      controller: event..text = widget.items.name,
+      textCapitalization: TextCapitalization.words,
+      decoration: InputDecoration(
+        
+        labelText: 'Event',
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue, width: 1.5),
+          borderRadius: BorderRadius.circular(
+            10.0,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue, width: 1.5),
+          borderRadius: BorderRadius.circular(
+            10.0,
+          ),
+        ),
+      ),
+    ),
+               
                 SizedBox(height: 7),
-                buildTextField(controller: desc, hint: 'Description'),
+                TextField(
+      controller: desc,
+      textCapitalization: TextCapitalization.words,
+      decoration: InputDecoration(
+        labelText: 'Description',
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue, width: 1.5),
+          borderRadius: BorderRadius.circular(
+            10.0,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue, width: 1.5),
+          borderRadius: BorderRadius.circular(
+            10.0,
+          ),
+        ),
+      ),
+    ),
+             
 
                 //SizedBox( height: 8),
 

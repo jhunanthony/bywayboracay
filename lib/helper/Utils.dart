@@ -1,16 +1,11 @@
 //this is a temporary mock data generator
 
-import 'package:bywayborcay/models/CategoryModel.dart';
-import 'package:bywayborcay/models/DetailImages.dart';
 import 'package:bywayborcay/models/ForYouModel.dart';
 import 'package:bywayborcay/models/HighlightsModel.dart';
-import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/models/OnBoardingModel.dart';
 import 'package:flutter/material.dart';
 
 
-import 'AppColors.dart';
-import 'AppIcons.dart';
 
 class Utils {
   //create static onboardingcontent the will return content ref

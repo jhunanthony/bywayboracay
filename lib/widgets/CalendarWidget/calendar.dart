@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/pages/MainPage.dart';
 import 'package:bywayborcay/services/loginservice.dart';
-import 'package:bywayborcay/widgets/CalendarWidget/LogIn.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/emailtext.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -33,6 +32,7 @@ class CalendarState extends State<CalendarPage> {
   TextEditingController event = TextEditingController();
   TextEditingController timer = TextEditingController();
   TextEditingController desc = TextEditingController();
+  TextEditingController website = TextEditingController();
   File file = File('lib/input.docx');
   DateTime _selectedDay;
   RegExp time_24H = new RegExp(r"^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$");
@@ -65,6 +65,7 @@ class CalendarState extends State<CalendarPage> {
                 temp[index]["users"],
                 temp[index]["description"],
                 temp[index]["time"],
+                temp[index]["website"],
                 temp[index]["CreatedBy"]))
       });
     }
@@ -130,6 +131,7 @@ class CalendarState extends State<CalendarPage> {
           "Event": event.text,
           "description": desc.text,
           "time": timer.text,
+          "website": website.text,
           "CreatedBy": emails[0],
           "users": emails
         });
@@ -208,6 +210,7 @@ class CalendarState extends State<CalendarPage> {
                     "Event": e.title,
                     "description": e.desc,
                     "time": e.timer,
+                    "website": e.website,
                     "users": e.users
                   };
                   for (int i = 0; i < users.length; i++) {
@@ -306,7 +309,8 @@ class CalendarState extends State<CalendarPage> {
                 buildTextField(controller: event, hint: 'Event'),
                 SizedBox(height: 7),
                 buildTextField(controller: desc, hint: 'Description'),
-
+                SizedBox(height: 7),
+                buildTextField(controller: website, hint: 'Website'),
                 //SizedBox( height: 8),
 
                 /*TextField(
@@ -345,6 +349,7 @@ class CalendarState extends State<CalendarPage> {
                 event.clear();
                 desc.clear();
                 timer.clear();
+                website.clear();
                 Navigator.of(context).pushReplacement(
                     new MaterialPageRoute(builder: (BuildContext context) {
                   return new MainPage(
@@ -370,11 +375,14 @@ class CalendarState extends State<CalendarPage> {
                 } else if (desc.text.isEmpty) {
                   showSimpleNotification(
                       Text("Please enter description to the event"));
+                } else if (website.text.isEmpty) {
+                  website.text = 'No Website Linked';
                 } else {
                   print(emails);
                   setEvents().whenComplete(() {
                     event.clear();
                     desc.clear();
+                    website.clear();
                     Navigator.of(context).pushReplacement(
                         new MaterialPageRoute(builder: (BuildContext context) {
                       return new MainPage(
@@ -420,297 +428,299 @@ class CalendarState extends State<CalendarPage> {
     return Consumer<LoginService>(builder: (context, loginService, child) {
       if (loginService.isUserLoggedIn()) {
         //if logged
-return WillPopScope(
-      onWillPop: () async => null,
-      child: Scaffold(
-        body: Stack(children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 70,
-                ),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Icon(Icons.calendar_today_rounded,
-                      size: 30, color: Colors.blue),
-                  Text(
-                    " Itineray",
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.blue[100],
-                        fontWeight: FontWeight.w300),
-                  )
-                ]),
-                SizedBox(
-                  height: 10,
-                ),
-
-                Container(
-                  child: Text(
-                    "Hi, ${Auth().getCurrentUser().displayName}",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 20, color: Colors.grey[700]),
-                  ),
-                ),
-                Divider(
-                  thickness: 2,
-                ),
-                TableCalendar(
-                  // default view when displayed
-                  // default is Saturday & Sunday but can be set to any day.
-                  // instead of day number can be mentioned as well.
-                  weekendDays: [DateTime.sunday, 6],
-                  // default is Sunday but can be changed according to locale
-                  startingDayOfWeek: StartingDayOfWeek.sunday,
-                  // height between the day row and 1st date row, default is 16.0
-                  daysOfWeekHeight: 40.0,
-                  // height between the date rows, default is 52.0
-                  rowHeight: 60.0,
-
-                  firstDay: kFirstDay,
-                  lastDay: kLastDay,
-                  daysOfWeekVisible: true,
-                  focusedDay: _focusedDay,
-                  selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                  calendarFormat: _calendarFormat,
-
-                  eventLoader: _getEventsForDay,
-
-                  calendarStyle: CalendarStyle(
-                    outsideDaysVisible: true,
-                  
-                    // Weekend dates color (Sat & Sun Column)
-                    weekendTextStyle: TextStyle(
-                      color: Colors.grey[400],
+        return WillPopScope(
+          onWillPop: () async => null,
+          child: Scaffold(
+            body: Stack(children: [
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 70,
                     ),
-                    // highlighted color for today
-                    todayDecoration: BoxDecoration(
-                      color: Colors.yellow[50],
-                      shape: BoxShape.circle,
-                      //borderRadius: BorderRadius.circular(10),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Icon(Icons.calendar_today_rounded,
+                          size: 30, color: Colors.blue),
+                      Text(
+                        " Itineray",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.blue[100],
+                            fontWeight: FontWeight.w300),
+                      )
+                    ]),
+                    SizedBox(
+                      height: 10,
                     ),
-                    todayTextStyle: TextStyle(color: Colors.grey[700]),
-                    // highlighted color for selected day
-                    selectedDecoration: BoxDecoration(
-                      color: Colors.blue[50],
-                      shape: BoxShape.circle,
-                    ),
-                    selectedTextStyle: TextStyle(color: Colors.blue),
-                    markerDecoration: BoxDecoration(
-                        color: Colors.blue, shape: BoxShape.circle),
-                    markerSize: 5.00,
-                  ),
-                  headerStyle: HeaderStyle(
-                    formatButtonVisible: true,
-                    formatButtonShowsNext: false,
-                    titleTextStyle:
-                        TextStyle(color: Colors.blue, fontSize: 20.0),
-                    decoration: BoxDecoration(
-                        color: Colors.blue[50],
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10))),
-                    formatButtonTextStyle:
-                        TextStyle(color: Colors.white, fontSize: 12.0),
-                    formatButtonDecoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(5.0),
+
+                    Container(
+                      child: Text(
+                        "Hi, ${Auth().getCurrentUser().displayName}",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 20, color: Colors.grey[700]),
                       ),
                     ),
-                    leftChevronIcon: Icon(
-                      Icons.chevron_left,
-                      color: Colors.grey[700],
-                      size: 28,
+                    Divider(
+                      thickness: 2,
                     ),
-                    leftChevronPadding: EdgeInsets.all(5),
-                    rightChevronIcon: Icon(
-                      Icons.chevron_right,
-                      color: Colors.grey[700],
-                      size: 28,
-                    ),
-                    rightChevronPadding: EdgeInsets.all(5),
-                  ),
-                  onDaySelected: _onDaySelected,
-                  onFormatChanged: (format) {
-                    if (_calendarFormat != format) {
-                      setState(() {
-                        _calendarFormat = format;
-                      });
-                    }
-                  },
-                  onPageChanged: (focusedDay) {
-                    _focusedDay = focusedDay;
-                  },
-                ),
-                const SizedBox(height: 8.0),
-                Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  Text(
-                    " Events",
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.blue[100],
-                        fontWeight: FontWeight.w300),
-                  )
-                ]),
-                const SizedBox(height: 8.0),
+                    TableCalendar(
+                      // default view when displayed
+                      // default is Saturday & Sunday but can be set to any day.
+                      // instead of day number can be mentioned as well.
+                      weekendDays: [DateTime.sunday, 6],
+                      // default is Sunday but can be changed according to locale
+                      startingDayOfWeek: StartingDayOfWeek.sunday,
+                      // height between the day row and 1st date row, default is 16.0
+                      daysOfWeekHeight: 40.0,
+                      // height between the date rows, default is 52.0
+                      rowHeight: 60.0,
 
-                //list of events here
-                Expanded(
-                  child: ValueListenableBuilder<List<Event>>(
-                    valueListenable: _selectedEvents,
-                    builder: (context, value, _) {
-                      return ListView.builder(
-                        itemCount: value.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 12.0,
-                              vertical: 4.0,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.yellow[50],
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            child: ListTile(
-                                onLongPress: () {
-                                  if (value[index].creator == emails[0]) {
-                                    _tapEvents(value[index], 0);
-                                  } else {
-                                    showSimpleNotification(
+                      firstDay: kFirstDay,
+                      lastDay: kLastDay,
+                      daysOfWeekVisible: true,
+                      focusedDay: _focusedDay,
+                      selectedDayPredicate: (day) =>
+                          isSameDay(_selectedDay, day),
+                      calendarFormat: _calendarFormat,
+
+                      eventLoader: _getEventsForDay,
+
+                      calendarStyle: CalendarStyle(
+                        outsideDaysVisible: true,
+
+                        // Weekend dates color (Sat & Sun Column)
+                        weekendTextStyle: TextStyle(
+                          color: Colors.grey[400],
+                        ),
+                        // highlighted color for today
+                        todayDecoration: BoxDecoration(
+                          color: Colors.yellow[50],
+                          shape: BoxShape.circle,
+                          //borderRadius: BorderRadius.circular(10),
+                        ),
+                        todayTextStyle: TextStyle(color: Colors.grey[700]),
+                        // highlighted color for selected day
+                        selectedDecoration: BoxDecoration(
+                          color: Colors.blue[50],
+                          shape: BoxShape.circle,
+                        ),
+                        selectedTextStyle: TextStyle(color: Colors.blue),
+                        markerDecoration: BoxDecoration(
+                            color: Colors.blue, shape: BoxShape.circle),
+                        markerSize: 5.00,
+                      ),
+                      headerStyle: HeaderStyle(
+                        formatButtonVisible: true,
+                        formatButtonShowsNext: false,
+                        titleTextStyle:
+                            TextStyle(color: Colors.blue, fontSize: 20.0),
+                        decoration: BoxDecoration(
+                            color: Colors.blue[50],
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10))),
+                        formatButtonTextStyle:
+                            TextStyle(color: Colors.white, fontSize: 12.0),
+                        formatButtonDecoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(5.0),
+                          ),
+                        ),
+                        leftChevronIcon: Icon(
+                          Icons.chevron_left,
+                          color: Colors.grey[700],
+                          size: 28,
+                        ),
+                        leftChevronPadding: EdgeInsets.all(5),
+                        rightChevronIcon: Icon(
+                          Icons.chevron_right,
+                          color: Colors.grey[700],
+                          size: 28,
+                        ),
+                        rightChevronPadding: EdgeInsets.all(5),
+                      ),
+                      onDaySelected: _onDaySelected,
+                      onFormatChanged: (format) {
+                        if (_calendarFormat != format) {
+                          setState(() {
+                            _calendarFormat = format;
+                          });
+                        }
+                      },
+                      onPageChanged: (focusedDay) {
+                        _focusedDay = focusedDay;
+                      },
+                    ),
+                    const SizedBox(height: 8.0),
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                      Text(
+                        " Events",
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.blue[100],
+                            fontWeight: FontWeight.w300),
+                      )
+                    ]),
+                    const SizedBox(height: 8.0),
+
+                    //list of events here
+                    Expanded(
+                      child: ValueListenableBuilder<List<Event>>(
+                        valueListenable: _selectedEvents,
+                        builder: (context, value, _) {
+                          return ListView.builder(
+                            itemCount: value.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 4.0,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.yellow[50],
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                child: ListTile(
+                                    onLongPress: () {
+                                      if (value[index].creator == emails[0]) {
+                                        _tapEvents(value[index], 0);
+                                      } else {
+                                        showSimpleNotification(
+                                            Text(
+                                                "You can't delete event since you aren't the owner of it"),
+                                            background: Color(0xff29a39d));
+                                      }
+                                    },
+                                    onTap: () {
+                                      if (value[index].creator == emails[0]) {
+                                        _tapEvents(value[index], 1);
+                                      } else {
+                                        showSimpleNotification(
+                                            Text(
+                                                "You can't send reminders since you didn't create the event"),
+                                            background: Color(0xff29a39d));
+                                      }
+                                    },
+                                    leading: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Icon(Icons.notifications_rounded,
+                                            color: Colors.grey[700]),
                                         Text(
-                                            "You can't delete event since you aren't the owner of it"),
-                                        background: Color(0xff29a39d));
-                                  }
-                                },
-                                onTap: () {
-                                  if (value[index].creator == emails[0]) {
-                                    _tapEvents(value[index], 1);
-                                  } else {
-                                    showSimpleNotification(
-                                        Text(
-                                            "You can't send reminders since you didn't create the event"),
-                                        background: Color(0xff29a39d));
-                                  }
-                                },
-                                leading: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Icon(Icons.notifications_rounded,
-                                        color: Colors.grey[700]),
-                                    Text(
-                                      value[index].timer,
-                                      style: TextStyle(
-                                          color: Colors.blue, fontSize: 14),
+                                          value[index].timer,
+                                          style: TextStyle(
+                                              color: Colors.blue, fontSize: 14),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                                isThreeLine: false,
-                                //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
-                                title: Text(
-                                  '${value[index].title}',
-                                  style: TextStyle(
-                                      color: Colors.blue,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
-                                subtitle: Text(
-                                  value[index].desc,
-                                  style: TextStyle(color: Colors.blue),
-                                ),
-                                //trailing: Text(value[index].timer,style: TextStyle(color: Colors.blue),),
-                                trailing: Icon(Icons.highlight_off,
-                                    color: Colors.red[200])),
+                                    isThreeLine: false,
+                                    //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
+                                    title: Text(
+                                      '${value[index].title}',
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    ),
+                                    subtitle: Text(
+                                      value[index].website,
+                                      style: TextStyle(color: Colors.blue),
+                                    ),
+                                    //trailing: Text(value[index].timer,style: TextStyle(color: Colors.blue),),
+                                    trailing: Icon(Icons.highlight_off,
+                                        color: Colors.red[200])),
+                              );
+                            },
                           );
                         },
-                      );
-                    },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 80,
+                    )
+                  ],
+                ),
+              ),
+              Positioned(
+                right: 0,
+                bottom: 80,
+                child: ElevatedButton(
+                  onPressed: () => _showAction(context),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white, //background
+                    onPrimary: Colors.blue,
+                    //foreground
+                    shape: CircleBorder(),
                   ),
-                ),
-                SizedBox(
-                  height: 80,
-                )
-              ],
-            ),
-          ),
-          Positioned(
-            right: 0,
-            bottom: 80,
-            child: ElevatedButton(
-              onPressed: () => _showAction(context),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.white, //background
-                onPrimary: Colors.blue,
-                //foreground
-                shape: CircleBorder(),
-              ),
-              child: Container(
-                alignment: Alignment.center,
-                height: 50,
-                width: 50,
-                decoration:
-                    BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
-                child: Icon(
-                  Icons.add,
-                  size: 25,
-                  color: Colors.white,
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.blue),
+                    child: Icon(
+                      Icons.add,
+                      size: 25,
+                      color: Colors.white,
+                    ),
+                  ),
+                  //capture the success flag with async and await
                 ),
               ),
-              //capture the success flag with async and await
-            ),
+            ]),
           ),
-        ]),
-      ),
-    );
+        );
       }
-    
-    
-    //if not logged
-    return Container(
-                decoration: BoxDecoration(color: Colors.white),
-                child: Center(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                      Column(children: [SizedBox(height: 80),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                       SvgPicture.asset(
+
+      //if not logged
+      return Container(
+          decoration: BoxDecoration(color: Colors.white),
+          child: Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                Column(
+                  children: [
+                    SizedBox(height: 80),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      SvgPicture.asset(
                         'assets/icons/' + AppIcons.ItineraryIcon + '.svg',
                         color: Colors.blue,
                         height: 14,
                         width: 14,
                       ),
-                            Text(
-                              " Itineray",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.blue[100],
-                                  fontWeight: FontWeight.w300),
-                            )
-                          ]),],),
-                      Column(children: [Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
+                      Text(
+                        " Itineray",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.blue[100],
+                            fontWeight: FontWeight.w300),
+                      )
+                    ]),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      SvgPicture.asset(
                         'assets/icons/' + AppIcons.ItineraryIcon + '.svg',
                         color: Colors.grey[700],
                         height: 25,
                         width: 25,
                       ),
-                            Text(' Login and Start Planning!',
-                                style: TextStyle(
-                                  color: Colors.grey[400],
-                                  fontSize: 20,
-                                )),
-                          ]),
-                      SizedBox(height: 305),],)
-                    ])));
+                      Text(' Login and Start Planning!',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontSize: 20,
+                          )),
+                    ]),
+                    SizedBox(height: 305),
+                  ],
+                )
+              ])));
     });
-
-    
   }
 }

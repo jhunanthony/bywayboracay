@@ -7,7 +7,6 @@ import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'DetailsPage.dart';
 
 //create category page
 
@@ -125,12 +124,12 @@ class ItemsPage extends StatelessWidget {
                                           topRight: Radius.circular(20),
                                         ),
                                         gradient: LinearGradient(
-                                          begin: Alignment.center,
+                                          begin: Alignment.topCenter,
                                           end: Alignment.bottomCenter,
                                           colors: <Color>[
                                             Colors.transparent,
                                             Colors.black.withOpacity(0.5),
-                                            Colors.black.withOpacity(0.3),
+                                            Colors.black,
                                           ],
                                         ),
                                       )),
