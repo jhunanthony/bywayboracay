@@ -81,8 +81,9 @@ class _ExplorePageState extends State<ExplorePage> {
             height: 100,
           ),
         ]),
-        Align(
-          alignment: Alignment(0, 0.79),
+        Positioned(
+          bottom: 83, left:  MediaQuery.of(context).size.width * 0.42,
+
           child: _showBackToTopButton == false
               ? SizedBox()
               : ElevatedButton(

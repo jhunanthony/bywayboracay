@@ -327,7 +327,6 @@ class _DetailsPageState extends State<DetailsPage> {
                       ),
                     ]))
               ]),
-            
 
               //show ratings1 here
               Padding(
@@ -818,16 +817,14 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   //initiate values to add to calendar
-  
-  List<String> emails = [Auth().getCurrentUser().email];
 
- 
-  
+  List<String> emails = [Auth().getCurrentUser().email];
 
   List<Map<DateTime, List<Event>>> events2 = [];
   TextEditingController event = TextEditingController();
   TextEditingController timer = TextEditingController();
   TextEditingController desc = TextEditingController();
+  TextEditingController website = TextEditingController();
 
   DateTime _selectedDay = DateTime.now();
   RegExp time_24H = new RegExp(r"^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$");
@@ -842,10 +839,10 @@ class _DetailsPageState extends State<DetailsPage> {
   Map res = Map();
 
   //use this for buildTextField
-  
 
 //action dialog
   static const _actionTitle = 'Add Event';
+
   void _showAction(BuildContext context) {
     showDialog<void>(
       context: context,
@@ -891,48 +888,67 @@ class _DetailsPageState extends State<DetailsPage> {
                 ),
                 SizedBox(height: 7),
                 TextField(
-             
-      controller: event..text = widget.items.name,
-      textCapitalization: TextCapitalization.words,
-      decoration: InputDecoration(
-        
-        labelText: 'Event',
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue, width: 1.5),
-          borderRadius: BorderRadius.circular(
-            10.0,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue, width: 1.5),
-          borderRadius: BorderRadius.circular(
-            10.0,
-          ),
-        ),
-      ),
-    ),
-               
+                  controller: event..text = widget.items.name,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: InputDecoration(
+                    labelText: 'Event',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                  ),
+                ),
+
                 SizedBox(height: 7),
                 TextField(
-      controller: desc,
-      textCapitalization: TextCapitalization.words,
-      decoration: InputDecoration(
-        labelText: 'Description',
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue, width: 1.5),
-          borderRadius: BorderRadius.circular(
-            10.0,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue, width: 1.5),
-          borderRadius: BorderRadius.circular(
-            10.0,
-          ),
-        ),
-      ),
-    ),
-             
+                  controller: desc,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: InputDecoration(
+                    labelText: 'Description',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 7),
+                TextField(
+                  controller: website
+                    ..text =
+                        "https://www.google.com/maps/search/?api=1&query=${destinationLocation.latitude},${destinationLocation.longitude}",
+                  textCapitalization: TextCapitalization.words,
+                  decoration: InputDecoration(
+                    labelText: 'Website',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                  ),
+                ),
 
                 //SizedBox( height: 8),
 
@@ -972,7 +988,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 event.clear();
                 desc.clear();
                 timer.clear();
-
+                website.clear();
                 Navigator.of(context).pop();
               },
               child: const Text(
@@ -991,13 +1007,15 @@ class _DetailsPageState extends State<DetailsPage> {
                   showSimpleNotification(
                       Text("Please enter a valid title to the event"));
                 } else if (desc.text.isEmpty) {
-                  showSimpleNotification(
-                      Text("Please enter description to the event"));
+                  desc.text = 'No Description';
+                } else if (website.text.isEmpty) {
+                  website.text = 'No Website Linked';
                 } else {
                   print(emails);
                   setEvents().whenComplete(() {
                     event.clear();
                     desc.clear();
+                    website.clear();
 
                     Navigator.of(context).pop();
                   });
@@ -1038,6 +1056,7 @@ class _DetailsPageState extends State<DetailsPage> {
           "Event": event.text,
           "description": desc.text,
           "time": timer.text,
+          "website": website.text,
           "CreatedBy": emails[0],
           "users": emails
         });

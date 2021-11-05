@@ -54,8 +54,8 @@ dependencies:
   app_settings: ^4.1.1
   #for rating indicators
   flutter_rating_bar: ^4.0.0
-  #for like button
-  like_button: ^2.0.3
+ 
+
   
 
   #for google authentication
@@ -72,7 +72,6 @@ dependencies:
   #for calendar
   table_calendar: ^3.0.3
 
-  syncfusion_flutter_calendar: ^19.3.47
   googleapis: ^6.0.0
   googleapis_auth: ^1.2.0
   date_utils: ^0.2.0

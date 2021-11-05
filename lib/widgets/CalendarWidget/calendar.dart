@@ -7,13 +7,16 @@ import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/emailtext.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:googleapis/displayvideo/v1.dart';
 import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'auth.dart';
 import 'datepicker.dart';
 
@@ -32,7 +35,9 @@ class CalendarState extends State<CalendarPage> {
   TextEditingController event = TextEditingController();
   TextEditingController timer = TextEditingController();
   TextEditingController desc = TextEditingController();
+  TextEditingController budget = TextEditingController();
   TextEditingController website = TextEditingController();
+
   File file = File('lib/input.docx');
   DateTime _selectedDay;
   RegExp time_24H = new RegExp(r"^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$");
@@ -65,6 +70,7 @@ class CalendarState extends State<CalendarPage> {
                 temp[index]["users"],
                 temp[index]["description"],
                 temp[index]["time"],
+                temp[index]["budget"],
                 temp[index]["website"],
                 temp[index]["CreatedBy"]))
       });
@@ -131,6 +137,7 @@ class CalendarState extends State<CalendarPage> {
           "Event": event.text,
           "description": desc.text,
           "time": timer.text,
+          "budget": budget.text,
           "website": website.text,
           "CreatedBy": emails[0],
           "users": emails
@@ -210,6 +217,7 @@ class CalendarState extends State<CalendarPage> {
                     "Event": e.title,
                     "description": e.desc,
                     "time": e.timer,
+                    "budget": e.budget,
                     "website": e.website,
                     "users": e.users
                   };
@@ -310,6 +318,8 @@ class CalendarState extends State<CalendarPage> {
                 SizedBox(height: 7),
                 buildTextField(controller: desc, hint: 'Description'),
                 SizedBox(height: 7),
+                buildTextField(controller: budget, hint: 'Budget'),
+                SizedBox(height: 7),
                 buildTextField(controller: website, hint: 'Website'),
                 //SizedBox( height: 8),
 
@@ -331,7 +341,7 @@ class CalendarState extends State<CalendarPage> {
                        ),
                      ),*/
                 //SizedBox( height: 8),
-                Container(
+                /*Container(
                     child: EmailInput(
                   parentEmails: emails,
                   setList: (e) {
@@ -339,7 +349,7 @@ class CalendarState extends State<CalendarPage> {
                       emails = e;
                     });
                   },
-                ))
+                ))*/
               ],
             ),
           ),
@@ -349,6 +359,7 @@ class CalendarState extends State<CalendarPage> {
                 event.clear();
                 desc.clear();
                 timer.clear();
+                budget.clear();
                 website.clear();
                 Navigator.of(context).pushReplacement(
                     new MaterialPageRoute(builder: (BuildContext context) {
@@ -373,8 +384,9 @@ class CalendarState extends State<CalendarPage> {
                   showSimpleNotification(
                       Text("Please enter a valid title to the event"));
                 } else if (desc.text.isEmpty) {
-                  showSimpleNotification(
-                      Text("Please enter description to the event"));
+                  desc.text = 'No Description';
+                } else if (budget.text.isEmpty) {
+                  website.text = '0.00';
                 } else if (website.text.isEmpty) {
                   website.text = 'No Website Linked';
                 } else {
@@ -382,6 +394,7 @@ class CalendarState extends State<CalendarPage> {
                   setEvents().whenComplete(() {
                     event.clear();
                     desc.clear();
+                    budget.clear();
                     website.clear();
                     Navigator.of(context).pushReplacement(
                         new MaterialPageRoute(builder: (BuildContext context) {
@@ -556,12 +569,12 @@ class CalendarState extends State<CalendarPage> {
                     const SizedBox(height: 8.0),
                     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                       Text(
-                        " Events",
+                        " Events ",
                         style: TextStyle(
                             fontSize: 20,
-                            color: Colors.blue[100],
+                            color: Colors.blue,
                             fontWeight: FontWeight.w300),
-                      )
+                      ),
                     ]),
                     const SizedBox(height: 8.0),
 
@@ -570,68 +583,146 @@ class CalendarState extends State<CalendarPage> {
                       child: ValueListenableBuilder<List<Event>>(
                         valueListenable: _selectedEvents,
                         builder: (context, value, _) {
+                          double maintotal = 0.00;
+
                           return ListView.builder(
                             itemCount: value.length,
                             itemBuilder: (context, index) {
-                              return Container(
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: 12.0,
-                                  vertical: 4.0,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.yellow[50],
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                child: ListTile(
-                                    onLongPress: () {
-                                      if (value[index].creator == emails[0]) {
-                                        _tapEvents(value[index], 0);
-                                      } else {
-                                        showSimpleNotification(
-                                            Text(
-                                                "You can't delete event since you aren't the owner of it"),
-                                            background: Color(0xff29a39d));
-                                      }
-                                    },
-                                    onTap: () {
-                                      if (value[index].creator == emails[0]) {
-                                        _tapEvents(value[index], 1);
-                                      } else {
-                                        showSimpleNotification(
-                                            Text(
-                                                "You can't send reminders since you didn't create the event"),
-                                            background: Color(0xff29a39d));
-                                      }
-                                    },
-                                    leading: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Icon(Icons.notifications_rounded,
-                                            color: Colors.grey[700]),
-                                        Text(
-                                          value[index].timer,
-                                          style: TextStyle(
-                                              color: Colors.blue, fontSize: 14),
-                                        ),
-                                      ],
-                                    ),
-                                    isThreeLine: false,
-                                    //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
-                                    title: Text(
-                                      '${value[index].title}',
-                                      style: TextStyle(
-                                          color: Colors.blue,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
-                                    ),
-                                    subtitle: Text(
-                                      value[index].website,
-                                      style: TextStyle(color: Colors.blue),
-                                    ),
-                                    //trailing: Text(value[index].timer,style: TextStyle(color: Colors.blue),),
-                                    trailing: Icon(Icons.highlight_off,
-                                        color: Colors.red[200])),
+                              if (value.length > 0) {
+                                value.forEach((Event value) {
+                                  double total = double.parse(value.budget);
+                                  maintotal += total;
+                                });
+                              }
+                              return Column(
+                                children: [
+                                  Visibility(
+                                    visible: index == 0, 
+                                    child:  Text(
+                        "Budget for today ₱${maintotal.toStringAsFixed(2)}",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.blue,
+                            fontWeight: FontWeight.w300),
+                      ),
+                                  ),
+                                  Container(
+
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 12.0,
+                                    vertical: 4.0,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.yellow[50],
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  child: ListTile(
+
+                                      /*onLongPress: () {
+                                          if (value[index].creator == emails[0]) {
+                                            _tapEvents(value[index], 0);
+                                          } else {
+                                            showSimpleNotification(
+                                                Text(
+                                                    "You can't delete event since you aren't the owner of it"),
+                                                background: Color(0xff29a39d));
+                                          }
+                                        },*/
+                                      /*onTap: () {
+                                          if (value[index].creator == emails[0]) {
+                                            _tapEvents(value[index], 1);
+                                          } else {
+                                            showSimpleNotification(
+                                                Text(
+                                                    "You can't send reminders since you didn't create the event"),
+                                                background: Color(0xff29a39d));
+                                          }
+                                        },*/
+                                      leading: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          
+                                          Text(
+                                            value[index].timer,
+                                            style: TextStyle(
+                                                color: Colors.blue, fontSize: 14),
+                                          ),
+                                          Text(
+                                            "₱${value[index].budget}",
+                                            style: TextStyle(
+                                                color: Colors.blue, fontSize: 14),
+                                          ),
+                                        ],
+                                      ),
+                                      isThreeLine: false,
+                                      //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
+                                      title: Text(
+                                        '${value[index].title}',
+                                        style: TextStyle(
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${value[index].desc}',
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                                overflow: TextOverflow.fade,
+                                                color: Colors.blue),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () async {
+                                              if (await canLaunch(
+                                                  value[index].website)) {
+                                                await launch(
+                                                    value[index].website);
+                                              } else {
+                                                throw SnackBar(
+                                                    content: Text(
+                                                        'Could not launch ${value[index].website}'));
+                                              }
+                                            },
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Icon(CupertinoIcons.globe,
+                                                    size: 14, color: Colors.blue),
+                                                Text(
+                                                  ' Open Link',
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                      overflow: TextOverflow.fade,
+                                                      color: Colors.blue),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      //trailing: Text(value[index].timer,style: TextStyle(color: Colors.blue),),
+                                      trailing: GestureDetector(
+                                        onTap: () {
+                                          if (value[index].creator == emails[0]) {
+                                            _tapEvents(value[index], 0);
+                                          } else {
+                                            showSimpleNotification(
+                                                Text(
+                                                    "You can't delete event since you aren't the owner of it"),
+                                                background: Color(0xff29a39d));
+                                          }
+                                        },
+                                        child: Icon(Icons.highlight_off,
+                                            color: Colors.red[200]),
+                                      )),
+                                ),]
                               );
                             },
                           );

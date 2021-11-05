@@ -16,9 +16,11 @@ class Event {
   final String title;
   final List users;
   final String desc;
-  final String timer; final String website;
+  final String timer; 
+  final String budget;
+  final String website;
   final String creator;
-  const Event(this.title, this.users, this.desc, this.timer,this.website, this.creator,);
+  const Event(this.title, this.users, this.desc, this.timer, this.budget, this.website, this.creator,);
 
   @override
   String toString() => title;
