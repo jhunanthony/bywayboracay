@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:googleapis/displayvideo/v1.dart';
 import 'package:intl/intl.dart';
@@ -318,7 +319,31 @@ class CalendarState extends State<CalendarPage> {
                 SizedBox(height: 7),
                 buildTextField(controller: desc, hint: 'Description'),
                 SizedBox(height: 7),
-                buildTextField(controller: budget, hint: 'Budget'),
+                TextField(
+                  keyboardType: TextInputType.numberWithOptions(),
+                  inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+      ],
+      controller: budget,
+      textCapitalization: TextCapitalization.words,
+      decoration: InputDecoration(
+        
+        labelText: 'Budget',
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue, width: 1.5),
+          borderRadius: BorderRadius.circular(
+            10.0,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue, width: 1.5),
+          borderRadius: BorderRadius.circular(
+            10.0,
+          ),
+        ),
+      ),
+    ),
+               
                 SizedBox(height: 7),
                 buildTextField(controller: website, hint: 'Website'),
                 //SizedBox( height: 8),
@@ -478,16 +503,15 @@ class CalendarState extends State<CalendarPage> {
                       thickness: 2,
                     ),
                     TableCalendar(
-                      // default view when displayed
-                      // default is Saturday & Sunday but can be set to any day.
+                  
                       // instead of day number can be mentioned as well.
                       weekendDays: [DateTime.sunday, 6],
                       // default is Sunday but can be changed according to locale
                       startingDayOfWeek: StartingDayOfWeek.sunday,
                       // height between the day row and 1st date row, default is 16.0
-                      daysOfWeekHeight: 40.0,
+                      daysOfWeekHeight: 35.0,
                       // height between the date rows, default is 52.0
-                      rowHeight: 60.0,
+                      rowHeight: 50.0,
 
                       firstDay: kFirstDay,
                       lastDay: kLastDay,
@@ -660,6 +684,7 @@ class CalendarState extends State<CalendarPage> {
                                       title: Text(
                                         '${value[index].title}',
                                         style: TextStyle(
+                                          
                                             color: Colors.blue,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20),
@@ -675,7 +700,7 @@ class CalendarState extends State<CalendarPage> {
                                                 overflow: TextOverflow.fade,
                                                 color: Colors.blue),
                                           ),
-                                          GestureDetector(
+                                          InkWell(
                                             onTap: () async {
                                               if (await canLaunch(
                                                   value[index].website)) {

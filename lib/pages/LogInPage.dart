@@ -111,7 +111,7 @@ class _LogInPageState extends State<LogInPage> {
                   width: MediaQuery.of(context).size.width - 100,
                   alignment: Alignment.center,
                   child: Text(
-                    'Continue as Guess',
+                    'Continue as Guest',
                     style: TextStyle(
                         fontSize: 20,
                         color: Colors.white,

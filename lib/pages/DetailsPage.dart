@@ -14,6 +14,7 @@ import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -816,7 +817,7 @@ class _DetailsPageState extends State<DetailsPage> {
     });
   }
 
-  //initiate values to add to calendar
+//initiate values to add to calendar
 
   List<String> emails = [Auth().getCurrentUser().email];
 
@@ -824,6 +825,7 @@ class _DetailsPageState extends State<DetailsPage> {
   TextEditingController event = TextEditingController();
   TextEditingController timer = TextEditingController();
   TextEditingController desc = TextEditingController();
+  TextEditingController budget = TextEditingController();
   TextEditingController website = TextEditingController();
 
   DateTime _selectedDay = DateTime.now();
@@ -838,9 +840,7 @@ class _DetailsPageState extends State<DetailsPage> {
   DateTime eventDate;
   Map res = Map();
 
-  //use this for buildTextField
-
-//action dialog
+//action dialog for calendar here
   static const _actionTitle = 'Add Event';
 
   void _showAction(BuildContext context) {
@@ -888,7 +888,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 ),
                 SizedBox(height: 7),
                 TextField(
-                  controller: event..text = widget.items.name,
+                  controller: event..text = "${widget.items.name}",
                   textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     labelText: 'Event',
@@ -913,6 +913,29 @@ class _DetailsPageState extends State<DetailsPage> {
                   textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     labelText: 'Description',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 7),
+                TextField(
+                  keyboardType: TextInputType.numberWithOptions(),
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  controller: budget
+                    ..text = "${widget.items.itempriceMin.toStringAsFixed(2)}",
+                  textCapitalization: TextCapitalization.words,
+                  decoration: InputDecoration(
+                    labelText: 'Budget',
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.blue, width: 1.5),
                       borderRadius: BorderRadius.circular(
@@ -970,7 +993,7 @@ class _DetailsPageState extends State<DetailsPage> {
                        ),
                      ),*/
                 //SizedBox( height: 8),
-                Container(
+                /*Container(
                     child: EmailInput(
                   parentEmails: emails,
                   setList: (e) {
@@ -978,7 +1001,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       emails = e;
                     });
                   },
-                ))
+                ))*/
               ],
             ),
           ),
@@ -988,6 +1011,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 event.clear();
                 desc.clear();
                 timer.clear();
+                budget.clear();
                 website.clear();
                 Navigator.of(context).pop();
               },
@@ -1003,18 +1027,24 @@ class _DetailsPageState extends State<DetailsPage> {
                         time_24H.hasMatch(timer.text))) {
                   showSimpleNotification(
                       Text("Please enter a valid time to the event"));
+                } else if (eventDate == null) {
+                  eventDate = DateTime.now();
                 } else if (event.text.isEmpty) {
                   showSimpleNotification(
                       Text("Please enter a valid title to the event"));
                 } else if (desc.text.isEmpty) {
                   desc.text = 'No Description';
+                } else if (budget.text.isEmpty) {
+                  website.text = '0.00';
                 } else if (website.text.isEmpty) {
                   website.text = 'No Website Linked';
                 } else {
                   print(emails);
                   setEvents().whenComplete(() {
+                    SnackBar(content: Text('Event Added Successfully'));
                     event.clear();
                     desc.clear();
+                    budget.clear();
                     website.clear();
 
                     Navigator.of(context).pop();
@@ -1056,6 +1086,7 @@ class _DetailsPageState extends State<DetailsPage> {
           "Event": event.text,
           "description": desc.text,
           "time": timer.text,
+          "budget": budget.text,
           "website": website.text,
           "CreatedBy": emails[0],
           "users": emails

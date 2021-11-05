@@ -57,8 +57,8 @@ class SideMenuBar extends StatelessWidget {
                             ClipOval(
                               child: Image.network(
                                 userImg,
-                                height: 80,
-                                width: 80,
+                                height: 40,
+                                width: 40,
                               ),
                             ),
                             SizedBox(height: 12),
