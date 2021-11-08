@@ -54,6 +54,7 @@ dependencies:
   app_settings: ^4.1.1
   #for rating indicators
   flutter_rating_bar: ^4.0.0
+
  
 
   
@@ -78,6 +79,8 @@ dependencies:
   intl: ^0.17.0
   overlay_support: ^1.2.1
   mailer: ^5.0.2
+
+
 
 
   

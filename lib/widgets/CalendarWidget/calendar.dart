@@ -6,6 +6,8 @@ import 'package:bywayborcay/pages/MainPage.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/emailtext.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/utils.dart';
+import 'package:bywayborcay/widgets/WeatherWidgets/weather_forecast.dart';
+import 'package:bywayborcay/widgets/WeatherWidgets/weather_mainwidget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +32,7 @@ class CalendarState extends State<CalendarPage> {
   List<String> emails = [Auth().getCurrentUser().email];
   LinkedHashMap kEvents = LinkedHashMap();
   ValueNotifier<List<Event>> _selectedEvents;
+
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   List<Map<DateTime, List<Event>>> events2 = [];
@@ -38,6 +41,9 @@ class CalendarState extends State<CalendarPage> {
   TextEditingController desc = TextEditingController();
   TextEditingController budget = TextEditingController();
   TextEditingController website = TextEditingController();
+
+  //awaits weather report
+  Future<WeatherInfo> futureWeather;
 
   File file = File('lib/input.docx');
   DateTime _selectedDay;
@@ -51,6 +57,8 @@ class CalendarState extends State<CalendarPage> {
   Timestamp t;
   DateTime eventDate;
   Map res = Map();
+
+  //GET EVENTS
   Future<void> getEventData(String s) async {
     var d = await databaseReference
         .collection("Users")
@@ -58,6 +66,7 @@ class CalendarState extends State<CalendarPage> {
         .collection("Events")
         .get();
     List<DateTime> dates = [];
+
     events2 = [];
     for (int i = 0; i < d.docs.length; i++) {
       List temp = (d.docs[i].get("EventList"));
@@ -76,6 +85,8 @@ class CalendarState extends State<CalendarPage> {
                 temp[index]["CreatedBy"]))
       });
     }
+
+   
     Map<DateTime, List<Event>> k =
         Map.fromIterable(List.generate(events2.length, (index) => index),
             key: (i) {
@@ -102,6 +113,7 @@ class CalendarState extends State<CalendarPage> {
     getEventData(Auth().getCurrentUser().uid);
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay));
+     futureWeather = fetchWeather();
   }
 
   @override
@@ -322,28 +334,28 @@ class CalendarState extends State<CalendarPage> {
                 TextField(
                   keyboardType: TextInputType.numberWithOptions(),
                   inputFormatters: <TextInputFormatter>[
-        FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
-      ],
-      controller: budget,
-      textCapitalization: TextCapitalization.words,
-      decoration: InputDecoration(
-        
-        labelText: 'Budget',
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue, width: 1.5),
-          borderRadius: BorderRadius.circular(
-            10.0,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue, width: 1.5),
-          borderRadius: BorderRadius.circular(
-            10.0,
-          ),
-        ),
-      ),
-    ),
-               
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^(\d+)?\.?\d{0,2}'))
+                  ],
+                  controller: budget,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: InputDecoration(
+                    labelText: 'Budget',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                  ),
+                ),
+
                 SizedBox(height: 7),
                 buildTextField(controller: website, hint: 'Website'),
                 //SizedBox( height: 8),
@@ -461,6 +473,8 @@ class CalendarState extends State<CalendarPage> {
     );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Consumer<LoginService>(builder: (context, loginService, child) {
@@ -478,32 +492,61 @@ class CalendarState extends State<CalendarPage> {
                       height: 70,
                     ),
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Icon(Icons.calendar_today_rounded,
-                          size: 30, color: Colors.blue),
+                      SvgPicture.asset(
+                        'assets/icons/' + AppIcons.ItineraryIcon + '.svg',
+                        color: Colors.blue,
+                        height: 30,
+                        width: 30,
+                      ),
                       Text(
                         " Itineray",
                         style: TextStyle(
                             fontSize: 14,
-                            color: Colors.blue[100],
+                            color: Colors.blue,
                             fontWeight: FontWeight.w300),
                       )
                     ]),
                     SizedBox(
                       height: 10,
                     ),
-
+                    //display weather
                     Container(
+                  
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: FutureBuilder<WeatherInfo>(
+                      future: futureWeather,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return WeatherMainWidget(
+                            location: snapshot.data.location,
+                            temp: snapshot.data.temp,
+                            tempMin: snapshot.data.tempMin,
+                            tempMax: snapshot.data.tempMax,
+                            weather: snapshot.data.weather,
+                            humidity: snapshot.data.humidity,
+                            windspeed: snapshot.data.windspeed,
+                            visibility: snapshot.data.visibility,
+                            airpressure: snapshot.data.airpressure,
+                            weathericon: snapshot.data.weathericon,
+                          );
+                        } else if (snapshot.hasError) {
+                          return Center(child: Text("${snapshot.error}"));
+                        }
+                        return CircularProgressIndicator();
+                      }),
+                ),
+
+                    /*Container(
                       child: Text(
                         "Hi, ${Auth().getCurrentUser().displayName}",
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 20, color: Colors.grey[700]),
                       ),
-                    ),
+                    ),*/
                     Divider(
                       thickness: 2,
                     ),
                     TableCalendar(
-                  
                       // instead of day number can be mentioned as well.
                       weekendDays: [DateTime.sunday, 6],
                       // default is Sunday but can be changed according to locale
@@ -618,20 +661,18 @@ class CalendarState extends State<CalendarPage> {
                                   maintotal += total;
                                 });
                               }
-                              return Column(
-                                children: [
-                                  Visibility(
-                                    visible: index == 0, 
-                                    child:  Text(
-                        "Budget for today ₱${maintotal.toStringAsFixed(2)}",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.blue,
-                            fontWeight: FontWeight.w300),
-                      ),
+                              return Column(children: [
+                                Visibility(
+                                  visible: index == 0,
+                                  child: Text(
+                                    "Budget for today ₱${maintotal.toStringAsFixed(2)}",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.w300),
                                   ),
-                                  Container(
-
+                                ),
+                                Container(
                                   margin: const EdgeInsets.symmetric(
                                     horizontal: 12.0,
                                     vertical: 4.0,
@@ -666,16 +707,24 @@ class CalendarState extends State<CalendarPage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          
                                           Text(
                                             value[index].timer,
                                             style: TextStyle(
-                                                color: Colors.blue, fontSize: 14),
+                                                color: Colors.blue,
+                                                fontSize: 14),
                                           ),
-                                          Text(
-                                            "₱${value[index].budget}",
-                                            style: TextStyle(
-                                                color: Colors.blue, fontSize: 14),
+                                          Container(
+                                            padding: EdgeInsets.all(3),
+                                            decoration: BoxDecoration(
+                                              color: Colors.blue[300],
+                                              borderRadius: BorderRadius.circular(3),
+                                            ),
+                                            child: Text(
+                                              "₱${value[index].budget}",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14),
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -684,7 +733,6 @@ class CalendarState extends State<CalendarPage> {
                                       title: Text(
                                         '${value[index].title}',
                                         style: TextStyle(
-                                          
                                             color: Colors.blue,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20),
@@ -717,14 +765,16 @@ class CalendarState extends State<CalendarPage> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Icon(CupertinoIcons.globe,
-                                                    size: 14, color: Colors.blue),
+                                                    size: 14,
+                                                    color: Colors.blue),
                                                 Text(
                                                   ' Open Link',
                                                   maxLines: 1,
                                                   style: TextStyle(
                                                       decoration: TextDecoration
                                                           .underline,
-                                                      overflow: TextOverflow.fade,
+                                                      overflow:
+                                                          TextOverflow.fade,
                                                       color: Colors.blue),
                                                 ),
                                               ],
@@ -735,7 +785,8 @@ class CalendarState extends State<CalendarPage> {
                                       //trailing: Text(value[index].timer,style: TextStyle(color: Colors.blue),),
                                       trailing: GestureDetector(
                                         onTap: () {
-                                          if (value[index].creator == emails[0]) {
+                                          if (value[index].creator ==
+                                              emails[0]) {
                                             _tapEvents(value[index], 0);
                                           } else {
                                             showSimpleNotification(
@@ -747,8 +798,8 @@ class CalendarState extends State<CalendarPage> {
                                         child: Icon(Icons.highlight_off,
                                             color: Colors.red[200]),
                                       )),
-                                ),]
-                              );
+                                ),
+                              ]);
                             },
                           );
                         },
