@@ -16,7 +16,6 @@ import 'package:provider/provider.dart';
 import '../widgets/Navigation/SideMenuBar.dart';
 
 class MainPage extends StatefulWidget {
-
   int currentIndex;
 
   MainPage({this.currentIndex = 0});
@@ -25,8 +24,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  
-
   String likes;
 
   /*final screens = [
@@ -39,7 +36,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     //implement a method that clears likeitems when users log out and new user come in
-     LikeService likeService = Provider.of<LikeService>(context, listen: false);
+    LikeService likeService = Provider.of<LikeService>(context, listen: false);
     //fetch liked items and load on likepage
     likeService.loadLikedItemsFromFirebase(context);
 
@@ -96,7 +93,7 @@ class _MainPageState extends State<MainPage> {
                       textAlign: TextAlign.center,
                       activeColor: Colors.blue,
                     ),
-                    BottomNavyBarItem(
+                    /*BottomNavyBarItem(
                       icon: Consumer<LikeService>(
                           //a function called when notifier changes
                           builder: (context, like, child) {
@@ -137,7 +134,7 @@ class _MainPageState extends State<MainPage> {
                       textAlign: TextAlign.center,
                       inactiveColor: Colors.blue,
                       activeColor: Colors.blue,
-                    ),
+                    ),*/
                     BottomNavyBarItem(
                       icon: SvgPicture.asset(
                         'assets/icons/' + AppIcons.BagIcon + '.svg',
@@ -161,9 +158,9 @@ class _MainPageState extends State<MainPage> {
     switch (widget.currentIndex) {
       case 1:
         return ItineraryPage();
+      /*case 2:
+        return LikedPage();*/
       case 2:
-        return LikedPage();
-      case 3:
         return BagPage();
       case 0:
       default:

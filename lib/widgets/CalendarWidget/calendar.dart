@@ -634,7 +634,7 @@ class CalendarState extends State<CalendarPage> {
                       },
                     ),
                     const SizedBox(height: 8.0),
-                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                       Text(
                         " Events ",
                         style: TextStyle(
@@ -642,6 +642,8 @@ class CalendarState extends State<CalendarPage> {
                             color: Colors.blue,
                             fontWeight: FontWeight.w300),
                       ),
+
+                     
                     ]),
                     const SizedBox(height: 8.0),
 
@@ -765,12 +767,14 @@ class CalendarState extends State<CalendarPage> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Icon(CupertinoIcons.globe,
-                                                    size: 14,
+                                                    size: 12,
                                                     color: Colors.blue),
+                                                SizedBox(width: 3,),
                                                 Text(
-                                                  ' Open Link',
+                                                  'Open Link',
                                                   maxLines: 1,
                                                   style: TextStyle(
+                                                    fontSize: 12,
                                                       decoration: TextDecoration
                                                           .underline,
                                                       overflow:

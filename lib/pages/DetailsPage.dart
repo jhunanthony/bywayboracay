@@ -94,11 +94,12 @@ class _DetailsPageState extends State<DetailsPage> {
               //wrap with stack to add components above images
               Stack(children: [
                 Container(
-                  height: 400,
+                  height: 450,
                   width: MediaQuery.of(context).size.width,
 
                   //wrap with stack to overlay other components
                   child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
                       controller: _imagepageController,
                       scrollDirection: Axis.horizontal,
                       itemCount: widget.items.detailsimages.length,
@@ -162,7 +163,7 @@ class _DetailsPageState extends State<DetailsPage> {
                         CategoryIcon(
                           iconName: widget.items.iconName,
                           color: widget.items.color,
-                          size: 40,
+                          size: 30,
                         ),
                         SizedBox(
                           height: 10,
@@ -331,54 +332,77 @@ class _DetailsPageState extends State<DetailsPage> {
 
               //show ratings1 here
               Padding(
-                  padding: EdgeInsets.only(bottom: 10, left: 20, right: 20),
+                  padding: EdgeInsets.only(bottom: 10, left: 20, right: 20, top: 10),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Visibility(
-                              visible: widget.items.itemrating1 == null
-                                  ? false
-                                  : true,
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                    'TripAdvisor ',
+                            Row(
+                              children: [
+                                
+                                Container(
+                                  padding: EdgeInsets.all(2),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(3),
+                                      border: Border.all(
+                                        color: Colors.blue,
+                                        width: 1,
+                                      )),
+                                  child: Text(
+                                    widget.items.itemsubcategoryName,
                                     style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                  //for rating
-                                  RatingBarIndicator(
-                                    rating: widget.items.itemrating1,
-                                    itemBuilder: (context, index) => Icon(
-                                      Icons.circle,
-                                      color: Colors.green[300],
+                                      fontSize: 14,
+                                      color: Colors.blue,
                                     ),
-                                    itemCount: 5,
-                                    itemSize: 12.0,
-                                    direction: Axis.horizontal,
                                   ),
-                                  Text(
-                                    " " + widget.items.itemrating1.toString(),
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.green[300],
-                                        fontWeight: FontWeight.normal),
+                                ),
+                                SizedBox(width: 10),
+                                //show rating
+
+                                Visibility(
+                                  visible: widget.items.itemrating1 == null
+                                      ? false
+                                      : true,
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        'Google ',
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                      //for rating
+                                      RatingBarIndicator(
+                                        rating: widget.items.itemrating1,
+                                        itemBuilder: (context, index) => Icon(
+                                          Icons.star_rounded,
+                                          color: Colors.yellow[800],
+                                        ),
+                                        itemCount: 5,
+                                        itemSize: 12.0,
+                                        direction: Axis.horizontal,
+                                      ),
+                                      Text(
+                                        " " +
+                                            widget.items.itemrating1.toString(),
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.yellow[800],
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                             SizedBox(
-                              height: 15,
+                              height: 10,
                             ),
-                            Visibility(
+
+                            /*Visibility(
                               visible: widget.items.itemrating1 == null
                                   ? false
                                   : true,
@@ -411,7 +435,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   ),
                                 ],
                               ),
-                            ),
+                            ),*/
                           ],
                         ),
                         //save button here
@@ -442,6 +466,45 @@ class _DetailsPageState extends State<DetailsPage> {
 
               //Use EXapnding text widget
               Padding(
+                padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.timer,
+                            color: Colors.blue,
+                            size: 20,
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            widget.items.itemopenTime,
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(3),
+                        decoration: BoxDecoration(
+                          color: Colors.blue[300],
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                        child: Text(
+                          'min. ₱' +
+                              widget.items.itempriceMin.toStringAsFixed(2),
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ]),
+              ),
+              Padding(
                 padding: EdgeInsets.only(
                   left: 20,
                   right: 20,
@@ -459,48 +522,6 @@ class _DetailsPageState extends State<DetailsPage> {
                       color: Colors.grey,
                       fontWeight: FontWeight.normal),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.timer,
-                            color: Colors.blue,
-                            size: 20,
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            widget.items.itemopenTime,
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            CupertinoIcons.tag,
-                            color: Colors.blue,
-                            size: 20,
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            'min. ₱' +
-                                widget.items.itempriceMin.toStringAsFixed(2),
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ]),
               ),
 
               //show location here
@@ -1041,12 +1062,10 @@ class _DetailsPageState extends State<DetailsPage> {
                 } else {
                   print(emails);
                   setEvents().whenComplete(() {
-                    SnackBar(content: Text('Event Added Successfully'));
                     event.clear();
                     desc.clear();
                     budget.clear();
                     website.clear();
-
                     Navigator.of(context).pop();
                   });
                 }

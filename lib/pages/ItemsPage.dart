@@ -7,7 +7,6 @@ import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 //create category page
 
 class ItemsPage extends StatelessWidget {
@@ -39,14 +38,14 @@ class ItemsPage extends StatelessWidget {
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: 150,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
+                  decoration: BoxDecoration(color: Colors.white
+                      /*image: DecorationImage(
                       image: NetworkImage(this.selectedCategory.imgName),
                       fit: BoxFit.fill,
-                    ),
-                  ),
+                    ),*/
+                      ),
                 ),
-                Positioned.fill(
+                /*Positioned.fill(
                     child: Container(
                         decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -57,17 +56,30 @@ class ItemsPage extends StatelessWidget {
                       this.selectedCategory.color.withOpacity(0.5),
                     ],
                   ),
-                ))),
+                ))),*/
                 Positioned(
                   bottom: 40,
                   left: 0,
                   right: 0,
-                  child: Text(this.selectedCategory.name,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CategoryIcon(
+                        iconName: this.selectedCategory.iconName,
+                        color: this.selectedCategory.color,
+                        size: 30,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(this.selectedCategory.name,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400)),
+                    ],
+                  ),
                 ),
               ]),
               // create list builder to show subCategories this.selectedCategory.subCategory.length
@@ -99,7 +111,7 @@ class ItemsPage extends StatelessWidget {
                               //user physicalmodel to add shadow in a combined widgets
                               child: Column(children: [
                                 Container(
-                                  height: 200,
+                                  height: 250,
                                   width: 150,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
@@ -109,22 +121,16 @@ class ItemsPage extends StatelessWidget {
                                           .imgName),
                                       fit: BoxFit.cover,
                                     ),
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20),
-                                    ),
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
                                   //stack all descriptions values etc. here
                                   child: Stack(children: [
                                     Positioned.fill(
                                       child: Container(
                                           decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20),
-                                        ),
+                                        borderRadius: BorderRadius.circular(20),
                                         gradient: LinearGradient(
-                                          begin: Alignment.topCenter,
+                                          begin: Alignment.center,
                                           end: Alignment.bottomCenter,
                                           colors: <Color>[
                                             Colors.transparent,
@@ -172,22 +178,43 @@ class ItemsPage extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             //wrap to expand if too long
-                                            Wrap(
-                                                direction: Axis.horizontal,
-                                                children: [
-                                                  Text(
-                                                    this
-                                                        .selectedCategory
-                                                        .items[index]
-                                                        .name,
-                                                    overflow: TextOverflow.fade,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                ]),
 
+                                            Text(
+                                              this
+                                                  .selectedCategory
+                                                  .items[index]
+                                                  .name,
+                                              overflow: TextOverflow.fade,
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+
+                                            Container(
+                                              padding: EdgeInsets.all(2),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(3),
+                                                  border: Border.all(
+                                                    color: Colors.white,
+                                                    width: 1,
+                                                  )),
+                                              child: Text(
+                                                this
+                                                    .selectedCategory
+                                                    .items[index]
+                                                    .itemsubcategoryName,
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
                                             SizedBox(
                                               height: 5,
                                             ),
@@ -199,30 +226,72 @@ class ItemsPage extends StatelessWidget {
                                                   size: 10,
                                                 ),
                                                 SizedBox(width: 3),
-                                                Wrap(
-                                                    direction: Axis.horizontal,
-                                                    children: [
-                                                      Text(
-                                                        this
-                                                            .selectedCategory
-                                                            .items[index]
-                                                            .itemaddress,
-                                                        style: TextStyle(
-                                                            fontSize: 10,
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w300),
-                                                      ),
-                                                    ]),
+                                                Text(
+                                                  this
+                                                      .selectedCategory
+                                                      .items[index]
+                                                      .itemaddress,
+                                                  style: TextStyle(
+                                                      overflow:
+                                                          TextOverflow.fade,
+                                                      fontSize: 12,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w300),
+                                                ),
                                               ],
                                             ),
                                           ]),
+                                    ),
+                                    Positioned(
+                                      top: 10,
+                                      right: 10,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(3),
+                                            decoration: BoxDecoration(
+                                              color: Colors.blue[300],
+                                              borderRadius:
+                                                  BorderRadius.circular(3),
+                                            ),
+                                            child: Text(
+                                              "₱ " +
+                                                  this
+                                                      .selectedCategory
+                                                      .items[index]
+                                                      .itempriceMin
+                                                      .toStringAsFixed(2),
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.white,
+                                                  fontWeight:
+                                                      FontWeight.normal),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            "Open " +
+                                                this
+                                                    .selectedCategory
+                                                    .items[index]
+                                                    .itemopenTime,
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                        ],
+                                      ),
                                     )
                                   ]),
                                 ),
                                 //bottom card
-                                Container(
+                                /*Container(
                                   height: 60,
                                   width: 150,
                                   decoration: BoxDecoration(
@@ -313,33 +382,37 @@ class ItemsPage extends StatelessWidget {
                                         )*/
                                         ],
                                       )),
-                                )
+                                )*/
                               ]),
                             );
                           })));
                 }
-                return Center(child:Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                           SizedBox(height: 300,),
-                            Text(' Login first to access items!',
-                                style: TextStyle(
-                                  color: Colors.grey[400],
-                                  fontSize: 20,
-                                )),
-                          ]),);
+                return Center(
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 300,
+                        ),
+                        Text(' Login first to access items!',
+                            style: TextStyle(
+                              color: Colors.grey[400],
+                              fontSize: 20,
+                            )),
+                      ]),
+                );
               })
             ]),
             //show Icon
-            Positioned(
-                top: 125,
+            /*Positioned(
+                top: 120,
                 left: 0,
                 right: 0,
                 child: CategoryIcon(
                   iconName: this.selectedCategory.iconName,
                   color: this.selectedCategory.color,
-                  size: 50,
-                )),
+                  size: 30,
+                )),*/
             //show app bar
             Positioned(
               top: 0,
