@@ -1,7 +1,7 @@
 //this is a temporary mock data generator
 
-import 'package:bywayborcay/models/ForYouModel.dart';
-import 'package:bywayborcay/models/HighlightsModel.dart';
+import 'package:bywayborcay/models/ExplorePageModels.dart';
+
 import 'package:bywayborcay/models/OnBoardingModel.dart';
 import 'package:flutter/material.dart';
 
@@ -81,6 +81,32 @@ class Utils {
       )
     ];
   }
+
+
+ static List<HistoryModel> getHistory() {
+    return [
+      HistoryModel(
+       
+        imgName: 'History1',
+     
+      ),
+      HistoryModel(
+     
+        imgName: 'History2',
+      
+      ),
+      HistoryModel(
+    
+        imgName: 'History3',
+
+      ),
+      HistoryModel(
+       
+        imgName: 'History4',
+    
+      )
+    ];
+  }  
 
   //create static method that will return categories with data
   /*static List<Category> getMockedCategory() {

@@ -699,7 +699,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   child: Text('Email',
                                       style: TextStyle(
                                           color: Colors.blue,
-                                          fontSize: 18,
+                                          fontSize: 14,
                                           decoration: TextDecoration.underline,
                                           fontWeight: FontWeight.bold)),
                                 ),
@@ -723,7 +723,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   child: Text('Website',
                                       style: TextStyle(
                                           color: Colors.blue,
-                                          fontSize: 18,
+                                          fontSize: 14,
                                           decoration: TextDecoration.underline,
                                           fontWeight: FontWeight.bold)),
                                 ),

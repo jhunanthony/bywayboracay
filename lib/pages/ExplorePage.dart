@@ -5,8 +5,7 @@ import 'dart:ui';
 
 import 'package:bywayborcay/helper/AppExploreContent.dart';
 import 'package:bywayborcay/helper/Utils.dart';
-import 'package:bywayborcay/models/ForYouModel.dart';
-import 'package:bywayborcay/models/HighlightsModel.dart';
+import 'package:bywayborcay/models/ExplorePageModels.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/categoryservice.dart';
 
@@ -131,20 +130,95 @@ class _ExplorePageState extends State<ExplorePage> {
 }
 
 class History extends StatelessWidget {
-  const History({
-    Key key,
-  }) : super(key: key);
+  
+  List<HistoryModel> _historymodel = Utils.getHistory();
+  final _historypageController = PageController(viewportFraction: 0.877);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 400,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-        image: AssetImage("assets/images/Test_Image_1.png"),
-        fit: BoxFit.cover,
-      )),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 10,
+        ),
+        Row(
+          children: [
+            SizedBox(
+              width: 20,
+            ),
+            Text('Highlight',
+                style: TextStyle(fontSize: 20, color: Colors.blue)),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+        ),
+
+        //wrap with stack to overlay other components
+        Container(
+            height: 200,
+            padding: EdgeInsets.only(top: 10, bottom: 10),
+            child: PageView(
+              physics: BouncingScrollPhysics(),
+              controller: _historypageController,
+              scrollDirection: Axis.horizontal,
+              children: List.generate(
+                  _historymodel.length,
+                  (int index) => Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                              width: MediaQuery.of(context).size.width - 5,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/images/${_historymodel[index].imgName}.jpg'),
+                                    fit: BoxFit.cover),
+                              ),
+                              ),
+                        ),
+                      )),
+            )),
+
+        SizedBox(
+          height: 10,
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: SmoothPageIndicator(
+            controller: _historypageController,
+            count: _historymodel.length,
+            effect: ExpandingDotsEffect(
+                activeDotColor: Colors.blue,
+                dotColor: Colors.grey[400],
+                dotHeight: 5,
+                dotWidth: 5,
+                spacing: 3),
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Padding(
+          padding:
+              const EdgeInsets.only(right: 20, left: 20, top: 10, bottom: 10),
+          child: ExpandableText(
+            AppContent.history,
+            expandText: 'MORE',
+            collapseText: 'LESS',
+            maxLines: 4,
+            linkColor: Colors.blue,
+            textAlign: TextAlign.justify,
+            style: TextStyle(
+                fontSize: 14,
+                color: Colors.blue,
+                fontWeight: FontWeight.normal),
+          ),
+        ),
+      ],
     );
   }
 }

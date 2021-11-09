@@ -667,6 +667,7 @@ class CalendarState extends State<CalendarPage> {
                                 Visibility(
                                   visible: index == 0,
                                   child: Text(
+                                    
                                     "Budget for today ₱${maintotal.toStringAsFixed(2)}",
                                     style: TextStyle(
                                         fontSize: 14,
@@ -734,6 +735,7 @@ class CalendarState extends State<CalendarPage> {
                                       //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
                                       title: Text(
                                         '${value[index].title}',
+                                        
                                         style: TextStyle(
                                             color: Colors.blue,
                                             fontWeight: FontWeight.bold,

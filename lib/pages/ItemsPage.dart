@@ -114,24 +114,20 @@ class ItemsPage extends StatelessWidget {
                                   height: 250,
                                   width: 150,
                                   decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(this
-                                          .selectedCategory
-                                          .items[index]
-                                          .imgName),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        spreadRadius: 5,
-                                        blurRadius: 5,
-                                        offset: Offset(
-                                            0, 3), // changes position of shadow
+                                      image: DecorationImage(
+                                        image: NetworkImage(this
+                                            .selectedCategory
+                                            .items[index]
+                                            .imgName),
+                                        fit: BoxFit.cover,
                                       ),
-                                    ],
-                                  ),
+                                      borderRadius: BorderRadius.circular(20),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Colors.grey,
+                                            blurRadius: 3,
+                                            offset: Offset(2, 2)),
+                                      ]),
                                   //stack all descriptions values etc. here
                                   child: Stack(children: [
                                     Positioned.fill(
