@@ -122,6 +122,15 @@ class ItemsPage extends StatelessWidget {
                                       fit: BoxFit.cover,
                                     ),
                                     borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 5,
+                                        blurRadius: 5,
+                                        offset: Offset(
+                                            0, 3), // changes position of shadow
+                                      ),
+                                    ],
                                   ),
                                   //stack all descriptions values etc. here
                                   child: Stack(children: [

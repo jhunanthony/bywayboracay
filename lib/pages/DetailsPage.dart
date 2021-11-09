@@ -162,8 +162,8 @@ class _DetailsPageState extends State<DetailsPage> {
                         ),
                         CategoryIcon(
                           iconName: widget.items.iconName,
-                          color: widget.items.color,
-                          size: 30,
+                          color: Colors.transparent,
+                          size: 40,
                         ),
                         SizedBox(
                           height: 10,
@@ -186,7 +186,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                       padding: EdgeInsets.all(0),
                                       icon: Icon(Icons.favorite_rounded),
                                       color: Colors.white,
-                                      iconSize: 30,
+                                      iconSize: 25,
                                       splashColor: Colors.pink[300],
                                       onPressed: () {
                                         likeService.add(context,
@@ -199,7 +199,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 renderedButton = Container(
                                   padding: EdgeInsets.all(10),
                                   child: Icon(Icons.favorite_rounded,
-                                      color: Colors.pink, size: 30),
+                                      color: Colors.pink, size: 25),
                                 );
                               }
 
@@ -225,17 +225,17 @@ class _DetailsPageState extends State<DetailsPage> {
                                 likedtext = Text(
                                   'Like',
                                   style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w300),
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                  ),
                                 );
                               } else {
                                 likedtext = Text(
                                   'Liked',
                                   style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w300),
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                  ),
                                 );
                               }
 
@@ -332,7 +332,8 @@ class _DetailsPageState extends State<DetailsPage> {
 
               //show ratings1 here
               Padding(
-                  padding: EdgeInsets.only(bottom: 10, left: 20, right: 20, top: 10),
+                  padding:
+                      EdgeInsets.only(bottom: 10, left: 20, right: 20, top: 10),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -341,7 +342,6 @@ class _DetailsPageState extends State<DetailsPage> {
                           children: [
                             Row(
                               children: [
-                                
                                 Container(
                                   padding: EdgeInsets.all(2),
                                   decoration: BoxDecoration(
@@ -368,7 +368,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   child: Row(
                                     children: <Widget>[
                                       Text(
-                                        'Google ',
+                                        "${widget.items.itemratingname} ",
                                         style: TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey,
@@ -506,6 +506,7 @@ class _DetailsPageState extends State<DetailsPage> {
               ),
               Padding(
                 padding: EdgeInsets.only(
+                  top: 10,
                   left: 20,
                   right: 20,
                   bottom: 15,
@@ -596,13 +597,17 @@ class _DetailsPageState extends State<DetailsPage> {
                       size: 20,
                     ),
                     SizedBox(width: 5),
-                    GestureDetector(
-                        child: Text(
-                          'Get Directions',
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold),
+                    InkWell(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          child: Text(
+                            'Get Directions',
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                         onTap: () {
                           //use push replacement
@@ -615,11 +620,11 @@ class _DetailsPageState extends State<DetailsPage> {
 
               //add contact information
               Align(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child: Padding(
                   padding: EdgeInsets.only(
                     left: 20,
-                    bottom: 10,
+                    bottom: 5,
                     right: 20,
                   ),
                   child: Text(
@@ -644,53 +649,31 @@ class _DetailsPageState extends State<DetailsPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        GestureDetector(
-                          child: Text(' Call  ',
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold)),
-                          onTap: () async {
-                            String sms =
-                                "tel:" + widget.items.itemcontactNumber;
-                            if (await canLaunch(sms)) {
-                              await launch(sms);
-                            } else {
-                              throw 'Could not launch $sms';
-                            }
-                          },
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        GestureDetector(
-                            child: Text(' Facebook  ',
-                                style: TextStyle(
-                                    color: Colors.grey,
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.blue, //background
+                              onPrimary: Colors.white, //foreground
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50))),
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                top: 3, bottom: 3, left: 5, right: 5),
+                            alignment: Alignment.center,
+                            child: Row(
+                              children: [
+                                Icon(Icons.call_rounded,
+                                    color: Colors.white, size: 14),
+                                Text(
+                                  ' Call',
+                                  style: TextStyle(
                                     fontSize: 14,
-                                    fontWeight: FontWeight.bold)),
-                            onTap: () async {
-                              String socialmedia = "fb://facewebmodal/f?href=" +
-                                  widget.items.itemsocialMedia;
-                              if (await canLaunch(socialmedia)) {
-                                await launch(socialmedia);
-                              } else {
-                                throw 'Could not launch $socialmedia';
-                              }
-                            }),
-                      ],
-                    ),
-                    //column for buttons for call and fb
-                    Column(
-                      children: [
-                        InkWell(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Icon(
-                            Icons.phone,
-                            size: 20,
-                            color: Colors.blue,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          onTap: () async {
+                          onPressed: () async {
                             String sms =
                                 "tel:" + widget.items.itemcontactNumber;
                             if (await canLaunch(sms)) {
@@ -698,108 +681,65 @@ class _DetailsPageState extends State<DetailsPage> {
                             } else {
                               throw 'Could not launch $sms';
                             }
-                          },
+                          }, // on press animate to 6 th element
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        InkWell(
-                            borderRadius: BorderRadius.circular(100),
-                            child: Icon(
-                              Icons.circle,
-                              size: 20,
-                              color: Colors.blue,
-                            ),
-                            onTap: () async {
-                              String socialmedia = "fb://facewebmodal/f?href=" +
-                                  widget.items.itemsocialMedia;
-                              if (await canLaunch(socialmedia)) {
-                                await launch(socialmedia);
-                              } else {
-                                throw 'Could not launch $socialmedia';
-                              }
-                            }),
                       ],
                     ),
+
                     //column for email and website
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        GestureDetector(
-                            child: Text(' Email  ',
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold)),
-                            onTap: () async {
-                              String mailto = "mailto:" +
-                                  widget.items.itememail +
-                                  "?subject=Inquiry&body=Greetings!";
-                              if (await canLaunch(mailto)) {
-                                await launch(mailto);
-                              } else {
-                                throw 'Could not launch $mailto';
-                              }
-                            }),
-                        SizedBox(
-                          height: 10,
+                        Row(
+                          children: [
+                            InkWell(
+                                borderRadius: BorderRadius.circular(30),
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  child: Text('Email',
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 18,
+                                          decoration: TextDecoration.underline,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                                onTap: () async {
+                                  String mailto = "mailto:" +
+                                      widget.items.itememail +
+                                      "?subject=Inquiry&body=Greetings!";
+                                  if (await canLaunch(mailto)) {
+                                    await launch(mailto);
+                                  } else {
+                                    throw 'Could not launch $mailto';
+                                  }
+                                }),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            InkWell(
+                                borderRadius: BorderRadius.circular(30),
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  child: Text('Website',
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 18,
+                                          decoration: TextDecoration.underline,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                                onTap: () async {
+                                  String url = widget.items.itemwebsite;
+                                  if (await canLaunch(url)) {
+                                    await launch(url);
+                                  } else {
+                                    throw 'Could not launch $url';
+                                  }
+                                }),
+                          ],
                         ),
-                        GestureDetector(
-                            child: Text(' Website  ',
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold)),
-                            onTap: () async {
-                              String url = widget.items.itemwebsite;
-                              if (await canLaunch(url)) {
-                                await launch(url);
-                              } else {
-                                throw 'Could not launch $url';
-                              }
-                            }),
                       ],
                     ),
                     //column for button email and web
-                    Column(
-                      children: [
-                        InkWell(
-                            borderRadius: BorderRadius.circular(100),
-                            child: Icon(
-                              Icons.email,
-                              size: 20,
-                              color: Colors.blue,
-                            ),
-                            onTap: () async {
-                              String mailto = "mailto:" +
-                                  widget.items.itememail +
-                                  "?subject=Inquiry&body=Greetings!";
-                              if (await canLaunch(mailto)) {
-                                await launch(mailto);
-                              } else {
-                                throw 'Could not launch $mailto';
-                              }
-                            }),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        InkWell(
-                            borderRadius: BorderRadius.circular(100),
-                            child: Icon(
-                              Icons.web_asset_rounded,
-                              size: 20,
-                              color: Colors.blue,
-                            ),
-                            onTap: () async {
-                              String url = widget.items.itemwebsite;
-                              if (await canLaunch(url)) {
-                                await launch(url);
-                              } else {
-                                throw 'Could not launch $url';
-                              }
-                            }),
-                      ],
-                    )
                   ],
                 ),
               ),

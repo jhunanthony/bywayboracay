@@ -28,11 +28,11 @@ class Items extends Category {
     String itemcategoryName,
     String itememail,
     String itemwebsite,
-    String itemsocialMedia,
+   
   
  
     double itemrating1,
-    double itemrating2,
+    String itemratingname,
     
     String itemopenTime,
     double itempriceMin,
@@ -61,11 +61,11 @@ class Items extends Category {
           itemcategoryName: itemcategoryName,
           itememail: itememail,
           itemwebsite: itemwebsite,
-          itemsocialMedia: itemsocialMedia,
+          
         
     
           itemrating1: itemrating1,
-          itemrating2: itemrating2,
+          itemratingname: itemratingname,
           itemopenTime: itemopenTime,
           itempriceMin: itempriceMin,
         );
@@ -91,8 +91,8 @@ class Items extends Category {
       itemopenTime: json['itemopenTime'],
       itempriceMin: double.parse(json['itempriceMin']),
       itemrating1: double.parse(json['itemrating1']),
-      itemrating2: double.parse(json['itemrating2']),
-      itemsocialMedia: json['itemsocialMedia'],
+      itemratingname: json['itemratingname'],
+     
       itemstation: json['itemstation'],
       itemsubcategoryName: json['itemsubcategoryName'],
       itemwebsite: json['itemwebsite'],

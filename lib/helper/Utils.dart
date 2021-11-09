@@ -16,7 +16,7 @@ class Utils {
         imgName: 'Planning',
       ),
       OnBoardingContent(
-        message: 'Navigation to your desired place with accuracy.',
+        message: 'Navigate to your desired place with accuracy.',
         imgName: 'Navigation',
       ),
       OnBoardingContent(
@@ -24,7 +24,7 @@ class Utils {
         imgName: 'Budgeting',
       ),
       OnBoardingContent(
-        message: 'Freely express your self with Byway Boracay.',
+        message: 'Effective communication with BYWAY Boracay.',
         imgName: 'Communication',
       )
     ];

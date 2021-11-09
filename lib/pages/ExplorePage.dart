@@ -82,8 +82,8 @@ class _ExplorePageState extends State<ExplorePage> {
           ),
         ]),
         Positioned(
-          bottom: 83, left:  MediaQuery.of(context).size.width * 0.42,
-
+          bottom: 83,
+          left: MediaQuery.of(context).size.width * 0.42,
           child: _showBackToTopButton == false
               ? SizedBox()
               : ElevatedButton(
@@ -178,13 +178,12 @@ class AwardsAndRecognition extends StatelessWidget {
     return Container(
       height: 400,
       width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: Colors.white
+      decoration: BoxDecoration(color: Colors.white
           /*image: DecorationImage(
         image: AssetImage("assets/images/Test_Image_5.png"),
         fit: BoxFit.cover,
       )*/
-      ),
+          ),
     );
   }
 }
@@ -275,58 +274,60 @@ class Highlights extends StatelessWidget {
               children: List.generate(
                   _highlightmodel.length,
                   (int index) => Padding(
-                    padding: const EdgeInsets.only(right:20),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                          
-                          width: MediaQuery.of(context).size.width - 5,
-                          height: 200,
-                          decoration: BoxDecoration(
-                           
-                            image: DecorationImage(
-                                image: AssetImage(
-                                    'assets/images/${_highlightmodel[index].imgName}.jpg'),
-                                fit: BoxFit.cover),
-                          ),
-                          child: Stack(
-                            children: [
-                              //add gradient
-                              Positioned.fill(
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.centerRight,
-                                    end: Alignment.centerLeft,
-                                    colors: <Color>[
-                                      Colors.transparent,
-                                      _highlightmodel[index].color.withOpacity(0.5),
-                                      _highlightmodel[index].color,
-                                    ],
-                                  ),
-                                )),
+                        padding: const EdgeInsets.only(right: 20),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                              width: MediaQuery.of(context).size.width - 5,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/images/${_highlightmodel[index].imgName}.jpg'),
+                                    fit: BoxFit.cover),
                               ),
-                              Positioned(
-                                bottom: 20,
-                                left: 20,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: Container(
-                                    padding: EdgeInsets.all(5),
-                                    color: Colors.white,
-                                    child: Text(
-                                        ' ' + _highlightmodel[index].name + ' ',
-                                        style: TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: 14,
-                                        )),
+                              child: Stack(
+                                children: [
+                                  //add gradient
+                                  Positioned.fill(
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.centerRight,
+                                        end: Alignment.centerLeft,
+                                        colors: <Color>[
+                                          Colors.transparent,
+                                          _highlightmodel[index]
+                                              .color
+                                              .withOpacity(0.5),
+                                          _highlightmodel[index].color,
+                                        ],
+                                      ),
+                                    )),
                                   ),
-                                ),
-                              )
-                            ],
-                          )),
-                    ),
-                  )),
+                                  Positioned(
+                                    bottom: 20,
+                                    left: 20,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: Container(
+                                        padding: EdgeInsets.all(5),
+                                        color: Colors.white,
+                                        child: Text(
+                                            ' ' +
+                                                _highlightmodel[index].name +
+                                                ' ',
+                                            style: TextStyle(
+                                              color: Colors.blue,
+                                              fontSize: 14,
+                                            )),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )),
+                        ),
+                      )),
             )),
 
         SizedBox(
@@ -379,12 +380,10 @@ class ForYouTabs extends StatelessWidget {
       SizedBox(
         height: 20,
       ),
-      Row(
-          
-          children: [
-            SizedBox(width: 20),
-            Text('For You!',
-              style: TextStyle(fontSize: 20, color: Colors.blue))]),
+      Row(children: [
+        SizedBox(width: 20),
+        Text('For You!', style: TextStyle(fontSize: 20, color: Colors.blue))
+      ]),
       SizedBox(
         height: 10,
       ),
@@ -575,7 +574,7 @@ class ScrollButtons extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              SizedBox(width: 20),
+              SizedBox(width: 30),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     primary: Colors.blue, //background

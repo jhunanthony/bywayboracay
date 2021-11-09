@@ -26,11 +26,11 @@ class Category {
   String itemsubcategoryName;
   String itememail;
   String itemwebsite;
-  String itemsocialMedia;
+ 
  
  
   double itemrating1;
-  double itemrating2;
+  String itemratingname;
   String itemopenTime;
   double itempriceMin;
 
@@ -57,11 +57,11 @@ class Category {
     this.itemsubcategoryName,
     this.itememail,
     this.itemwebsite,
-    this.itemsocialMedia,
+   
   
    
     this.itemrating1,
-     this.itemrating2,
+     this.itemratingname,
     this.itemopenTime,
     this.itempriceMin,
   });

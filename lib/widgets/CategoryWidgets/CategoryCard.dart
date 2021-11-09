@@ -12,9 +12,7 @@ class CategoryCard extends StatelessWidget {
   CategoryCard({this.category, this.onCardClick});
   @override
   Widget build(BuildContext context) {
-    return Column(
-      
-      children: [
+    return Column(children: [
       SizedBox(
         height: 5,
       ),
@@ -23,7 +21,6 @@ class CategoryCard extends StatelessWidget {
           this.onCardClick();
         },
         child: Container(
-          
           height: 75,
           width: 75,
           color: Colors.transparent,
@@ -38,15 +35,14 @@ class CategoryCard extends StatelessWidget {
                   width: 70,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: NetworkImage(
-                            this.category.imgName),
+                        image: NetworkImage(this.category.imgName),
                         fit: BoxFit.cover,
                       ),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
                             color: Colors.grey,
-                            blurRadius: 0,
+                            blurRadius: 3,
                             offset: Offset(2, 2)),
                       ]),
                 )),

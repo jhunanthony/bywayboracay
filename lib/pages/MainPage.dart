@@ -56,8 +56,8 @@ class _MainPageState extends State<MainPage> {
               )),
           Positioned(
             bottom: 6,
-            right: 15,
-            left: 15,
+            right: 20,
+            left: 20,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(50),
               child: BottomNavyBar(
