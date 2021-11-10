@@ -29,16 +29,17 @@ class CategoryCard extends StatelessWidget {
                 padding: EdgeInsets.only(
                   right: 10,
                   top: 5,
+                  bottom:5,
                 ),
                 child: Container(
-                  height: 70,
-                  width: 70,
+                  height: 65,
+                  width: 65,
                   decoration: BoxDecoration(
                       image: DecorationImage(
                         image: NetworkImage(this.category.imgName),
                         fit: BoxFit.cover,
                       ),
-                      shape: BoxShape.circle,
+                      borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
                             color: Colors.grey,
@@ -52,7 +53,7 @@ class CategoryCard extends StatelessWidget {
                 child: CategoryIcon(
                   color: this.category.color,
                   iconName: this.category.iconName,
-                  size: 25,
+                  size: 30,
                 )),
           ]),
         ),

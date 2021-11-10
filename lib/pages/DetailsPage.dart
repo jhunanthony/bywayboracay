@@ -106,16 +106,16 @@ class _DetailsPageState extends State<DetailsPage> {
                       itemBuilder: (BuildContext context, int index) {
                         //show photos here
                         return Container(
-                          height: 400,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                  widget.items.detailsimages[index].imgName),
-                              fit: BoxFit.fitHeight,
+                            height: 400,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                    widget.items.detailsimages[index].imgName),
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
-                          /*child: Stack(
+                            child: Stack(
                               children: [
                                 //add gradient
                                 Positioned.fill(
@@ -123,22 +123,22 @@ class _DetailsPageState extends State<DetailsPage> {
                                       decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       begin: Alignment.center,
-                                      end: Alignment.bottomCenter,
+                                      end: Alignment.centerRight,
                                       colors: <Color>[
                                         Colors.transparent,
-                                        Colors.black.withOpacity(0.3),
+                                        Colors.black.withOpacity(0.5),
                                       ],
                                     ),
                                   )),
                                 ),
                               ],
-                            )*/
-                        );
+                            ));
                         //add spacing
                       }),
                 ),
 
                 //add save button
+
                 Positioned(
                     top: 70,
                     right: 10,
@@ -244,90 +244,91 @@ class _DetailsPageState extends State<DetailsPage> {
                           }
                           return SizedBox();
                         }),
+                        SizedBox(
+                          height: 100,
+                        ),
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: SmoothPageIndicator(
+                            controller: _imagepageController,
+                            count: widget.items.detailsimages.length,
+                            effect: ExpandingDotsEffect(
+                                activeDotColor: widget.items.color,
+                                dotColor: Colors.white,
+                                dotHeight: 5,
+                                dotWidth: 5,
+                                spacing: 3),
+                          ),
+                        ),
                       ]),
                     )),
 
                 //title and calendar button
 
                 Positioned(
-                    bottom: 0,
-                    right: 0,
-                    left: 0,
-                    child: Column(children: [
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: SmoothPageIndicator(
-                          controller: _imagepageController,
-                          count: widget.items.detailsimages.length,
-                          effect: ExpandingDotsEffect(
-                              activeDotColor: widget.items.color,
-                              dotColor: Colors.white,
-                              dotHeight: 5,
-                              dotWidth: 5,
-                              spacing: 3),
-                        ),
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(40),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(40),
-                          ),
-                          color: Colors.white,
-                          /* boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              blurRadius: 5,
-                              offset: Offset(4, 0), // Shadow position
-                            ),
-                          ],*/
-                        ),
-                        child: Padding(
+                      color: Colors.white,
+                      /* boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.3),
+                                      blurRadius: 5,
+                                      offset: Offset(4, 0), // Shadow position
+                                    ),
+                                  ],*/
+                    ),
+                    child: Stack(
+                      children: [
+                        Padding(
                           padding: EdgeInsets.only(
                             top: 10,
                             left: 20,
-                            right: 13,
+                            right: 70,
                           ),
                           //use wrap horizontal to auto expand text
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Wrap(direction: Axis.horizontal, children: [
-                                  Text(
-                                    widget.items.name,
-                                    textAlign: TextAlign.center,
-                                    overflow: TextOverflow.fade,
-                                    style: TextStyle(
-                                        fontSize: 30,
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                ]),
-                                Consumer<LoginService>(
-                                    builder: (context, loginService, child) {
-                                  if (loginService.isUserLoggedIn()) {
-                                    return ClipOval(
-                                      child: Material(
-                                        color: Colors.transparent,
-                                        child: IconButton(
-                                          padding: EdgeInsets.all(0),
-                                          icon: Icon(CupertinoIcons.calendar),
-                                          color: Colors.blue[200],
-                                          iconSize: 30,
-                                          splashColor: Colors.blue,
-                                          onPressed: () => _showAction(context),
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                  return SizedBox();
-                                }),
-                              ]),
+                          child: Text(
+                            widget.items.name,
+                            textAlign: TextAlign.start,
+                            overflow: TextOverflow.fade,
+                            style: TextStyle(
+                                fontSize: 30,
+                                color: Colors.blue,
+                                fontWeight: FontWeight.normal),
+                          ),
                         ),
-                      ),
-                    ]))
+                        Positioned(
+                          right: 15,
+                          top: 5,
+                          child: Consumer<LoginService>(
+                              builder: (context, loginService, child) {
+                            if (loginService.isUserLoggedIn()) {
+                              return ClipOval(
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: IconButton(
+                                    padding: EdgeInsets.all(0),
+                                    icon: Icon(CupertinoIcons.calendar),
+                                    color: Colors.blue[200],
+                                    iconSize: 25,
+                                    splashColor: Colors.blue,
+                                    onPressed: () => _showAction(context),
+                                  ),
+                                ),
+                              );
+                            }
+                            return SizedBox();
+                          }),
+                        )
+                      ],
+                    ),
+                  ),
+                )
               ]),
 
               //show ratings1 here

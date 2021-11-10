@@ -1,7 +1,10 @@
 import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/models/UserLogInModel.dart';
+import 'package:bywayborcay/pages/LikedPage.dart';
+import 'package:bywayborcay/services/likeservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 //create a side menu bar
@@ -75,6 +78,58 @@ class SideMenuBar extends StatelessWidget {
                     ),
                   ),
                 ]),
+
+                Consumer<LikeService>(
+                          //a function called when notifier changes
+                          builder: (context, like, child) {
+                        return
+                            //hide if 0 likes
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LikedPage()));
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle
+                                ),
+                                child: Stack(children: [
+                          SvgPicture.asset(
+                                'assets/icons/' + AppIcons.LikesIcon + '.svg',
+                                color: Colors.blue,
+                                height: 30,
+                                width: 30,
+                          ),
+                          //get the number of like values
+                          Positioned(
+                                top: 0,
+                                right: 0,
+                                child: Visibility(
+                                  visible: like.items.length > 0,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.yellow[50],
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    child: Text(
+                                      '${like.items.length}',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                          ),
+                        ]),
+                              ),
+                            );
+                      }),
 
                 ElevatedButton(
                    style: ElevatedButton.styleFrom(

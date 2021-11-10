@@ -176,6 +176,7 @@ class ItemsPage extends StatelessWidget {
                                     Positioned(
                                       bottom: 10,
                                       left: 10,
+                                      right: 10,
                                       child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,

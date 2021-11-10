@@ -6,6 +6,7 @@ import 'package:bywayborcay/models/LikedItemsModel.dart';
 import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:bywayborcay/services/likeservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
+import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -31,8 +32,11 @@ class LikedPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: TopNavBar(
+        colorbackground: Colors.transparent,
+      ),
       body: Column(children: [
-        SizedBox(height: 80),
+        SizedBox(height: 20),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           SvgPicture.asset(
             'assets/icons/' + AppIcons.LikesIcon + '.svg',
@@ -62,6 +66,7 @@ class LikedPage extends StatelessWidget {
                   color: Colors.grey[700],
                 ),
               ),
+              SizedBox(height: 10),
               Consumer<LikeService>(
                   //a function called when notifier changes
                   builder: (context, like, child) {
@@ -137,7 +142,7 @@ class LikedPage extends StatelessWidget {
                           margin: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(50),
+                              borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
                                     color: Colors.black.withOpacity(0.1),
@@ -148,10 +153,7 @@ class LikedPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ClipOval(
-                                  child: Image.network(
-                                    
-                                          itemslistinfo.imgName 
-                                      ,
+                                  child: Image.network(itemslistinfo.imgName,
                                       width: 50,
                                       height: 50,
                                       fit: BoxFit.cover)),
@@ -164,7 +166,7 @@ class LikedPage extends StatelessWidget {
                                       itemslistinfo.name,
                                       style: TextStyle(
                                           color: Colors.blue,
-                                          fontSize: 12,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Text(
@@ -175,7 +177,7 @@ class LikedPage extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      'min. ₱ ' +
+                                      '₱ ' +
                                           itemslistinfo.itempriceMin
                                               .toStringAsFixed(2),
                                       style: TextStyle(
@@ -224,16 +226,16 @@ class LikedPage extends StatelessWidget {
                             Icon(CupertinoIcons.tag,
                                 color: Colors.blue, size: 14),
                             SizedBox(
-                              width: 10,
+                              width: 18,
                             ),
                             Text.rich(TextSpan(children: [
                               TextSpan(
                                 text:
-                                    'Calculated Min Price: \₱${mainTotal.toStringAsFixed(2)}',
+                                    'Estimated Budget: ₱ ${mainTotal.toStringAsFixed(2)}',
                                 style: TextStyle(
                                     color: Colors.blue,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 14),
+                                    fontSize: 18),
                               )
                             ]))
                           ],
@@ -257,7 +259,7 @@ class LikedPage extends StatelessWidget {
             },
           ),
         ),
-        SizedBox(height: 75),
+        SizedBox(height: 50),
       ]),
 
       //bottomNavigationBar: BottomNavBar(),

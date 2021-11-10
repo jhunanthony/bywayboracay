@@ -130,7 +130,6 @@ class _ExplorePageState extends State<ExplorePage> {
 }
 
 class History extends StatelessWidget {
-  
   List<HistoryModel> _historymodel = Utils.getHistory();
   final _historypageController = PageController(viewportFraction: 0.877);
 
@@ -147,7 +146,7 @@ class History extends StatelessWidget {
             SizedBox(
               width: 20,
             ),
-            Text('Highlight',
+            Text('History',
                 style: TextStyle(fontSize: 20, color: Colors.blue)),
           ],
         ),
@@ -170,15 +169,15 @@ class History extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Container(
-                              width: MediaQuery.of(context).size.width - 5,
-                              height: 200,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/${_historymodel[index].imgName}.jpg'),
-                                    fit: BoxFit.cover),
-                              ),
-                              ),
+                            width: MediaQuery.of(context).size.width - 5,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                      'assets/images/${_historymodel[index].imgName}.jpg'),
+                                  fit: BoxFit.cover),
+                            ),
+                          ),
                         ),
                       )),
             )),
@@ -224,20 +223,121 @@ class History extends StatelessWidget {
 }
 
 class Culture extends StatelessWidget {
-  const Culture({
-    Key key,
-  }) : super(key: key);
+  List<CultureModel> _culturemodel = Utils.getculture();
+  final _culturepageController = PageController(viewportFraction: 0.877);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 400,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-        image: AssetImage("assets/images/Test_Image_4.png"),
-        fit: BoxFit.cover,
-      )),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 10,
+        ),
+        Row(
+          children: [
+            SizedBox(
+              width: 20,
+            ),
+            Text('Culture',
+                style: TextStyle(fontSize: 20, color: Colors.blue)),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+        ),
+
+        //wrap with stack to overlay other components
+        Container(
+            height: 200,
+            padding: EdgeInsets.only(top: 10, bottom: 10),
+            child: PageView(
+              physics: BouncingScrollPhysics(),
+              controller: _culturepageController,
+              scrollDirection: Axis.horizontal,
+              children: List.generate(
+                  _culturemodel.length,
+                  (int index) => Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: Column(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width - 5,
+                                height: 200,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/images/${_culturemodel[index].imgName}.jpg'),
+                                      fit: BoxFit.cover),
+                                ),
+                                child: Stack(children: <Widget>[
+                                  Positioned(
+                                      bottom: 10,
+                                      left: 10,
+                                      child:
+                                            ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: BackdropFilter(
+                                                    filter: ImageFilter.blur(
+                                                        sigmaY: 19.2, sigmaX: 19.2),
+                                                    child: Container(
+                                                        padding: EdgeInsets.all(10),
+                                                        alignment: Alignment.center,
+                                                        child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                  _culturemodel[
+                                                                          index]
+                                                                      .name,
+                                                                  style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize: 14,
+                                                                  )),
+                                                              SizedBox(
+                                                                height: 3,
+                                                              ),
+                                                             
+                                                            ])))),
+                                         )
+                                ]),
+                              ),
+                            ),
+                            
+                          ],
+                        ),
+                      )),
+            )),
+
+
+        SizedBox(
+          height: 10,
+        ),
+
+        
+        Align(
+          alignment: Alignment.center,
+          child: SmoothPageIndicator(
+            controller: _culturepageController,
+            count: _culturemodel.length,
+            effect: ExpandingDotsEffect(
+                activeDotColor: Colors.blue,
+                dotColor: Colors.grey[400],
+                dotHeight: 5,
+                dotWidth: 5,
+                spacing: 3),
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+      ],
     );
   }
 }
@@ -583,7 +683,7 @@ class CategoryButtons extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Explore Now!',
+                'Explore Now',
                 style: TextStyle(
                     fontSize: 20,
                     color: Colors.blue,
