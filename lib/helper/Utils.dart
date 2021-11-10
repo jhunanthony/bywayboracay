@@ -5,14 +5,13 @@ import 'package:bywayborcay/models/ExplorePageModels.dart';
 import 'package:bywayborcay/models/OnBoardingModel.dart';
 import 'package:flutter/material.dart';
 
-
-
 class Utils {
   //create static onboardingcontent the will return content ref
   static List<OnBoardingContent> getOnBoarding() {
     return [
       OnBoardingContent(
-        message: 'Explore Boracay and create your own tour plan with ease and flexibility.',
+        message:
+            'Explore Boracay and create your own tour plan with ease and flexibility.',
         imgName: 'Planning',
       ),
       OnBoardingContent(
@@ -38,20 +37,17 @@ class Utils {
         address: 'Balabag, Malay, Aklan',
       ),
       ForYouContent(
-        name: 'New Coast Stone Hendge',
-        imgName: 'ForYou2',
-        address: 'Yapak, Malay, Aklan'
-      ),
+          name: 'New Coast Stone Hendge',
+          imgName: 'ForYou2',
+          address: 'Yapak, Malay, Aklan'),
       ForYouContent(
-        name: 'Mt. Luho',
-        imgName: 'ForYou3',
-        address: 'Balabag, Malay, Aklan'
-      ),
+          name: 'Mt. Luho',
+          imgName: 'ForYou3',
+          address: 'Balabag, Malay, Aklan'),
       ForYouContent(
-        name: 'Puka Beach',
-        imgName: 'ForYou4',
-        address: 'Yapak, Malay, Aklan'
-      )
+          name: 'Puka Beach',
+          imgName: 'ForYou4',
+          address: 'Yapak, Malay, Aklan')
     ];
   }
 
@@ -59,54 +55,56 @@ class Utils {
   static List<HighlightModel> getHighlight() {
     return [
       HighlightModel(
-        name: 'White Sands',
-        imgName: 'Highlight1',
-       color: Colors.yellow
-      ),
+          name: 'White Sands', imgName: 'Highlight1', color: Colors.yellow),
       HighlightModel(
-        name: 'Crystal Clear Water',
-        imgName: 'Highlight2',
-        color: Colors.blue
-     
-      ),
+          name: 'Crystal Clear Water',
+          imgName: 'Highlight2',
+          color: Colors.blue),
       HighlightModel(
-        name: 'Night Life',
-        imgName: 'Highlight3',
-       color: Colors.purple
-      ),
+          name: 'Night Life', imgName: 'Highlight3', color: Colors.purple),
       HighlightModel(
-        name: 'Sustainable Tourism',
-        imgName: 'Highlight4',
-        color: Colors.green
+          name: 'Sustainable Tourism',
+          imgName: 'Highlight4',
+          color: Colors.green)
+    ];
+  }
+
+  static List<HistoryModel> getHistory() {
+    return [
+      HistoryModel(
+        imgName: 'History1',
+      ),
+      HistoryModel(
+        imgName: 'History2',
+      ),
+      HistoryModel(
+        imgName: 'History3',
+      ),
+      HistoryModel(
+        imgName: 'History4',
       )
     ];
   }
 
-
- static List<HistoryModel> getHistory() {
+  static List<CultureModel> getculture() {
     return [
-      HistoryModel(
-       
-        imgName: 'History1',
-     
+      CultureModel(
+        name: "Ati-atihan Festival",
+        imgName: 'Culture1',
+        caption: "Boracay Sto. Niño Ati-atihan is celebrated in the most festive way, starts with a fluvial parade of the image of Sto. Niño at the shores of Boracay followed by a High Mass spearheaded by the Parish of the Most Holy Rosary at Balabag Plaza.",
       ),
-      HistoryModel(
-     
-        imgName: 'History2',
-      
+      CultureModel(
+        name: "Paraw",
+        imgName: 'Culture2',
+        caption: "Paraw Sailing is a local sail boat activity. The boats use two outriggers and two sails. Experience the traditional way of sailing and discover the best sites around the island.",
       ),
-      HistoryModel(
-    
-        imgName: 'History3',
-
+      CultureModel(
+        name: "Love Boracay Event",
+        imgName: 'Culture3',
+        caption: "Laboracay has been rebranded to “Love Boracay” and the focus of the event changed. This weekend is full of events that promotes sustainable tourism.",
       ),
-      HistoryModel(
-       
-        imgName: 'History4',
-    
-      )
     ];
-  }  
+  }
 
   //create static method that will return categories with data
   /*static List<Category> getMockedCategory() {
@@ -223,5 +221,4 @@ class Utils {
     ];
   }*/
 
-  
 }
