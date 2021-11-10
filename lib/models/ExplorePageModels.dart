@@ -33,3 +33,19 @@ class HistoryModel {
    
   });
 }
+
+class CultureModel {
+
+  String name;
+  String imgName;
+  String caption;
+
+ 
+
+  CultureModel({
+   this.name,
+    this.imgName,
+        this.caption,
+   
+  });
+}
