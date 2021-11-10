@@ -29,7 +29,6 @@ class SideMenuBar extends StatelessWidget {
 
     return Scaffold(
         body: Container(
-         
             padding: EdgeInsets.only(top: 50),
             color: Colors.blue[200],
             child: Column(
@@ -54,7 +53,6 @@ class SideMenuBar extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 20, right: 20),
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                        
                           children: [
                             //user image
                             ClipOval(
@@ -72,76 +70,77 @@ class SideMenuBar extends StatelessWidget {
                             SizedBox(height: 12),
                             Text('Hi, ' + userName,
                                 textAlign: TextAlign.center,
-                                style:
-                                    TextStyle(color: Colors.white, fontSize: 15))
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15))
                           ]),
                     ),
                   ),
                 ]),
-
-                Consumer<LikeService>(
-                          //a function called when notifier changes
-                          builder: (context, like, child) {
-                        return
-                            //hide if 0 likes
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LikedPage()));
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle
-                                ),
-                                child: Stack(children: [
-                          SvgPicture.asset(
-                                'assets/icons/' + AppIcons.LikesIcon + '.svg',
-                                color: Colors.blue,
-                                height: 30,
-                                width: 30,
-                          ),
-                          //get the number of like values
-                          Positioned(
-                                top: 0,
-                                right: 0,
-                                child: Visibility(
-                                  visible: like.items.length > 0,
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color: Colors.yellow[50],
-                                      borderRadius: BorderRadius.circular(50),
-                                    ),
-                                    child: Text(
-                                      '${like.items.length}',
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        color: Colors.blue,
-                                      ),
+                Consumer<LoginService>(builder: (context, loginService, child) {
+                  if (loginService.isUserLoggedIn()) {
+                    return Consumer<LikeService>(
+                        //a function called when notifier changes
+                        builder: (context, like, child) {
+                      return
+                          //hide if 0 likes
+                          GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LikedPage()));
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Colors.white, shape: BoxShape.circle),
+                          child: Stack(children: [
+                            SvgPicture.asset(
+                              'assets/icons/' + AppIcons.LikesIcon + '.svg',
+                              color: Colors.blue,
+                              height: 30,
+                              width: 30,
+                            ),
+                            //get the number of like values
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: Visibility(
+                                visible: like.items.length > 0,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Colors.yellow[50],
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: Text(
+                                    '${like.items.length}',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: Colors.blue,
                                     ),
                                   ),
                                 ),
-                          ),
-                        ]),
                               ),
-                            );
-                      }),
+                            ),
+                          ]),
+                        ),
+                      );
+                    });
+                  }
+                  return SizedBox();
+                }),
 
                 ElevatedButton(
-                   style: ElevatedButton.styleFrom(
+                  style: ElevatedButton.styleFrom(
                     primary: Colors.white, //background
                     onPrimary: Colors.blue,
                     //foreground
                     //remove border radius
                     shape: new RoundedRectangleBorder(
-               borderRadius: new BorderRadius.circular(0),
-               ),
-               ),
-               
+                      borderRadius: new BorderRadius.circular(0),
+                    ),
+                  ),
                   onPressed: () async {
                     if (userLoggedIn) {
                       await loginService.signOut();
@@ -149,14 +148,13 @@ class SideMenuBar extends StatelessWidget {
                     } else {
                       bool success = await loginService.signInWithGoogle();
                       if (success) {
-                        Navigator.of(context)
-                            .pushReplacementNamed('/mainpage');
+                        Navigator.of(context).pushReplacementNamed('/mainpage');
                       }
                     }
                   },
                   child: Container(
-                    padding: EdgeInsets.only(left: 10, right:10, top:20, bottom:20),
-                   
+                    padding: EdgeInsets.only(
+                        left: 10, right: 10, top: 20, bottom: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

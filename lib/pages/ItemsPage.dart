@@ -216,7 +216,7 @@ class ItemsPage extends StatelessWidget {
                                                     .items[index]
                                                     .itemsubcategoryName,
                                                 style: TextStyle(
-                                                  fontSize: 14,
+                                                  fontSize: 12,
                                                   color: Colors.white,
                                                 ),
                                               ),
@@ -256,25 +256,34 @@ class ItemsPage extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.end,
                                         children: [
-                                          Container(
-                                            padding: EdgeInsets.all(3),
-                                            decoration: BoxDecoration(
-                                              color: Colors.blue[300],
-                                              borderRadius:
-                                                  BorderRadius.circular(3),
-                                            ),
-                                            child: Text(
-                                              "₱ " +
-                                                  this
-                                                      .selectedCategory
-                                                      .items[index]
-                                                      .itempriceMin
-                                                      .toStringAsFixed(2),
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.white,
-                                                  fontWeight:
-                                                      FontWeight.normal),
+                                          Visibility(
+                                            visible: this
+                                                        .selectedCategory
+                                                        .items[index]
+                                                        .itempriceMin != 0 || this
+                                                        .selectedCategory
+                                                        .items[index]
+                                                        .itempriceMin != 0.00,
+                                            child: Container(
+                                              padding: EdgeInsets.all(3),
+                                              decoration: BoxDecoration(
+                                                color: Colors.blue[300],
+                                                borderRadius:
+                                                    BorderRadius.circular(3),
+                                              ),
+                                              child: Text(
+                                                "₱ " +
+                                                    this
+                                                        .selectedCategory
+                                                        .items[index]
+                                                        .itempriceMin
+                                                        .toStringAsFixed(2),
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.normal),
+                                              ),
                                             ),
                                           ),
                                           SizedBox(

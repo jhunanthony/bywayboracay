@@ -146,8 +146,7 @@ class History extends StatelessWidget {
             SizedBox(
               width: 20,
             ),
-            Text('History',
-                style: TextStyle(fontSize: 20, color: Colors.blue)),
+            Text('History', style: TextStyle(fontSize: 20, color: Colors.blue)),
           ],
         ),
         SizedBox(
@@ -239,8 +238,7 @@ class Culture extends StatelessWidget {
             SizedBox(
               width: 20,
             ),
-            Text('Culture',
-                style: TextStyle(fontSize: 20, color: Colors.blue)),
+            Text('Culture', style: TextStyle(fontSize: 20, color: Colors.blue)),
           ],
         ),
         SizedBox(
@@ -259,68 +257,50 @@ class Culture extends StatelessWidget {
                   _culturemodel.length,
                   (int index) => Padding(
                         padding: const EdgeInsets.only(right: 20),
-                        child: Column(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width - 5,
-                                height: 200,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/${_culturemodel[index].imgName}.jpg'),
-                                      fit: BoxFit.cover),
-                                ),
-                                child: Stack(children: <Widget>[
-                                  Positioned(
-                                      bottom: 10,
-                                      left: 10,
-                                      child:
-                                            ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: BackdropFilter(
-                                                    filter: ImageFilter.blur(
-                                                        sigmaY: 19.2, sigmaX: 19.2),
-                                                    child: Container(
-                                                        padding: EdgeInsets.all(10),
-                                                        alignment: Alignment.center,
-                                                        child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                  _culturemodel[
-                                                                          index]
-                                                                      .name,
-                                                                  style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize: 14,
-                                                                  )),
-                                                              SizedBox(
-                                                                height: 3,
-                                                              ),
-                                                             
-                                                            ])))),
-                                         )
-                                ]),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                              width: MediaQuery.of(context).size.width - 5,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/images/${_culturemodel[index].imgName}.jpg'),
+                                    fit: BoxFit.cover),
                               ),
-                            ),
-                            
-                          ],
+                              child: Stack(
+                                children: [
+                                  //add gradient
+
+                                  Positioned(
+                                    bottom: 20,
+                                    left: 20,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: Container(
+                                        padding: EdgeInsets.all(5),
+                                        color: Colors.white,
+                                        child: Text(
+                                            ' ' +
+                                                _culturemodel[index].name +
+                                                ' ',
+                                            style: TextStyle(
+                                              color: Colors.blue,
+                                              fontSize: 14,
+                                            )),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )),
                         ),
                       )),
             )),
-
 
         SizedBox(
           height: 10,
         ),
 
-        
         Align(
           alignment: Alignment.center,
           child: SmoothPageIndicator(

@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 class LikeService extends ChangeNotifier {
   //this will hold the items being saved
   final List<LikedItem> _items = [];
+  
 
   //only allow adding items
   UnmodifiableListView<LikedItem> get items => UnmodifiableListView(_items);
@@ -57,7 +58,7 @@ class LikeService extends ChangeNotifier {
     FirebaseFirestore.instance
         .collection('tourist')
         .doc(loginService.loggedInUserModel.uid)
-        .update({'LikedItems.${itemref.imgName}': FieldValue.delete()}).then(
+        .update({'LikedItems.${itemref.itemimgName}': FieldValue.delete()}).then(
             (value) {
       (item.category as Items).amount = 0;
       _items.remove(item);

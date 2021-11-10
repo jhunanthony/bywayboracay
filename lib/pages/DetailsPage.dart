@@ -245,7 +245,28 @@ class _DetailsPageState extends State<DetailsPage> {
                           return SizedBox();
                         }),
                         SizedBox(
-                          height: 100,
+                          height: 10,
+                        ),
+                        IconButton(
+                          padding: EdgeInsets.all(0),
+                          icon: Icon(Icons.share_rounded),
+                          color: Colors.white,
+                          iconSize: 25,
+                          splashColor: Colors.pink[300],
+                          onPressed: () {},
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'Share',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
                         ),
                         Align(
                           alignment: Alignment.topCenter,
@@ -290,6 +311,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             top: 10,
                             left: 20,
                             right: 70,
+                            bottom: 20,
                           ),
                           //use wrap horizontal to auto expand text
                           child: Text(
@@ -488,19 +510,22 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                         ],
                       ),
-                      Container(
-                        padding: EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                          color: Colors.blue[300],
-                          borderRadius: BorderRadius.circular(3),
-                        ),
-                        child: Text(
-                          'min. ₱' +
-                              widget.items.itempriceMin.toStringAsFixed(2),
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
+                      Visibility(
+                         visible:widget.items.itempriceMin != 0 || widget.items.itempriceMin != 0.00 ||  widget.items.itemwebsite != null,
+                        child: Container(
+                          padding: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            color: Colors.blue[300],
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                          child: Text(
+                            'min. ₱' +
+                                widget.items.itempriceMin.toStringAsFixed(2),
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ]),
@@ -647,99 +672,100 @@ class _DetailsPageState extends State<DetailsPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     //column for text call and fb
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.blue, //background
-                              onPrimary: Colors.white, //foreground
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50))),
-                          child: Container(
-                            padding: EdgeInsets.only(
-                                top: 3, bottom: 3, left: 5, right: 5),
-                            alignment: Alignment.center,
-                            child: Row(
-                              children: [
-                                Icon(Icons.call_rounded,
-                                    color: Colors.white, size: 14),
-                                Text(
-                                  ' Call',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white,
+                    Visibility(
+                      visible: widget.items.itemcontactNumber != "none" || widget.items.itemwebsite != null,
+                      child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.blue, //background
+                                onPrimary: Colors.white, //foreground
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50))),
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  top: 3, bottom: 3, left: 5, right: 5),
+                              alignment: Alignment.center,
+                              child: Row(
+                                children: [
+                                  Icon(Icons.call_rounded,
+                                      color: Colors.white, size: 14),
+                                  Text(
+                                    ' Call',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
+                            onPressed: () async {
+                              String sms =
+                                  "tel:" + widget.items.itemcontactNumber;
+                              if (await canLaunch(sms)) {
+                                await launch(sms);
+                              } else {
+                                throw 'Could not launch $sms';
+                              }
+                            }, // on press animate to 6 th element
                           ),
-                          onPressed: () async {
-                            String sms =
-                                "tel:" + widget.items.itemcontactNumber;
-                            if (await canLaunch(sms)) {
-                              await launch(sms);
-                            } else {
-                              throw 'Could not launch $sms';
-                            }
-                          }, // on press animate to 6 th element
-                        ),
-                      ],
                     ),
+                     
 
                     //column for email and website
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+                    Row(
                           children: [
-                            InkWell(
-                                borderRadius: BorderRadius.circular(30),
-                                child: Container(
-                                  padding: EdgeInsets.all(5),
-                                  child: Text('Email',
-                                      style: TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: 14,
-                                          decoration: TextDecoration.underline,
-                                          fontWeight: FontWeight.bold)),
-                                ),
-                                onTap: () async {
-                                  String mailto = "mailto:" +
-                                      widget.items.itememail +
-                                      "?subject=Inquiry&body=Greetings!";
-                                  if (await canLaunch(mailto)) {
-                                    await launch(mailto);
-                                  } else {
-                                    throw 'Could not launch $mailto';
-                                  }
-                                }),
+                            Visibility(
+                              visible: widget.items.itememail != "none" || widget.items.itemwebsite != null,
+                              child: InkWell(
+                                  borderRadius: BorderRadius.circular(30),
+                                  child: Container(
+                                    padding: EdgeInsets.all(5),
+                                    child: Text('Email',
+                                        style: TextStyle(
+                                            color: Colors.blue,
+                                            fontSize: 14,
+                                            decoration: TextDecoration.underline,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                  onTap: () async {
+                                    String mailto = "mailto:" +
+                                        widget.items.itememail +
+                                        "?subject=Inquiry&body=Greetings!";
+                                    if (await canLaunch(mailto)) {
+                                      await launch(mailto);
+                                    } else {
+                                      throw 'Could not launch $mailto';
+                                    }
+                                  }),
+                            ),
                             SizedBox(
                               width: 5,
                             ),
-                            InkWell(
-                                borderRadius: BorderRadius.circular(30),
-                                child: Container(
-                                  padding: EdgeInsets.all(5),
-                                  child: Text('Website',
-                                      style: TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: 14,
-                                          decoration: TextDecoration.underline,
-                                          fontWeight: FontWeight.bold)),
-                                ),
-                                onTap: () async {
-                                  String url = widget.items.itemwebsite;
-                                  if (await canLaunch(url)) {
-                                    await launch(url);
-                                  } else {
-                                    throw 'Could not launch $url';
-                                  }
-                                }),
+                            Visibility(
+                              visible: widget.items.itemwebsite != "none" || widget.items.itemwebsite != null,
+                              child: InkWell(
+                                  borderRadius: BorderRadius.circular(30),
+                                  child: Container(
+                                    padding: EdgeInsets.all(5),
+                                    child: Text('Website',
+                                        style: TextStyle(
+                                            color: Colors.blue,
+                                            fontSize: 14,
+                                            decoration: TextDecoration.underline,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                  onTap: () async {
+                                    String url = widget.items.itemwebsite;
+                                    if (await canLaunch(url)) {
+                                      await launch(url);
+                                    } else {
+                                      throw 'Could not launch $url';
+                                    }
+                                  }),
+                            ),
                           ],
                         ),
-                      ],
-                    ),
+                    
                     //column for button email and web
                   ],
                 ),

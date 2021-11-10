@@ -86,7 +86,6 @@ class CalendarState extends State<CalendarPage> {
       });
     }
 
-   
     Map<DateTime, List<Event>> k =
         Map.fromIterable(List.generate(events2.length, (index) => index),
             key: (i) {
@@ -113,7 +112,7 @@ class CalendarState extends State<CalendarPage> {
     getEventData(Auth().getCurrentUser().uid);
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay));
-     futureWeather = fetchWeather();
+    futureWeather = fetchWeather();
   }
 
   @override
@@ -473,8 +472,6 @@ class CalendarState extends State<CalendarPage> {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Consumer<LoginService>(builder: (context, loginService, child) {
@@ -511,30 +508,29 @@ class CalendarState extends State<CalendarPage> {
                     ),
                     //display weather
                     Container(
-                  
-                  padding: EdgeInsets.only(left: 10, right: 10),
-                  child: FutureBuilder<WeatherInfo>(
-                      future: futureWeather,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return WeatherMainWidget(
-                            location: snapshot.data.location,
-                            temp: snapshot.data.temp,
-                            tempMin: snapshot.data.tempMin,
-                            tempMax: snapshot.data.tempMax,
-                            weather: snapshot.data.weather,
-                            humidity: snapshot.data.humidity,
-                            windspeed: snapshot.data.windspeed,
-                            visibility: snapshot.data.visibility,
-                            airpressure: snapshot.data.airpressure,
-                            weathericon: snapshot.data.weathericon,
-                          );
-                        } else if (snapshot.hasError) {
-                          return Center(child: Text("${snapshot.error}"));
-                        }
-                        return CircularProgressIndicator();
-                      }),
-                ),
+                      padding: EdgeInsets.only(left: 10, right: 10),
+                      child: FutureBuilder<WeatherInfo>(
+                          future: futureWeather,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return WeatherMainWidget(
+                                location: snapshot.data.location,
+                                temp: snapshot.data.temp,
+                                tempMin: snapshot.data.tempMin,
+                                tempMax: snapshot.data.tempMax,
+                                weather: snapshot.data.weather,
+                                humidity: snapshot.data.humidity,
+                                windspeed: snapshot.data.windspeed,
+                                visibility: snapshot.data.visibility,
+                                airpressure: snapshot.data.airpressure,
+                                weathericon: snapshot.data.weathericon,
+                              );
+                            } else if (snapshot.hasError) {
+                              return Center(child: Text("${snapshot.error}"));
+                            }
+                            return CircularProgressIndicator();
+                          }),
+                    ),
 
                     /*Container(
                       child: Text(
@@ -634,17 +630,17 @@ class CalendarState extends State<CalendarPage> {
                       },
                     ),
                     const SizedBox(height: 8.0),
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                      Text(
-                        " Events ",
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.blue,
-                            fontWeight: FontWeight.w300),
-                      ),
-
-                     
-                    ]),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            " Events ",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.blue,
+                                fontWeight: FontWeight.w300),
+                          ),
+                        ]),
                     const SizedBox(height: 8.0),
 
                     //list of events here
@@ -667,7 +663,6 @@ class CalendarState extends State<CalendarPage> {
                                 Visibility(
                                   visible: index == 0,
                                   child: Text(
-                                    
                                     "Budget for today ₱${maintotal.toStringAsFixed(2)}",
                                     style: TextStyle(
                                         fontSize: 14,
@@ -685,8 +680,7 @@ class CalendarState extends State<CalendarPage> {
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
                                   child: ListTile(
-
-                                      /*onLongPress: () {
+                                    /*onLongPress: () {
                                           if (value[index].creator == emails[0]) {
                                             _tapEvents(value[index], 0);
                                           } else {
@@ -696,7 +690,7 @@ class CalendarState extends State<CalendarPage> {
                                                 background: Color(0xff29a39d));
                                           }
                                         },*/
-                                      /*onTap: () {
+                                    /*onTap: () {
                                           if (value[index].creator == emails[0]) {
                                             _tapEvents(value[index], 1);
                                           } else {
@@ -706,53 +700,90 @@ class CalendarState extends State<CalendarPage> {
                                                 background: Color(0xff29a39d));
                                           }
                                         },*/
-                                      leading: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Text(
-                                            value[index].timer,
+                                    leading: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(
+                                          value[index].timer,
+                                          style: TextStyle(
+                                              color: Colors.blue, fontSize: 14),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.all(3),
+                                          decoration: BoxDecoration(
+                                            color: Colors.blue[300],
+                                            borderRadius:
+                                                BorderRadius.circular(3),
+                                          ),
+                                          child: Text(
+                                            "₱${value[index].budget}",
                                             style: TextStyle(
-                                                color: Colors.blue,
+                                                color: Colors.white,
                                                 fontSize: 14),
                                           ),
-                                          Container(
-                                            padding: EdgeInsets.all(3),
-                                            decoration: BoxDecoration(
-                                              color: Colors.blue[300],
-                                              borderRadius: BorderRadius.circular(3),
-                                            ),
-                                            child: Text(
-                                              "₱${value[index].budget}",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14),
-                                            ),
+                                        ),
+                                      ],
+                                    ),
+                                    isThreeLine: false,
+                                    //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
+                                    title: Text(
+                                      '${value[index].title}',
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
+                                    ),
+                                    subtitle: Text(
+                                      '${value[index].desc}',
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                          overflow: TextOverflow.fade,
+                                          color: Colors.blue),
+                                    ),
+                                    /*InkWell(
+                                          onTap: () async {
+                                            if (await canLaunch(
+                                                value[index].website)) {
+                                              await launch(
+                                                  value[index].website);
+                                            } else {
+                                              throw SnackBar(
+                                                  content: Text(
+                                                      'Could not launch ${value[index].website}'));
+                                            }
+                                          },
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Icon(CupertinoIcons.globe,
+                                                  size: 12, color: Colors.blue),
+                                              SizedBox(
+                                                width: 3,
+                                              ),
+                                              Text(
+                                                'Open Link',
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                    overflow: TextOverflow.fade,
+                                                    color: Colors.blue),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                      isThreeLine: false,
-                                      //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
-                                      title: Text(
-                                        '${value[index].title}',
-                                        
-                                        style: TextStyle(
-                                            color: Colors.blue,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      ),
-                                      subtitle: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            '${value[index].desc}',
-                                            maxLines: 2,
-                                            style: TextStyle(
-                                                overflow: TextOverflow.fade,
-                                                color: Colors.blue),
-                                          ),
-                                          InkWell(
+                                        ),*/
+
+                                    //trailing: Text(value[index].timer,style: TextStyle(color: Colors.blue),),
+                                    trailing: Wrap(
+                                      spacing: 10, // space between two icons
+                                      children: <Widget>[
+                                        Visibility(
+                                          visible: value[index].website !=
+                                              "No Website Linked",
+                                          child: GestureDetector(
                                             onTap: () async {
                                               if (await canLaunch(
                                                   value[index].website)) {
@@ -764,46 +795,30 @@ class CalendarState extends State<CalendarPage> {
                                                         'Could not launch ${value[index].website}'));
                                               }
                                             },
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Icon(CupertinoIcons.globe,
-                                                    size: 12,
-                                                    color: Colors.blue),
-                                                SizedBox(width: 3,),
-                                                Text(
-                                                  'Open Link',
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                      decoration: TextDecoration
-                                                          .underline,
-                                                      overflow:
-                                                          TextOverflow.fade,
-                                                      color: Colors.blue),
-                                                ),
-                                              ],
-                                            ),
+                                            child: Icon(CupertinoIcons.globe,
+                                                color: Colors.blue[200]),
                                           ),
-                                        ],
-                                      ),
-                                      //trailing: Text(value[index].timer,style: TextStyle(color: Colors.blue),),
-                                      trailing: GestureDetector(
-                                        onTap: () {
-                                          if (value[index].creator ==
-                                              emails[0]) {
-                                            _tapEvents(value[index], 0);
-                                          } else {
-                                            showSimpleNotification(
-                                                Text(
-                                                    "You can't delete event since you aren't the owner of it"),
-                                                background: Color(0xff29a39d));
-                                          }
-                                        },
-                                        child: Icon(Icons.highlight_off,
-                                            color: Colors.red[200]),
-                                      )),
+                                        ), // icon-1
+
+                                        GestureDetector(
+                                          onTap: () {
+                                            if (value[index].creator ==
+                                                emails[0]) {
+                                              _tapEvents(value[index], 0);
+                                            } else {
+                                              showSimpleNotification(
+                                                  Text(
+                                                      "You can't delete event since you aren't the owner of it"),
+                                                  background:
+                                                      Color(0xff29a39d));
+                                            }
+                                          },
+                                          child: Icon(Icons.highlight_off,
+                                              color: Colors.red[200]),
+                                        ), // icon-2
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ]);
                             },

@@ -6,15 +6,30 @@ import 'package:bywayborcay/models/LikedItemsModel.dart';
 import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:bywayborcay/services/likeservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
+import 'package:bywayborcay/widgets/CalendarWidget/auth.dart';
+import 'package:bywayborcay/widgets/CalendarWidget/datepicker.dart';
+import 'package:bywayborcay/widgets/CalendarWidget/utils.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 
-class LikedPage extends StatelessWidget {
+class LikedPage extends StatefulWidget {
+  @override
+  State<LikedPage> createState() => _LikedPageState();
+
+  static const _actionTitle = 'Add Event';
+}
+
+class _LikedPageState extends State<LikedPage> {
   @override
   Widget build(BuildContext context) {
+    
     //fetch user data with login service
 
     LoginService loginService =
@@ -166,7 +181,7 @@ class LikedPage extends StatelessWidget {
                                       itemslistinfo.name,
                                       style: TextStyle(
                                           color: Colors.blue,
-                                          fontSize: 14,
+                                          fontSize: 18,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Text(
@@ -189,12 +204,23 @@ class LikedPage extends StatelessWidget {
                                 ),
                               ),
                               IconButton(
+                                    padding: EdgeInsets.all(0),
+                                    icon: Icon(CupertinoIcons.calendar),
+                                    color: Colors.blue[200],
+                                    iconSize: 25,
+                                    splashColor: Colors.blue,
+                                    onPressed: () => _showAction(item),
+                                  ),
+                               
+                              SizedBox(width: 3),
+                              IconButton(
                                   onPressed: () {
-                                    like.remove(context, item);
-                                  },
+                                  like.remove(context, item);
+                                },
+                                  
                                   icon: Icon(
                                     Icons.highlight_off,
-                                    size: 30,
+                                    size: 25,
                                     color: Colors.blue,
                                   ))
                             ],
@@ -264,5 +290,323 @@ class LikedPage extends StatelessWidget {
 
       //bottomNavigationBar: BottomNavBar(),
     );
+  }
+
+  List<String> emails = [Auth().getCurrentUser().email];
+
+  List<Map<DateTime, List<Event>>> events2 = [];
+
+  TextEditingController event = TextEditingController();
+
+  TextEditingController timer = TextEditingController();
+
+  TextEditingController desc = TextEditingController();
+
+  TextEditingController budget = TextEditingController();
+
+  TextEditingController website = TextEditingController();
+
+  DateTime _selectedDay = DateTime.now();
+
+  RegExp time_24H = new RegExp(r"^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$");
+
+  RegExp time_12H =
+      new RegExp(r"^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]) ?((a|p)m|(A|P)M)$");
+
+  List tapTitles = [
+    "Are you sure you want to delete the event?",
+    "Are you sure you want to send  the event reminders?"
+  ];
+
+  Timestamp t;
+
+  DateTime eventDate;
+
+  Map res = Map();
+
+  void _showAction(LikedItem item) {
+    Items itemslistinfo = (item.category as Items);
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(LikedPage._actionTitle),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                MyTextFieldDatePicker(
+                  prefixIcon: Icon(Icons.calendar_today_rounded),
+                  firstDate: kFirstDay,
+                  lastDate: kLastDay,
+                  initialDate: _selectedDay,
+                  onDateChanged: (DateTime value) {
+                    if (mounted)
+                      setState(() {
+                        eventDate = value;
+                      });
+                    print(eventDate);
+                  },
+                ),
+
+                SizedBox(height: 7),
+                TextField(
+                  onTap: () {
+                    setState(() {
+                      showPicker(context).then((value) => timer.text = value);
+                    });
+                  },
+                  controller: timer,
+                  decoration: InputDecoration(
+                      suffixIcon: Icon(Icons.timer_rounded),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                        borderRadius: BorderRadius.circular(
+                          10.0,
+                        ),
+                      ),
+                      labelText: "Time",
+                      hintText: "Enter Time"),
+                ),
+                SizedBox(height: 7),
+                TextField(
+                  controller: event..text = "${itemslistinfo.name}",
+                  textCapitalization: TextCapitalization.words,
+                  decoration: InputDecoration(
+                    labelText: 'Event',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 7),
+                TextField(
+                  controller: desc,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: InputDecoration(
+                    labelText: 'Description',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 7),
+                TextField(
+                  keyboardType: TextInputType.numberWithOptions(),
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  controller: budget
+                    ..text = "${itemslistinfo.itempriceMin.toStringAsFixed(2)}",
+                  textCapitalization: TextCapitalization.words,
+                  decoration: InputDecoration(
+                    labelText: 'Budget',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 7),
+                TextField(
+                  controller: website
+                    ..text =
+                        "https://www.google.com/maps/search/?api=1&query=${itemslistinfo.itemlat},${itemslistinfo.itemlong}",
+                  textCapitalization: TextCapitalization.words,
+                  decoration: InputDecoration(
+                    labelText: 'Website',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                  ),
+                ),
+
+                //SizedBox( height: 8),
+
+                /*TextField(
+                       controller: event,
+                       decoration: InputDecoration(
+                           border: OutlineInputBorder(),
+                           labelText: "Event",
+                           hintText: "Enter Event Name"
+                       ),
+                     ),
+                     //SizedBox( height: 8),
+                     TextField(
+                       controller: desc,
+                       decoration: InputDecoration(
+                           border: OutlineInputBorder(),
+                           labelText: "Description",
+                           hintText: "Enter Event Description"
+                       ),
+                     ),*/
+                //SizedBox( height: 8),
+                /*Container(
+                    child: EmailInput(
+                  parentEmails: emails,
+                  setList: (e) {
+                    setState(() {
+                      emails = e;
+                    });
+                  },
+                ))*/
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                event.clear();
+                desc.clear();
+                timer.clear();
+                budget.clear();
+                website.clear();
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'CANCEL',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                if (timer.text.isEmpty ||
+                    !(time_12H.hasMatch(timer.text) ||
+                        time_24H.hasMatch(timer.text))) {
+                  showSimpleNotification(
+                      Text("Please enter a valid time to the event"));
+                } else if (eventDate == null) {
+                  eventDate = DateTime.now();
+                } else if (event.text.isEmpty) {
+                  showSimpleNotification(
+                      Text("Please enter a valid title to the event"));
+                } else if (desc.text.isEmpty) {
+                  desc.text = 'No Description';
+                } else if (budget.text.isEmpty) {
+                  website.text = '0.00';
+                } else if (website.text.isEmpty) {
+                  website.text = 'No Website Linked';
+                } else {
+                  print(emails);
+                  setEvents().whenComplete(() {
+                    event.clear();
+                    desc.clear();
+                    budget.clear();
+                    website.clear();
+                    Navigator.of(context).pop();
+                  });
+                }
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<String> showPicker(BuildContext context) async {
+    TimeOfDay initialTime = TimeOfDay.now();
+    TimeOfDay t = await showTimePicker(
+        context: context,
+        initialTime: initialTime,
+        builder: (BuildContext context, Widget child) {
+          return child;
+        });
+    String res = t.format(context);
+    return res;
+  }
+
+  Future setEvents() async {
+    List temp = await FunctionUtils().eventUsers(emails);
+    int today = FunctionUtils().calculateDifference(_selectedDay);
+    if (today < 0) {
+      showSimpleNotification(Text("You cannot create a event before today!"));
+    } else {
+      for (int i = 0; i < temp.length; i++) {
+        List events = [];
+        print("lol");
+        events.add({
+          "Event": event.text,
+          "description": desc.text,
+          "time": timer.text,
+          "budget": budget.text,
+          "website": website.text,
+          "CreatedBy": emails[0],
+          "users": emails
+        });
+        final sp =
+            await databaseReference.collection('Users').doc(temp[i]).get();
+        String name = sp.get("Name");
+        String email = sp.get("Email");
+        String date = DateFormat('yyyy-MM-dd').format(eventDate);
+        final snapShot = databaseReference
+            .collection('Users')
+            .doc(temp[i])
+            .collection("Events")
+            .doc(date);
+        var data = await snapShot.get();
+        int max = !data.exists ? 0 : data.get("EventList").length;
+        if (max <= 3) {
+          if (data.exists) {
+            snapShot.update({"EventList": FieldValue.arrayUnion(events)});
+            showSimpleNotification(Text("Event Added"),
+                background: Color(0xff29a39d));
+            FunctionUtils()
+                .sendEmail(email, date, events[0]["time"], emails[0]);
+          } else {
+            snapShot.set({'EventList': events});
+            showSimpleNotification(
+                Text(
+                  "Event Added",
+                ),
+                background: Color(0xff29a39d));
+            FunctionUtils()
+                .sendEmail(email, date, events[0]["time"], emails[0]);
+          }
+        } else {
+          showSimpleNotification(
+              Text(
+                "$name isn't available",
+              ),
+              background: Color(0xff29a39d));
+          break;
+        }
+      }
+    }
   }
 }
