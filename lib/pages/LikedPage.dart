@@ -305,7 +305,7 @@ class _LikedPageState extends State<LikedPage> {
   TextEditingController budget = TextEditingController();
 
   TextEditingController website = TextEditingController();
-
+  String imgName;
   DateTime _selectedDay = DateTime.now();
 
   RegExp time_24H = new RegExp(r"^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$");
@@ -456,34 +456,6 @@ class _LikedPageState extends State<LikedPage> {
                 ),
 
                 //SizedBox( height: 8),
-
-                /*TextField(
-                       controller: event,
-                       decoration: InputDecoration(
-                           border: OutlineInputBorder(),
-                           labelText: "Event",
-                           hintText: "Enter Event Name"
-                       ),
-                     ),
-                     //SizedBox( height: 8),
-                     TextField(
-                       controller: desc,
-                       decoration: InputDecoration(
-                           border: OutlineInputBorder(),
-                           labelText: "Description",
-                           hintText: "Enter Event Description"
-                       ),
-                     ),*/
-                //SizedBox( height: 8),
-                /*Container(
-                    child: EmailInput(
-                  parentEmails: emails,
-                  setList: (e) {
-                    setState(() {
-                      emails = e;
-                    });
-                  },
-                ))*/
               ],
             ),
           ),
@@ -503,7 +475,9 @@ class _LikedPageState extends State<LikedPage> {
               ),
             ),
             TextButton(
+             
               onPressed: () {
+                imgName = itemslistinfo.imgName;
                 if (timer.text.isEmpty ||
                     !(time_12H.hasMatch(timer.text) ||
                         time_24H.hasMatch(timer.text))) {
@@ -566,6 +540,7 @@ class _LikedPageState extends State<LikedPage> {
           "time": timer.text,
           "budget": budget.text,
           "website": website.text,
+          "imgName": imgName,
           "CreatedBy": emails[0],
           "users": emails
         });
@@ -581,7 +556,7 @@ class _LikedPageState extends State<LikedPage> {
             .doc(date);
         var data = await snapShot.get();
         int max = !data.exists ? 0 : data.get("EventList").length;
-        if (max <= 3) {
+        if (max <= 50) {
           if (data.exists) {
             snapShot.update({"EventList": FieldValue.arrayUnion(events)});
             showSimpleNotification(Text("Event Added"),

@@ -19,8 +19,9 @@ class Event {
   final String timer; 
   final String budget;
   final String website;
+  final String imgName;
   final String creator;
-  const Event(this.title, this.users, this.desc, this.timer, this.budget, this.website, this.creator,);
+  const Event(this.title, this.users, this.desc, this.timer, this.budget, this.website,this.imgName, this.creator,);
 
   @override
   String toString() => title;

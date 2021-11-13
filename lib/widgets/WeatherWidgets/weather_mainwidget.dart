@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 class WeatherMainWidget extends StatelessWidget {
   final location;
   final temp;
@@ -30,8 +29,7 @@ class WeatherMainWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        
-        padding: EdgeInsets.only(left:10, right: 10, top: 5, bottom:5),
+        padding: EdgeInsets.only(left: 5, right: 5, top: 0, bottom: 0),
         color: Colors.transparent,
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -47,7 +45,7 @@ class WeatherMainWidget extends StatelessWidget {
               Text(
                 ' in ${location.toString()}',
                 style: TextStyle(
-                 color: Colors.blue,
+                  color: Colors.blue,
                   fontSize: 20,
                 ),
               ),
@@ -57,21 +55,21 @@ class WeatherMainWidget extends StatelessWidget {
               Text(
                 '${tempMax.toInt().toString()}°C / ',
                 style: TextStyle(
-              color: Colors.blue,
+                  color: Colors.blue,
                   fontSize: 10,
                 ),
               ),
               Text(
                 '${tempMin.toInt().toString()}°C',
                 style: TextStyle(
-              color: Colors.blue,
+                  color: Colors.blue,
                   fontSize: 10,
                 ),
               ),
               Text(
                 ' · ${weather.toString().toUpperCase()}',
                 style: TextStyle(
-               color: Colors.blue,
+                  color: Colors.blue,
                   fontSize: 10,
                 ),
               ),

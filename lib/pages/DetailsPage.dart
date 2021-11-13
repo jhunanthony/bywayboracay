@@ -511,7 +511,9 @@ class _DetailsPageState extends State<DetailsPage> {
                         ],
                       ),
                       Visibility(
-                         visible:widget.items.itempriceMin != 0 || widget.items.itempriceMin != 0.00 ||  widget.items.itemwebsite != null,
+                        visible: widget.items.itempriceMin != 0 ||
+                            widget.items.itempriceMin != 0.00 ||
+                            widget.items.itemwebsite != null,
                         child: Container(
                           padding: EdgeInsets.all(3),
                           decoration: BoxDecoration(
@@ -673,99 +675,100 @@ class _DetailsPageState extends State<DetailsPage> {
                   children: [
                     //column for text call and fb
                     Visibility(
-                      visible: widget.items.itemcontactNumber != "none" || widget.items.itemwebsite != null,
+                      visible: widget.items.itemcontactNumber != "none" ||
+                          widget.items.itemwebsite != null,
                       child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: Colors.blue, //background
-                                onPrimary: Colors.white, //foreground
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50))),
-                            child: Container(
-                              padding: EdgeInsets.only(
-                                  top: 3, bottom: 3, left: 5, right: 5),
-                              alignment: Alignment.center,
-                              child: Row(
-                                children: [
-                                  Icon(Icons.call_rounded,
-                                      color: Colors.white, size: 14),
-                                  Text(
-                                    ' Call',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.blue, //background
+                            onPrimary: Colors.white, //foreground
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50))),
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              top: 3, bottom: 3, left: 5, right: 5),
+                          alignment: Alignment.center,
+                          child: Row(
+                            children: [
+                              Icon(Icons.call_rounded,
+                                  color: Colors.white, size: 14),
+                              Text(
+                                ' Call',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                            onPressed: () async {
-                              String sms =
-                                  "tel:" + widget.items.itemcontactNumber;
-                              if (await canLaunch(sms)) {
-                                await launch(sms);
-                              } else {
-                                throw 'Could not launch $sms';
-                              }
-                            }, // on press animate to 6 th element
+                            ],
                           ),
+                        ),
+                        onPressed: () async {
+                          String sms = "tel:" + widget.items.itemcontactNumber;
+                          if (await canLaunch(sms)) {
+                            await launch(sms);
+                          } else {
+                            throw 'Could not launch $sms';
+                          }
+                        }, // on press animate to 6 th element
+                      ),
                     ),
-                     
 
                     //column for email and website
                     Row(
-                          children: [
-                            Visibility(
-                              visible: widget.items.itememail != "none" || widget.items.itemwebsite != null,
-                              child: InkWell(
-                                  borderRadius: BorderRadius.circular(30),
-                                  child: Container(
-                                    padding: EdgeInsets.all(5),
-                                    child: Text('Email',
-                                        style: TextStyle(
-                                            color: Colors.blue,
-                                            fontSize: 14,
-                                            decoration: TextDecoration.underline,
-                                            fontWeight: FontWeight.bold)),
-                                  ),
-                                  onTap: () async {
-                                    String mailto = "mailto:" +
-                                        widget.items.itememail +
-                                        "?subject=Inquiry&body=Greetings!";
-                                    if (await canLaunch(mailto)) {
-                                      await launch(mailto);
-                                    } else {
-                                      throw 'Could not launch $mailto';
-                                    }
-                                  }),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Visibility(
-                              visible: widget.items.itemwebsite != "none" || widget.items.itemwebsite != null,
-                              child: InkWell(
-                                  borderRadius: BorderRadius.circular(30),
-                                  child: Container(
-                                    padding: EdgeInsets.all(5),
-                                    child: Text('Website',
-                                        style: TextStyle(
-                                            color: Colors.blue,
-                                            fontSize: 14,
-                                            decoration: TextDecoration.underline,
-                                            fontWeight: FontWeight.bold)),
-                                  ),
-                                  onTap: () async {
-                                    String url = widget.items.itemwebsite;
-                                    if (await canLaunch(url)) {
-                                      await launch(url);
-                                    } else {
-                                      throw 'Could not launch $url';
-                                    }
-                                  }),
-                            ),
-                          ],
+                      children: [
+                        Visibility(
+                          visible: widget.items.itememail != "none" ||
+                              widget.items.itemwebsite != null,
+                          child: InkWell(
+                              borderRadius: BorderRadius.circular(30),
+                              child: Container(
+                                padding: EdgeInsets.all(5),
+                                child: Text('Email',
+                                    style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 14,
+                                        decoration: TextDecoration.underline,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                              onTap: () async {
+                                String mailto = "mailto:" +
+                                    widget.items.itememail +
+                                    "?subject=Inquiry&body=Greetings!";
+                                if (await canLaunch(mailto)) {
+                                  await launch(mailto);
+                                } else {
+                                  throw 'Could not launch $mailto';
+                                }
+                              }),
                         ),
-                    
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Visibility(
+                          visible: widget.items.itemwebsite != "none" ||
+                              widget.items.itemwebsite != null,
+                          child: InkWell(
+                              borderRadius: BorderRadius.circular(30),
+                              child: Container(
+                                padding: EdgeInsets.all(5),
+                                child: Text('Website',
+                                    style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 14,
+                                        decoration: TextDecoration.underline,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                              onTap: () async {
+                                String url = widget.items.itemwebsite;
+                                if (await canLaunch(url)) {
+                                  await launch(url);
+                                } else {
+                                  throw 'Could not launch $url';
+                                }
+                              }),
+                        ),
+                      ],
+                    ),
+
                     //column for button email and web
                   ],
                 ),
@@ -815,6 +818,7 @@ class _DetailsPageState extends State<DetailsPage> {
   TextEditingController desc = TextEditingController();
   TextEditingController budget = TextEditingController();
   TextEditingController website = TextEditingController();
+  String imgName;
 
   DateTime _selectedDay = DateTime.now();
   RegExp time_24H = new RegExp(r"^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$");
@@ -1010,6 +1014,7 @@ class _DetailsPageState extends State<DetailsPage> {
             ),
             TextButton(
               onPressed: () {
+                imgName = widget.items.imgName.toString();
                 if (timer.text.isEmpty ||
                     !(time_12H.hasMatch(timer.text) ||
                         time_24H.hasMatch(timer.text))) {
@@ -1074,6 +1079,7 @@ class _DetailsPageState extends State<DetailsPage> {
           "time": timer.text,
           "budget": budget.text,
           "website": website.text,
+          "imgName": imgName,
           "CreatedBy": emails[0],
           "users": emails
         });
@@ -1089,7 +1095,7 @@ class _DetailsPageState extends State<DetailsPage> {
             .doc(date);
         var data = await snapShot.get();
         int max = !data.exists ? 0 : data.get("EventList").length;
-        if (max <= 3) {
+        if (max <= 50) {
           if (data.exists) {
             snapShot.update({"EventList": FieldValue.arrayUnion(events)});
             showSimpleNotification(Text("Event Added"),

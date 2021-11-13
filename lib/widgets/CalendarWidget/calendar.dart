@@ -41,6 +41,7 @@ class CalendarState extends State<CalendarPage> {
   TextEditingController desc = TextEditingController();
   TextEditingController budget = TextEditingController();
   TextEditingController website = TextEditingController();
+  String imgName;
 
   //awaits weather report
   Future<WeatherInfo> futureWeather;
@@ -82,6 +83,7 @@ class CalendarState extends State<CalendarPage> {
                 temp[index]["time"],
                 temp[index]["budget"],
                 temp[index]["website"],
+                temp[index]["imgName"],
                 temp[index]["CreatedBy"]))
       });
     }
@@ -151,6 +153,7 @@ class CalendarState extends State<CalendarPage> {
           "time": timer.text,
           "budget": budget.text,
           "website": website.text,
+          "imgName": imgName,
           "CreatedBy": emails[0],
           "users": emails
         });
@@ -166,7 +169,7 @@ class CalendarState extends State<CalendarPage> {
             .doc(date);
         var data = await snapShot.get();
         int max = !data.exists ? 0 : data.get("EventList").length;
-        if (max <= 3) {
+        if (max <= 50) {
           if (data.exists) {
             snapShot.update({"EventList": FieldValue.arrayUnion(events)});
             showSimpleNotification(Text("Event Added"),
@@ -231,6 +234,7 @@ class CalendarState extends State<CalendarPage> {
                     "time": e.timer,
                     "budget": e.budget,
                     "website": e.website,
+                    "imgName": e.imgName,
                     "users": e.users
                   };
                   for (int i = 0; i < users.length; i++) {
@@ -397,6 +401,7 @@ class CalendarState extends State<CalendarPage> {
                 timer.clear();
                 budget.clear();
                 website.clear();
+
                 Navigator.of(context).pushReplacement(
                     new MaterialPageRoute(builder: (BuildContext context) {
                   return new MainPage(
@@ -411,6 +416,8 @@ class CalendarState extends State<CalendarPage> {
             ),
             TextButton(
               onPressed: () {
+                imgName =
+                    "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/null_photos%2FHighlight2.jpg?alt=media&token=4d9d4510-3450-4bf8-92ea-8dddc68ba312";
                 if (timer.text.isEmpty ||
                     !(time_12H.hasMatch(timer.text) ||
                         time_24H.hasMatch(timer.text))) {
@@ -504,11 +511,12 @@ class CalendarState extends State<CalendarPage> {
                       )
                     ]),
                     SizedBox(
-                      height: 10,
+                      height: 5,
                     ),
                     //display weather
                     Container(
                       padding: EdgeInsets.only(left: 10, right: 10),
+                      
                       child: FutureBuilder<WeatherInfo>(
                           future: futureWeather,
                           builder: (context, snapshot) {
@@ -533,12 +541,12 @@ class CalendarState extends State<CalendarPage> {
                     ),
 
                     /*Container(
-                      child: Text(
-                        "Hi, ${Auth().getCurrentUser().displayName}",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20, color: Colors.grey[700]),
-                      ),
-                    ),*/
+                        child: Text(
+                          "Hi, ${Auth().getCurrentUser().displayName}",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 20, color: Colors.grey[700]),
+                        ),
+                      ),*/
                     Divider(
                       thickness: 2,
                     ),
@@ -584,7 +592,8 @@ class CalendarState extends State<CalendarPage> {
                         selectedTextStyle: TextStyle(color: Colors.blue),
                         markerDecoration: BoxDecoration(
                             color: Colors.blue, shape: BoxShape.circle),
-                        markerSize: 5.00,
+                        markerSize: 3.00,
+                        markersMaxCount: 8,
                       ),
                       headerStyle: HeaderStyle(
                         formatButtonVisible: true,
@@ -640,6 +649,26 @@ class CalendarState extends State<CalendarPage> {
                                 color: Colors.blue,
                                 fontWeight: FontWeight.w300),
                           ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.blue, //background
+                                onPrimary: Colors.white, //foreground
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50))),
+                            child: Container(
+                              padding: EdgeInsets.all(2),
+                              alignment: Alignment.center,
+                              child: Text(
+                                'add event',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                            ),
+                            onPressed: () => _showAction(
+                                context), // on press animate to 6 th element
+                          ),
                         ]),
                     const SizedBox(height: 8.0),
 
@@ -676,148 +705,178 @@ class CalendarState extends State<CalendarPage> {
                                     vertical: 4.0,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Colors.yellow[50],
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        value[index].imgName,
+                                      ),
+                                      fit: BoxFit.fitWidth,
+                                    ),
+
+                                    /*color: Colors.yellow[50],*/
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
-                                  child: ListTile(
-                                    /*onLongPress: () {
-                                          if (value[index].creator == emails[0]) {
-                                            _tapEvents(value[index], 0);
-                                          } else {
-                                            showSimpleNotification(
-                                                Text(
-                                                    "You can't delete event since you aren't the owner of it"),
-                                                background: Color(0xff29a39d));
-                                          }
-                                        },*/
-                                    /*onTap: () {
-                                          if (value[index].creator == emails[0]) {
-                                            _tapEvents(value[index], 1);
-                                          } else {
-                                            showSimpleNotification(
-                                                Text(
-                                                    "You can't send reminders since you didn't create the event"),
-                                                background: Color(0xff29a39d));
-                                          }
-                                        },*/
-                                    leading: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text(
-                                          value[index].timer,
-                                          style: TextStyle(
-                                              color: Colors.blue, fontSize: 14),
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.all(3),
-                                          decoration: BoxDecoration(
-                                            color: Colors.blue[300],
-                                            borderRadius:
-                                                BorderRadius.circular(3),
-                                          ),
-                                          child: Text(
-                                            "₱${value[index].budget}",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    isThreeLine: false,
-                                    //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
-                                    title: Text(
-                                      '${value[index].title}',
-                                      style: TextStyle(
-                                          color: Colors.blue,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18),
-                                    ),
-                                    subtitle: Text(
-                                      '${value[index].desc}',
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                          overflow: TextOverflow.fade,
-                                          color: Colors.blue),
-                                    ),
-                                    /*InkWell(
-                                          onTap: () async {
-                                            if (await canLaunch(
-                                                value[index].website)) {
-                                              await launch(
-                                                  value[index].website);
-                                            } else {
-                                              throw SnackBar(
-                                                  content: Text(
-                                                      'Could not launch ${value[index].website}'));
-                                            }
-                                          },
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Icon(CupertinoIcons.globe,
-                                                  size: 12, color: Colors.blue),
-                                              SizedBox(
-                                                width: 3,
-                                              ),
-                                              Text(
-                                                'Open Link',
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    decoration: TextDecoration
-                                                        .underline,
-                                                    overflow: TextOverflow.fade,
-                                                    color: Colors.blue),
-                                              ),
+                                  child: Stack(
+                                    children: [
+                                      Positioned.fill(
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                          gradient: LinearGradient(
+                                            begin: Alignment.centerLeft,
+                                            end: Alignment.center,
+                                            colors: <Color>[
+                                              Colors.transparent,
+                                              Colors.black.withOpacity(0.3),
+                                              Colors.black.withOpacity(0.5),
                                             ],
                                           ),
-                                        ),*/
+                                        )),
+                                      ),
+                                      ListTile(
+                                        /*onLongPress: () {
+                                                if (value[index].creator == emails[0]) {
+                                                  _tapEvents(value[index], 0);
+                                                } else {
+                                                  showSimpleNotification(
+                                                      Text(
+                                                          "You can't delete event since you aren't the owner of it"),
+                                                      background: Color(0xff29a39d));
+                                                }
+                                              },*/
+                                        /*onTap: () {
+                                                if (value[index].creator == emails[0]) {
+                                                  _tapEvents(value[index], 1);
+                                                } else {
+                                                  showSimpleNotification(
+                                                      Text(
+                                                          "You can't send reminders since you didn't create the event"),
+                                                      background: Color(0xff29a39d));
+                                                }
+                                              },*/
+                                        leading: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              value[index].timer,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.all(3),
+                                              decoration: BoxDecoration(
+                                                color: Colors.blue[200],
+                                                borderRadius:
+                                                    BorderRadius.circular(3),
+                                              ),
+                                              child: Text(
+                                                "₱${value[index].budget}",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        isThreeLine: false,
+                                        //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
+                                        title: Text(
+                                          '${value[index].title}',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18),
+                                        ),
+                                        subtitle: Text(
+                                          '${value[index].desc}',
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                              overflow: TextOverflow.fade,
+                                              color: Colors.white),
+                                        ),
+                                        /*InkWell(
+                                                onTap: () async {
+                                                  if (await canLaunch(
+                                                      value[index].website)) {
+                                                    await launch(
+                                                        value[index].website);
+                                                  } else {
+                                                    throw SnackBar(
+                                                        content: Text(
+                                                            'Could not launch ${value[index].website}'));
+                                                  }
+                                                },
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Icon(CupertinoIcons.globe,
+                                                        size: 12, color: Colors.blue),
+                                                    SizedBox(
+                                                      width: 3,
+                                                    ),
+                                                    Text(
+                                                      'Open Link',
+                                                      maxLines: 1,
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          decoration: TextDecoration
+                                                              .underline,
+                                                          overflow: TextOverflow.fade,
+                                                          color: Colors.blue),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),*/
 
-                                    //trailing: Text(value[index].timer,style: TextStyle(color: Colors.blue),),
-                                    trailing: Wrap(
-                                      spacing: 10, // space between two icons
-                                      children: <Widget>[
-                                        Visibility(
-                                          visible: value[index].website !=
-                                              "No Website Linked",
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              if (await canLaunch(
-                                                  value[index].website)) {
-                                                await launch(
-                                                    value[index].website);
-                                              } else {
-                                                throw SnackBar(
-                                                    content: Text(
-                                                        'Could not launch ${value[index].website}'));
-                                              }
-                                            },
-                                            child: Icon(CupertinoIcons.globe,
-                                                color: Colors.blue[200]),
-                                          ),
-                                        ), // icon-1
+                                        //trailing: Text(value[index].timer,style: TextStyle(color: Colors.blue),),
+                                        trailing: Wrap(
+                                          spacing:
+                                              10, // space between two icons
+                                          children: <Widget>[
+                                            Visibility(
+                                              visible: value[index].website !=
+                                                  "No Website Linked",
+                                              child: GestureDetector(
+                                                onTap: () async {
+                                                  if (await canLaunch(
+                                                      value[index].website)) {
+                                                    await launch(
+                                                        value[index].website);
+                                                  } else {
+                                                    throw SnackBar(
+                                                        content: Text(
+                                                            'Could not launch ${value[index].website}'));
+                                                  }
+                                                },
+                                                child: Icon(
+                                                    CupertinoIcons.globe,
+                                                    color: Colors.blue[200]),
+                                              ),
+                                            ), // icon-1
 
-                                        GestureDetector(
-                                          onTap: () {
-                                            if (value[index].creator ==
-                                                emails[0]) {
-                                              _tapEvents(value[index], 0);
-                                            } else {
-                                              showSimpleNotification(
-                                                  Text(
-                                                      "You can't delete event since you aren't the owner of it"),
-                                                  background:
-                                                      Color(0xff29a39d));
-                                            }
-                                          },
-                                          child: Icon(Icons.highlight_off,
-                                              color: Colors.red[200]),
-                                        ), // icon-2
-                                      ],
-                                    ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                if (value[index].creator ==
+                                                    emails[0]) {
+                                                  _tapEvents(value[index], 0);
+                                                } else {
+                                                  showSimpleNotification(
+                                                      Text(
+                                                          "You can't delete event since you aren't the owner of it"),
+                                                      background:
+                                                          Color(0xff29a39d));
+                                                }
+                                              },
+                                              child: Icon(Icons.highlight_off,
+                                                  color: Colors.red[100]),
+                                            ), // icon-2
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ]);
@@ -832,6 +891,8 @@ class CalendarState extends State<CalendarPage> {
                   ],
                 ),
               ),
+            ]),
+            /*
               Positioned(
                 right: 0,
                 bottom: 80,
@@ -857,8 +918,7 @@ class CalendarState extends State<CalendarPage> {
                   ),
                   //capture the success flag with async and await
                 ),
-              ),
-            ]),
+              ),*/
           ),
         );
       }
