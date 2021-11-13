@@ -516,7 +516,6 @@ class CalendarState extends State<CalendarPage> {
                     //display weather
                     Container(
                       padding: EdgeInsets.only(left: 10, right: 10),
-                      
                       child: FutureBuilder<WeatherInfo>(
                           future: futureWeather,
                           builder: (context, snapshot) {
@@ -558,7 +557,7 @@ class CalendarState extends State<CalendarPage> {
                       // height between the day row and 1st date row, default is 16.0
                       daysOfWeekHeight: 35.0,
                       // height between the date rows, default is 52.0
-                      rowHeight: 50.0,
+                      rowHeight: 45.0,
 
                       firstDay: kFirstDay,
                       lastDay: kLastDay,
@@ -638,7 +637,7 @@ class CalendarState extends State<CalendarPage> {
                         _focusedDay = focusedDay;
                       },
                     ),
-                    const SizedBox(height: 8.0),
+                    const SizedBox(height: 5),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -758,11 +757,38 @@ class CalendarState extends State<CalendarPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
+                                            Icon(Icons.notifications_rounded,
+                                                color: Colors.white),
                                             Text(
                                               value[index].timer,
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 14),
+                                            ),
+                                          ],
+                                        ),
+                                        isThreeLine: false,
+                                        //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
+                                        title: Text(
+                                          '${value[index].title}',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18),
+                                        ),
+                                        subtitle: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              '${value[index].desc}',
+                                              maxLines: 2,
+                                              style: TextStyle(
+                                                  overflow: TextOverflow.fade,
+                                                  color: Colors.white),
+                                            ),
+                                            SizedBox(
+                                              height: 2,
                                             ),
                                             Container(
                                               padding: EdgeInsets.all(3),
@@ -779,22 +805,6 @@ class CalendarState extends State<CalendarPage> {
                                               ),
                                             ),
                                           ],
-                                        ),
-                                        isThreeLine: false,
-                                        //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
-                                        title: Text(
-                                          '${value[index].title}',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18),
-                                        ),
-                                        subtitle: Text(
-                                          '${value[index].desc}',
-                                          maxLines: 2,
-                                          style: TextStyle(
-                                              overflow: TextOverflow.fade,
-                                              color: Colors.white),
                                         ),
                                         /*InkWell(
                                                 onTap: () async {
