@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/pages/MainPage.dart';
@@ -14,12 +15,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:googleapis/displayvideo/v1.dart';
+
 import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import 'auth.dart';
 import 'datepicker.dart';
 
@@ -246,8 +248,11 @@ class CalendarState extends State<CalendarPage> {
                     await snapshot.get().then((value) {
                       List events = value.data()["EventList"];
                       print(events);
+                      //delete items if same title, time, description
                       events.removeWhere((element) {
-                        if (element["time"] == temp["time"]) {
+                        if (element["Event"] == temp["Event"] &&
+                            element["time"] == temp["time"] &&
+                            element["description"] == temp["description"]) {
                           return true;
                         }
                         return false;
@@ -401,13 +406,13 @@ class CalendarState extends State<CalendarPage> {
                 timer.clear();
                 budget.clear();
                 website.clear();
-
-                Navigator.of(context).pushReplacement(
+                Navigator.of(context).pop();
+                /*Navigator.of(context).pushReplacement(
                     new MaterialPageRoute(builder: (BuildContext context) {
                   return new MainPage(
                     currentIndex: 1,
                   );
-                }));
+                }));*/
               },
               child: const Text(
                 'CANCEL',
@@ -557,7 +562,7 @@ class CalendarState extends State<CalendarPage> {
                       // height between the day row and 1st date row, default is 16.0
                       daysOfWeekHeight: 35.0,
                       // height between the date rows, default is 52.0
-                      rowHeight: 45.0,
+                      rowHeight: 40.0,
 
                       firstDay: kFirstDay,
                       lastDay: kLastDay,
@@ -638,37 +643,40 @@ class CalendarState extends State<CalendarPage> {
                       },
                     ),
                     const SizedBox(height: 5),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            " Events ",
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.blue,
-                                fontWeight: FontWeight.w300),
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: Colors.blue, //background
-                                onPrimary: Colors.white, //foreground
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50))),
-                            child: Container(
-                              padding: EdgeInsets.all(2),
-                              alignment: Alignment.center,
-                              child: Text(
-                                'add event',
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w300),
-                              ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Events",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.w300),
                             ),
-                            onPressed: () => _showAction(
-                                context), // on press animate to 6 th element
-                          ),
-                        ]),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.blue, //background
+                                  onPrimary: Colors.white, //foreground
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50))),
+                              child: Container(
+                                padding: EdgeInsets.all(2),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'add event',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w300),
+                                ),
+                              ),
+                              onPressed: () => _showAction(
+                                  context), // on press animate to 6 th element
+                            ),
+                          ]),
+                    ),
                     const SizedBox(height: 8.0),
 
                     //list of events here
@@ -728,6 +736,7 @@ class CalendarState extends State<CalendarPage> {
                                               Colors.transparent,
                                               Colors.black.withOpacity(0.3),
                                               Colors.black.withOpacity(0.5),
+                                              Colors.black.withOpacity(0.7),
                                             ],
                                           ),
                                         )),
@@ -757,13 +766,27 @@ class CalendarState extends State<CalendarPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Icon(Icons.notifications_rounded,
-                                                color: Colors.white),
-                                            Text(
-                                              value[index].timer,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14),
+                                            GestureDetector(
+                                              //notification
+                                              onTap: () {},
+                                              child: Icon(
+                                                Icons.notifications_rounded,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.all(3),
+                                              decoration: BoxDecoration(
+                                                color: Colors.blue[200],
+                                                borderRadius:
+                                                    BorderRadius.circular(3),
+                                              ),
+                                              child: Text(
+                                                "${value[index].timer}",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -790,58 +813,15 @@ class CalendarState extends State<CalendarPage> {
                                             SizedBox(
                                               height: 2,
                                             ),
-                                            Container(
-                                              padding: EdgeInsets.all(3),
-                                              decoration: BoxDecoration(
-                                                color: Colors.blue[200],
-                                                borderRadius:
-                                                    BorderRadius.circular(3),
-                                              ),
-                                              child: Text(
-                                                "₱${value[index].budget}",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 14),
-                                              ),
+                                            Text(
+                                              "₱${value[index].budget}",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14),
                                             ),
                                           ],
                                         ),
-                                        /*InkWell(
-                                                onTap: () async {
-                                                  if (await canLaunch(
-                                                      value[index].website)) {
-                                                    await launch(
-                                                        value[index].website);
-                                                  } else {
-                                                    throw SnackBar(
-                                                        content: Text(
-                                                            'Could not launch ${value[index].website}'));
-                                                  }
-                                                },
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Icon(CupertinoIcons.globe,
-                                                        size: 12, color: Colors.blue),
-                                                    SizedBox(
-                                                      width: 3,
-                                                    ),
-                                                    Text(
-                                                      'Open Link',
-                                                      maxLines: 1,
-                                                      style: TextStyle(
-                                                          fontSize: 12,
-                                                          decoration: TextDecoration
-                                                              .underline,
-                                                          overflow: TextOverflow.fade,
-                                                          color: Colors.blue),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),*/
 
-                                        //trailing: Text(value[index].timer,style: TextStyle(color: Colors.blue),),
                                         trailing: Wrap(
                                           spacing:
                                               10, // space between two icons
@@ -863,7 +843,7 @@ class CalendarState extends State<CalendarPage> {
                                                 },
                                                 child: Icon(
                                                     CupertinoIcons.globe,
-                                                    color: Colors.blue[200]),
+                                                    color: Colors.blue[300]),
                                               ),
                                             ), // icon-1
 
@@ -881,7 +861,7 @@ class CalendarState extends State<CalendarPage> {
                                                 }
                                               },
                                               child: Icon(Icons.highlight_off,
-                                                  color: Colors.red[100]),
+                                                  color: Colors.red[300]),
                                             ), // icon-2
                                           ],
                                         ),
@@ -902,33 +882,6 @@ class CalendarState extends State<CalendarPage> {
                 ),
               ),
             ]),
-            /*
-              Positioned(
-                right: 0,
-                bottom: 80,
-                child: ElevatedButton(
-                  onPressed: () => _showAction(context),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.white, //background
-                    onPrimary: Colors.blue,
-                    //foreground
-                    shape: CircleBorder(),
-                  ),
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.blue),
-                    child: Icon(
-                      Icons.add,
-                      size: 25,
-                      color: Colors.white,
-                    ),
-                  ),
-                  //capture the success flag with async and await
-                ),
-              ),*/
           ),
         );
       }
