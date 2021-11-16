@@ -17,8 +17,33 @@ import 'pages/ExplorePage.dart';
 import 'pages/LikedPage.dart';
 import 'pages/SplashPage.dart';
 import 'pages/MainPage.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 
 void main() {
+  AwesomeNotifications().initialize(
+  'resource://drawable/res_notification_app_icon',
+  [
+    NotificationChannel(
+  channelKey: 'scheduled_channel',
+  channelName: 'Scheduled Notifications',
+  channelDescription: 'For basic notification' ,
+  defaultColor: Colors.teal,
+  locked: true,
+  importance: NotificationImportance.High,
+   ),
+ 
+
+    /*NotificationChannel(
+      channelKey: 'basic_channel',
+      channelName: 'Basic Notifications',
+      channelDescription: 'For basic notification' ,
+      defaultColor: Colors.teal,
+      importance: NotificationImportance.High,
+      channelShowBadge: true,  
+    ),*/
+  ],
+  );
+
   runApp(MyApp());
 }
 

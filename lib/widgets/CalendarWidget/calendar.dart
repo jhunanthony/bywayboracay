@@ -1,7 +1,9 @@
 import 'dart:collection';
 import 'dart:io';
 import 'dart:isolate';
+import 'dart:math';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/pages/MainPage.dart';
 import 'package:bywayborcay/services/loginservice.dart';
@@ -117,6 +119,44 @@ class CalendarState extends State<CalendarPage> {
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay));
     futureWeather = fetchWeather();
+
+    AwesomeNotifications().isNotificationAllowed().then(
+      (isAllowed) {
+        if (!isAllowed) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Allow Notifications'),
+              content: Text('Our app would like to send you notifications'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Don\'t Allow',
+                    style: TextStyle(color: Colors.grey, fontSize: 18),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => AwesomeNotifications()
+                      .requestPermissionToSendNotifications()
+                      .then((_) => Navigator.pop(context)),
+                  child: Text(
+                    'Allow',
+                    style: TextStyle(
+                      color: Colors.teal,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+      },
+    );
   }
 
   @override
@@ -655,6 +695,20 @@ class CalendarState extends State<CalendarPage> {
                                   color: Colors.blue,
                                   fontWeight: FontWeight.w300),
                             ),
+                            InkWell(
+                                borderRadius: BorderRadius.circular(30),
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  child: Text('Cancel Notifs',
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 14,
+                                          decoration: TextDecoration.underline,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                                onTap: () {
+                                  cancelScheduledNotifications();
+                                }),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.blue, //background
@@ -692,9 +746,11 @@ class CalendarState extends State<CalendarPage> {
                               if (value.length > 0) {
                                 value.forEach((Event value) {
                                   double total = double.parse(value.budget);
+
                                   maintotal += total;
                                 });
                               }
+
                               return Column(children: [
                                 Visibility(
                                   visible: index == 0,
@@ -768,7 +824,55 @@ class CalendarState extends State<CalendarPage> {
                                           children: [
                                             GestureDetector(
                                               //notification
-                                              onTap: () {},
+                                              onTap: () async {
+                                                DateTime dateTime =
+                                                    DateFormat("h:mm a").parse(
+                                                        value[index].timer);
+                                                TimeOfDay timeOfDay =
+                                                    TimeOfDay.fromDateTime(
+                                                        dateTime);
+
+                                               
+
+                                                await AwesomeNotifications()
+                                                    .createNotification(
+                                                        content:
+                                                            NotificationContent(
+                                                          id: createUniqueID(
+                                                              AwesomeNotifications
+                                                                  .maxID),
+                                                          channelKey:
+                                                              'scheduled_channel',
+                                                          title:
+                                                              '${Emojis.geographic_beach_with_umbrella} You have a scheduled event today!!!',
+                                                          body:
+                                                              '${value[index].title} • ${DateFormat('yyyy-MM-dd').format(_selectedDay)} • ${value[index].timer}',
+                                                          bigPicture:
+                                                              'asset://assets/images/Reminder.png',
+                                                          notificationLayout:
+                                                              NotificationLayout
+                                                                  .BigPicture,
+                                                        ),
+                                                        actionButtons: [
+                                                          NotificationActionButton(
+                                                            key: 'MARK_DONE',
+                                                            label: 'Mark Done',
+                                                          )
+                                                        ],
+                                                        schedule:
+                                                            NotificationCalendar(
+                                                          weekday:_selectedDay.weekday,
+                                                          day: _selectedDay.day,
+                                                          month: _selectedDay.month,
+                                                          year: _selectedDay.year,
+                                                              
+                                                          hour: timeOfDay.hour,
+                                                          minute:
+                                                              timeOfDay.minute,
+                                                          second: 0,
+                                                          millisecond: 0,
+                                                        ));
+                                              },
                                               child: Icon(
                                                 Icons.notifications_rounded,
                                                 color: Colors.white,
@@ -791,6 +895,7 @@ class CalendarState extends State<CalendarPage> {
                                           ],
                                         ),
                                         isThreeLine: false,
+
                                         //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
                                         title: Text(
                                           '${value[index].title}',
@@ -933,5 +1038,16 @@ class CalendarState extends State<CalendarPage> {
                 )
               ])));
     });
+  }
+
+  //Future<void> createBywayNotification() async {}
+
+  int createUniqueID(int maxValue) {
+    Random random = new Random();
+    return random.nextInt(maxValue);
+  }
+
+  Future<void> cancelScheduledNotifications() async {
+    await AwesomeNotifications().cancelAllSchedules();
   }
 }

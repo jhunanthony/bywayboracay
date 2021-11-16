@@ -1,5 +1,7 @@
 //this is a temporary mock data generator
 
+import 'dart:math';
+
 import 'package:bywayborcay/models/ExplorePageModels.dart';
 
 import 'package:bywayborcay/models/OnBoardingModel.dart';
@@ -91,17 +93,20 @@ class Utils {
       CultureModel(
         name: "Ati-atihan Festival",
         imgName: 'Culture1',
-        caption: "Boracay Sto. Niño Ati-atihan is celebrated in the most festive way, starts with a fluvial parade of the image of Sto. Niño at the shores of Boracay followed by a High Mass spearheaded by the Parish of the Most Holy Rosary at Balabag Plaza.",
+        caption:
+            "Boracay Sto. Niño Ati-atihan is celebrated in the most festive way, starts with a fluvial parade of the image of Sto. Niño at the shores of Boracay followed by a High Mass spearheaded by the Parish of the Most Holy Rosary at Balabag Plaza.",
       ),
       CultureModel(
         name: "Paraw",
         imgName: 'Culture2',
-        caption: "Paraw Sailing is a local sail boat activity. The boats use two outriggers and two sails. Experience the traditional way of sailing and discover the best sites around the island.",
+        caption:
+            "Paraw Sailing is a local sail boat activity. The boats use two outriggers and two sails. Experience the traditional way of sailing and discover the best sites around the island.",
       ),
       CultureModel(
         name: "Love Boracay Event",
         imgName: 'Culture3',
-        caption: "Laboracay has been rebranded to “Love Boracay” and the focus of the event changed. This weekend is full of events that promotes sustainable tourism.",
+        caption:
+            "Laboracay has been rebranded to “Love Boracay” and the focus of the event changed. This weekend is full of events that promotes sustainable tourism.",
       ),
     ];
   }
@@ -220,5 +225,6 @@ class Utils {
           items: []),
     ];
   }*/
+
 
 }

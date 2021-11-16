@@ -80,6 +80,8 @@ dependencies:
   overlay_support: ^1.2.1
   mailer: ^5.0.2
 
+  awesome_notifications: ^0.6.17
+
 
 
 

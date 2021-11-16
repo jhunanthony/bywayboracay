@@ -676,7 +676,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     //column for text call and fb
                     Visibility(
                       visible: widget.items.itemcontactNumber != "none" ||
-                          widget.items.itemwebsite != null,
+                          widget.items.itemcontactNumber != null,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             primary: Colors.blue, //background
@@ -717,7 +717,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       children: [
                         Visibility(
                           visible: widget.items.itememail != "none" ||
-                              widget.items.itemwebsite != null,
+                              widget.items.itememail != null,
                           child: InkWell(
                               borderRadius: BorderRadius.circular(30),
                               child: Container(
