@@ -76,11 +76,17 @@ class WeatherMainWidget extends StatelessWidget {
             ])
           ]),
           Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-            Image.network(
-                'http://openweathermap.org/img/wn/$weathericon@2x.png',
-                color: Colors.blue[200],
-                height: 60,
-                width: 60),
+            Container(
+              padding: EdgeInsets.all(0),
+              decoration: BoxDecoration(
+                  color: Colors.blue[200],
+                  borderRadius: BorderRadius.circular(10)),
+              child: Image.network(
+                  'http://openweathermap.org/img/wn/$weathericon@2x.png',
+                  //color: Colors.blue[200],
+                  height: 50,
+                  width: 50),
+            ),
           ])
 
           /*Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [

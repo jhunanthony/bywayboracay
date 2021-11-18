@@ -44,6 +44,8 @@ class _DetailsPageState extends State<DetailsPage> {
   Set<Marker> _markers = Set<Marker>();
   LatLng destinationLocation;
 
+  
+
   void setSourceAndDestinationMarkerIcons(BuildContext context) async {
     String parentCategory = widget.items.itemmarkerName;
 
@@ -407,6 +409,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                         itemCount: 5,
                                         itemSize: 12.0,
                                         direction: Axis.horizontal,
+                                        unratedColor: Colors.transparent,
                                       ),
                                       Text(
                                         " " +

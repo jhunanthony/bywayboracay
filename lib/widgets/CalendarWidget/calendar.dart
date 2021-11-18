@@ -252,6 +252,7 @@ class CalendarState extends State<CalendarPage> {
     return res;
   }
 
+//delete event
   void _tapEvents(Event e, int i) {
     showDialog(
         context: context,
@@ -695,40 +696,55 @@ class CalendarState extends State<CalendarPage> {
                                   color: Colors.blue,
                                   fontWeight: FontWeight.w300),
                             ),
-                            InkWell(
-                                borderRadius: BorderRadius.circular(30),
-                                child: Container(
-                                  padding: EdgeInsets.all(5),
-                                  child: Text('Cancel Notifs',
+                            Row(
+                              children: [
+                                InkWell(
+                                    borderRadius: BorderRadius.circular(30),
+                                    child: Icon(Icons.notifications_off_rounded,
+                                        size: 25, color: Colors.yellow[800]),
+                                    onTap: () {
+                                      cancelScheduledNotifications();
+                                      AwesomeNotifications()
+                                          .createdStream
+                                          .listen((notification) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: Colors.white,
+                                            content: Text(
+                                                'Cancelled All Notifications',
+                                                style: TextStyle(
+                                                    color: Colors.blue)),
+                                          ),
+                                        );
+                                      });
+                                    }),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Colors.blue, //background
+                                      onPrimary: Colors.white, //foreground
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50))),
+                                  child: Container(
+                                    padding: EdgeInsets.all(2),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'add event',
                                       style: TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: 14,
-                                          decoration: TextDecoration.underline,
-                                          fontWeight: FontWeight.bold)),
+                                          fontSize: 12,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w300),
+                                    ),
+                                  ),
+                                  onPressed: () => _showAction(
+                                      context), // on press animate to 6 th element
                                 ),
-                                onTap: () {
-                                  cancelScheduledNotifications();
-                                }),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.blue, //background
-                                  onPrimary: Colors.white, //foreground
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(50))),
-                              child: Container(
-                                padding: EdgeInsets.all(2),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'add event',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w300),
-                                ),
-                              ),
-                              onPressed: () => _showAction(
-                                  context), // on press animate to 6 th element
-                            ),
+                              ],
+                            )
                           ]),
                     ),
                     const SizedBox(height: 8.0),
@@ -768,11 +784,18 @@ class CalendarState extends State<CalendarPage> {
                                     vertical: 4.0,
                                   ),
                                   decoration: BoxDecoration(
+                                     boxShadow: [
+                                        BoxShadow(
+                                            color: Colors.grey,
+                                            blurRadius: 3,
+                                            offset: Offset(2, 2)),
+                                      ],
                                     image: DecorationImage(
                                       image: NetworkImage(
                                         value[index].imgName,
                                       ),
                                       fit: BoxFit.fitWidth,
+                                      
                                     ),
 
                                     /*color: Colors.yellow[50],*/
@@ -823,65 +846,93 @@ class CalendarState extends State<CalendarPage> {
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
                                             GestureDetector(
-                                              //notification
-                                              onTap: () async {
-                                                DateTime dateTime =
-                                                    DateFormat("h:mm a").parse(
-                                                        value[index].timer);
-                                                TimeOfDay timeOfDay =
-                                                    TimeOfDay.fromDateTime(
-                                                        dateTime);
+                                                //notification
+                                                onTap: () async {
+                                                  DateTime dateTime =
+                                                      DateFormat("h:mm a")
+                                                          .parse(value[index]
+                                                              .timer);
+                                                  TimeOfDay timeOfDay =
+                                                      TimeOfDay.fromDateTime(
+                                                          dateTime);
 
-                                               
-
-                                                await AwesomeNotifications()
-                                                    .createNotification(
-                                                        content:
-                                                            NotificationContent(
-                                                          id: createUniqueID(
-                                                              AwesomeNotifications
-                                                                  .maxID),
-                                                          channelKey:
-                                                              'scheduled_channel',
-                                                          title:
-                                                              '${Emojis.geographic_beach_with_umbrella} You have a scheduled event today!!!',
-                                                          body:
-                                                              '${value[index].title} • ${DateFormat('yyyy-MM-dd').format(_selectedDay)} • ${value[index].timer}',
-                                                          bigPicture:
-                                                              'asset://assets/images/Reminder.png',
-                                                          notificationLayout:
-                                                              NotificationLayout
-                                                                  .BigPicture,
-                                                        ),
-                                                        actionButtons: [
-                                                          NotificationActionButton(
-                                                            key: 'MARK_DONE',
-                                                            label: 'Mark Done',
-                                                          )
-                                                        ],
-                                                        schedule:
-                                                            NotificationCalendar(
-                                                          weekday:_selectedDay.weekday,
-                                                          day: _selectedDay.day,
-                                                          month: _selectedDay.month,
-                                                          year: _selectedDay.year,
-                                                              
-                                                          hour: timeOfDay.hour,
-                                                          minute:
-                                                              timeOfDay.minute,
-                                                          second: 0,
-                                                          millisecond: 0,
-                                                        ));
-                                              },
-                                              child: Icon(
-                                                Icons.notifications_rounded,
-                                                color: Colors.white,
-                                              ),
+                                                  await AwesomeNotifications()
+                                                      .createNotification(
+                                                          content:
+                                                              NotificationContent(
+                                                            id: createUniqueID(
+                                                                AwesomeNotifications
+                                                                    .maxID),
+                                                            channelKey:
+                                                                'scheduled_channel',
+                                                            title:
+                                                                '${Emojis.geographic_beach_with_umbrella} You have a scheduled event today!!!',
+                                                            body:
+                                                                '${value[index].title} • ${DateFormat('yyyy-MM-dd').format(_selectedDay)} • ${value[index].timer}',
+                                                            bigPicture:
+                                                                'asset://assets/images/Reminder.png',
+                                                            notificationLayout:
+                                                                NotificationLayout
+                                                                    .BigPicture,
+                                                          ),
+                                                          actionButtons: [
+                                                            NotificationActionButton(
+                                                              key: 'MARK_DONE',
+                                                              label:
+                                                                  'Mark Done',
+                                                            )
+                                                          ],
+                                                          schedule:
+                                                              NotificationCalendar(
+                                                            weekday:
+                                                                _selectedDay
+                                                                    .weekday,
+                                                            day: _selectedDay
+                                                                .day,
+                                                            month: _selectedDay
+                                                                .month,
+                                                            year: _selectedDay
+                                                                .year,
+                                                            hour:
+                                                                timeOfDay.hour,
+                                                            minute: timeOfDay
+                                                                .minute,
+                                                            second: 0,
+                                                            millisecond: 0,
+                                                          ));
+                                                  AwesomeNotifications()
+                                                      .createdStream
+                                                      .listen((notification) {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      SnackBar(
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        content: Text(
+                                                            'Notification Created for ${value[index].title}',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .blue)),
+                                                      ),
+                                                    );
+                                                  });
+                                                },
+                                                child: InkWell(
+                                                  borderRadius:
+                                                      BorderRadius.circular(30),
+                                                  child: Icon(
+                                                    Icons.notifications_rounded,
+                                                    color: Colors.white,
+                                                  ),
+                                                )),
+                                            SizedBox(
+                                              height: 2,
                                             ),
                                             Container(
                                               padding: EdgeInsets.all(3),
                                               decoration: BoxDecoration(
-                                                color: Colors.blue[200],
+                                                color: Colors.blue,
                                                 borderRadius:
                                                     BorderRadius.circular(3),
                                               ),

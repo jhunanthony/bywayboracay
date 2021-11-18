@@ -5,6 +5,7 @@ import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 //create category page
@@ -28,6 +29,8 @@ class ItemsPage extends StatelessWidget {
 
     //access like service
     LikeService likedService = Provider.of<LikeService>(context, listen: false);
+
+    String visiblecontroller = 'Hostel';
 
     return SafeArea(
       child: Scaffold(
@@ -58,7 +61,7 @@ class ItemsPage extends StatelessWidget {
                   ),
                 ))),*/
                 Positioned(
-                  bottom: 40,
+                  top: 65,
                   left: 0,
                   right: 0,
                   child: Row(
@@ -147,30 +150,30 @@ class ItemsPage extends StatelessWidget {
                                     ),
                                     //add likes and number of likes
                                     /*Positioned(
-                                    top: 10,
-                                    right: 10,
-                                    child: Column(children: [
-                                      //wrap this with gesture detector
-                                      Icon(
-                                        Icons.bookmark,
-                                        color: Colors.white,
-                                        size: 20,
-                                      ),
-                                      SizedBox(height: 3),
-                                      //Use Visibility to hide empty
-                                      /*Consumer<SaveService>(
-                                          //a function called when notifier changes
-                                          builder: (context, save, child) {
-                                        return Text(
-                                          '${save.items.length}',
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w300),
-                                        );
-                                      }),*/
-                                    ]),
-                                  ),*/
+                                      top: 10,
+                                      right: 10,
+                                      child: Column(children: [
+                                        //wrap this with gesture detector
+                                        Icon(
+                                          Icons.bookmark,
+                                          color: Colors.white,
+                                          size: 20,
+                                        ),
+                                        SizedBox(height: 3),
+                                        //Use Visibility to hide empty
+                                        /*Consumer<SaveService>(
+                                            //a function called when notifier changes
+                                            builder: (context, save, child) {
+                                          return Text(
+                                            '${save.items.length}',
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w300),
+                                          );
+                                        }),*/
+                                      ]),
+                                    ),*/
                                     //showname
                                     // add sub cat name
                                     Positioned(
@@ -201,25 +204,49 @@ class ItemsPage extends StatelessWidget {
                                               height: 5,
                                             ),
 
-                                            Container(
-                                              padding: EdgeInsets.all(2),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(3),
-                                                  border: Border.all(
-                                                    color: Colors.white,
-                                                    width: 1,
-                                                  )),
-                                              child: Text(
-                                                this
-                                                    .selectedCategory
-                                                    .items[index]
-                                                    .itemsubcategoryName,
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.white,
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.all(2),
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              3),
+                                                      border: Border.all(
+                                                        color: Colors.white,
+                                                        width: 1,
+                                                      )),
+                                                  child: Text(
+                                                    this
+                                                        .selectedCategory
+                                                        .items[index]
+                                                        .itemsubcategoryName,
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
+                                                SizedBox(
+                                                  width: 3,
+                                                ),
+                                                RatingBarIndicator(
+                                                  rating: this
+                                                      .selectedCategory
+                                                      .items[index]
+                                                      .itemrating1,
+                                                  itemBuilder:
+                                                      (context, index) => Icon(
+                                                    Icons.star_rounded,
+                                                    color: Colors.yellow[800],
+                                                  ),
+                                                  unratedColor:
+                                                      Colors.transparent,
+                                                  itemCount: 5,
+                                                  itemSize: 12.0,
+                                                  direction: Axis.horizontal,
+                                                ),
+                                              ],
                                             ),
                                             SizedBox(
                                               height: 5,
@@ -260,14 +287,17 @@ class ItemsPage extends StatelessWidget {
                                             visible: this
                                                         .selectedCategory
                                                         .items[index]
-                                                        .itempriceMin != 0 || this
+                                                        .itempriceMin !=
+                                                    0 ||
+                                                this
                                                         .selectedCategory
                                                         .items[index]
-                                                        .itempriceMin != 0.00,
+                                                        .itempriceMin !=
+                                                    0.00,
                                             child: Container(
                                               padding: EdgeInsets.all(3),
                                               decoration: BoxDecoration(
-                                                color: Colors.blue[300],
+                                                color: Colors.blue,
                                                 borderRadius:
                                                     BorderRadius.circular(3),
                                               ),
@@ -305,99 +335,6 @@ class ItemsPage extends StatelessWidget {
                                     )
                                   ]),
                                 ),
-                                //bottom card
-                                /*Container(
-                                  height: 60,
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue[200],
-                                    borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(20),
-                                      bottomRight: Radius.circular(20),
-                                    ),
-                                  ),
-                                  child: Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 5,
-                                          left: 10,
-                                          right: 10,
-                                          bottom: 5),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          //show open time and min price
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(
-                                                "Open " +
-                                                    this
-                                                        .selectedCategory
-                                                        .items[index]
-                                                        .itemopenTime,
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.normal),
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(
-                                                "min. ₱ " +
-                                                    this
-                                                        .selectedCategory
-                                                        .items[index]
-                                                        .itempriceMin
-                                                        .toStringAsFixed(2),
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.normal),
-                                              ),
-                                            ],
-                                          ),
-                                          //show save number
-                                          /*Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            //wrap this with gesture detector
-                                            Icon(
-                                              Icons.bookmark,
-                                              color: Colors.white,
-                                              size: 20,
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            //wrap this with gesture detector
-                                            Text(
-                                              this
-                                                  .selectedCategory
-                                                  .items[index]
-                                                  .saves
-                                                  .toString(),
-                                              style: TextStyle(
-                                                  fontSize: 10,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w300),
-                                            ),
-                                          ],
-                                        )*/
-                                        ],
-                                      )),
-                                )*/
                               ]),
                             );
                           })));

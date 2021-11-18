@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/models/LikedItemsModel.dart';
 import 'package:bywayborcay/models/UserLogInModel.dart';
+import 'package:bywayborcay/pages/DetailsPage.dart';
+
 import 'package:bywayborcay/services/likeservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/auth.dart';
@@ -15,6 +18,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +33,6 @@ class LikedPage extends StatefulWidget {
 class _LikedPageState extends State<LikedPage> {
   @override
   Widget build(BuildContext context) {
-    
     //fetch user data with login service
 
     LoginService loginService =
@@ -67,6 +70,19 @@ class _LikedPageState extends State<LikedPage> {
                 fontWeight: FontWeight.w300),
           )
         ]),
+        /*Set.from(
+                    markers = _markers = Iterable.generate(like.items.length, (index) {
+                  like.items.forEach((LikedItem item) {
+                    Items itemslistinfo = (item.category as Items);
+                    return Marker(
+                        markerId: MarkerId(itemslistinfo.name),
+                        position: LatLng(
+                          itemslistinfo.itemlat,
+                          itemslistinfo.itemlong,
+                        ),
+                        infoWindow: InfoWindow(title: itemslistinfo.name));
+                  });
+                })),*/
         SizedBox(
           height: 15,
         ),
@@ -203,7 +219,9 @@ class _LikedPageState extends State<LikedPage> {
                                   ],
                                 ),
                               ),
-                              IconButton(
+                              Row(
+                                children: [
+                                  IconButton(
                                     padding: EdgeInsets.all(0),
                                     icon: Icon(CupertinoIcons.calendar),
                                     color: Colors.blue[200],
@@ -211,18 +229,18 @@ class _LikedPageState extends State<LikedPage> {
                                     splashColor: Colors.blue,
                                     onPressed: () => _showAction(item),
                                   ),
-                               
-                              SizedBox(width: 3),
-                              IconButton(
-                                  onPressed: () {
-                                  like.remove(context, item);
-                                },
-                                  
-                                  icon: Icon(
-                                    Icons.highlight_off,
-                                    size: 25,
-                                    color: Colors.blue,
-                                  ))
+                                  SizedBox(width: 3),
+                                  IconButton(
+                                      onPressed: () {
+                                        like.remove(context, item);
+                                      },
+                                      icon: Icon(
+                                        Icons.highlight_off,
+                                        size: 25,
+                                        color: Colors.blue,
+                                      ))
+                                ],
+                              )
                             ],
                           )));
                 });
@@ -241,7 +259,7 @@ class _LikedPageState extends State<LikedPage> {
                           )),
                     ),
                     Container(
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                         ),
@@ -475,7 +493,6 @@ class _LikedPageState extends State<LikedPage> {
               ),
             ),
             TextButton(
-             
               onPressed: () {
                 imgName = itemslistinfo.imgName;
                 if (timer.text.isEmpty ||

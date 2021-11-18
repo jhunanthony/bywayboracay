@@ -73,8 +73,8 @@ dependencies:
   #for calendar
   table_calendar: ^3.0.3
 
-  googleapis: ^6.0.0
-  googleapis_auth: ^1.2.0
+  #googleapis: ^6.0.0
+  #googleapis_auth: ^1.2.0
   date_utils: ^0.2.0
   intl: ^0.17.0
   overlay_support: ^1.2.1
