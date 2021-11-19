@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 
 //create category page
 
-class ItemsPage extends StatelessWidget {
+class ItemsPage extends StatefulWidget {
   //create instance variables
   Category selectedCategory;
 
@@ -19,10 +19,15 @@ class ItemsPage extends StatelessWidget {
   });
 
   @override
+  State<ItemsPage> createState() => _ItemsPageState();
+}
+
+class _ItemsPageState extends State<ItemsPage> {
+  @override
   Widget build(BuildContext context) {
     CategorySelectionService catSelection =
         Provider.of<CategorySelectionService>(context, listen: false);
-    selectedCategory = catSelection.selectedCategory;
+    widget.selectedCategory = catSelection.selectedCategory;
 
     //to activate change notifier on saves
     //SaveService saveService = Provider.of<SaveService>(context, listen: false);
@@ -68,14 +73,14 @@ class ItemsPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CategoryIcon(
-                        iconName: this.selectedCategory.iconName,
-                        color: this.selectedCategory.color,
+                        iconName: this.widget.selectedCategory.iconName,
+                        color: this.widget.selectedCategory.color,
                         size: 30,
                       ),
                       SizedBox(
                         width: 5,
                       ),
-                      Text(this.selectedCategory.name,
+                      Text(this.widget.selectedCategory.name,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.blue,
@@ -101,12 +106,12 @@ class ItemsPage extends StatelessWidget {
                           childAspectRatio: 0.6,
                           crossAxisCount: 2,
                           children: List.generate(
-                              this.selectedCategory.items.length, (index) {
+                              this.widget.selectedCategory.items.length, (index) {
                             return GestureDetector(
                               onTap: () {
                                 //check if added already or not
                                 var itemcat =
-                                    this.selectedCategory.items[index];
+                                    this.widget.selectedCategory.items[index];
                                 catSelection.items = likedService
                                     .getCategoryFromLikedItems(itemcat);
                                 Navigator.of(context).pushNamed('/detailspage');
@@ -119,7 +124,7 @@ class ItemsPage extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       image: DecorationImage(
                                         image: NetworkImage(this
-                                            .selectedCategory
+                                            .widget.selectedCategory
                                             .items[index]
                                             .imgName),
                                         fit: BoxFit.cover,
@@ -190,7 +195,7 @@ class ItemsPage extends StatelessWidget {
 
                                             Text(
                                               this
-                                                  .selectedCategory
+                                                  .widget.selectedCategory
                                                   .items[index]
                                                   .name,
                                               overflow: TextOverflow.fade,
@@ -218,7 +223,7 @@ class ItemsPage extends StatelessWidget {
                                                       )),
                                                   child: Text(
                                                     this
-                                                        .selectedCategory
+                                                        .widget.selectedCategory
                                                         .items[index]
                                                         .itemsubcategoryName,
                                                     style: TextStyle(
@@ -232,7 +237,7 @@ class ItemsPage extends StatelessWidget {
                                                 ),
                                                 RatingBarIndicator(
                                                   rating: this
-                                                      .selectedCategory
+                                                      .widget.selectedCategory
                                                       .items[index]
                                                       .itemrating1,
                                                   itemBuilder:
@@ -261,7 +266,7 @@ class ItemsPage extends StatelessWidget {
                                                 SizedBox(width: 3),
                                                 Text(
                                                   this
-                                                      .selectedCategory
+                                                      .widget.selectedCategory
                                                       .items[index]
                                                       .itemaddress,
                                                   style: TextStyle(
@@ -285,12 +290,12 @@ class ItemsPage extends StatelessWidget {
                                         children: [
                                           Visibility(
                                             visible: this
-                                                        .selectedCategory
+                                                        .widget.selectedCategory
                                                         .items[index]
                                                         .itempriceMin !=
                                                     0 ||
                                                 this
-                                                        .selectedCategory
+                                                        .widget.selectedCategory
                                                         .items[index]
                                                         .itempriceMin !=
                                                     0.00,
@@ -304,7 +309,7 @@ class ItemsPage extends StatelessWidget {
                                               child: Text(
                                                 "₱ " +
                                                     this
-                                                        .selectedCategory
+                                                        .widget.selectedCategory
                                                         .items[index]
                                                         .itempriceMin
                                                         .toStringAsFixed(2),
@@ -322,7 +327,7 @@ class ItemsPage extends StatelessWidget {
                                           Text(
                                             "Open " +
                                                 this
-                                                    .selectedCategory
+                                                    .widget.selectedCategory
                                                     .items[index]
                                                     .itemopenTime,
                                             style: TextStyle(

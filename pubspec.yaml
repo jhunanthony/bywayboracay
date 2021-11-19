@@ -82,6 +82,8 @@ dependencies:
 
   awesome_notifications: ^0.6.17
 
+  expansion_card: ^0.1.0
+
 
 
 

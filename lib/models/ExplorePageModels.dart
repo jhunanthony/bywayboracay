@@ -48,4 +48,23 @@ class CultureModel {
         this.caption,
    
   });
+  
+}
+
+
+class AwardsModel {
+
+  String name;
+  String imgName;
+  String caption;
+
+ 
+
+  AwardsModel({
+   this.name,
+    this.imgName,
+        this.caption,
+   
+  });
+  
 }

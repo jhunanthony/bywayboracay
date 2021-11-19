@@ -144,7 +144,9 @@ class SideMenuBar extends StatelessWidget {
                   onPressed: () async {
                     if (userLoggedIn) {
                       await loginService.signOut();
-                      Navigator.of(context).pushReplacementNamed('/loginpage');
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                '/loginpage', (Route<dynamic> route) => false);
+                     
                     } else {
                       bool success = await loginService.signInWithGoogle();
                       if (success) {
