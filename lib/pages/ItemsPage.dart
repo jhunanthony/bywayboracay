@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:bywayborcay/models/CategoryModel.dart';
+import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/likeservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
@@ -6,8 +9,12 @@ import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
+const double PIN_NOTVISIBLE_POSITION = -50;
+const double PIN_VISIBLE_POSITION = 53;
 //create category page
 
 class ItemsPage extends StatefulWidget {
@@ -23,6 +30,113 @@ class ItemsPage extends StatefulWidget {
 }
 
 class _ItemsPageState extends State<ItemsPage> {
+  Completer<GoogleMapController> googlemapcontroller = Completer();
+
+  //initiate map controller
+  CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(11.962116499999999, 121.92994489999998),
+    zoom: 15,
+  );
+
+  //double pinBottomInfoPosition = PIN_VISIBLE_POSITION;
+  //int itemindex = 0;
+
+  void _showMapWidget(Category selectedCategory) async {
+    CategorySelectionService catSelection =
+        Provider.of<CategorySelectionService>(context, listen: false);
+    widget.selectedCategory = catSelection.selectedCategory;
+
+    LikeService likedService = Provider.of<LikeService>(context, listen: false);
+
+    BitmapDescriptor destinationIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 0.2),
+        'assets/images/' +
+            this.widget.selectedCategory.items[0].itemmarkerName +
+            '.png');
+
+    showDialog<void>(
+        context: context,
+        builder: (context) {
+          Iterable _markers = Iterable.generate(
+              this.widget.selectedCategory.items.length, (index) {
+            return Marker(
+              markerId: MarkerId(
+                this.widget.selectedCategory.items[index].name,
+              ),
+              position: LatLng(
+                this.widget.selectedCategory.items[index].itemlat,
+                this.widget.selectedCategory.items[index].itemlong,
+              ),
+              infoWindow: InfoWindow(
+                  title: this.widget.selectedCategory.items[index].name,
+                  snippet:
+                      "${this.widget.selectedCategory.items[index].itemsubcategoryName} ${this.widget.selectedCategory.items[index].itemrating1.toStringAsFixed(1)}",
+                  onTap: () {
+                    var itemcat = this.widget.selectedCategory.items[index];
+                    catSelection.items =
+                        likedService.getCategoryFromLikedItems(itemcat);
+                    Navigator.of(context).pushNamed('/detailspage');
+                  }),
+              icon: destinationIcon,
+              //icon: BitmapDescriptor.defaultMarkerWithHue(200)
+            );
+            //
+          });
+
+          return AlertDialog(
+              title: Column(
+                children: [
+                  Text("Map Search"),
+                  Text("Tap on item name", style: TextStyle(fontSize: 10)),
+                ],
+              ),
+              contentPadding:
+                  EdgeInsets.only(left: 0, right: 0, top: 10, bottom: 10),
+              content: Stack(
+                children: [
+                  Positioned.fill(
+                    child: GoogleMap(
+                      myLocationEnabled: true,
+                      mapType: MapType.normal,
+                      initialCameraPosition: _kGooglePlex,
+                      onMapCreated: (GoogleMapController controller) {
+                        googlemapcontroller.complete(controller);
+                      },
+                      markers: Set.from(_markers),
+                    ),
+                  ),
+                  /*AnimatedPositioned(
+                      //animate the bottom Info
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                      left: 20,
+                      bottom: this.pinBottomInfoPosition,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.all(2),
+                              primary: Colors.white, //background
+                              onPrimary: Colors.blue, //foreground
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50))),
+                          child: Container(
+                            padding: EdgeInsets.all(3),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "View",
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                          ),
+                          onPressed: () {
+                            
+                          }))*/
+                ],
+              ));
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     CategorySelectionService catSelection =
@@ -33,9 +147,27 @@ class _ItemsPageState extends State<ItemsPage> {
     //SaveService saveService = Provider.of<SaveService>(context, listen: false);
 
     //access like service
+
     LikeService likedService = Provider.of<LikeService>(context, listen: false);
 
-    String visiblecontroller = 'Hostel';
+    //Iterable markers = [];
+    //use iterable to map true items and return markers
+    /*Iterable _markers =
+        Iterable.generate(this.widget.selectedCategory.items.length, (index) {
+      return Marker(
+          markerId: MarkerId(
+            this.widget.selectedCategory.items[index].name,
+          ),
+          position: LatLng(
+            this.widget.selectedCategory.items[index].itemlat,
+            this.widget.selectedCategory.items[index].itemlong,
+          ),
+          infoWindow: InfoWindow(
+            title: this.widget.selectedCategory.items[index].name,
+          ),
+          icon: BitmapDescriptor.defaultMarkerWithHue(200));
+      //
+    });*/
 
     return SafeArea(
       child: Scaffold(
@@ -45,7 +177,7 @@ class _ItemsPageState extends State<ItemsPage> {
               Stack(children: [
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 150,
+                  height: 100,
                   decoration: BoxDecoration(color: Colors.white
                       /*image: DecorationImage(
                       image: NetworkImage(this.selectedCategory.imgName),
@@ -65,6 +197,7 @@ class _ItemsPageState extends State<ItemsPage> {
                     ],
                   ),
                 ))),*/
+
                 Positioned(
                   top: 65,
                   left: 0,
@@ -90,6 +223,44 @@ class _ItemsPageState extends State<ItemsPage> {
                   ),
                 ),
               ]),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.white, //background
+                  onPrimary: Colors.blue,
+                  //foreground
+                  shape: CircleBorder(),
+                ),
+                child: Container(
+                    alignment: Alignment.center,
+                    height: 30,
+                    width: 30,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child:
+                        Icon(Icons.map_rounded, size: 25, color: Colors.blue)),
+                //capture the success flag with async and await
+                onPressed: () => _showMapWidget(widget.selectedCategory),
+              ),
+              /*Padding(
+                padding:
+                    EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    height: 150,
+                    child: GoogleMap(
+                      myLocationEnabled: true,
+                      mapType: MapType.normal,
+                      initialCameraPosition: _kGooglePlex,
+                      onMapCreated: (GoogleMapController controller) {
+                        googlemapcontroller.complete(controller);
+                      },
+                      markers: Set.from(_markers),
+                    ),
+                  ),
+                ),
+              ),*/
               // create list builder to show subCategories this.selectedCategory.subCategory.length
               /*child: ListView.builder(
                       padding: EdgeInsets.only(
@@ -106,7 +277,8 @@ class _ItemsPageState extends State<ItemsPage> {
                           childAspectRatio: 0.6,
                           crossAxisCount: 2,
                           children: List.generate(
-                              this.widget.selectedCategory.items.length, (index) {
+                              this.widget.selectedCategory.items.length,
+                              (index) {
                             return GestureDetector(
                               onTap: () {
                                 //check if added already or not
@@ -124,7 +296,8 @@ class _ItemsPageState extends State<ItemsPage> {
                                   decoration: BoxDecoration(
                                       image: DecorationImage(
                                         image: NetworkImage(this
-                                            .widget.selectedCategory
+                                            .widget
+                                            .selectedCategory
                                             .items[index]
                                             .imgName),
                                         fit: BoxFit.cover,
@@ -143,10 +316,11 @@ class _ItemsPageState extends State<ItemsPage> {
                                           decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
                                         gradient: LinearGradient(
-                                          begin: Alignment.center,
+                                          begin: Alignment.topCenter,
                                           end: Alignment.bottomCenter,
                                           colors: <Color>[
                                             Colors.transparent,
+                                            Colors.black.withOpacity(0.3),
                                             Colors.black.withOpacity(0.5),
                                             Colors.black,
                                           ],
@@ -195,7 +369,8 @@ class _ItemsPageState extends State<ItemsPage> {
 
                                             Text(
                                               this
-                                                  .widget.selectedCategory
+                                                  .widget
+                                                  .selectedCategory
                                                   .items[index]
                                                   .name,
                                               overflow: TextOverflow.fade,
@@ -223,7 +398,8 @@ class _ItemsPageState extends State<ItemsPage> {
                                                       )),
                                                   child: Text(
                                                     this
-                                                        .widget.selectedCategory
+                                                        .widget
+                                                        .selectedCategory
                                                         .items[index]
                                                         .itemsubcategoryName,
                                                     style: TextStyle(
@@ -233,23 +409,22 @@ class _ItemsPageState extends State<ItemsPage> {
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  width: 3,
+                                                  width: 5,
                                                 ),
-                                                RatingBarIndicator(
-                                                  rating: this
-                                                      .widget.selectedCategory
+                                                Text(
+                                                  this
+                                                      .widget
+                                                      .selectedCategory
                                                       .items[index]
-                                                      .itemrating1,
-                                                  itemBuilder:
-                                                      (context, index) => Icon(
-                                                    Icons.star_rounded,
-                                                    color: Colors.yellow[800],
-                                                  ),
-                                                  unratedColor:
-                                                      Colors.transparent,
-                                                  itemCount: 5,
-                                                  itemSize: 12.0,
-                                                  direction: Axis.horizontal,
+                                                      .itemrating1
+                                                      .toStringAsFixed(1),
+                                                  style: TextStyle(
+                                                      overflow:
+                                                          TextOverflow.fade,
+                                                      fontSize: 12,
+                                                      color: Colors.yellow[800],
+                                                      fontWeight:
+                                                          FontWeight.w300),
                                                 ),
                                               ],
                                             ),
@@ -266,7 +441,8 @@ class _ItemsPageState extends State<ItemsPage> {
                                                 SizedBox(width: 3),
                                                 Text(
                                                   this
-                                                      .widget.selectedCategory
+                                                      .widget
+                                                      .selectedCategory
                                                       .items[index]
                                                       .itemaddress,
                                                   style: TextStyle(
@@ -290,12 +466,14 @@ class _ItemsPageState extends State<ItemsPage> {
                                         children: [
                                           Visibility(
                                             visible: this
-                                                        .widget.selectedCategory
+                                                        .widget
+                                                        .selectedCategory
                                                         .items[index]
                                                         .itempriceMin !=
                                                     0 ||
                                                 this
-                                                        .widget.selectedCategory
+                                                        .widget
+                                                        .selectedCategory
                                                         .items[index]
                                                         .itempriceMin !=
                                                     0.00,
@@ -309,7 +487,8 @@ class _ItemsPageState extends State<ItemsPage> {
                                               child: Text(
                                                 "₱ " +
                                                     this
-                                                        .widget.selectedCategory
+                                                        .widget
+                                                        .selectedCategory
                                                         .items[index]
                                                         .itempriceMin
                                                         .toStringAsFixed(2),
@@ -327,7 +506,8 @@ class _ItemsPageState extends State<ItemsPage> {
                                           Text(
                                             "Open " +
                                                 this
-                                                    .widget.selectedCategory
+                                                    .widget
+                                                    .selectedCategory
                                                     .items[index]
                                                     .itemopenTime,
                                             style: TextStyle(

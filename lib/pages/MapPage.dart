@@ -98,7 +98,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver{
     });
 
     //instantiate the polyline reference to call API
-    polylinePoints = PolylinePoints();
+    polylinePoints = new PolylinePoints();
 
     //set up initial Locations & invoke the method
     this.setInitialLocation();

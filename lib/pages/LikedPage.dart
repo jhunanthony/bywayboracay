@@ -12,6 +12,7 @@ import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/auth.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/datepicker.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/utils.dart';
+import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,6 +32,12 @@ class LikedPage extends StatefulWidget {
 }
 
 class _LikedPageState extends State<LikedPage> {
+  Completer<GoogleMapController> googlemapcontroller = Completer();
+  final CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(11.962116499999999, 121.92994489999998),
+    zoom: 13,
+  );
+
   @override
   Widget build(BuildContext context) {
     //fetch user data with login service
@@ -46,6 +53,7 @@ class _LikedPageState extends State<LikedPage> {
     //import like service provider
 
     LikeService likeService = Provider.of<LikeService>(context, listen: false);
+
     //bool if a user is currently logged in
 
     return Scaffold(
@@ -159,90 +167,113 @@ class _LikedPageState extends State<LikedPage> {
             builder: (context, like, child) {
               List<Widget> likeditems = [];
               double mainTotal = 0;
+              Items itemcontain;
 
               if (like.items.length > 0) {
                 like.items.forEach((LikedItem item) {
                   Items itemslistinfo = (item.category as Items);
+
                   double total = itemslistinfo.itempriceMin;
                   mainTotal += total;
+                  itemcontain = itemcontain;
 
                   likeditems.add(
-                      //for each item create a container to hold the values
-                      Container(
-                          padding: EdgeInsets.all(10),
-                          margin: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 10,
-                                    offset: Offset.zero)
-                              ]),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ClipOval(
-                                  child: Image.network(itemslistinfo.imgName,
-                                      width: 50,
-                                      height: 50,
-                                      fit: BoxFit.cover)),
-                              SizedBox(width: 20),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      itemslistinfo.name,
-                                      style: TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      itemslistinfo.itemaddress,
-                                      style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    Text(
-                                      '₱ ' +
-                                          itemslistinfo.itempriceMin
-                                              .toStringAsFixed(2),
-                                      style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Row(
+                    //for each item create a container to hold the values
+                      
+                    Container(
+                        padding: EdgeInsets.all(10),
+                        margin: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 10,
+                                  offset: Offset.zero)
+                            ]),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Stack(
+                              children: [
+                                ClipOval(
+                                    child: Image.network(itemslistinfo.imgName,
+                                        width: 50,
+                                        height: 50,
+                                        fit: BoxFit.cover)),
+                                Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: CategoryIcon(
+                                      color: itemslistinfo.color,
+                                      iconName: itemslistinfo.iconName,
+                                      size: 20,
+                                    )),
+                              ],
+                            ),
+                            SizedBox(width: 20),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  IconButton(
-                                    padding: EdgeInsets.all(0),
-                                    icon: Icon(CupertinoIcons.calendar),
-                                    color: Colors.blue[200],
-                                    iconSize: 25,
-                                    splashColor: Colors.blue,
-                                    onPressed: () => _showAction(item),
-                                  ),
-                                  SizedBox(width: 3),
-                                  IconButton(
-                                      onPressed: () {
-                                        like.remove(context, item);
-                                      },
-                                      icon: Icon(
-                                        Icons.highlight_off,
-                                        size: 25,
+                                  Text(
+                                    itemslistinfo.name,
+                                    style: TextStyle(
                                         color: Colors.blue,
-                                      ))
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    itemslistinfo.itemaddress,
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  Text(
+                                    '₱ ' +
+                                        itemslistinfo.itempriceMin
+                                            .toStringAsFixed(2),
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 12,
+                                    ),
+                                  ),
                                 ],
-                              )
-                            ],
-                          )));
+                              ),
+                            ),
+                            Column(
+                              children: [
+                                GestureDetector(
+                                  child: Icon(
+                                    Icons.highlight_off,
+                                    color: Colors.blue,
+                                    size: 25,
+                                  ),
+                                  onTap: () {
+                                    like.remove(context, item);
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 2,
+                                ),
+                                GestureDetector(
+                                  child: Icon(
+                                    CupertinoIcons.calendar,
+                                    color: Colors.blue[200],
+                                    size: 25,
+                                  ),
+                                  onTap: () => _showAction(item),
+                                ),
+                                SizedBox(
+                                  height: 2,
+                                ),
+                              ],
+                            )
+                          ],
+                        )),
+                  );
                 });
 
                 return Column(
@@ -251,6 +282,57 @@ class _LikedPageState extends State<LikedPage> {
                     SizedBox(
                       height: 10,
                     ),
+                    GestureDetector(
+                        onTap: () async {
+                          /*BitmapDescriptor destinationIcon =
+                                          await BitmapDescriptor.fromAssetImage(
+                                              ImageConfiguration(
+                                                  devicePixelRatio: 0.2),
+                                              'assets/images/' +
+                                                  itemslistinfo.itemmarkerName +
+                                                  '.png');*/
+                          showDialog<void>(
+                              context: context,
+                              builder: (context) {
+                                Iterable _markers = Iterable.generate(
+                                    likeditems.length, (index) {
+                                  return Marker(
+                                      markerId: MarkerId(itemcontain.name),
+                                      position: LatLng(itemcontain.itemlat,
+                                         itemcontain.itemlat),
+                                      infoWindow:
+                                          InfoWindow(title: itemcontain.name),
+                                      icon: BitmapDescriptor.defaultMarkerWithHue(200));
+                                  //
+                                });
+
+                                return AlertDialog(
+                                    title: Text("Map Search"),
+                                    contentPadding: EdgeInsets.all(0),
+                                    content: Stack(
+                                      children: [
+                                        Positioned.fill(
+                                          child: GoogleMap(
+                                            myLocationEnabled: true,
+                                            mapType: MapType.normal,
+                                            initialCameraPosition: _kGooglePlex,
+                                            onMapCreated: (GoogleMapController
+                                                controller) {
+                                              googlemapcontroller
+                                                  .complete(controller);
+                                            },
+                                            markers: Set.from(_markers),
+                                          ),
+                                        )
+                                      ],
+                                    ));
+                              });
+                        },
+                        child: Icon(
+                          Icons.map,
+                          size: 25,
+                          color: Colors.blue,
+                        )),
                     Expanded(
                       child: Container(
                           padding: EdgeInsets.all(10),
@@ -348,6 +430,7 @@ class _LikedPageState extends State<LikedPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          titlePadding: EdgeInsets.all(10),
           title: Text(LikedPage._actionTitle),
           content: SingleChildScrollView(
             child: Column(

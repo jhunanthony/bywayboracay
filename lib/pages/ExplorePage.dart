@@ -239,7 +239,7 @@ class Culture extends StatelessWidget {
             SizedBox(
               width: 20,
             ),
-            Text('History', style: TextStyle(fontSize: 20, color: Colors.blue)),
+            Text('Culture', style: TextStyle(fontSize: 20, color: Colors.blue)),
           ],
         ),
         SizedBox(
@@ -248,7 +248,7 @@ class Culture extends StatelessWidget {
 
         //wrap with stack to overlay other components
         Container(
-            height: 300,
+            height: 330,
             padding: EdgeInsets.only(top: 10, bottom: 10),
             child: PageView(
               physics: BouncingScrollPhysics(),
@@ -262,7 +262,7 @@ class Culture extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           child: Container(
                               width: MediaQuery.of(context).size.width - 5,
-                              height: 300,
+                              height: 330,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                     image: AssetImage(

@@ -475,7 +475,7 @@ class CalendarState extends State<CalendarPage> {
                 } else if (desc.text.isEmpty) {
                   desc.text = 'No Description';
                 } else if (budget.text.isEmpty) {
-                  website.text = '0.00';
+                  budget.text = '0.00';
                 } else if (website.text.isEmpty) {
                   website.text = 'No Website Linked';
                 } else {
@@ -784,18 +784,17 @@ class CalendarState extends State<CalendarPage> {
                                     vertical: 4.0,
                                   ),
                                   decoration: BoxDecoration(
-                                     boxShadow: [
-                                        BoxShadow(
-                                            color: Colors.grey,
-                                            blurRadius: 3,
-                                            offset: Offset(2, 2)),
-                                      ],
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey,
+                                          blurRadius: 3,
+                                          offset: Offset(2, 2)),
+                                    ],
                                     image: DecorationImage(
                                       image: NetworkImage(
                                         value[index].imgName,
                                       ),
                                       fit: BoxFit.fitWidth,
-                                      
                                     ),
 
                                     /*color: Colors.yellow[50],*/
@@ -900,6 +899,7 @@ class CalendarState extends State<CalendarPage> {
                                                             second: 0,
                                                             millisecond: 0,
                                                           ));
+                                                  //initiate notification
                                                   AwesomeNotifications()
                                                       .createdStream
                                                       .listen((notification) {
@@ -917,6 +917,11 @@ class CalendarState extends State<CalendarPage> {
                                                       ),
                                                     );
                                                   });
+                                                  //for badge dot if have notification
+                                                  AwesomeNotifications()
+                                                      .actionStream
+                                                      .listen(
+                                                          (notification) {});
                                                 },
                                                 child: InkWell(
                                                   borderRadius:
