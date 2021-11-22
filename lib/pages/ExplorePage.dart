@@ -17,7 +17,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../models/CategoryModel.dart';
-import 'package:expansion_card/expansion_card.dart';
+
 
 //create scroll controller
 ScrollController _controller = new ScrollController();
