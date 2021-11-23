@@ -184,7 +184,8 @@ class CalendarState extends State<CalendarPage> {
     List temp = await FunctionUtils().eventUsers(emails);
     int today = FunctionUtils().calculateDifference(_selectedDay);
     if (today < 0) {
-      showSimpleNotification(Text("You cannot create a event before today!"));
+      showSimpleNotification(Text("You cannot create a event before today!"),
+          position: NotificationPosition.bottom, background: Colors.white);
     } else {
       for (int i = 0; i < temp.length; i++) {
         List events = [];
@@ -214,26 +215,28 @@ class CalendarState extends State<CalendarPage> {
         if (max <= 50) {
           if (data.exists) {
             snapShot.update({"EventList": FieldValue.arrayUnion(events)});
-            showSimpleNotification(Text("Event Added"),
-                background: Color(0xff29a39d));
-            FunctionUtils()
-                .sendEmail(email, date, events[0]["time"], emails[0]);
+            showSimpleNotification(Text("Event Added", style: TextStyle(color: Colors.blue)),
+                background: Colors.white, position: NotificationPosition.bottom,);
+
+            /*FunctionUtils()
+                .sendEmail(email, date, events[0]["time"], emails[0]);*/
           } else {
             snapShot.set({'EventList': events});
             showSimpleNotification(
                 Text(
-                  "Event Added",
+                  "Event Added", style: TextStyle(color: Colors.blue)
                 ),
-                background: Color(0xff29a39d));
-            FunctionUtils()
-                .sendEmail(email, date, events[0]["time"], emails[0]);
+                background: Colors.white, position: NotificationPosition.bottom,);
+            /*FunctionUtils()
+                .sendEmail(email, date, events[0]["time"], emails[0]);*/
           }
         } else {
           showSimpleNotification(
               Text(
                 "$name isn't available",
               ),
-              background: Color(0xff29a39d));
+              background: Colors.white, position: NotificationPosition.bottom,
+              );
           break;
         }
       }
@@ -307,14 +310,15 @@ class CalendarState extends State<CalendarPage> {
                       new MaterialPageRoute(builder: (BuildContext context) {
                     return new MainPage(currentIndex: 1);
                   }));
+                  
                 } else {
-                  for (int i = 0; i < e.users.length; i++) {
+                  /*for (int i = 0; i < e.users.length; i++) {
                     FunctionUtils().sendEmail(
                         e.users[i],
                         DateFormat('yyyy-MM-dd').format(_selectedDay),
                         e.timer,
                         e.creator);
-                  }
+                  }*/
                   Navigator.of(context).pushReplacement(
                       new MaterialPageRoute(builder: (BuildContext context) {
                     return new MainPage(
@@ -1003,7 +1007,7 @@ class CalendarState extends State<CalendarPage> {
                                                   }
                                                 },
                                                 child: Icon(
-                                                    CupertinoIcons.globe,
+                                                  value[index].website.contains('www.google.com/maps/search') ? Icons.location_on_rounded: CupertinoIcons.globe,
                                                     color: Colors.blue[300]),
                                               ),
                                             ), // icon-1
@@ -1017,8 +1021,7 @@ class CalendarState extends State<CalendarPage> {
                                                   showSimpleNotification(
                                                       Text(
                                                           "You can't delete event since you aren't the owner of it"),
-                                                      background:
-                                                          Color(0xff29a39d));
+                                                       background: Colors.white, position: NotificationPosition.bottom,);
                                                 }
                                               },
                                               child: Icon(Icons.highlight_off,

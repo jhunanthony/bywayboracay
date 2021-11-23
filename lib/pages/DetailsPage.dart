@@ -7,7 +7,6 @@ import 'package:bywayborcay/services/likeservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/auth.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/datepicker.dart';
-import 'package:bywayborcay/widgets/CalendarWidget/emailtext.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/utils.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
@@ -23,6 +22,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
 
 const double CAMERA_ZOOM_DETAILSPAGE = 16;
 const double CAMERA_TILT_DETAILSPAGE = 0;
@@ -223,7 +223,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
                               //check is it is saved then display regular button
 
-                              if (!like.isLiked(widget.items)) {
+                              if (like.isLiked(widget.items)) {
                                 likedtext = Text(
                                   'Like',
                                   style: TextStyle(
@@ -254,8 +254,10 @@ class _DetailsPageState extends State<DetailsPage> {
                           icon: Icon(Icons.share_rounded),
                           color: Colors.white,
                           iconSize: 25,
-                          splashColor: Colors.pink[300],
-                          onPressed: () {},
+                          splashColor: Colors.blue[300],
+                          onPressed: () async {
+                             
+                          },
                         ),
                         SizedBox(
                           height: 10,
@@ -1071,7 +1073,7 @@ class _DetailsPageState extends State<DetailsPage> {
     List temp = await FunctionUtils().eventUsers(emails);
     int today = FunctionUtils().calculateDifference(_selectedDay);
     if (today < 0) {
-      showSimpleNotification(Text("You cannot create a event before today!"));
+      showSimpleNotification(Text("You cannot create a event before today!", style: TextStyle(color: Colors.blue)), background: Colors.white, position: NotificationPosition.bottom,);
     } else {
       for (int i = 0; i < temp.length; i++) {
         List events = [];
@@ -1101,19 +1103,21 @@ class _DetailsPageState extends State<DetailsPage> {
         if (max <= 50) {
           if (data.exists) {
             snapShot.update({"EventList": FieldValue.arrayUnion(events)});
-            showSimpleNotification(Text("Event Added"),
-                background: Color(0xff29a39d));
-            FunctionUtils()
-                .sendEmail(email, date, events[0]["time"], emails[0]);
+            showSimpleNotification(Text("Event Added", style: TextStyle(color: Colors.blue)),
+                 background: Colors.white, position: NotificationPosition.bottom,);
+           /* FunctionUtils()
+                .sendEmail(email, date, events[0]["time"], emails[0]);*/
           } else {
             snapShot.set({'EventList': events});
             showSimpleNotification(
+             
                 Text(
                   "Event Added",
+                  style: TextStyle(color: Colors.blue)
                 ),
-                background: Color(0xff29a39d));
-            FunctionUtils()
-                .sendEmail(email, date, events[0]["time"], emails[0]);
+                 background: Colors.white, position: NotificationPosition.bottom,);
+            /*FunctionUtils()
+                .sendEmail(email, date, events[0]["time"], emails[0]);*/
           }
         } else {
           showSimpleNotification(

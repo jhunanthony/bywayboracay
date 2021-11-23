@@ -75,12 +75,13 @@ class LikeService extends ChangeNotifier {
     FirebaseFirestore.instance
         .collection('tourist')
         .doc(loginService.loggedInUserModel.uid)
-        .update({'LikedItems': FieldValue.delete()}).then((value) {
+        .update({'LikedItems': FieldValue.delete()}).then(
+          (value) {
       _items.forEach((LikedItem item) {
-        (item.category as Items).amount = 0;
+        (item.category as Items).amount = 0; });
         _items.clear();
     notifyListeners();
-      });
+     
     });
 
     

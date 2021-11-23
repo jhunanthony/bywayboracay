@@ -167,7 +167,6 @@ class _LikedPageState extends State<LikedPage> {
             builder: (context, like, child) {
               List<Widget> likeditems = [];
               double mainTotal = 0;
-              Items itemcontain;
 
               if (like.items.length > 0) {
                 like.items.forEach((LikedItem item) {
@@ -175,11 +174,10 @@ class _LikedPageState extends State<LikedPage> {
 
                   double total = itemslistinfo.itempriceMin;
                   mainTotal += total;
-                  itemcontain = itemcontain;
 
                   likeditems.add(
                     //for each item create a container to hold the values
-                      
+
                     Container(
                         padding: EdgeInsets.all(10),
                         margin: EdgeInsets.all(10),
@@ -256,7 +254,7 @@ class _LikedPageState extends State<LikedPage> {
                                   },
                                 ),
                                 SizedBox(
-                                  height: 2,
+                                  height: 5,
                                 ),
                                 GestureDetector(
                                   child: Icon(
@@ -267,8 +265,68 @@ class _LikedPageState extends State<LikedPage> {
                                   onTap: () => _showAction(item),
                                 ),
                                 SizedBox(
-                                  height: 2,
+                                  height: 5,
                                 ),
+                                GestureDetector(
+                                    onTap: () async {
+                                      BitmapDescriptor destinationIcon =
+                                          await BitmapDescriptor.fromAssetImage(
+                                              ImageConfiguration(
+                                                  devicePixelRatio: 0.2),
+                                              'assets/images/' +
+                                                  itemslistinfo.itemmarkerName +
+                                                  '.png');
+                                      showDialog<void>(
+                                          context: context,
+                                          builder: (context) {
+                                            Iterable _markers =
+                                                Iterable.generate(
+                                                    likeditems.length, (index) {
+                                              return Marker(
+                                                  markerId: MarkerId(
+                                                      itemslistinfo.name),
+                                                  position: LatLng(
+                                                      itemslistinfo.itemlat,
+                                                      itemslistinfo.itemlong),
+                                                  infoWindow: InfoWindow(
+                                                      title:
+                                                          itemslistinfo.name),
+                                                  icon: destinationIcon);
+                                              //
+                                            });
+
+                                            return AlertDialog(
+                                                title: Text("Map Search"),
+                                                contentPadding:
+                                                    EdgeInsets.all(0),
+                                                content: Stack(
+                                                  children: [
+                                                    Positioned.fill(
+                                                      child: GoogleMap(
+                                                        myLocationEnabled: true,
+                                                        mapType: MapType.normal,
+                                                        initialCameraPosition:
+                                                            _kGooglePlex,
+                                                        onMapCreated:
+                                                            (GoogleMapController
+                                                                controller) {
+                                                          googlemapcontroller
+                                                              .complete(
+                                                                  controller);
+                                                        },
+                                                        markers:
+                                                            Set.from(_markers),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ));
+                                          });
+                                    },
+                                    child: Icon(
+                                      Icons.map,
+                                      size: 25,
+                                      color: Colors.blue,
+                                    )),
                               ],
                             )
                           ],
@@ -282,57 +340,6 @@ class _LikedPageState extends State<LikedPage> {
                     SizedBox(
                       height: 10,
                     ),
-                    GestureDetector(
-                        onTap: () async {
-                          /*BitmapDescriptor destinationIcon =
-                                          await BitmapDescriptor.fromAssetImage(
-                                              ImageConfiguration(
-                                                  devicePixelRatio: 0.2),
-                                              'assets/images/' +
-                                                  itemslistinfo.itemmarkerName +
-                                                  '.png');*/
-                          showDialog<void>(
-                              context: context,
-                              builder: (context) {
-                                Iterable _markers = Iterable.generate(
-                                    likeditems.length, (index) {
-                                  return Marker(
-                                      markerId: MarkerId(itemcontain.name),
-                                      position: LatLng(itemcontain.itemlat,
-                                         itemcontain.itemlat),
-                                      infoWindow:
-                                          InfoWindow(title: itemcontain.name),
-                                      icon: BitmapDescriptor.defaultMarkerWithHue(200));
-                                  //
-                                });
-
-                                return AlertDialog(
-                                    title: Text("Map Search"),
-                                    contentPadding: EdgeInsets.all(0),
-                                    content: Stack(
-                                      children: [
-                                        Positioned.fill(
-                                          child: GoogleMap(
-                                            myLocationEnabled: true,
-                                            mapType: MapType.normal,
-                                            initialCameraPosition: _kGooglePlex,
-                                            onMapCreated: (GoogleMapController
-                                                controller) {
-                                              googlemapcontroller
-                                                  .complete(controller);
-                                            },
-                                            markers: Set.from(_markers),
-                                          ),
-                                        )
-                                      ],
-                                    ));
-                              });
-                        },
-                        child: Icon(
-                          Icons.map,
-                          size: 25,
-                          color: Colors.blue,
-                        )),
                     Expanded(
                       child: Container(
                           padding: EdgeInsets.all(10),
@@ -629,7 +636,7 @@ class _LikedPageState extends State<LikedPage> {
     List temp = await FunctionUtils().eventUsers(emails);
     int today = FunctionUtils().calculateDifference(_selectedDay);
     if (today < 0) {
-      showSimpleNotification(Text("You cannot create a event before today!"));
+      showSimpleNotification(Text("You cannot create a event before today!"),  background: Colors.white, position: NotificationPosition.bottom,);
     } else {
       for (int i = 0; i < temp.length; i++) {
         List events = [];
@@ -659,19 +666,19 @@ class _LikedPageState extends State<LikedPage> {
         if (max <= 50) {
           if (data.exists) {
             snapShot.update({"EventList": FieldValue.arrayUnion(events)});
-            showSimpleNotification(Text("Event Added"),
-                background: Color(0xff29a39d));
-            FunctionUtils()
-                .sendEmail(email, date, events[0]["time"], emails[0]);
+            showSimpleNotification(Text("Event Added", style: TextStyle(color: Colors.blue)),
+                background: Colors.white, position: NotificationPosition.bottom,);
+            /*FunctionUtils()
+                .sendEmail(email, date, events[0]["time"], emails[0]);*/
           } else {
             snapShot.set({'EventList': events});
             showSimpleNotification(
                 Text(
-                  "Event Added",
+                  "Event Added", style: TextStyle(color: Colors.blue)
                 ),
-                background: Color(0xff29a39d));
-            FunctionUtils()
-                .sendEmail(email, date, events[0]["time"], emails[0]);
+                background: Colors.white, position: NotificationPosition.bottom,);
+           /* FunctionUtils()
+                .sendEmail(email, date, events[0]["time"], emails[0]);*/
           }
         } else {
           showSimpleNotification(

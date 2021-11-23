@@ -77,12 +77,17 @@ dependencies:
   #googleapis_auth: ^1.2.0
   date_utils: ^0.2.0
   intl: ^0.17.0
+
+  #for overlayer ntoification
   overlay_support: ^1.2.1
   mailer: ^5.0.2
-
+  #for notif
   awesome_notifications: ^0.6.17
-
+  #for filter list
   filter_list: ^1.0.0
+
+  #for share button
+  flutter_social_content_share: ^1.0.2
 
 
 

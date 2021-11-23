@@ -148,6 +148,8 @@ class _ItemsPageState extends State<ItemsPage> {
         }
         Navigator.pop(context);
       },
+
+      
     );
   }
 
@@ -219,7 +221,7 @@ class _ItemsPageState extends State<ItemsPage> {
                           children: [
                             Icon(Icons.search_rounded,
                                 size: 25, color: Colors.blue),
-                            Text(" Search Here",
+                            Text(" Search Filter ",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.blue,
@@ -516,7 +518,7 @@ class _ItemsPageState extends State<ItemsPage> {
                                 return GestureDetector(
                                   onTap: () {
                                     //check if added already or not
-                                    var itemcat =  selectedCountList[index];
+                                    var itemcat = selectedCountList[index];
                                     catSelection.items = likedService
                                         .getCategoryFromLikedItems(itemcat);
                                     Navigator.of(context)
