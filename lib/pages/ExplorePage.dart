@@ -18,7 +18,6 @@ import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../models/CategoryModel.dart';
 
-
 //create scroll controller
 ScrollController _controller = new ScrollController();
 
@@ -345,23 +344,144 @@ class Culture extends StatelessWidget {
   }
 }
 
-class AwardsAndRecognition extends StatelessWidget {
-  const AwardsAndRecognition({
-    Key key,
-  }) : super(key: key);
+class AwardsAndRecognition extends StatefulWidget {
+  @override
+  State<AwardsAndRecognition> createState() => _AwardsAndRecognitionState();
+}
+
+class _AwardsAndRecognitionState extends State<AwardsAndRecognition> {
+  List<AwardsModel> _awardsmodel = Utils.getawards();
+
+  final _awardspageController = ScrollController();
+
+  
+
+  @override
+  void dispose() {
+    _awardspageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 400,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(color: Colors.white
-          /*image: DecorationImage(
-        image: AssetImage("assets/images/Test_Image_5.png"),
-        fit: BoxFit.cover,
-      )*/
-          ),
-    );
+    return Column(children: [
+      SizedBox(height: 10),
+      Align(
+        alignment: Alignment.centerLeft,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: Text('Awards and Recognition',
+              style: TextStyle(fontSize: 20, color: Colors.blue)),
+        ),
+      ),
+      Container(
+        height: 250,
+        color: Colors.white,
+        child: ListView.builder(
+            physics: BouncingScrollPhysics(),
+            controller: _awardspageController,
+            scrollDirection: Axis.horizontal,
+            itemCount: _awardsmodel.length,
+            itemBuilder: (BuildContext context, int index) {
+              //show photos here
+              return GestureDetector(
+                onTap: () {
+                  showDialog<void>(
+                      context: context,
+                      builder: (context) {
+                        //Iterable markers = [];
+                        //use iterable to map true items and return markers
+
+                        return AlertDialog(
+                            title: Text("${_awardsmodel[index].name}",
+                                style: TextStyle(fontSize: 20)),
+                            contentPadding: EdgeInsets.only(
+                                left: 0, right: 0, top: 10, bottom: 0),
+                            content: Stack(
+                              children: [
+                                Positioned.fill(
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(2.5),
+                                            bottomRight: Radius.circular(2.5),
+                                          ),
+                                          color: Colors.blue[300])),
+                                ),
+                                Positioned(
+                                  top: 10,
+                                  left: 10,
+                                  right: 10,
+                                  child: Column(
+                                    children: [
+                                      ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: Container(
+                                              height: 200,
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                    image: AssetImage(
+                                                        'assets/images/${_awardsmodel[index].imgName}.jpg'),
+                                                    fit: BoxFit.cover),
+                                              ))),
+                                      SizedBox(height: 10),
+                                      Text("${_awardsmodel[index].caption}",
+                                          textAlign: TextAlign.justify,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15)),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ));
+                      });
+                },
+                child: Container(
+                    height: 250,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey,
+                              blurRadius: 3,
+                              offset: Offset(2, 2)),
+                        ]),
+                    width: 125,
+                    margin: EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                    padding: EdgeInsets.all(5),
+                    child: Column(
+                      children: [
+                        //add gradient
+                        SizedBox(height: 10),
+                        ClipOval(
+                            child: Container(
+                                height: 75,
+                                width: 75,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/images/${_awardsmodel[index].imgName}.jpg'),
+                                      fit: BoxFit.cover),
+                                ))),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(' ' + _awardsmodel[index].name + ' ',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 14,
+                            )),
+                      ],
+                    )),
+              );
+              //add spacing
+            }),
+      ),
+    ]);
   }
 }
 
@@ -454,55 +574,127 @@ class Highlights extends StatelessWidget {
                         padding: const EdgeInsets.only(right: 20),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                              width: MediaQuery.of(context).size.width - 5,
-                              height: 200,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/${_highlightmodel[index].imgName}.jpg'),
-                                    fit: BoxFit.cover),
-                              ),
-                              child: Stack(
-                                children: [
-                                  //add gradient
-                                  Positioned.fill(
-                                    child: Container(
-                                        decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.centerRight,
-                                        end: Alignment.centerLeft,
-                                        colors: <Color>[
-                                          Colors.transparent,
-                                          _highlightmodel[index]
-                                              .color
-                                              .withOpacity(0.5),
-                                          _highlightmodel[index].color,
-                                        ],
-                                      ),
-                                    )),
-                                  ),
-                                  Positioned(
-                                    bottom: 20,
-                                    left: 20,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
+                          child: GestureDetector(
+                            onTap: () {
+                              showDialog<void>(
+                                  context: context,
+                                  builder: (context) {
+                                    //Iterable markers = [];
+                                    //use iterable to map true items and return markers
+
+                                    return AlertDialog(
+                                        title: Text(
+                                            "${_highlightmodel[index].name}",
+                                            style: TextStyle(fontSize: 20)),
+                                        contentPadding: EdgeInsets.only(
+                                            left: 0,
+                                            right: 0,
+                                            top: 10,
+                                            bottom: 0),
+                                        content: Stack(
+                                          children: [
+                                            Positioned.fill(
+                                              child: Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        bottomLeft:
+                                                            Radius.circular(
+                                                                2.5),
+                                                        bottomRight:
+                                                            Radius.circular(
+                                                                2.5),
+                                                      ),
+                                                      color:
+                                                          _highlightmodel[index]
+                                                              .color)),
+                                            ),
+                                            Positioned(
+                                              top: 10,
+                                              left: 10,
+                                              right: 10,
+                                              child: Column(
+                                                children: [
+                                                  ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      child: Container(
+                                                          height: 200,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            image: DecorationImage(
+                                                                image: AssetImage(
+                                                                    'assets/images/${_highlightmodel[index].imgName}.jpg'),
+                                                                fit: BoxFit
+                                                                    .cover),
+                                                          ))),
+                                                  SizedBox(height: 10),
+                                                  Text(
+                                                      "${_highlightmodel[index].caption}",
+                                                      textAlign:
+                                                          TextAlign.justify,
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 15)),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ));
+                                  });
+                            },
+                            child: Container(
+                                width: MediaQuery.of(context).size.width - 5,
+                                height: 200,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/images/${_highlightmodel[index].imgName}.jpg'),
+                                      fit: BoxFit.cover),
+                                ),
+                                child: Stack(
+                                  children: [
+                                    //add gradient
+                                    Positioned.fill(
                                       child: Container(
-                                        padding: EdgeInsets.all(5),
-                                        color: Colors.white,
-                                        child: Text(
-                                            ' ' +
-                                                _highlightmodel[index].name +
-                                                ' ',
-                                            style: TextStyle(
-                                              color: Colors.blue,
-                                              fontSize: 14,
-                                            )),
-                                      ),
+                                          decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.centerRight,
+                                          end: Alignment.centerLeft,
+                                          colors: <Color>[
+                                            Colors.transparent,
+                                            _highlightmodel[index]
+                                                .color
+                                                .withOpacity(0.5),
+                                            _highlightmodel[index].color,
+                                          ],
+                                        ),
+                                      )),
                                     ),
-                                  )
-                                ],
-                              )),
+                                    Positioned(
+                                      bottom: 20,
+                                      left: 20,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: Container(
+                                          padding: EdgeInsets.all(5),
+                                          color: Colors.white,
+                                          child: Text(
+                                              ' ' +
+                                                  _highlightmodel[index].name +
+                                                  ' ',
+                                              style: TextStyle(
+                                                color: _highlightmodel[index]
+                                                    .color,
+                                                fontSize: 14,
+                                              )),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )),
+                          ),
                         ),
                       )),
             )),
@@ -525,22 +717,6 @@ class Highlights extends StatelessWidget {
         ),
         SizedBox(
           height: 10,
-        ),
-        Padding(
-          padding:
-              const EdgeInsets.only(right: 20, left: 20, top: 10, bottom: 10),
-          child: ExpandableText(
-            AppContent.introduction,
-            expandText: 'MORE',
-            collapseText: 'LESS',
-            maxLines: 4,
-            linkColor: Colors.blue,
-            textAlign: TextAlign.justify,
-            style: TextStyle(
-                fontSize: 14,
-                color: Colors.blue,
-                fontWeight: FontWeight.normal),
-          ),
         ),
       ],
     );

@@ -148,8 +148,6 @@ class _ItemsPageState extends State<ItemsPage> {
         }
         Navigator.pop(context);
       },
-
-      
     );
   }
 
@@ -202,57 +200,63 @@ class _ItemsPageState extends State<ItemsPage> {
                   ),
                 ),
               ]),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.white, //background
-                      onPrimary: Colors.blue,
-                      //foreground
-                      
-                    ),
-                    child: Container(
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50)),
-                        child: Row(
-                          children: [
-                            Icon(Icons.search_rounded,
-                                size: 25, color: Colors.blue),
-                            Text(" Search Filter ",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.blue,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w400)),
-                          ],
-                        )),
-                    //capture the success flag with async and await
-                    onPressed: () => _openFilterDialog(widget.selectedCategory),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.white, //background
-                      onPrimary: Colors.blue,
-                      //foreground
-                      shape: CircleBorder(),
-                    ),
-                    child: Container(
-                        alignment: Alignment.center,
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
+              Consumer<LoginService>(builder: (context, loginService, child) {
+                if (loginService.isUserLoggedIn()) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white, //background
+                          onPrimary: Colors.blue,
+                          //foreground
                         ),
-                        child: Icon(Icons.map_rounded,
-                            size: 25, color: Colors.blue)),
-                    //capture the success flag with async and await
-                    onPressed: () => _showMapWidget(widget.selectedCategory),
-                  ),
-                ],
-              ),
+                        child: Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50)),
+                            child: Row(
+                              children: [
+                                Icon(Icons.search_rounded,
+                                    size: 25, color: Colors.blue),
+                                Text(" Search Filter ",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w400)),
+                              ],
+                            )),
+                        //capture the success flag with async and await
+                        onPressed: () =>
+                            _openFilterDialog(widget.selectedCategory),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white, //background
+                          onPrimary: Colors.blue,
+                          //foreground
+                          shape: CircleBorder(),
+                        ),
+                        child: Container(
+                            alignment: Alignment.center,
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(Icons.map_rounded,
+                                size: 25, color: Colors.blue)),
+                        //capture the success flag with async and await
+                        onPressed: () =>
+                            _showMapWidget(widget.selectedCategory),
+                      ),
+                    ],
+                  );
+                }
+                return SizedBox();
+              }),
 
               // create list builder to show subCategories this.selectedCategory.subCategory.length
               /*child: ListView.builder(

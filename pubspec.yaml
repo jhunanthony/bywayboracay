@@ -86,8 +86,7 @@ dependencies:
   #for filter list
   filter_list: ^1.0.0
 
-  #for share button
-  flutter_social_content_share: ^1.0.2
+
 
 
 

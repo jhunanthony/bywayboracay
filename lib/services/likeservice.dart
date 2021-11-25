@@ -14,7 +14,6 @@ import 'package:provider/provider.dart';
 class LikeService extends ChangeNotifier {
   //this will hold the items being saved
   final List<LikedItem> _items = [];
-  
 
   //only allow adding items
   UnmodifiableListView<LikedItem> get items => UnmodifiableListView(_items);
@@ -58,8 +57,9 @@ class LikeService extends ChangeNotifier {
     FirebaseFirestore.instance
         .collection('tourist')
         .doc(loginService.loggedInUserModel.uid)
-        .update({'LikedItems.${itemref.itemimgName}': FieldValue.delete()}).then(
-            (value) {
+        .update({
+      'LikedItems.${itemref.itemimgName}': FieldValue.delete()
+    }).then((value) {
       (item.category as Items).amount = 0;
       _items.remove(item);
       notifyListeners();
@@ -75,16 +75,13 @@ class LikeService extends ChangeNotifier {
     FirebaseFirestore.instance
         .collection('tourist')
         .doc(loginService.loggedInUserModel.uid)
-        .update({'LikedItems': FieldValue.delete()}).then(
-          (value) {
+        .update({'LikedItems': FieldValue.delete()}).then((value) {
       _items.forEach((LikedItem item) {
-        (item.category as Items).amount = 0; });
-        _items.clear();
-    notifyListeners();
-     
+        (item.category as Items).amount = 0;
+      });
+      _items.clear();
+      notifyListeners();
     });
-
-    
   }
 
   //fetch item out of the likedpage
@@ -155,4 +152,51 @@ class LikeService extends ChangeNotifier {
       });
     }
   }
+
+  //method to add rating
+
+  void ratingadd(BuildContext context, LikedItem item) {
+    //get reference to extract currently logged user
+    LoginService loginService =
+        Provider.of<LoginService>(context, listen: false);
+    CategoryService catService =
+        Provider.of<CategoryService>(context, listen: false);
+    CategorySelectionService categorySelectionService =
+        Provider.of<CategorySelectionService>(context, listen: false);
+
+    //use isuserloggedin as a way to only fetch data from data
+
+    catService.getCategories().forEach((Category cat) {
+      cat.items.forEach((Category itemref) {
+        //match the keys
+        //keys correspond with unique name
+        if (item.category.imgName.contains(itemref.imgName)) {
+          //keys correspond with unique image name
+
+          var collection =
+              FirebaseFirestore.instance.collection('bywayboracay_data');
+          var category = collection.doc('categories');
+
+          var data = category as Map;
+          var categoriesData = data['categories'] as List<dynamic>;
+
+          categoriesData.asMap();
+
+
+          //check if currently selected category
+          if (categorySelectionService.items != null &&
+              categorySelectionService.items.name == itemref.name) {
+            categorySelectionService.items = itemref;
+          }
+        }
+      });
+    });
+    notifyListeners();
+  }
 }
+/*var collection =
+                FirebaseFirestore.instance.collection('bywayboracay_data');
+            var category = collection.doc('categories');
+
+            var data = category as Map;
+            var categoriesData = data['categories'] as List<dynamic>;*/

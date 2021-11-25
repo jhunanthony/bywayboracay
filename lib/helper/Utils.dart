@@ -57,17 +57,29 @@ class Utils {
   static List<HighlightModel> getHighlight() {
     return [
       HighlightModel(
-          name: 'White Sands', imgName: 'Highlight1', color: Colors.yellow),
+          name: 'White Sands & Crystal Clear Waters',
+          imgName: 'Highlight1',
+          color: Colors.blue,
+          caption:
+              "Boracay's White Beach has been recognized as one of the most beautiful beaches in the world through the years. There's something about its natural beauty – its crystal blue water, its pure white sand, and its magical sunsets."),
       HighlightModel(
-          name: 'Crystal Clear Water',
-          imgName: 'Highlight2',
-          color: Colors.blue),
-      HighlightModel(
-          name: 'Night Life', imgName: 'Highlight3', color: Colors.purple),
+          name: 'Night Life',
+          imgName: 'Highlight3',
+          color: Colors.purple,
+          caption:
+              "The nightlife in Boracay has a reputation for being over the top. Party animals love Boracay as there are countless beach bars and nightclubs that keep pumping until very late into the night. The happy hours here are incredibly long, with some bars on White Beach offering ‘buy 1, get 1 free’ drink specials from 4pm until around 9pm. And many of them stay open until between 1am and 3am."),
       HighlightModel(
           name: 'Sustainable Tourism',
           imgName: 'Highlight4',
-          color: Colors.green)
+          color: Colors.green,
+          caption:
+              "Boracay takes pride in its eco-practices which supports the world-wide call for sustainable tourism. Various conservation and preservation practices are woven into the resort's core values to ensure sustainable operations and growth not just for the property but for the local community as well."),
+      HighlightModel(
+          name: 'Golden Hour',
+          imgName: 'ForYou1',
+          color: Colors.orange[800],
+          caption:
+              "Boracay is famous for its White Beach and the powder-like sand that is unlike any other in the world. The breathtaking sunset view on this side of the island is equally adored that a Boracay holiday would not be complete without witnessing the most photographed subject in the island.")
     ];
   }
 
@@ -85,6 +97,41 @@ class Utils {
       HistoryModel(
         imgName: 'History4',
       )
+    ];
+  }
+
+  static List<AwardsModel> getawards() {
+    return [
+      AwardsModel(
+          name: "Top beach destination by Travel+Leisure Magazine (2012)",
+          imgName: 'awards1',
+          caption:
+              "With a score of 93.10, the island, which is noted for its powdery white sand and pristine waters, took first place in the magazine's 2012 World's Best Awards, beating out popular Indonesian destination Bali Island, which came in second with a score of 90.41. In 2011, Boracay was placed fourth in the same category. Hotels, islands, destination spas, golf courses, and rental car businesses are all rated in the magazine's annual World's Best Awards. The rating is based on an online poll of the publication's readers. "),
+      AwardsModel(
+          name:
+              "World’s Best Island Beaches in the world 2016 by International Travel Magazine",
+          imgName: 'awards2',
+          caption:
+              "Top #1 on World’s Best Island Beaches in the Condé Nast Traveler 2016 Readers’ Choice AwardsBoracay, Philippines was recently named the Best Island in the World by international travel magazine Condé Nast at the awards night at the 1 World Trade Center in New York City.This itty-bitty island (10-square mile) in the Western Philippines is as close to the tropical idyll as you’ll find in Southeast Asia, with gentle coastlines and transporting sunsets. Add in a thriving nightlife scene, and you have one of the top tourist spots in the region, Condé Nast Traveler wrote."),
+      AwardsModel(
+        name:
+            "Boracay rehabilitation won an award at Japan Tourism Awards (2019)",
+        imgName: 'awards3',
+        caption:
+            "According to the Philippines News Agency, DOT Secretary Bernadette Romulo-Puyat won the Excellent Partner Award at the Hyatt Regency Hotel in Osaka at the opening ceremony of the Tourism Expo Japan. The award-giving committee praised the agency's socially advanced measures in the restoration by risking closure and pursuing a coordinated effort to accomplish Boracay's physical, social, environmental, and social recovery.",
+      ),
+      AwardsModel(
+          name:
+              "World’s Best Island Beaches in the Condé Nast Traveler 2020 Readers’ Choice Awards",
+          imgName: 'awards4',
+          caption:
+              "Top #2 on World’s Best Island Beaches in the Condé Nast Traveler 2020 Readers’ Choice AwardsWhite Beach on the Malay island of Boracay came in second among the 25 islands that Condé Nast Traveler readers thought about this year and can't wait to go back to. Despite the tourism halt caused by the coronavirus outbreak, the island selections remained in the imaginations of world travelers. "),
+      AwardsModel(
+          name:
+              "Boracay's White Beach ranked 12 spot among TripAdvisor Travelers' Choice 2021",
+          imgName: 'awards5',
+          caption:
+              "The TripAdvisor recognition is all the more heartwarming as sun and beach have always been the country’s best tourism products. Boracay, well known for its White Beach is among the first destinations we opened up, Tourism Secretary Bernadette Romulo-Puyat said."),
     ];
   }
 
@@ -225,6 +272,5 @@ class Utils {
           items: []),
     ];
   }*/
-
 
 }

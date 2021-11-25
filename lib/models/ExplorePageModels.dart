@@ -14,11 +14,14 @@ class HighlightModel {
   String name;
   String imgName;
   Color color;
+    String caption;
+
 
   HighlightModel({
     this.name,
     this.imgName,
     this.color,
+    this.caption,
   });
 }
 
