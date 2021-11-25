@@ -5,14 +5,14 @@ import 'ItemsModel.dart';
 //This represents the category and holds properties
 class Category {
   String name;
-  String iconName;
+
   Color color;
   String imgName;
   List<Items> items;
 
   //add additional holders
  String itemname;
-  String itemiconName;
+
   Color itemcolor;
   String itemimgName;
   String itemdescription;
@@ -22,7 +22,7 @@ class Category {
   double itemlong;
   String itemcontactNumber;
   String itemcategoryName;
-  String itemmarkerName;
+
   String itemsubcategoryName;
   String itememail;
   String itemwebsite;
@@ -37,13 +37,12 @@ class Category {
 //Contructor to hydrate the model
   Category({
     this.name,
-    this.iconName,
     this.color,
     this.imgName,
     this.items,
 
     this.itemname,
-    this.itemiconName,
+
     this.itemcolor,
     this.itemimgName,
     this.itemdescription,
@@ -53,7 +52,7 @@ class Category {
     this.itemlong,
     this.itemcontactNumber,
     this.itemcategoryName,
-    this.itemmarkerName,
+
     this.itemsubcategoryName,
     this.itememail,
     this.itemwebsite,
@@ -71,7 +70,7 @@ class Category {
     
     return Category(
       color: Color(int.parse('0xFF' + json['color'])),
-      iconName: json['iconName'],
+
       name: json['name'],
       imgName: json['imgName'],
       items: Items.fromJsonArray(json['items']),

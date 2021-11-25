@@ -118,7 +118,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver{
         Provider.of<CategorySelectionService>(context, listen: false);
     widget.items = catSelection.items;
 
-    String parentCategory = widget.items.itemmarkerName;
+    String parentCategory = widget.items.itemcategoryName;
 
     sourceIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 0.5),
@@ -126,7 +126,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver{
 
     destinationIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 0.5),
-        'assets/images/' + parentCategory + '.png');
+        'assets/images/$parentCategory.png');
   }
 
   // lifecycle

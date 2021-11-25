@@ -9,6 +9,7 @@ import 'package:bywayborcay/services/categoryservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/date_symbols.dart';
 import 'package:provider/provider.dart';
 
 class LikeService extends ChangeNotifier {
@@ -155,43 +156,33 @@ class LikeService extends ChangeNotifier {
 
   //method to add rating
 
-  void ratingadd(BuildContext context, LikedItem item) {
-    //get reference to extract currently logged user
-    LoginService loginService =
-        Provider.of<LoginService>(context, listen: false);
-    CategoryService catService =
-        Provider.of<CategoryService>(context, listen: false);
-    CategorySelectionService categorySelectionService =
-        Provider.of<CategorySelectionService>(context, listen: false);
+  void rateItem(BuildContext context, LikedItem item) {
+    /*var collection = FirebaseFirestore.instance.collection('bywayboracay_data');
+    var category = collection.doc('categories');
 
-    //use isuserloggedin as a way to only fetch data from data
+    var data = category as Map;
+    var categoriesData = data['categories'] as List<dynamic>;
 
-    catService.getCategories().forEach((Category cat) {
-      cat.items.forEach((Category itemref) {
-        //match the keys
-        //keys correspond with unique name
-        if (item.category.imgName.contains(itemref.imgName)) {
-          //keys correspond with unique image name
+    var dataset = categoriesData as Map;
+    var itemcategoriesData = dataset['items'] as List<dynamic>;*/
+    Category itemref = item.category as Items;
 
-          var collection =
-              FirebaseFirestore.instance.collection('bywayboracay_data');
-          var category = collection.doc('categories');
-
-          var data = category as Map;
-          var categoriesData = data['categories'] as List<dynamic>;
-
-          categoriesData.asMap();
-
-
-          //check if currently selected category
-          if (categorySelectionService.items != null &&
-              categorySelectionService.items.name == itemref.name) {
-            categorySelectionService.items = itemref;
-          }
-        }
-      });
+    
+    /*FirebaseFirestore.instance
+        .collection('ratings')
+        .doc('${itemref.itemcategoryName}')
+        .update({
+      "${itemref.name}.itemrating": FieldValue.increment(1)
     });
-    notifyListeners();
+     FirebaseFirestore.instance
+        .collection('ratings')
+        .doc('${itemref.itemcategoryName}')
+        .update({
+      "${itemref.name}.itemratingnum": FieldValue.increment(1)
+    });*/
+
+
+
   }
 }
 /*var collection =
@@ -200,3 +191,5 @@ class LikeService extends ChangeNotifier {
 
             var data = category as Map;
             var categoriesData = data['categories'] as List<dynamic>;*/
+
+

@@ -23,7 +23,6 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-
 const double CAMERA_ZOOM_DETAILSPAGE = 16;
 const double CAMERA_TILT_DETAILSPAGE = 0;
 const double CAMERA_BEARING_DETAILSPAGE = 30;
@@ -44,14 +43,12 @@ class _DetailsPageState extends State<DetailsPage> {
   Set<Marker> _markers = Set<Marker>();
   LatLng destinationLocation;
 
-  
-
   void setSourceAndDestinationMarkerIcons(BuildContext context) async {
-    String parentCategory = widget.items.itemmarkerName;
+    String parentCategory = widget.items.itemcategoryName;
 
     destinationIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 0.5),
-        'assets/images/' + parentCategory + '.png');
+        'assets/images/$parentCategory.png');
   }
 
   //indicator if button is liked or not
@@ -163,7 +160,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           height: 10,
                         ),
                         CategoryIcon(
-                          iconName: widget.items.iconName,
+                          iconName: widget.items.name,
                           color: Colors.transparent,
                           size: 40,
                         ),
@@ -249,16 +246,20 @@ class _DetailsPageState extends State<DetailsPage> {
                         SizedBox(
                           height: 10,
                         ),
-                        IconButton(
-                          padding: EdgeInsets.all(0),
-                          icon: Icon(Icons.share_rounded),
-                          color: Colors.white,
-                          iconSize: 25,
-                          splashColor: Colors.blue[300],
-                          onPressed: () async {
-                             
-                          },
-                        ),
+                        Consumer<LikeService>(builder: (context, like, child) {
+                          //check if saved
+
+                          return IconButton(
+                            padding: EdgeInsets.all(0),
+                            icon: Icon(Icons.share_rounded),
+                            color: Colors.white,
+                            iconSize: 25,
+                            splashColor: Colors.blue[300],
+                            onPressed: () {
+                              likeService.rateItem(context, LikedItem(category: widget.items));
+                            },
+                          );
+                        }),
                         SizedBox(
                           height: 10,
                         ),
@@ -1073,7 +1074,12 @@ class _DetailsPageState extends State<DetailsPage> {
     List temp = await FunctionUtils().eventUsers(emails);
     int today = FunctionUtils().calculateDifference(_selectedDay);
     if (today < 0) {
-      showSimpleNotification(Text("You cannot create a event before today!", style: TextStyle(color: Colors.blue)), background: Colors.white, position: NotificationPosition.bottom,);
+      showSimpleNotification(
+        Text("You cannot create a event before today!",
+            style: TextStyle(color: Colors.blue)),
+        background: Colors.white,
+        position: NotificationPosition.bottom,
+      );
     } else {
       for (int i = 0; i < temp.length; i++) {
         List events = [];
@@ -1103,19 +1109,20 @@ class _DetailsPageState extends State<DetailsPage> {
         if (max <= 50) {
           if (data.exists) {
             snapShot.update({"EventList": FieldValue.arrayUnion(events)});
-            showSimpleNotification(Text("Event Added", style: TextStyle(color: Colors.blue)),
-                 background: Colors.white, position: NotificationPosition.bottom,);
-           /* FunctionUtils()
+            showSimpleNotification(
+              Text("Event Added", style: TextStyle(color: Colors.blue)),
+              background: Colors.white,
+              position: NotificationPosition.bottom,
+            );
+            /* FunctionUtils()
                 .sendEmail(email, date, events[0]["time"], emails[0]);*/
           } else {
             snapShot.set({'EventList': events});
             showSimpleNotification(
-             
-                Text(
-                  "Event Added",
-                  style: TextStyle(color: Colors.blue)
-                ),
-                 background: Colors.white, position: NotificationPosition.bottom,);
+              Text("Event Added", style: TextStyle(color: Colors.blue)),
+              background: Colors.white,
+              position: NotificationPosition.bottom,
+            );
             /*FunctionUtils()
                 .sendEmail(email, date, events[0]["time"], emails[0]);*/
           }

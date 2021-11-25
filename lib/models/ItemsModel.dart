@@ -13,7 +13,6 @@ class Items extends Category {
     this.detailsimages,
      this.amount = 0,
     String itemname,
-    String itemiconName,
     Color itemcolor,
     String itemimgName,
     //initialized other variables to pass to itemmodel
@@ -24,7 +23,7 @@ class Items extends Category {
     double itemlong,
     String itemcontactNumber,
     String itemsubcategoryName,
-    String itemmarkerName,
+
     String itemcategoryName,
     String itememail,
     String itemwebsite,
@@ -41,7 +40,6 @@ class Items extends Category {
         super(
           //pass additional data
           name: itemname,
-          iconName: itemiconName,
         color: itemcolor,
           imgName: itemimgName,
           
@@ -56,7 +54,7 @@ class Items extends Category {
           itemlat: itemlat,
           itemlong: itemlong,
           itemcontactNumber: itemcontactNumber,
-          itemmarkerName: itemmarkerName,
+
           itemsubcategoryName: itemsubcategoryName,
           itemcategoryName: itemcategoryName,
           itememail: itememail,
@@ -82,11 +80,11 @@ class Items extends Category {
       itemdescription: json['itemdescription'],
       detailsimages: DetailsImages.fromJsonArray(json['itemdetailsimages']),
       itememail: json['itememail'],
-      itemiconName: json['itemiconName'],
+
       itemimgName: json['itemimgName'],
       itemlat: double.parse(json['itemlat']),
       itemlong: double.parse(json['itemlong']),
-      itemmarkerName: json['itemmarkerName'],
+
       itemname: json['itemname'],
       itemopenTime: json['itemopenTime'],
       itempriceMin: double.parse(json['itempriceMin']),

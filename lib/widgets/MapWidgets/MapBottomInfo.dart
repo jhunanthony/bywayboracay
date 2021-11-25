@@ -125,7 +125,7 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
                       bottom: -10,
                       right: -10,
                       child: CategoryIcon(
-                    iconName: this.items.iconName,
+                    iconName: this.items.name,
                     color: this.items.color,
                     size: 30,
                   ),
@@ -158,7 +158,7 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
                 ),
                 //marker
                 Image.asset(
-                          'assets/images/' + this.items.itemmarkerName + '.png',
+                          'assets/images/${this.items.itemcategoryName}.png',
                           height: 40,
                           width: 40),
                 SizedBox(width: 15),

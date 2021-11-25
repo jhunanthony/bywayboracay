@@ -344,23 +344,12 @@ class Culture extends StatelessWidget {
   }
 }
 
-class AwardsAndRecognition extends StatefulWidget {
-  @override
-  State<AwardsAndRecognition> createState() => _AwardsAndRecognitionState();
-}
 
-class _AwardsAndRecognitionState extends State<AwardsAndRecognition> {
+class AwardsAndRecognition extends StatelessWidget {
   List<AwardsModel> _awardsmodel = Utils.getawards();
 
   final _awardspageController = ScrollController();
 
-  
-
-  @override
-  void dispose() {
-    _awardspageController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {

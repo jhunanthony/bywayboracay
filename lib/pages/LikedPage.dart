@@ -205,7 +205,7 @@ class _LikedPageState extends State<LikedPage> {
                                     right: 0,
                                     child: CategoryIcon(
                                       color: itemslistinfo.color,
-                                      iconName: itemslistinfo.iconName,
+                                      iconName: itemslistinfo.name,
                                       size: 20,
                                     )),
                               ],
@@ -274,7 +274,7 @@ class _LikedPageState extends State<LikedPage> {
                                               ImageConfiguration(
                                                   devicePixelRatio: 0.2),
                                               'assets/images/' +
-                                                  itemslistinfo.itemmarkerName +
+                                                  itemslistinfo.itemcategoryName +
                                                   '.png');
                                       showDialog<void>(
                                           context: context,

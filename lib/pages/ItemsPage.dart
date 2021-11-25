@@ -53,9 +53,7 @@ class _ItemsPageState extends State<ItemsPage> {
 
     BitmapDescriptor destinationIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 0.2),
-        'assets/images/' +
-            this.widget.selectedCategory.items[0].itemmarkerName +
-            '.png');
+        'assets/images/${this.widget.selectedCategory.items[0].itemcategoryName}.png');
 
     showDialog<void>(
         context: context,
@@ -183,7 +181,7 @@ class _ItemsPageState extends State<ItemsPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CategoryIcon(
-                        iconName: this.widget.selectedCategory.iconName,
+                        iconName: this.widget.selectedCategory.name,
                         color: this.widget.selectedCategory.color,
                         size: 30,
                       ),
