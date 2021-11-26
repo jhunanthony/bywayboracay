@@ -9,6 +9,7 @@ import 'package:bywayborcay/services/categoryservice.dart';
 
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/services/likeservice.dart';
+import 'package:bywayborcay/services/ratedservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/Itinerarypage2.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -64,7 +65,8 @@ class MyApp extends StatelessWidget {
       ChangeNotifierProvider(
         create: (_) => LikeService()),
       //import instances from provider firebase
-     
+     ChangeNotifierProvider(
+        create: (_) => RatingService()),
       Provider(
         create: (_) => CategoryService(),
       )

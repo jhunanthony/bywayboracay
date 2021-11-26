@@ -12,6 +12,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/date_symbols.dart';
 import 'package:provider/provider.dart';
 
+import '../models/RatedItemsModel.dart';
+
 class LikeService extends ChangeNotifier {
   //this will hold the items being saved
   final List<LikedItem> _items = [];
@@ -42,9 +44,10 @@ class LikeService extends ChangeNotifier {
   }
 
   //if an item is already in saveditem then false the button
+  //recent change here
   bool isLiked(Items cat) {
     return _items.length > 0
-        ? _items.any((LikedItem item) => item.category.name == cat.name)
+        ? _items.any((LikedItem item) => item.category.itemname == cat.itemname)
         : false;
   }
 
@@ -154,36 +157,11 @@ class LikeService extends ChangeNotifier {
     }
   }
 
-  //method to add rating
-
-  void rateItem(BuildContext context, LikedItem item) {
-    /*var collection = FirebaseFirestore.instance.collection('bywayboracay_data');
-    var category = collection.doc('categories');
-
-    var data = category as Map;
-    var categoriesData = data['categories'] as List<dynamic>;
-
-    var dataset = categoriesData as Map;
-    var itemcategoriesData = dataset['items'] as List<dynamic>;*/
-    Category itemref = item.category as Items;
-
-    
-    /*FirebaseFirestore.instance
-        .collection('ratings')
-        .doc('${itemref.itemcategoryName}')
-        .update({
-      "${itemref.name}.itemrating": FieldValue.increment(1)
-    });
-     FirebaseFirestore.instance
-        .collection('ratings')
-        .doc('${itemref.itemcategoryName}')
-        .update({
-      "${itemref.name}.itemratingnum": FieldValue.increment(1)
-    });*/
 
 
 
-  }
+
+
 }
 /*var collection =
                 FirebaseFirestore.instance.collection('bywayboracay_data');

@@ -5,6 +5,7 @@ import 'package:bywayborcay/models/LikedItemsModel.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/likeservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
+import 'package:bywayborcay/services/ratedservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/auth.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/datepicker.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/utils.dart';
@@ -22,6 +23,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
+import '../models/RatedItemsModel.dart';
 
 const double CAMERA_ZOOM_DETAILSPAGE = 16;
 const double CAMERA_TILT_DETAILSPAGE = 0;
@@ -78,6 +81,8 @@ class _DetailsPageState extends State<DetailsPage> {
 
     //to activate change notifier on saves
     LikeService likeService = Provider.of<LikeService>(context, listen: false);
+    RatingService ratingService =
+        Provider.of<RatingService>(context, listen: false);
 
     //canvas starts here
 
@@ -246,20 +251,16 @@ class _DetailsPageState extends State<DetailsPage> {
                         SizedBox(
                           height: 10,
                         ),
-                        Consumer<LikeService>(builder: (context, like, child) {
-                          //check if saved
-
-                          return IconButton(
-                            padding: EdgeInsets.all(0),
-                            icon: Icon(Icons.share_rounded),
-                            color: Colors.white,
-                            iconSize: 25,
-                            splashColor: Colors.blue[300],
-                            onPressed: () {
-                              likeService.rateItem(context, LikedItem(category: widget.items));
-                            },
-                          );
-                        }),
+                        IconButton(
+                          padding: EdgeInsets.all(0),
+                          icon: Icon(Icons.share_rounded),
+                          color: Colors.white,
+                          iconSize: 25,
+                          splashColor: Colors.blue[300],
+                          onPressed: () {
+                            //likeService.rateItem(context, LikedItem(category: widget.items));
+                          },
+                        ),
                         SizedBox(
                           height: 10,
                         ),
@@ -422,9 +423,169 @@ class _DetailsPageState extends State<DetailsPage> {
                                             color: Colors.yellow[800],
                                             fontWeight: FontWeight.normal),
                                       ),
+                                      SizedBox(
+                                        width: 10,
+                                      )
                                     ],
                                   ),
                                 ),
+
+                                //expirement rating here
+                                Consumer<LoginService>(
+                                    builder: (context, loginService, child) {
+                                  if (loginService.isUserLoggedIn()) {
+                                    return Consumer<RatingService>(
+                                        builder: (context, rating, child) {
+                                      //check if saved
+                                      Widget renderedButton;
+
+                                      //check is it is saved then display regular button
+
+                                      if (!rating.isRated(widget.items)) {
+                                        renderedButton = ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              padding: EdgeInsets.all(3),
+                                              primary:
+                                                  Colors.white, //background
+                                              onPrimary:
+                                                  Colors.green, //foreground
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50))),
+                                          child: Container(
+                                            padding: EdgeInsets.all(3),
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              'Rate item!',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.green,
+                                                  fontWeight: FontWeight.w300),
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            double itemratingval = 0;
+
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    AlertDialog(
+                                                      title: Column(
+                                                        children: [
+                                                          Text(
+                                                              'Rate this item based on how sustainable its practices to the environment and tourism.'),
+                                                        ],
+                                                      ),
+                                                      content:
+                                                          RatingBar.builder(
+                                                        wrapAlignment:
+                                                            WrapAlignment
+                                                                .center,
+                                                        glowColor: Colors.green,
+                                                        itemSize: 35,
+                                                        initialRating: 1,
+                                                        minRating: 1,
+                                                        direction:
+                                                            Axis.horizontal,
+                                                        allowHalfRating: true,
+                                                        itemCount: 5,
+                                                        itemPadding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    4.0),
+                                                        itemBuilder:
+                                                            (context, _) =>
+                                                                Icon(
+                                                          CupertinoIcons
+                                                              .leaf_arrow_circlepath,
+                                                          color:
+                                                              Colors.green[400],
+                                                        ),
+                                                        onRatingUpdate:
+                                                            (itemratingvalue) {
+                                                          setState(() {
+                                                            itemratingval =
+                                                                itemratingvalue;
+                                                          });
+                                                          print(itemratingval);
+                                                        },
+                                                      ),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text(
+                                                            'Cancel',
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.grey,
+                                                                fontSize: 18),
+                                                          ),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            ratingService.addrateditem(
+                                                                context,
+                                                                RatedItems(
+                                                                    category: widget
+                                                                        .items),
+                                                                itemratingval);
+
+                                                            Navigator.pop(
+                                                                context);
+                                                            showSimpleNotification(
+                                                              Text(
+                                                                  "Item has been rated!"),
+                                                              background: Colors
+                                                                  .green[400],
+                                                              position:
+                                                                  NotificationPosition
+                                                                      .bottom,
+                                                            );
+                                                          },
+                                                          child: Text(
+                                                            'Submit',
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.teal,
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ));
+
+                                            //rate item
+                                          },
+                                        );
+                                      } else {
+                                        renderedButton = Container(
+                                          padding: EdgeInsets.all(10),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.check,
+                                                  color: Colors.green[400],
+                                                  size: 20),
+                                              Text("Rated!",
+                                                  style: TextStyle(
+                                                      color:
+                                                          Colors.green[400])),
+                                            ],
+                                          ),
+                                        );
+                                      }
+
+                                      return renderedButton;
+                                    });
+                                  }
+                                  return SizedBox();
+                                }),
                               ],
                             ),
                             SizedBox(
