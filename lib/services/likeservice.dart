@@ -47,7 +47,7 @@ class LikeService extends ChangeNotifier {
   //recent change here
   bool isLiked(Items cat) {
     return _items.length > 0
-        ? _items.any((LikedItem item) => item.category.itemname == cat.itemname)
+        ? _items.any((LikedItem item) => item.category.name == cat.name)
         : false;
   }
 

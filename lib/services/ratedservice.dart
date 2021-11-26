@@ -29,7 +29,7 @@ class RatingService extends ChangeNotifier {
 
     Map<String, int> ratedMap = Map();
     _rateditems.forEach((RatedItems item) {
-      ratedMap[item.category.name] = (item.category as Items).amount;
+      ratedMap[item.category.imgName] = (item.category as Items).amount;
     });
 
     //ADD TO FIREBASE
@@ -50,6 +50,7 @@ class RatingService extends ChangeNotifier {
     }).then((value) {
       notifyListeners();
     });
+
     FirebaseFirestore.instance
         .collection('ratings')
         .doc('${item.category.itemcategoryName}')
@@ -61,12 +62,16 @@ class RatingService extends ChangeNotifier {
   }
 
 
-
+ bool isRated(Items cat) {
+    return _rateditems.length > 0
+        ? _rateditems.any((RatedItems item) => item.category.name == cat.name)
+        : false;
+  }
 
   
 
 //fetch item out of the rating
-  Items getCategoryFromLikedItems(Items cat) {
+  Items getCategoryFromRatedItems(Items cat) {
     Items itemcat = cat;
     if (_rateditems.length > 0 &&
         _rateditems.any((RatedItems item) => item.category.name == cat.name)) {
@@ -82,12 +87,7 @@ class RatingService extends ChangeNotifier {
   }
   //fetch item out of the likedpage
 
-  bool isRated(Items ratedcat) {
-    return _rateditems.length > 0
-        ? _rateditems
-            .any((RatedItems item) => item.category.name == ratedcat.name)
-        : false;
-  }
+ 
 
   void loadRatedItemsFromFirebase(BuildContext context) {
     //clear items if a user logged previously
@@ -121,7 +121,7 @@ class RatingService extends ChangeNotifier {
           cat.items.forEach((Category itemref) {
             //match the keys
             //keys correspond with unique name
-            if (ratedItems.keys.contains(itemref.name)) {
+            if (ratedItems.keys.contains(itemref.imgName)) {
               //keys correspond with unique image name
               var amount = ratedItems[itemref.name] as int;
               (itemref as Items).amount = amount;
@@ -141,7 +141,7 @@ class RatingService extends ChangeNotifier {
     }
   }
 
-  List<Category> _ratings = [];
+  /*List<Category> _ratings = [];
 
   //create getter to make it encapsulated
   List<Category> getRatings() {
@@ -162,7 +162,7 @@ class RatingService extends ChangeNotifier {
         //hook up data and snapshot it
         .get()
         .then((DocumentSnapshot snapshot) {});
-  }
+  }*/
   //method to add rating
   /*void rateItem(BuildContext context, RatedItems item) {
     /*var collection = FirebaseFirestore.instance.collection('bywayboracay_data');

@@ -437,12 +437,12 @@ class _DetailsPageState extends State<DetailsPage> {
                                     return Consumer<RatingService>(
                                         builder: (context, rating, child) {
                                       //check if saved
-                                      Widget renderedButton;
+                                      Widget renderedRatedButton;
 
                                       //check is it is saved then display regular button
 
                                       if (!rating.isRated(widget.items)) {
-                                        renderedButton = ElevatedButton(
+                                        renderedRatedButton = ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                               padding: EdgeInsets.all(3),
                                               primary:
@@ -565,7 +565,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                           },
                                         );
                                       } else {
-                                        renderedButton = Container(
+                                        renderedRatedButton = Container(
                                           padding: EdgeInsets.all(10),
                                           child: Row(
                                             children: [
@@ -581,7 +581,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                         );
                                       }
 
-                                      return renderedButton;
+                                      return renderedRatedButton;
                                     });
                                   }
                                   return SizedBox();
@@ -591,68 +591,63 @@ class _DetailsPageState extends State<DetailsPage> {
                             SizedBox(
                               height: 10,
                             ),
-
-                            /*Visibility(
-                              visible: widget.items.itemrating1 == null
-                                  ? false
-                                  : true,
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                    'Google ',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                  //for rating
-                                  RatingBarIndicator(
-                                    rating: widget.items.itemrating2.toDouble(),
-                                    itemBuilder: (context, index) => Icon(
-                                      Icons.star,
-                                      color: Colors.yellow[800],
-                                    ),
-                                    itemCount: 5,
-                                    itemSize: 12.0,
-                                    direction: Axis.horizontal,
-                                  ),
-                                  Text(
-                                    " " + widget.items.itemrating2.toString(),
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.yellow[800],
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                ],
-                              ),
-                            ),*/
                           ],
                         ),
-                        //save button here
-                        /*Column(children: [
-                          ClipOval(
-                            child: Material(
-                              color: Colors.transparent,
-                              child: IconButton(
-                                padding: EdgeInsets.all(0),
-                                icon: Icon(CupertinoIcons.calendar),
-                                color: Colors.blue[200],
-                                iconSize: 30,
-                                splashColor: Colors.blue,
-                                onPressed: () {},
-                              ),
-                            ),
-                          ),
-                          Text(
-                            'Save to \nItinerary',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.normal),
-                          ),
-                        ])*/
                       ])),
+              Padding(
+                padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                child: Row(children: [
+                  StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('ratings')
+                          .doc('${widget.items.itemcategoryName}')
+                          .snapshots(),
+                      builder:
+                          (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if (snapshot.hasData) {
+                          var userDocument = snapshot.data;
+
+                          double itemrating = double.parse(
+                              userDocument["${widget.items.name}.itemrating"]
+                                  .toString());
+                          double itemratingnum = double.parse(
+                              userDocument["${widget.items.name}.itemratingnum"]
+                                  .toString());
+                          double rating = itemrating / itemratingnum;
+                          return Row(
+                            children: [
+                              RatingBarIndicator(
+                                rating: rating,
+                                itemBuilder: (context, index) => Icon(
+                                  CupertinoIcons.leaf_arrow_circlepath,
+                                  color: Colors.green[400],
+                                ),
+                                itemCount: 5,
+                                itemSize: 25.0,
+                                direction: Axis.horizontal,
+                                unratedColor: Colors.grey[400],
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                "${rating.toStringAsFixed(1)} • ${userDocument["${widget.items.name}.itemratingnum"].toString()} ",
+                                style: TextStyle(
+                                  color: Colors.green[400],
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text("Unrated");
+                        } else {
+                          return Text("Loading");
+                        }
+                      })
+                ]),
+              ),
 
               //Use EXapnding text widget
               Padding(
