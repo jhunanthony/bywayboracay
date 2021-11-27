@@ -7,6 +7,8 @@ import 'package:bywayborcay/services/likeservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -73,7 +75,7 @@ class _ItemsPageState extends State<ItemsPage> {
               infoWindow: InfoWindow(
                   title: this.widget.selectedCategory.items[index].name,
                   snippet:
-                      "${this.widget.selectedCategory.items[index].itemsubcategoryName} • ${this.widget.selectedCategory.items[index].itemrating1.toStringAsFixed(1)}",
+                      "${this.widget.selectedCategory.items[index].itemsubcategoryName} • ${this.widget.selectedCategory.items[index].itemopenTime}",
                   onTap: () {
                     var itemcat = this.widget.selectedCategory.items[index];
                     catSelection.items =
@@ -389,25 +391,66 @@ class _ItemsPageState extends State<ItemsPage> {
                                                         ),
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                      width: 5,
-                                                    ),
                                                     Text(
-                                                      this
-                                                          .widget
-                                                          .selectedCategory
-                                                          .items[index]
-                                                          .itemrating1
-                                                          .toStringAsFixed(1),
+                                                      "  • ",
                                                       style: TextStyle(
-                                                          overflow:
-                                                              TextOverflow.fade,
-                                                          fontSize: 12,
-                                                          color: Colors
-                                                              .yellow[800],
-                                                          fontWeight:
-                                                              FontWeight.w300),
+                                                        fontSize: 12,
+                                                        color: Colors.white,
+                                                      ),
                                                     ),
+                                                    StreamBuilder(
+                                                        stream: FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'ratings')
+                                                            .doc(
+                                                                '${this.widget.selectedCategory.items[index].itemcategoryName}')
+                                                            .snapshots(),
+                                                        builder: (context,
+                                                            AsyncSnapshot<
+                                                                    DocumentSnapshot>
+                                                                snapshot) {
+                                                          if (snapshot
+                                                              .hasError) {
+                                                            return Text(
+                                                                'Unrated');
+                                                          } else if (snapshot
+                                                              .hasData) {
+                                                            var userDocument =
+                                                                snapshot.data;
+
+                                                            double itemrating =
+                                                                double.parse(
+                                                                    userDocument[
+                                                                            "${this.widget.selectedCategory.items[index].name}.itemrating"]
+                                                                        .toString());
+
+                                                            double
+                                                                itemratingnum =
+                                                                double.parse(
+                                                                    userDocument[
+                                                                            "${this.widget.selectedCategory.items[index].name}.itemratingnum"]
+                                                                        .toString());
+                                                            double rating =
+                                                                itemrating /
+                                                                    itemratingnum;
+
+                                                            return Text(
+                                                              " ${rating.toStringAsFixed(1)}",
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .green[400],
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            );
+                                                          }
+
+                                                          return Text(
+                                                              'Loading');
+                                                        })
                                                   ],
                                                 ),
                                                 SizedBox(
@@ -610,30 +653,73 @@ class _ItemsPageState extends State<ItemsPage> {
                                                             width: 1,
                                                           )),
                                                       child: Text(
-                                                        selectedCountList[index]
-                                                            .itemsubcategoryName,
+                                                        "${selectedCountList[index].itemsubcategoryName}",
                                                         style: TextStyle(
                                                           fontSize: 12,
                                                           color: Colors.white,
                                                         ),
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                      width: 5,
-                                                    ),
                                                     Text(
-                                                      selectedCountList[index]
-                                                          .itemrating1
-                                                          .toStringAsFixed(1),
+                                                      "  • ",
                                                       style: TextStyle(
-                                                          overflow:
-                                                              TextOverflow.fade,
-                                                          fontSize: 12,
-                                                          color: Colors
-                                                              .yellow[800],
-                                                          fontWeight:
-                                                              FontWeight.w300),
+                                                        fontSize: 12,
+                                                        color: Colors.white,
+                                                      ),
                                                     ),
+                                                    StreamBuilder(
+                                                        stream: FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'ratings')
+                                                            .doc(
+                                                                '${selectedCountList[index].itemcategoryName}')
+                                                            .snapshots(),
+                                                        builder: (context,
+                                                            AsyncSnapshot<
+                                                                    DocumentSnapshot>
+                                                                snapshot) {
+                                                          if (snapshot
+                                                              .hasError) {
+                                                            return Text(
+                                                                'Unrated');
+                                                          } else if (snapshot
+                                                              .hasData) {
+                                                            var userDocument =
+                                                                snapshot.data;
+
+                                                            double itemrating =
+                                                                double.parse(
+                                                                    userDocument[
+                                                                            "${selectedCountList[index].name}.itemrating"]
+                                                                        .toString());
+
+                                                            double
+                                                                itemratingnum =
+                                                                double.parse(
+                                                                    userDocument[
+                                                                            "${selectedCountList[index].name}.itemratingnum"]
+                                                                        .toString());
+                                                            double rating =
+                                                                itemrating /
+                                                                    itemratingnum;
+
+                                                            return Text(
+                                                              " ${rating.toStringAsFixed(1)}",
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .green[400],
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            );
+                                                          }
+
+                                                          return Text(
+                                                              'Loading');
+                                                        })
                                                   ],
                                                 ),
                                                 SizedBox(

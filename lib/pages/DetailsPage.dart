@@ -165,7 +165,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           height: 10,
                         ),
                         CategoryIcon(
-                          iconName: widget.items.name,
+                          iconName: widget.items.itemcategoryName,
                           color: Colors.transparent,
                           size: 40,
                         ),
@@ -358,85 +358,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   ),
                 )
               ]),
-
-              //show ratings1 here
-              Padding(
-                  padding:
-                      EdgeInsets.only(bottom: 10, left: 20, right: 20, top: 10),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(2),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(3),
-                                      border: Border.all(
-                                        color: Colors.blue,
-                                        width: 1,
-                                      )),
-                                  child: Text(
-                                    widget.items.itemsubcategoryName,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 10),
-                                //show rating
-
-                                /*Visibility(
-                                  visible: widget.items.itemrating1 == null
-                                      ? false
-                                      : true,
-                                  child: Row(
-                                    children: <Widget>[
-                                      Text(
-                                        "${widget.items.itemratingname} ",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                      //for rating
-                                      RatingBarIndicator(
-                                        rating: widget.items.itemrating1,
-                                        itemBuilder: (context, index) => Icon(
-                                          Icons.star_rounded,
-                                          color: Colors.yellow[800],
-                                        ),
-                                        itemCount: 5,
-                                        itemSize: 12.0,
-                                        direction: Axis.horizontal,
-                                        unratedColor: Colors.transparent,
-                                      ),
-                                      Text(
-                                        " " +
-                                            widget.items.itemrating1.toString(),
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.yellow[800],
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      )
-                                    ],
-                                  ),
-                                ),*/
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        ),
-                      ])),
+              //show ratings here
               Padding(
                 padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
                 child: Row(children: [
@@ -491,6 +413,73 @@ class _DetailsPageState extends State<DetailsPage> {
                       })
                 ]),
               ),
+
+              //show ratings1 here
+              Padding(
+                  padding:
+                      EdgeInsets.only(bottom: 10, left: 20, right: 20, top: 10),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(3),
+                              border: Border.all(
+                                color: Colors.blue,
+                                width: 1,
+                              )),
+                          child: Text(
+                            widget.items.itemsubcategoryName,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        //show rating
+
+                        /*Visibility(
+                                  visible: widget.items.itemrating1 == null
+                                      ? false
+                                      : true,
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        "${widget.items.itemratingname} ",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                      //for rating
+                                      RatingBarIndicator(
+                                        rating: widget.items.itemrating1,
+                                        itemBuilder: (context, index) => Icon(
+                                          Icons.star_rounded,
+                                          color: Colors.yellow[800],
+                                        ),
+                                        itemCount: 5,
+                                        itemSize: 12.0,
+                                        direction: Axis.horizontal,
+                                        unratedColor: Colors.transparent,
+                                      ),
+                                      Text(
+                                        " " +
+                                            widget.items.itemrating1.toString(),
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.yellow[800],
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      )
+                                    ],
+                                  ),
+                                ),*/
+                      ])),
 
               //Use EXapnding text widget
               Padding(
