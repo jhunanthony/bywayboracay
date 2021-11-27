@@ -7,12 +7,15 @@ import 'package:provider/provider.dart';
 import '../models/CategoryModel.dart';
 import '../models/ItemsModel.dart';
 import '../models/RatedItemsModel.dart';
+import '../models/UserLogInModel.dart';
 import 'categoryselectionservice.dart';
 import 'categoryservice.dart';
 import 'loginservice.dart';
 
 class RatingService extends ChangeNotifier {
   double ratingval;
+  String commentval;
+
   //this will hold the item rated;
   final List<RatedItems> _rateditems = [];
   //only allow adding items
@@ -20,12 +23,18 @@ class RatingService extends ChangeNotifier {
       UnmodifiableListView(_rateditems);
 
   //add rated item to database
-  void addrateditem(BuildContext context, RatedItems item, ratingval) {
+  void addrateditem(BuildContext context, RatedItems item, ratingval, commentval) {
     //add locally and then add on firebase
     _rateditems.add(item);
 
     LoginService loginService =
         Provider.of<LoginService>(context, listen: false);
+
+    //grab the
+    UserLogInModel userModel = loginService.loggedInUserModel;
+
+    String userImg = userModel != null ? userModel.photoUrl : '';
+    String userName = userModel != null ? userModel.displayName : '';
 
     Map<String, int> ratedMap = Map();
     _rateditems.forEach((RatedItems item) {
@@ -41,7 +50,7 @@ class RatingService extends ChangeNotifier {
       notifyListeners();
     });
 
-    //update data
+    //update data on itemrating
     FirebaseFirestore.instance
         .collection('ratings')
         .doc('${item.category.itemcategoryName}')
@@ -50,7 +59,7 @@ class RatingService extends ChangeNotifier {
     }).then((value) {
       notifyListeners();
     });
-
+    //update data on itemratingnum
     FirebaseFirestore.instance
         .collection('ratings')
         .doc('${item.category.itemcategoryName}')
@@ -59,16 +68,25 @@ class RatingService extends ChangeNotifier {
     }).then((value) {
       notifyListeners();
     });
+    //set comments
+
+    FirebaseFirestore.instance
+        .collection('ratings')
+        .doc('${item.category.itemcategoryName}')
+        .update({
+      "${item.category.name}.sets": FieldValue.arrayUnion([
+        {"username": userName, "userimg": userImg, "rating": ratingval, "comment": commentval}
+      ])
+    }).then((value) {
+      notifyListeners();
+    });
   }
 
-
- bool isRated(Items cat) {
+  bool isRated(Items cat) {
     return _rateditems.length > 0
         ? _rateditems.any((RatedItems item) => item.category.name == cat.name)
         : false;
   }
-
-  
 
 //fetch item out of the rating
   Items getCategoryFromRatedItems(Items cat) {
@@ -85,9 +103,7 @@ class RatingService extends ChangeNotifier {
 
     return itemcat;
   }
-  //fetch item out of the likedpage
-
- 
+  //fetch data
 
   void loadRatedItemsFromFirebase(BuildContext context) {
     //clear items if a user logged previously

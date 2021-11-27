@@ -390,7 +390,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 SizedBox(width: 10),
                                 //show rating
 
-                                Visibility(
+                                /*Visibility(
                                   visible: widget.items.itemrating1 == null
                                       ? false
                                       : true,
@@ -428,164 +428,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                       )
                                     ],
                                   ),
-                                ),
-
-                                //expirement rating here
-                                Consumer<LoginService>(
-                                    builder: (context, loginService, child) {
-                                  if (loginService.isUserLoggedIn()) {
-                                    return Consumer<RatingService>(
-                                        builder: (context, rating, child) {
-                                      //check if saved
-                                      Widget renderedRatedButton;
-
-                                      //check is it is saved then display regular button
-
-                                      if (!rating.isRated(widget.items)) {
-                                        renderedRatedButton = ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              padding: EdgeInsets.all(3),
-                                              primary:
-                                                  Colors.white, //background
-                                              onPrimary:
-                                                  Colors.green, //foreground
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          50))),
-                                          child: Container(
-                                            padding: EdgeInsets.all(3),
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              'Rate item!',
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.green,
-                                                  fontWeight: FontWeight.w300),
-                                            ),
-                                          ),
-                                          onPressed: () {
-                                            double itemratingval = 0;
-
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) =>
-                                                    AlertDialog(
-                                                      title: Column(
-                                                        children: [
-                                                          Text(
-                                                              'Rate this item based on how sustainable its practices to the environment and tourism.'),
-                                                        ],
-                                                      ),
-                                                      content:
-                                                          RatingBar.builder(
-                                                        wrapAlignment:
-                                                            WrapAlignment
-                                                                .center,
-                                                        glowColor: Colors.green,
-                                                        itemSize: 35,
-                                                        initialRating: 1,
-                                                        minRating: 1,
-                                                        direction:
-                                                            Axis.horizontal,
-                                                        allowHalfRating: true,
-                                                        itemCount: 5,
-                                                        itemPadding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal:
-                                                                    4.0),
-                                                        itemBuilder:
-                                                            (context, _) =>
-                                                                Icon(
-                                                          CupertinoIcons
-                                                              .leaf_arrow_circlepath,
-                                                          color:
-                                                              Colors.green[400],
-                                                        ),
-                                                        onRatingUpdate:
-                                                            (itemratingvalue) {
-                                                          setState(() {
-                                                            itemratingval =
-                                                                itemratingvalue;
-                                                          });
-                                                          print(itemratingval);
-                                                        },
-                                                      ),
-                                                      actions: [
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: Text(
-                                                            'Cancel',
-                                                            style: TextStyle(
-                                                                color:
-                                                                    Colors.grey,
-                                                                fontSize: 18),
-                                                          ),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            ratingService.addrateditem(
-                                                                context,
-                                                                RatedItems(
-                                                                    category: widget
-                                                                        .items),
-                                                                itemratingval);
-
-                                                            Navigator.pop(
-                                                                context);
-                                                            showSimpleNotification(
-                                                              Text(
-                                                                  "Item has been rated!"),
-                                                              background: Colors
-                                                                  .green[400],
-                                                              position:
-                                                                  NotificationPosition
-                                                                      .bottom,
-                                                            );
-                                                          },
-                                                          child: Text(
-                                                            'Submit',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.teal,
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ));
-
-                                            //rate item
-                                          },
-                                        );
-                                      } else {
-                                        renderedRatedButton = Container(
-                                          padding: EdgeInsets.all(10),
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.check,
-                                                  color: Colors.green[400],
-                                                  size: 20),
-                                              Text("Rated!",
-                                                  style: TextStyle(
-                                                      color:
-                                                          Colors.green[400])),
-                                            ],
-                                          ),
-                                        );
-                                      }
-
-                                      return renderedRatedButton;
-                                    });
-                                  }
-                                  return SizedBox();
-                                }),
+                                ),*/
                               ],
                             ),
                             SizedBox(
@@ -604,7 +447,9 @@ class _DetailsPageState extends State<DetailsPage> {
                           .snapshots(),
                       builder:
                           (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                        if (snapshot.hasData) {
+                        if (snapshot.hasError) {
+                          return Text('Unrated');
+                        } else if (snapshot.hasData) {
                           var userDocument = snapshot.data;
 
                           double itemrating = double.parse(
@@ -631,7 +476,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 width: 10,
                               ),
                               Text(
-                                "${rating.toStringAsFixed(1)} • ${userDocument["${widget.items.name}.itemratingnum"].toString()} ",
+                                "${rating.toStringAsFixed(1)} • ${userDocument["${widget.items.name}.itemratingnum"].toString()} reviews",
                                 style: TextStyle(
                                   color: Colors.green[400],
                                   fontSize: 14,
@@ -640,11 +485,9 @@ class _DetailsPageState extends State<DetailsPage> {
                               ),
                             ],
                           );
-                        } else if (snapshot.hasError) {
-                          return Text("Unrated");
-                        } else {
-                          return Text("Loading");
                         }
+
+                        return Text('Loading');
                       })
                 ]),
               ),
@@ -719,21 +562,22 @@ class _DetailsPageState extends State<DetailsPage> {
               Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 20, bottom: 10, right: 20),
+                  padding:
+                      EdgeInsets.only(left: 20, bottom: 10, right: 20, top: 10),
                   child: Row(
                     children: [
                       Icon(
                         Icons.location_pin,
                         color: Colors.blue,
-                        size: 20,
+                        size: 25,
                       ),
                       SizedBox(width: 5),
                       Text(
                         widget.items.itemaddress,
                         style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold),
+                            fontSize: 20,
+                            color: Colors.blue,
+                            fontWeight: FontWeight.w300),
                       ),
                     ],
                   ),
@@ -810,7 +654,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
               //add contact information
               Align(
-                alignment: Alignment.center,
+                alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: EdgeInsets.only(
                     left: 20,
@@ -818,11 +662,11 @@ class _DetailsPageState extends State<DetailsPage> {
                     right: 20,
                   ),
                   child: Text(
-                    'Direct Booking here!',
+                    'Direct Booking',
                     style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold),
+                        fontSize: 20,
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w300),
                   ),
                 ),
               ),
@@ -935,8 +779,317 @@ class _DetailsPageState extends State<DetailsPage> {
                   ],
                 ),
               ),
+
+              Padding(
+                padding:
+                    EdgeInsets.only(bottom: 10, top: 10, right: 20, left: 20),
+                child: //expirement rating here
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                      Text(
+                        'Reviews',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.blue,
+                            fontWeight: FontWeight.w300),
+                      ),
+                      Consumer<LoginService>(
+                          builder: (context, loginService, child) {
+                        if (loginService.isUserLoggedIn()) {
+                          return Consumer<RatingService>(
+                              builder: (context, rating, child) {
+                            //check if saved
+                            Widget renderedRatedButton;
+                            //for ratings
+
+                            //check is it is saved then display regular button
+
+                            if (!rating.isRated(widget.items)) {
+                              renderedRatedButton = ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.all(3),
+                                    primary: Colors.white, //background
+                                    onPrimary: Colors.green, //foreground
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(50))),
+                                child: Container(
+                                  padding: EdgeInsets.all(3),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'Rate item!',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.green,
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  double itemratingval = 0;
+                                  TextEditingController comment =
+                                      TextEditingController();
+
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            title: Text(
+                                                'Rate this item based on how sustainable its practices to the environment and tourism.'),
+                                            content: SingleChildScrollView(
+                                              child: Column(
+                                                children: [
+                                                  RatingBar.builder(
+                                                      wrapAlignment:
+                                                          WrapAlignment.center,
+                                                      glowColor: Colors.green,
+                                                      itemSize: 35,
+                                                      initialRating: 1,
+                                                      minRating: 1,
+                                                      direction:
+                                                          Axis.horizontal,
+                                                      allowHalfRating: true,
+                                                      itemCount: 5,
+                                                      itemPadding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 4.0),
+                                                      itemBuilder:
+                                                          (context, _) => Icon(
+                                                                CupertinoIcons
+                                                                    .leaf_arrow_circlepath,
+                                                                color: Colors
+                                                                    .green[400],
+                                                              ),
+                                                      updateOnDrag: true,
+                                                      onRatingUpdate: (rating) {
+                                                        setState(() {
+                                                          itemratingval =
+                                                              rating;
+                                                        });
+                                                        print(rating);
+                                                      }),
+                                                  Text("$itemratingval"),
+
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  //field to comment
+                                                  TextField(
+                                                    controller: comment,
+                                                    textCapitalization:
+                                                        TextCapitalization
+                                                            .words,
+                                                    decoration: InputDecoration(
+                                                      labelStyle: TextStyle(
+                                                          color: Colors.grey),
+                                                      labelText: 'Comment',
+                                                      focusedBorder:
+                                                          OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: Colors
+                                                                .green[400],
+                                                            width: 1.5),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          10.0,
+                                                        ),
+                                                      ),
+                                                      enabledBorder:
+                                                          OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: Colors.blue,
+                                                            width: 1.5),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          10.0,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  comment.clear();
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  'Cancel',
+                                                  style: TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize: 18),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  if (comment.text.isEmpty) {
+                                                    desc.text = '';
+                                                  }
+                                                  ratingService.addrateditem(
+                                                      context,
+                                                      RatedItems(
+                                                          category:
+                                                              widget.items),
+                                                      itemratingval,
+                                                      comment.text);
+
+                                                  Navigator.pop(context);
+                                                  showSimpleNotification(
+                                                    Text(
+                                                        "Item has been rated!"),
+                                                    background:
+                                                        Colors.green[400],
+                                                    position:
+                                                        NotificationPosition
+                                                            .bottom,
+                                                  );
+                                                },
+                                                child: Text(
+                                                  'Submit',
+                                                  style: TextStyle(
+                                                    color: Colors.teal,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ));
+
+                                  //rate item
+                                },
+                              );
+                            } else {
+                              renderedRatedButton = Container(
+                                padding: EdgeInsets.all(10),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.check,
+                                        color: Colors.green[400], size: 20),
+                                    Text("Rated!",
+                                        style: TextStyle(
+                                            color: Colors.green[400])),
+                                  ],
+                                ),
+                              );
+                            }
+
+                            return renderedRatedButton;
+                          });
+                        }
+                        return SizedBox();
+                      }),
+                    ]),
+              ),
+
+              //for comment section
+
+              SingleChildScrollView(
+                child: Container(
+                  height: 300,
+                  width: MediaQuery.of(context).size.width,
+                  child: StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('ratings')
+                          .doc('${widget.items.itemcategoryName}')
+                          .snapshots(),
+                      builder:
+                          (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return Center(child: Text('No Reviews'));
+                        } else if (snapshot.hasData) {
+                          var userDocument = snapshot.data;
+                          var path = userDocument["${widget.items.name}.sets"];
+                          /*var username = path[0];
+
+                          return Text(
+                            "${username["username"].toString()} name this",
+                            style: TextStyle(
+                              color: Colors.green[400],
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            Text(
+                                    "${username["username"].toString()}",
+                                    style: TextStyle(
+                                        color: Colors.blue, fontSize: 14));
+                          );*/
+                          return ListView.builder(
+                              itemCount: path.length,
+                              itemBuilder: (context, index) {
+                                var username = path[index];
+                                double userrating =
+                                    double.parse(username["rating"].toString());
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(children: [
+                                    ListTile(
+                                        leading: Text(
+                                            "${username["rating"].toString()}",
+                                            style: TextStyle(
+                                                color: Colors.green[400],
+                                                fontSize: 20)),
+                                        title: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            RatingBarIndicator(
+                                              rating: userrating,
+                                              itemBuilder: (context, index) =>
+                                                  Icon(
+                                                CupertinoIcons
+                                                    .leaf_arrow_circlepath,
+                                                color: Colors.green[400],
+                                              ),
+                                              itemCount: 5,
+                                              itemSize: 14.0,
+                                              direction: Axis.horizontal,
+                                              unratedColor: Colors.grey[400],
+                                            ),
+                                            Text(
+                                                "${username["username"].toString()}",
+                                                style: TextStyle(
+                                                    color: Colors.grey[400],
+                                                    fontSize: 12)),
+                                          ],
+                                        ),
+                                        subtitle: Text(
+                                            "${username["comment"].toString()}",
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14)),
+                                        trailing: Wrap(
+                                            direction: Axis.vertical,
+                                            spacing:
+                                                10, // space between two icons
+                                            children: <Widget>[
+                                              ClipOval(
+                                                  child: Image.network(
+                                                      "${username["userimg"].toString()}",
+                                                      width: 35,
+                                                      height: 35,
+                                                      fit: BoxFit.cover)),
+                                              SizedBox()
+                                            ])),
+                                    Divider(
+                                      thickness: 1,
+                                      color: Colors.grey[400],
+                                    ),
+                                  ]),
+                                );
+                              });
+                        }
+
+                        return Text('Loading');
+                      }),
+                ),
+              ),
+
               SizedBox(
-                height: 100,
+                height: 50,
               )
             ],
           ),
