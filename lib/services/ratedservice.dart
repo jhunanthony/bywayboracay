@@ -23,7 +23,8 @@ class RatingService extends ChangeNotifier {
       UnmodifiableListView(_rateditems);
 
   //add rated item to database
-  void addrateditem(BuildContext context, RatedItems item, ratingval, commentval) {
+  void addrateditem(
+      BuildContext context, RatedItems item, ratingval, commentval) {
     //add locally and then add on firebase
     _rateditems.add(item);
 
@@ -75,9 +76,48 @@ class RatingService extends ChangeNotifier {
         .doc('${item.category.itemcategoryName}')
         .update({
       "${item.category.name}.sets": FieldValue.arrayUnion([
-        {"username": userName, "userimg": userImg, "rating": ratingval, "comment": commentval}
+        {
+          "username": userName,
+          "userimg": userImg,
+          "rating": ratingval,
+          "comment": commentval
+        }
       ])
     }).then((value) {
+      notifyListeners();
+    });
+  }
+
+  //add record to firebase
+  void addrecord(
+    BuildContext context,
+    RatedItems item,
+  ) {
+    //update data on itemrating
+    FirebaseFirestore.instance
+        .collection('ratings')
+        .doc('${item.category.itemcategoryName}')
+        .update({
+      "${item.category.name}.itemrating": FieldValue.increment(0)
+    }).then((value) {
+      notifyListeners();
+    });
+    //update data on itemratingnum
+    FirebaseFirestore.instance
+        .collection('ratings')
+        .doc('${item.category.itemcategoryName}')
+        .update({
+      "${item.category.name}.itemratingnum": FieldValue.increment(0)
+    }).then((value) {
+      notifyListeners();
+    });
+    //set comments
+
+    FirebaseFirestore.instance
+        .collection('ratings')
+        .doc('${item.category.itemcategoryName}')
+        .update({"${item.category.name}.sets": FieldValue.arrayUnion([])}).then(
+            (value) {
       notifyListeners();
     });
   }

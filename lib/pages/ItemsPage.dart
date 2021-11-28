@@ -10,9 +10,13 @@ import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:filter_list/filter_list.dart';
+
+import '../models/RatedItemsModel.dart';
+import '../services/ratedservice.dart';
 
 const double PIN_NOTVISIBLE_POSITION = -50;
 const double PIN_VISIBLE_POSITION = 53;
@@ -161,6 +165,8 @@ class _ItemsPageState extends State<ItemsPage> {
     //SaveService saveService = Provider.of<SaveService>(context, listen: false);
 
     //access like service
+    RatingService ratingService =
+        Provider.of<RatingService>(context, listen: false);
 
     LikeService likedService = Provider.of<LikeService>(context, listen: false);
 
@@ -280,6 +286,14 @@ class _ItemsPageState extends State<ItemsPage> {
                                   (index) {
                                 return GestureDetector(
                                   onTap: () {
+                                    ratingService.addrecord(
+                                      context,
+                                      RatedItems(
+                                          category: this
+                                              .widget
+                                              .selectedCategory
+                                              .items[index]),
+                                    );
                                     //check if added already or not
                                     var itemcat = this
                                         .widget
@@ -287,6 +301,8 @@ class _ItemsPageState extends State<ItemsPage> {
                                         .items[index];
                                     catSelection.items = likedService
                                         .getCategoryFromLikedItems(itemcat);
+                                    catSelection.items = ratingService
+                                        .getCategoryFromRatedItems(itemcat);
                                     Navigator.of(context)
                                         .pushNamed('/detailspage');
                                   },
@@ -411,10 +427,6 @@ class _ItemsPageState extends State<ItemsPage> {
                                                                     DocumentSnapshot>
                                                                 snapshot) {
                                                           if (snapshot
-                                                              .hasError) {
-                                                            return Text(
-                                                                'Unrated');
-                                                          } else if (snapshot
                                                               .hasData) {
                                                             var userDocument =
                                                                 snapshot.data;
@@ -435,21 +447,70 @@ class _ItemsPageState extends State<ItemsPage> {
                                                                 itemrating /
                                                                     itemratingnum;
 
-                                                            return Text(
-                                                              " ${rating.toStringAsFixed(1)}",
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .green[400],
-                                                                fontSize: 14,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
+                                                            return Visibility(
+                                                              visible:
+                                                                  rating > 0,
+                                                              child: Row(
+                                                                children: [
+                                                                  Text(
+                                                                    " ${rating.toStringAsFixed(1)} ",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                              .green[
+                                                                          400],
+                                                                      fontSize:
+                                                                          14,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                  RatingBarIndicator(
+                                                                    rating:
+                                                                        rating,
+                                                                    itemBuilder:
+                                                                        (context,
+                                                                                index) =>
+                                                                            Icon(
+                                                                      Icons
+                                                                          .eco_rounded,
+                                                                      color: Colors
+                                                                              .green[
+                                                                          400],
+                                                                    ),
+                                                                    itemCount:
+                                                                        1,
+                                                                    itemSize:
+                                                                        20,
+                                                                    direction: Axis
+                                                                        .horizontal,
+                                                                    unratedColor:
+                                                                        Colors.grey[
+                                                                            400],
+                                                                  ),
+                                                                ],
                                                               ),
                                                             );
-                                                          }
-
-                                                          return Text(
-                                                              'Loading');
+                                                          } else if (snapshot
+                                                              .hasError) {
+                                                            return Text(
+                                                              'Unrated',
+                                                              style: TextStyle(
+                                                                fontSize: 12,
+                                                                color: Colors
+                                                                    .green,
+                                                              ),
+                                                            );
+                                                          } else
+                                                            return Text(
+                                                              'loading',
+                                                              style: TextStyle(
+                                                                fontSize: 12,
+                                                                color: Colors
+                                                                    .green,
+                                                              ),
+                                                            );
                                                         })
                                                   ],
                                                 ),
@@ -562,10 +623,17 @@ class _ItemsPageState extends State<ItemsPage> {
                                   (index) {
                                 return GestureDetector(
                                   onTap: () {
+                                    ratingService.addrecord(
+                                      context,
+                                      RatedItems(
+                                          category: selectedCountList[index]),
+                                    );
                                     //check if added already or not
                                     var itemcat = selectedCountList[index];
                                     catSelection.items = likedService
                                         .getCategoryFromLikedItems(itemcat);
+                                    catSelection.items = ratingService
+                                        .getCategoryFromRatedItems(itemcat);
                                     Navigator.of(context)
                                         .pushNamed('/detailspage');
                                   },
@@ -680,10 +748,6 @@ class _ItemsPageState extends State<ItemsPage> {
                                                                     DocumentSnapshot>
                                                                 snapshot) {
                                                           if (snapshot
-                                                              .hasError) {
-                                                            return Text(
-                                                                'Unrated');
-                                                          } else if (snapshot
                                                               .hasData) {
                                                             var userDocument =
                                                                 snapshot.data;
@@ -704,21 +768,71 @@ class _ItemsPageState extends State<ItemsPage> {
                                                                 itemrating /
                                                                     itemratingnum;
 
+                                                            return Visibility(
+                                                              visible:
+                                                                  rating > 0,
+                                                              child: Row(
+                                                                children: [
+                                                                  Text(
+                                                                    " ${rating.toStringAsFixed(1)}",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                              .green[
+                                                                          400],
+                                                                      fontSize:
+                                                                          14,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                  RatingBarIndicator(
+                                                                    rating:
+                                                                        rating,
+                                                                    itemBuilder:
+                                                                        (context,
+                                                                                index) =>
+                                                                            Icon(
+                                                                      Icons
+                                                                          .eco_rounded,
+                                                                      color: Colors
+                                                                              .green[
+                                                                          400],
+                                                                    ),
+                                                                    itemCount:
+                                                                        1,
+                                                                    itemSize:
+                                                                        20,
+                                                                    direction: Axis
+                                                                        .horizontal,
+                                                                    unratedColor:
+                                                                        Colors.grey[
+                                                                            400],
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            );
+                                                          } else if (snapshot
+                                                              .hasError) {
                                                             return Text(
-                                                              " ${rating.toStringAsFixed(1)}",
+                                                              'Unrated',
                                                               style: TextStyle(
+                                                                fontSize: 12,
                                                                 color: Colors
-                                                                    .green[400],
-                                                                fontSize: 14,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
+                                                                    .green,
                                                               ),
                                                             );
                                                           }
 
                                                           return Text(
-                                                              'Loading');
+                                                            'loading',
+                                                            style: TextStyle(
+                                                              fontSize: 12,
+                                                              color:
+                                                                  Colors.green,
+                                                            ),
+                                                          );
                                                         })
                                                   ],
                                                 ),

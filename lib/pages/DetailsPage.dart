@@ -293,7 +293,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 //title and calendar button
 
                 Positioned(
-                  bottom: 0,
+                  bottom: -2,
                   right: 0,
                   left: 0,
                   child: Container(
@@ -369,9 +369,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           .snapshots(),
                       builder:
                           (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                        if (snapshot.hasError) {
-                          return Text('Unrated');
-                        } else if (snapshot.hasData) {
+                        if (snapshot.hasData) {
                           var userDocument = snapshot.data;
 
                           double itemrating = double.parse(
@@ -381,35 +379,51 @@ class _DetailsPageState extends State<DetailsPage> {
                               userDocument["${widget.items.name}.itemratingnum"]
                                   .toString());
                           double rating = itemrating / itemratingnum;
-                          return Row(
-                            children: [
-                              RatingBarIndicator(
-                                rating: rating,
-                                itemBuilder: (context, index) => Icon(
-                                  CupertinoIcons.leaf_arrow_circlepath,
-                                  color: Colors.green[400],
+                        
+                          return Visibility(
+                            visible:  rating>0,
+                            child: Row(
+                              children: [
+                                RatingBarIndicator(
+                                  rating: rating,
+                                  itemBuilder: (context, index) => Icon(
+                                    Icons.eco_rounded,
+                                    color: Colors.green[400],
+                                  ),
+                                  itemCount: 5,
+                                  itemSize: 25.0,
+                                  direction: Axis.horizontal,
+                                  unratedColor: Colors.grey[400],
                                 ),
-                                itemCount: 5,
-                                itemSize: 25.0,
-                                direction: Axis.horizontal,
-                                unratedColor: Colors.grey[400],
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                "${rating.toStringAsFixed(1)} • ${userDocument["${widget.items.name}.itemratingnum"].toString()} reviews",
-                                style: TextStyle(
-                                  color: Colors.green[400],
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
+                                SizedBox(
+                                  width: 10,
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  "${rating.toStringAsFixed(1)} • ${userDocument["${widget.items.name}.itemratingnum"].toString()} reviews",
+                                  style: TextStyle(
+                                    color: Colors.green[400],
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
                           );
-                        }
-
-                        return Text('Loading');
+                        } else if (snapshot.hasError) {
+                          return Text(
+                            'Unrated',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.green,
+                            ),
+                          );
+                        } else
+                          return Text(
+                            'Loading',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.green,
+                            ),
+                          );
                       })
                 ]),
               ),
@@ -498,16 +512,16 @@ class _DetailsPageState extends State<DetailsPage> {
                           Text(
                             widget.items.itemopenTime,
                             style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold),
+                              fontSize: 14,
+                              color: Colors.blue,
+                            ),
                           ),
                         ],
                       ),
                       Visibility(
                         visible: widget.items.itempriceMin != 0 ||
                             widget.items.itempriceMin != 0.00 ||
-                            widget.items.itemwebsite != null,
+                            widget.items.itempriceMin != null,
                         child: Container(
                           padding: EdgeInsets.all(3),
                           decoration: BoxDecoration(
@@ -515,12 +529,12 @@ class _DetailsPageState extends State<DetailsPage> {
                             borderRadius: BorderRadius.circular(3),
                           ),
                           child: Text(
-                            'min. ₱' +
+                            'Min. ₱' +
                                 widget.items.itempriceMin.toStringAsFixed(2),
                             style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -804,10 +818,11 @@ class _DetailsPageState extends State<DetailsPage> {
                                         borderRadius:
                                             BorderRadius.circular(50))),
                                 child: Container(
-                                  padding: EdgeInsets.all(3),
+                                  padding: EdgeInsets.only(
+                                      top: 3, bottom: 3, left: 5, right: 5),
                                   alignment: Alignment.center,
                                   child: Text(
-                                    'Rate item!',
+                                    'Submit a review',
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: Colors.green,
@@ -841,13 +856,13 @@ class _DetailsPageState extends State<DetailsPage> {
                                                       itemPadding:
                                                           EdgeInsets.symmetric(
                                                               horizontal: 4.0),
-                                                      itemBuilder:
-                                                          (context, _) => Icon(
-                                                                CupertinoIcons
-                                                                    .leaf_arrow_circlepath,
-                                                                color: Colors
-                                                                    .green[400],
-                                                              ),
+                                                      itemBuilder: (context,
+                                                              _) =>
+                                                          Icon(
+                                                            Icons.eco_rounded,
+                                                            color: Colors
+                                                                .green[400],
+                                                          ),
                                                       updateOnDrag: true,
                                                       onRatingUpdate: (rating) {
                                                         setState(() {
@@ -856,7 +871,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                         });
                                                         print(rating);
                                                       }),
-                                                  Text("$itemratingval"),
+                                                  //Text("$itemratingval"),
 
                                                   SizedBox(
                                                     height: 10,
@@ -928,7 +943,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   Navigator.pop(context);
                                                   showSimpleNotification(
                                                     Text(
-                                                        "Item has been rated!"),
+                                                        "Review has been submitted!"),
                                                     background:
                                                         Colors.green[400],
                                                     position:
@@ -958,7 +973,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   children: [
                                     Icon(Icons.check,
                                         color: Colors.green[400], size: 20),
-                                    Text("Rated!",
+                                    Text("Reviewed!",
                                         style: TextStyle(
                                             color: Colors.green[400])),
                                   ],
@@ -978,7 +993,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
               SingleChildScrollView(
                 child: Container(
-                  height: 300,
+                  height: 200,
                   width: MediaQuery.of(context).size.width,
                   child: StreamBuilder(
                       stream: FirebaseFirestore.instance
@@ -987,9 +1002,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           .snapshots(),
                       builder:
                           (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                        if (snapshot.hasError) {
-                          return Center(child: Text('No Reviews'));
-                        } else if (snapshot.hasData) {
+                         if (snapshot.hasData) {
                           var userDocument = snapshot.data;
                           var path = userDocument["${widget.items.name}.sets"];
                           /*var username = path[0];
@@ -1029,8 +1042,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                               rating: userrating,
                                               itemBuilder: (context, index) =>
                                                   Icon(
-                                                CupertinoIcons
-                                                    .leaf_arrow_circlepath,
+                                                Icons.eco_rounded,
                                                 color: Colors.green[400],
                                               ),
                                               itemCount: 5,
@@ -1070,15 +1082,23 @@ class _DetailsPageState extends State<DetailsPage> {
                                   ]),
                                 );
                               });
+                        }else if (snapshot.hasError) {
+                          return Text(
+                            'Unrated',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.green,
+                            ),
+                          );
                         }
 
-                        return Text('Loading');
+                        else return Text('Loading');
                       }),
                 ),
               ),
 
               SizedBox(
-                height: 50,
+                height: 10,
               )
             ],
           ),

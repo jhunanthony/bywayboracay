@@ -205,7 +205,7 @@ class _LikedPageState extends State<LikedPage> {
                                     right: 0,
                                     child: CategoryIcon(
                                       color: itemslistinfo.color,
-                                      iconName: itemslistinfo.name,
+                                      iconName: itemslistinfo.itemcategoryName,
                                       size: 20,
                                     )),
                               ],

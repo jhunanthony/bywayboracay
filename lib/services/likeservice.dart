@@ -156,12 +156,6 @@ class LikeService extends ChangeNotifier {
       });
     }
   }
-
-
-
-
-
-
 }
 /*var collection =
                 FirebaseFirestore.instance.collection('bywayboracay_data');
