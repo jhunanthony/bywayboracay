@@ -51,7 +51,7 @@ dependencies:
   #for API request
   dio: ^4.0.0
   #for app setting
-  app_settings: ^4.1.1
+
   #for rating indicators
   flutter_rating_bar: ^4.0.0
 
@@ -85,6 +85,10 @@ dependencies:
   awesome_notifications: ^0.6.17
   #for filter list
   filter_list: ^1.0.0
+  flutter_social_content_share: ^1.0.2
+
+
+
 
 
 

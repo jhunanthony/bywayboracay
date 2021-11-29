@@ -447,51 +447,50 @@ class _ItemsPageState extends State<ItemsPage> {
                                                                 itemrating /
                                                                     itemratingnum;
 
-                                                            return Visibility(
-                                                              visible:
-                                                                  rating > 0,
-                                                              child: Row(
-                                                                children: [
-                                                                  Text(
-                                                                    " ${rating.toStringAsFixed(1)} ",
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: Colors
-                                                                              .green[
-                                                                          400],
-                                                                      fontSize:
-                                                                          14,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                    ),
-                                                                  ),
-                                                                  RatingBarIndicator(
-                                                                    rating:
-                                                                        rating,
-                                                                    itemBuilder:
-                                                                        (context,
-                                                                                index) =>
-                                                                            Icon(
-                                                                      Icons
-                                                                          .eco_rounded,
-                                                                      color: Colors
-                                                                              .green[
-                                                                          400],
-                                                                    ),
-                                                                    itemCount:
-                                                                        1,
-                                                                    itemSize:
-                                                                        20,
-                                                                    direction: Axis
-                                                                        .horizontal,
-                                                                    unratedColor:
-                                                                        Colors.grey[
-                                                                            400],
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            );
+                                                            return rating > 0
+                                                                ? Row(
+                                                                    children: [
+                                                                      Text(
+                                                                        " ${rating.toStringAsFixed(1)} ",
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.green[400],
+                                                                          fontSize:
+                                                                              14,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        ),
+                                                                      ),
+                                                                      Icon(
+                                                                          Icons
+                                                                              .eco_rounded,
+                                                                          color:
+                                                                              Colors.green[400],
+                                                                        ),
+                                                                    ],
+                                                                  )
+                                                                : rating == null
+                                                                    ? Text(
+                                                                        'unrated',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              12,
+                                                                          color:
+                                                                              Colors.green,
+                                                                        ),
+                                                                      )
+                                                                    : Text(
+                                                                        'unrated',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              12,
+                                                                          color:
+                                                                              Colors.green,
+                                                                        ),
+                                                                      );
                                                           } else if (snapshot
                                                               .hasError) {
                                                             return Text(
@@ -768,51 +767,50 @@ class _ItemsPageState extends State<ItemsPage> {
                                                                 itemrating /
                                                                     itemratingnum;
 
-                                                            return Visibility(
-                                                              visible:
-                                                                  rating > 0,
-                                                              child: Row(
-                                                                children: [
-                                                                  Text(
-                                                                    " ${rating.toStringAsFixed(1)}",
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: Colors
-                                                                              .green[
-                                                                          400],
-                                                                      fontSize:
-                                                                          14,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                    ),
-                                                                  ),
-                                                                  RatingBarIndicator(
-                                                                    rating:
-                                                                        rating,
-                                                                    itemBuilder:
-                                                                        (context,
-                                                                                index) =>
-                                                                            Icon(
-                                                                      Icons
-                                                                          .eco_rounded,
-                                                                      color: Colors
-                                                                              .green[
-                                                                          400],
-                                                                    ),
-                                                                    itemCount:
-                                                                        1,
-                                                                    itemSize:
-                                                                        20,
-                                                                    direction: Axis
-                                                                        .horizontal,
-                                                                    unratedColor:
-                                                                        Colors.grey[
-                                                                            400],
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            );
+                                                            return rating > 0
+                                                                ? Row(
+                                                                    children: [
+                                                                      Text(
+                                                                        " ${rating.toStringAsFixed(1)}",
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.green[400],
+                                                                          fontSize:
+                                                                              14,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        ),
+                                                                      ),
+                                                                       Icon(
+                                                                          Icons
+                                                                              .eco_rounded,
+                                                                          color:
+                                                                              Colors.green[400],
+                                                                        ),
+                                                                    ],
+                                                                  )
+                                                                : rating == null
+                                                                    ? Text(
+                                                                        'unrated',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              12,
+                                                                          color:
+                                                                              Colors.green,
+                                                                        ),
+                                                                      )
+                                                                    : Text(
+                                                                        'unrated',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              12,
+                                                                          color:
+                                                                              Colors.green,
+                                                                        ),
+                                                                      );
                                                           } else if (snapshot
                                                               .hasError) {
                                                             return Text(

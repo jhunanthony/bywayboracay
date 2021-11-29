@@ -4,6 +4,7 @@ import 'package:bywayborcay/pages/BagPage.dart';
 import 'package:bywayborcay/pages/ExplorePage.dart';
 
 import 'package:bywayborcay/services/likeservice.dart';
+import 'package:bywayborcay/services/ratedservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/Itinerarypage2.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,10 @@ class _MainPageState extends State<MainPage> {
     LikeService likeService = Provider.of<LikeService>(context, listen: false);
     //fetch liked items and load on likepage
     likeService.loadLikedItemsFromFirebase(context);
+
+    RatingService ratingService = Provider.of<RatingService>(context, listen: false);
+    //fetch liked items and load on likepage
+    ratingService.loadRatedItemsFromFirebase(context);
 
     return SafeArea(
       child: Scaffold(

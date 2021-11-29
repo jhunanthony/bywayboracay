@@ -133,11 +133,11 @@ class RatingService extends ChangeNotifier {
     Items itemcat = cat;
     if (_rateditems.length > 0 &&
         _rateditems.any((RatedItems item) => item.category.name == cat.name)) {
-      RatedItems ratedItem = _rateditems
+      RatedItems ratedItems = _rateditems
           .firstWhere((RatedItems item) => item.category.name == cat.name);
 
-      if (ratedItem != null) {
-        itemcat = ratedItem.category;
+      if (ratedItems != null) {
+        itemcat = ratedItems.category;
       }
     }
 
@@ -170,74 +170,32 @@ class RatingService extends ChangeNotifier {
           .then((DocumentSnapshot snapshot) {
         //extract data
 
-        Map<String, dynamic> ratedItems =
-            snapshot.get(FieldPath(['RatedItem']));
+        if (snapshot.exists) {
+          Map<String, dynamic> ratedItems =
+              snapshot.get(FieldPath(['RatedItem']));
 
-        catService.getCategories().forEach((Category cat) {
-          cat.items.forEach((Category itemref) {
-            //match the keys
-            //keys correspond with unique name
-            if (ratedItems.keys.contains(itemref.imgName)) {
-              //keys correspond with unique image name
-              var amount = ratedItems[itemref.name] as int;
-              (itemref as Items).amount = amount;
+          catService.getCategories().forEach((Category cat) {
+            cat.items.forEach((Category itemref) {
+              //match the keys
+              //keys correspond with unique name
+              if (ratedItems.keys.contains(itemref.imgName)) {
+                //keys correspond with unique image name
+                var amount = ratedItems[itemref.imgName] as int;
+                (itemref as Items).amount = amount;
 
-              _rateditems.add(RatedItems(category: itemref));
+                _rateditems.add(RatedItems(category: itemref));
 
-              //check if currently selected category
-              if (categorySelectionService.items != null &&
-                  categorySelectionService.items.name == itemref.name) {
-                categorySelectionService.items = itemref;
+                //check if currently selected category
+                if (categorySelectionService.items != null &&
+                    categorySelectionService.items.name == itemref.name) {
+                  categorySelectionService.items = itemref;
+                }
               }
-            }
+            });
           });
-        });
-        notifyListeners();
+          notifyListeners();
+        }
       });
     }
   }
-
-  /*List<Category> _ratings = [];
-
-  //create getter to make it encapsulated
-  List<Category> getRatings() {
-    return _ratings;
-  }
-
-  //create a method that fetched the data initially
-  Future<void> getRatingsCollectionFromFirebase(
-      BuildContext context, RatedItems item) async {
-    Category itemref = item.category as Items;
-    //if the firebase is initialize
-    //retrieve an instance from cloud
-
-    FirebaseFirestore.instance
-        .collection('ratings')
-        //grab doc with the authenticated user
-        .doc('${itemref.itemcategoryName}')
-        //hook up data and snapshot it
-        .get()
-        .then((DocumentSnapshot snapshot) {});
-  }*/
-  //method to add rating
-  /*void rateItem(BuildContext context, RatedItems item) {
-    /*var collection = FirebaseFirestore.instance.collection('bywayboracay_data');
-    var category = collection.doc('categories');
-
-    var data = category as Map;
-    var categoriesData = data['categories'] as List<dynamic>;
-
-    var dataset = categoriesData as Map;
-    var itemcategoriesData = dataset['items'] as List<dynamic>;*/
-    Category itemref = item.category as Items;
-
-    FirebaseFirestore.instance
-        .collection('ratings')
-        .doc('${itemref.itemcategoryName}')
-        .update({"${itemref.name}.itemrating": FieldValue.increment(1)});
-    FirebaseFirestore.instance
-        .collection('ratings')
-        .doc('${itemref.itemcategoryName}')
-        .update({"${itemref.name}.itemratingnum": FieldValue.increment(1)});
-  }*/
 }

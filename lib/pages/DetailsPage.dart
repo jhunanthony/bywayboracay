@@ -24,6 +24,7 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+
 import '../models/RatedItemsModel.dart';
 
 const double CAMERA_ZOOM_DETAILSPAGE = 16;
@@ -55,7 +56,6 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   //indicator if button is liked or not
-  //bool isLiked = false;
 
   final _imagepageController = PageController(viewportFraction: 0.877);
   @override
@@ -225,7 +225,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
                               //check is it is saved then display regular button
 
-                              if (like.isLiked(widget.items)) {
+                              if (!like.isLiked(widget.items)) {
                                 likedtext = Text(
                                   'Like',
                                   style: TextStyle(
@@ -257,7 +257,8 @@ class _DetailsPageState extends State<DetailsPage> {
                           color: Colors.white,
                           iconSize: 25,
                           splashColor: Colors.blue[300],
-                          onPressed: () {
+                          onPressed: () async {
+                           
                             //likeService.rateItem(context, LikedItem(category: widget.items));
                           },
                         ),
@@ -379,35 +380,48 @@ class _DetailsPageState extends State<DetailsPage> {
                               userDocument["${widget.items.name}.itemratingnum"]
                                   .toString());
                           double rating = itemrating / itemratingnum;
-                        
-                          return Visibility(
-                            visible:  rating>0,
-                            child: Row(
-                              children: [
-                                RatingBarIndicator(
-                                  rating: rating,
-                                  itemBuilder: (context, index) => Icon(
-                                    Icons.eco_rounded,
-                                    color: Colors.green[400],
-                                  ),
-                                  itemCount: 5,
-                                  itemSize: 25.0,
-                                  direction: Axis.horizontal,
-                                  unratedColor: Colors.grey[400],
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  "${rating.toStringAsFixed(1)} • ${userDocument["${widget.items.name}.itemratingnum"].toString()} reviews",
-                                  style: TextStyle(
-                                    color: Colors.green[400],
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
+
+                          return rating > 0
+                              ? Row(
+                                  children: [
+                                    RatingBarIndicator(
+                                      rating: rating,
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.eco_rounded,
+                                        color: Colors.green[400],
+                                      ),
+                                      itemCount: 5,
+                                      itemSize: 25.0,
+                                      direction: Axis.horizontal,
+                                      unratedColor: Colors.grey[400],
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "${rating.toStringAsFixed(1)} • ${userDocument["${widget.items.name}.itemratingnum"].toString()} reviews",
+                                      style: TextStyle(
+                                        color: Colors.green[400],
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : rating == null
+                                  ? Text(
+                                      'Unrated',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.green,
+                                      ),
+                                    )
+                                  : Text(
+                                      'Unrated',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.green,
+                                      ),
+                                    );
                         } else if (snapshot.hasError) {
                           return Text(
                             'Unrated',
@@ -677,8 +691,7 @@ class _DetailsPageState extends State<DetailsPage> {
               //add contacts
 
               Padding(
-                padding:
-                    EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
+                padding: EdgeInsets.only(left: 20, right: 5, top: 5, bottom: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -722,23 +735,30 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
 
                     //column for email and website
+
                     Row(
                       children: [
                         Visibility(
                           visible: widget.items.itememail != "none" ||
                               widget.items.itememail != null,
-                          child: InkWell(
-                              borderRadius: BorderRadius.circular(30),
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                child: Text('Email',
-                                    style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 14,
-                                        decoration: TextDecoration.underline,
-                                        fontWeight: FontWeight.bold)),
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.white, //background
+                                onPrimary: Colors.blue,
+                                //foreground
+                                shape: CircleBorder(),
                               ),
-                              onTap: () async {
+                              child: Container(
+                                  padding: EdgeInsets.only(
+                                      top: 3, bottom: 3, left: 5, right: 5),
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(Icons.email_rounded,
+                                      size: 20, color: Colors.blue)),
+                              //capture the success flag with async and await
+                              onPressed: () async {
                                 String mailto = "mailto:" +
                                     widget.items.itememail +
                                     "?subject=Inquiry&body=Greetings!";
@@ -749,24 +769,27 @@ class _DetailsPageState extends State<DetailsPage> {
                                 }
                               }),
                         ),
-                        SizedBox(
-                          width: 5,
-                        ),
                         Visibility(
                           visible: widget.items.itemwebsite != "none" ||
                               widget.items.itemwebsite != null,
-                          child: InkWell(
-                              borderRadius: BorderRadius.circular(30),
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                child: Text('Website',
-                                    style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 14,
-                                        decoration: TextDecoration.underline,
-                                        fontWeight: FontWeight.bold)),
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.white, //background
+                                onPrimary: Colors.blue,
+                                //foreground
+                                shape: CircleBorder(),
                               ),
-                              onTap: () async {
+                              child: Container(
+                                  padding: EdgeInsets.only(
+                                      top: 3, bottom: 3, left: 5, right: 5),
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(CupertinoIcons.globe,
+                                      size: 20, color: Colors.blue)),
+                              //capture the success flag with async and await
+                              onPressed: () async {
                                 String url = widget.items.itemwebsite;
                                 if (await canLaunch(url)) {
                                   await launch(url);
@@ -777,10 +800,10 @@ class _DetailsPageState extends State<DetailsPage> {
                         ),
                       ],
                     ),
-
-                    //column for button email and web
                   ],
                 ),
+
+                //column for button email and web
               ),
 
               Padding(
@@ -803,13 +826,13 @@ class _DetailsPageState extends State<DetailsPage> {
                           return Consumer<RatingService>(
                               builder: (context, rating, child) {
                             //check if saved
-                            Widget renderedRatedButton;
+                            Widget renderedButton;
                             //for ratings
 
                             //check is it is saved then display regular button
 
                             if (!rating.isRated(widget.items)) {
-                              renderedRatedButton = ElevatedButton(
+                              renderedButton = ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     padding: EdgeInsets.all(3),
                                     primary: Colors.white, //background
@@ -838,7 +861,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                       context: context,
                                       builder: (context) => AlertDialog(
                                             title: Text(
-                                                'Rate this item based on how sustainable its practices to the environment and tourism.'),
+                                                'Rate this item based on how effective and beneficial its sustainable practices is and how clean the areas are.'),
                                             content: SingleChildScrollView(
                                               child: Column(
                                                 children: [
@@ -939,7 +962,6 @@ class _DetailsPageState extends State<DetailsPage> {
                                                               widget.items),
                                                       itemratingval,
                                                       comment.text);
-
                                                   Navigator.pop(context);
                                                   showSimpleNotification(
                                                     Text(
@@ -967,7 +989,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 },
                               );
                             } else {
-                              renderedRatedButton = Container(
+                              renderedButton = Container(
                                 padding: EdgeInsets.all(10),
                                 child: Row(
                                   children: [
@@ -981,7 +1003,7 @@ class _DetailsPageState extends State<DetailsPage> {
                               );
                             }
 
-                            return renderedRatedButton;
+                            return renderedButton;
                           });
                         }
                         return SizedBox();
@@ -1002,7 +1024,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           .snapshots(),
                       builder:
                           (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                         if (snapshot.hasData) {
+                        if (snapshot.hasData) {
                           var userDocument = snapshot.data;
                           var path = userDocument["${widget.items.name}.sets"];
                           /*var username = path[0];
@@ -1019,70 +1041,89 @@ class _DetailsPageState extends State<DetailsPage> {
                                     style: TextStyle(
                                         color: Colors.blue, fontSize: 14));
                           );*/
-                          return ListView.builder(
-                              itemCount: path.length,
-                              itemBuilder: (context, index) {
-                                var username = path[index];
-                                double userrating =
-                                    double.parse(username["rating"].toString());
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(children: [
-                                    ListTile(
-                                        leading: Text(
-                                            "${username["rating"].toString()}",
-                                            style: TextStyle(
-                                                color: Colors.green[400],
-                                                fontSize: 20)),
-                                        title: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            RatingBarIndicator(
-                                              rating: userrating,
-                                              itemBuilder: (context, index) =>
-                                                  Icon(
-                                                Icons.eco_rounded,
-                                                color: Colors.green[400],
-                                              ),
-                                              itemCount: 5,
-                                              itemSize: 14.0,
-                                              direction: Axis.horizontal,
-                                              unratedColor: Colors.grey[400],
-                                            ),
-                                            Text(
-                                                "${username["username"].toString()}",
+                          return path.length > 0
+                              ? ListView.builder(
+                                  itemCount: path.length,
+                                  itemBuilder: (context, index) {
+                                    var username = path[index];
+                                    double userrating = double.parse(
+                                        username["rating"].toString());
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(children: [
+                                        ListTile(
+                                            leading: Text(
+                                                "${username["rating"].toString()}",
                                                 style: TextStyle(
-                                                    color: Colors.grey[400],
-                                                    fontSize: 12)),
-                                          ],
+                                                    color: Colors.green[400],
+                                                    fontSize: 20)),
+                                            title: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                RatingBarIndicator(
+                                                  rating: userrating,
+                                                  itemBuilder:
+                                                      (context, index) => Icon(
+                                                    Icons.eco_rounded,
+                                                    color: Colors.green[400],
+                                                  ),
+                                                  itemCount: 5,
+                                                  itemSize: 14.0,
+                                                  direction: Axis.horizontal,
+                                                  unratedColor:
+                                                      Colors.grey[400],
+                                                ),
+                                                Text(
+                                                    "${username["username"].toString()}",
+                                                    style: TextStyle(
+                                                        color: Colors.grey[400],
+                                                        fontSize: 12)),
+                                              ],
+                                            ),
+                                            subtitle: Text(
+                                                "${username["comment"].toString()}",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14)),
+                                            trailing: Wrap(
+                                                direction: Axis.vertical,
+                                                spacing:
+                                                    10, // space between two icons
+                                                children: <Widget>[
+                                                  ClipOval(
+                                                      child: Image.network(
+                                                          "${username["userimg"].toString()}",
+                                                          width: 35,
+                                                          height: 35,
+                                                          fit: BoxFit.cover)),
+                                                  SizedBox()
+                                                ])),
+                                        Divider(
+                                          thickness: 1,
+                                          color: Colors.grey[400],
                                         ),
-                                        subtitle: Text(
-                                            "${username["comment"].toString()}",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 14)),
-                                        trailing: Wrap(
-                                            direction: Axis.vertical,
-                                            spacing:
-                                                10, // space between two icons
-                                            children: <Widget>[
-                                              ClipOval(
-                                                  child: Image.network(
-                                                      "${username["userimg"].toString()}",
-                                                      width: 35,
-                                                      height: 35,
-                                                      fit: BoxFit.cover)),
-                                              SizedBox()
-                                            ])),
-                                    Divider(
-                                      thickness: 1,
-                                      color: Colors.grey[400],
-                                    ),
-                                  ]),
-                                );
-                              });
-                        }else if (snapshot.hasError) {
+                                      ]),
+                                    );
+                                  })
+                              : path.length == null
+                                  ? Center(
+                                      child: Text(
+                                      'No reviews',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.green,
+                                      ),
+                                    ))
+                                  : Center(
+                                      child: Text(
+                                      'No reviews',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.green,
+                                      ),
+                                    ));
+                        } else if (snapshot.hasError) {
                           return Text(
                             'Unrated',
                             style: TextStyle(
@@ -1090,9 +1131,8 @@ class _DetailsPageState extends State<DetailsPage> {
                               color: Colors.green,
                             ),
                           );
-                        }
-
-                        else return Text('Loading');
+                        } else
+                          return Text('Loading');
                       }),
                 ),
               ),

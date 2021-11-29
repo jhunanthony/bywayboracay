@@ -130,7 +130,8 @@ class LikeService extends ChangeNotifier {
           .then((DocumentSnapshot snapshot) {
         //extract data
 
-        Map<String, dynamic> likedItems =
+        if (snapshot.exists){
+          Map<String, dynamic> likedItems =
             snapshot.get(FieldPath(['LikedItems']));
 
         catService.getCategories().forEach((Category cat) {
@@ -153,6 +154,7 @@ class LikeService extends ChangeNotifier {
           });
         });
         notifyListeners();
+        }
       });
     }
   }

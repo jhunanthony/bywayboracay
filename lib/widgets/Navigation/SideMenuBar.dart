@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
+import '../../services/ratedservice.dart';
+
 //create a side menu bar
 
 class SideMenuBar extends StatelessWidget {
@@ -26,6 +28,7 @@ class SideMenuBar extends StatelessWidget {
 
     //bool if a user is currently logged in
     bool userLoggedIn = loginService.loggedInUserModel != null;
+    RatingService ratingService = Provider.of<RatingService>(context, listen: false);
 
     return Scaffold(
         body: Container(
@@ -71,7 +74,22 @@ class SideMenuBar extends StatelessWidget {
                             Text('Hi, ' + userName,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 15))
+                                    color: Colors.white, fontSize: 15)),
+                                    Consumer<RatingService>(
+            //a function called when notifier changes
+            builder: (context, rating, child) {
+              return  Visibility(
+                  visible: rating.rateditems.length > 0,
+                  child: Text(
+                    'You have ${rating.rateditems.length} contribution.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white,
+                    ),
+                  ),
+                );
+
+            }),
                           ]),
                     ),
                   ),

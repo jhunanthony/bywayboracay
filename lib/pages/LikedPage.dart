@@ -9,6 +9,7 @@ import 'package:bywayborcay/pages/DetailsPage.dart';
 
 import 'package:bywayborcay/services/likeservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
+import 'package:bywayborcay/services/ratedservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/auth.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/datepicker.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/utils.dart';
@@ -53,6 +54,7 @@ class _LikedPageState extends State<LikedPage> {
     //import like service provider
 
     LikeService likeService = Provider.of<LikeService>(context, listen: false);
+    
 
     //bool if a user is currently logged in
 
@@ -161,6 +163,7 @@ class _LikedPageState extends State<LikedPage> {
             ),
           ],
         ),
+        
         Expanded(
           child: Consumer<LikeService>(
             //a function called when notifier changes

@@ -581,56 +581,57 @@ class Highlights extends StatelessWidget {
                                             top: 10,
                                             bottom: 0),
                                         content: Stack(
-                                          children: [
-                                            Positioned.fill(
-                                              child: Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.only(
-                                                        bottomLeft:
-                                                            Radius.circular(
-                                                                2.5),
-                                                        bottomRight:
-                                                            Radius.circular(
-                                                                2.5),
-                                                      ),
-                                                      color:
-                                                          _highlightmodel[index]
-                                                              .color)),
-                                            ),
-                                            Positioned(
-                                              top: 10,
-                                              left: 10,
-                                              right: 10,
-                                              child: Column(
-                                                children: [
-                                                  ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      child: Container(
-                                                          height: 200,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            image: DecorationImage(
-                                                                image: AssetImage(
-                                                                    'assets/images/${_highlightmodel[index].imgName}.jpg'),
-                                                                fit: BoxFit
-                                                                    .cover),
-                                                          ))),
-                                                  SizedBox(height: 10),
-                                                  Text(
-                                                      "${_highlightmodel[index].caption}",
-                                                      textAlign:
-                                                          TextAlign.justify,
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 15)),
-                                                ],
+                                            children: [
+                                              Positioned.fill(
+                                                child: Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  2.5),
+                                                          bottomRight:
+                                                              Radius.circular(
+                                                                  2.5),
+                                                        ),
+                                                        color:
+                                                            _highlightmodel[index]
+                                                                .color)),
                                               ),
-                                            ),
-                                          ],
-                                        ));
+                                              Positioned(
+                                                top: 10,
+                                                left: 10,
+                                                right: 10,
+                                                child: Column(
+                                                  children: [
+                                                    ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10),
+                                                        child: Container(
+                                                            height: 200,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              image: DecorationImage(
+                                                                  image: AssetImage(
+                                                                      'assets/images/${_highlightmodel[index].imgName}.jpg'),
+                                                                  fit: BoxFit
+                                                                      .cover),
+                                                            ))),
+                                                    SizedBox(height: 10),
+                                                    Text(
+                                                        "${_highlightmodel[index].caption}",
+                                                        textAlign:
+                                                            TextAlign.justify,
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 15)),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
                                   });
                             },
                             child: Container(
