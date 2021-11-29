@@ -15,6 +15,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_social_content_share/flutter_social_content_share.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -23,7 +24,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
 
 import '../models/RatedItemsModel.dart';
 
@@ -257,9 +257,159 @@ class _DetailsPageState extends State<DetailsPage> {
                           color: Colors.white,
                           iconSize: 25,
                           splashColor: Colors.blue[300],
-                          onPressed: () async {
-                           
-                            //likeService.rateItem(context, LikedItem(category: widget.items));
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                    title: Text('Share To'),
+                                    content: SingleChildScrollView(
+                                        child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            //share to facebook
+                                            ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  primary:
+                                                      Colors.white, //background
+                                                  onPrimary: Colors.blue,
+                                                  //foreground
+                                                  shape: CircleBorder(),
+                                                ),
+                                                child: Container(
+                                                    padding: EdgeInsets.only(
+                                                        top: 3,
+                                                        bottom: 3,
+                                                        left: 5,
+                                                        right: 5),
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Icon(
+                                                        Icons.facebook_rounded,
+                                                        size: 20,
+                                                        color: Colors.blue)),
+                                                //capture the success flag with async and await
+                                                onPressed: () async {
+                                                  FlutterSocialContentShare.share(
+                                                      type: ShareType
+                                                          .facebookWithoutImage,
+                                                      url:
+                                                          "${widget.items.itemwebsite}",
+                                                      quote:
+                                                          "Hey, check this awesome place! ${widget.items.name}");
+                                                }),
+                                            ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  primary:
+                                                      Colors.white, //background
+                                                  onPrimary: Colors.blue,
+                                                  //foreground
+                                                  shape: CircleBorder(),
+                                                ),
+                                                child: Container(
+                                                    padding: EdgeInsets.only(
+                                                        top: 3,
+                                                        bottom: 3,
+                                                        left: 5,
+                                                        right: 5),
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Icon(
+                                                        Icons.camera_rounded,
+                                                        size: 20,
+                                                        color: Colors.blue)),
+                                                //capture the success flag with async and await
+                                                onPressed: () async {
+                                                  FlutterSocialContentShare
+                                                      .share(
+                                                    type: ShareType
+                                                        .instagramWithImageUrl,
+                                                    imageUrl:
+                                                        "${widget.items.imgName}",
+                                                    quote:
+                                                        "Hey, check this awesome place! ${widget.items.name}",
+                                                  );
+                                                }),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  primary:
+                                                      Colors.white, //background
+                                                  onPrimary: Colors.blue,
+                                                  //foreground
+                                                  shape: CircleBorder(),
+                                                ),
+                                                child: Container(
+                                                    padding: EdgeInsets.only(
+                                                        top: 3,
+                                                        bottom: 3,
+                                                        left: 5,
+                                                        right: 5),
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Icon(
+                                                        Icons.sms_rounded,
+                                                        size: 20,
+                                                        color: Colors.blue)),
+                                                //capture the success flag with async and await
+                                                onPressed: () async {
+                                                  FlutterSocialContentShare
+                                                      .shareOnSMS(recipients: [
+                                                    "xxxxxx"
+                                                  ], text: "Hey, check this awesome place! ${widget.items.name}, ${widget.items.itemwebsite}");
+                                                }),
+                                            ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  primary:
+                                                      Colors.white, //background
+                                                  onPrimary: Colors.blue,
+                                                  //foreground
+                                                  shape: CircleBorder(),
+                                                ),
+                                                child: Container(
+                                                    padding: EdgeInsets.only(
+                                                        top: 3,
+                                                        bottom: 3,
+                                                        left: 5,
+                                                        right: 5),
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Icon(
+                                                        Icons.email_rounded,
+                                                        size: 20,
+                                                        color: Colors.blue)),
+                                                //capture the success flag with async and await
+                                                onPressed: () async {
+                                                  FlutterSocialContentShare.shareOnEmail(
+                                                      recipients: [
+                                                        "xxxx.xxx@gmail.com"
+                                                      ],
+                                                      subject:
+                                                          "Hey, check this awesome place! ${widget.items.name}",
+                                                      body:
+                                                          "${widget.items.itemwebsite}",
+                                                      isHTML:
+                                                          true); //default isHTML: False
+                                                }),
+                                          ],
+                                        )
+                                      ],
+                                    ))));
                           },
                         ),
                         SizedBox(
@@ -466,47 +616,6 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                         ),
                         SizedBox(width: 10),
-                        //show rating
-
-                        /*Visibility(
-                                  visible: widget.items.itemrating1 == null
-                                      ? false
-                                      : true,
-                                  child: Row(
-                                    children: <Widget>[
-                                      Text(
-                                        "${widget.items.itemratingname} ",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                      //for rating
-                                      RatingBarIndicator(
-                                        rating: widget.items.itemrating1,
-                                        itemBuilder: (context, index) => Icon(
-                                          Icons.star_rounded,
-                                          color: Colors.yellow[800],
-                                        ),
-                                        itemCount: 5,
-                                        itemSize: 12.0,
-                                        direction: Axis.horizontal,
-                                        unratedColor: Colors.transparent,
-                                      ),
-                                      Text(
-                                        " " +
-                                            widget.items.itemrating1.toString(),
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.yellow[800],
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      )
-                                    ],
-                                  ),
-                                ),*/
                       ])),
 
               //Use EXapnding text widget
