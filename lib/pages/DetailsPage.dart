@@ -300,7 +300,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                       url:
                                                           "${widget.items.itemwebsite}",
                                                       quote:
-                                                          "Hey, check this awesome place! ${widget.items.name}");
+                                                          "Hey, check this awesome place at Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}.");
                                                 }),
                                             ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
@@ -333,7 +333,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                     imageUrl:
                                                         "${widget.items.imgName}",
                                                     quote:
-                                                        "Hey, check this awesome place! ${widget.items.name}",
+                                                        "Hey, check this awesome place at Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}.",
                                                   );
                                                 }),
                                           ],
@@ -369,7 +369,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   FlutterSocialContentShare
                                                       .shareOnSMS(recipients: [
                                                     "xxxxxx"
-                                                  ], text: "Hey, check this awesome place! ${widget.items.name}, ${widget.items.itemwebsite}");
+                                                  ], text: "Hey, check this awesome place Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}, ${widget.items.itemwebsite}");
                                                 }),
                                             ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
@@ -400,7 +400,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                         "xxxx.xxx@gmail.com"
                                                       ],
                                                       subject:
-                                                          "Hey, check this awesome place! ${widget.items.name}",
+                                                          "Hey, check this awesome place at Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}.",
                                                       body:
                                                           "${widget.items.itemwebsite}",
                                                       isHTML:
@@ -969,8 +969,10 @@ class _DetailsPageState extends State<DetailsPage> {
                                   showDialog(
                                       context: context,
                                       builder: (context) => AlertDialog(
-                                            title: Text(
-                                                'Rate this item based on how effective and beneficial its sustainable practices is and how clean the areas are.'),
+                                            title: Text("Green Rating",
+                                                style: TextStyle(
+                                                    fontSize: 25,
+                                                    color: Colors.green[400])),
                                             content: SingleChildScrollView(
                                               child: Column(
                                                 children: [
@@ -1008,6 +1010,15 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   SizedBox(
                                                     height: 10,
                                                   ),
+                                                  Text(
+                                                      "Tell us about the socio-economic impact provided by this business.",
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          color: Colors.grey)),
+
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
                                                   //field to comment
                                                   TextField(
                                                     controller: comment,
@@ -1017,7 +1028,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                     decoration: InputDecoration(
                                                       labelStyle: TextStyle(
                                                           color: Colors.grey),
-                                                      labelText: 'Comment',
+                                                      labelText: 'Review',
                                                       focusedBorder:
                                                           OutlineInputBorder(
                                                         borderSide: BorderSide(
@@ -1043,6 +1054,23 @@ class _DetailsPageState extends State<DetailsPage> {
                                                       ),
                                                     ),
                                                   ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                      "You may talk about; Environmental Awareness, Water/Energy/Paper Savings, Food Waste Reduction, Proper Waste Management, Cultural Promotion, Employees well-being, Support on Charitable Projects, Responsible Tourist Advice, Child Protection, Local Support, etc. ",
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          color: Colors.grey)),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                      "Note: This is not a certification. No on-site inspection has been conducted nor an assesment by an organization. This is a user-based peer ratings system that gathers user perspectives on how the business deals with sustainable tourism based on the user's personal experiences.",
+                                                      style: TextStyle(
+                                                          fontSize: 10,
+                                                          color:
+                                                              Colors.red[400])),
                                                 ],
                                               ),
                                             ),
