@@ -6,12 +6,11 @@ import 'DetailImages.dart';
 //create a model that represents subcat that derives from category model
 class Items extends Category {
   List<DetailsImages> detailsimages;
-    int amount;
-
+  int amount;
 
   Items({
     this.detailsimages,
-     this.amount = 0,
+    this.amount = 0,
     String itemname,
     Color itemcolor,
     String itemimgName,
@@ -23,16 +22,9 @@ class Items extends Category {
     double itemlong,
     String itemcontactNumber,
     String itemsubcategoryName,
-
     String itemcategoryName,
     String itememail,
     String itemwebsite,
-   
-  
- 
-    double itemrating1,
-    String itemratingname,
-    
     String itemopenTime,
     double itempriceMin,
   }) :
@@ -40,36 +32,28 @@ class Items extends Category {
         super(
           //pass additional data
           name: itemname,
-        color: itemcolor,
+          color: itemcolor,
           imgName: itemimgName,
-          
+
           /*itemname: itemname,
           itemiconName: itemiconName,
           itemcolor: itemcolor,
           itemimgName: itemimgName,*/
-
           itemdescription: itemdescription,
           itemaddress: itemaddress,
           itemstation: itemstation,
           itemlat: itemlat,
           itemlong: itemlong,
           itemcontactNumber: itemcontactNumber,
-
           itemsubcategoryName: itemsubcategoryName,
           itemcategoryName: itemcategoryName,
           itememail: itememail,
           itemwebsite: itemwebsite,
-          
-        
-    
-          itemrating1: itemrating1,
-          itemratingname: itemratingname,
           itemopenTime: itemopenTime,
           itempriceMin: itempriceMin,
         );
 
-
-        //factory constructor
+  //factory constructor
   factory Items.fromJson(Map<String, dynamic> json) {
     return Items(
       amount: 0,
@@ -80,17 +64,12 @@ class Items extends Category {
       itemdescription: json['itemdescription'],
       detailsimages: DetailsImages.fromJsonArray(json['itemdetailsimages']),
       itememail: json['itememail'],
-
       itemimgName: json['itemimgName'],
       itemlat: double.parse(json['itemlat']),
       itemlong: double.parse(json['itemlong']),
-
       itemname: json['itemname'],
       itemopenTime: json['itemopenTime'],
       itempriceMin: double.parse(json['itempriceMin']),
-      itemrating1: double.parse(json['itemrating1']),
-      itemratingname: json['itemratingname'],
-     
       itemstation: json['itemstation'],
       itemsubcategoryName: json['itemsubcategoryName'],
       itemwebsite: json['itemwebsite'],

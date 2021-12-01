@@ -11,7 +11,7 @@ class Category {
   List<Items> items;
 
   //add additional holders
- String itemname;
+  String itemname;
 
   Color itemcolor;
   String itemimgName;
@@ -26,11 +26,7 @@ class Category {
   String itemsubcategoryName;
   String itememail;
   String itemwebsite;
- 
- 
- 
-  double itemrating1;
-  String itemratingname;
+
   String itemopenTime;
   double itempriceMin;
 
@@ -40,9 +36,7 @@ class Category {
     this.color,
     this.imgName,
     this.items,
-
     this.itemname,
-
     this.itemcolor,
     this.itemimgName,
     this.itemdescription,
@@ -52,25 +46,17 @@ class Category {
     this.itemlong,
     this.itemcontactNumber,
     this.itemcategoryName,
-
     this.itemsubcategoryName,
     this.itememail,
     this.itemwebsite,
-   
-  
-   
-    this.itemrating1,
-     this.itemratingname,
     this.itemopenTime,
     this.itempriceMin,
   });
 
   //factory method to mapp json structure and hidrate all the value
   factory Category.fromJson(Map<String, dynamic> json) {
-    
     return Category(
       color: Color(int.parse('0xFF' + json['color'])),
-
       name: json['name'],
       imgName: json['imgName'],
       items: Items.fromJsonArray(json['items']),
