@@ -695,13 +695,13 @@ class _DetailsPageState extends State<DetailsPage> {
                       Icon(
                         Icons.location_pin,
                         color: Colors.blue,
-                        size: 25,
+                        size: 20,
                       ),
                       SizedBox(width: 5),
                       Text(
                         widget.items.itemaddress,
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 14,
                             color: Colors.blue,
                             fontWeight: FontWeight.w300),
                       ),

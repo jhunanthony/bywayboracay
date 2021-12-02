@@ -516,14 +516,13 @@ class _ItemsPageState extends State<ItemsPage> {
                                                 SizedBox(
                                                   height: 5,
                                                 ),
-                                                Row(
-                                                  children: [
-                                                    Icon(
+                                                
+                                                    /*Icon(
                                                       Icons.location_pin,
                                                       color: Colors.white,
                                                       size: 10,
                                                     ),
-                                                    SizedBox(width: 3),
+                                                    SizedBox(width: 3),*/
                                                     Text(
                                                       this
                                                           .widget
@@ -538,8 +537,7 @@ class _ItemsPageState extends State<ItemsPage> {
                                                           fontWeight:
                                                               FontWeight.w300),
                                                     ),
-                                                  ],
-                                                ),
+                                                  
                                               ]),
                                         ),
                                         Positioned(

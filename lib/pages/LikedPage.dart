@@ -54,7 +54,6 @@ class _LikedPageState extends State<LikedPage> {
     //import like service provider
 
     LikeService likeService = Provider.of<LikeService>(context, listen: false);
-    
 
     //bool if a user is currently logged in
 
@@ -94,20 +93,14 @@ class _LikedPageState extends State<LikedPage> {
                   });
                 })),*/
         SizedBox(
-          height: 15,
+          height: 5,
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Text(
-                'Hi $userName',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.grey[700],
-                ),
-              ),
-              SizedBox(height: 10),
+              
+              SizedBox(height: 5),
               Consumer<LikeService>(
                   //a function called when notifier changes
                   builder: (context, like, child) {
@@ -163,7 +156,6 @@ class _LikedPageState extends State<LikedPage> {
             ),
           ],
         ),
-        
         Expanded(
           child: Consumer<LikeService>(
             //a function called when notifier changes
@@ -182,160 +174,165 @@ class _LikedPageState extends State<LikedPage> {
                     //for each item create a container to hold the values
 
                     Container(
-                        padding: EdgeInsets.all(10),
-                        margin: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 10,
-                                  offset: Offset.zero)
-                            ]),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Stack(
-                              children: [
-                                ClipOval(
-                                    child: Image.network(itemslistinfo.imgName,
-                                        width: 50,
-                                        height: 50,
-                                        fit: BoxFit.cover)),
-                                Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    child: CategoryIcon(
-                                      color: itemslistinfo.color,
-                                      iconName: itemslistinfo.itemcategoryName,
-                                      size: 20,
-                                    )),
-                              ],
-                            ),
-                            SizedBox(width: 20),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                          padding: EdgeInsets.all(10),
+                          margin: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 10,
+                                    offset: Offset.zero)
+                              ]),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Stack(
                                 children: [
-                                  Text(
-                                    itemslistinfo.name,
-                                    style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    itemslistinfo.itemaddress,
-                                    style: TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  Text(
-                                    '₱ ' +
-                                        itemslistinfo.itempriceMin
-                                            .toStringAsFixed(2),
-                                    style: TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 12,
-                                    ),
-                                  ),
+                                  ClipOval(
+                                      child: Image.network(itemslistinfo.imgName,
+                                          width: 50,
+                                          height: 50,
+                                          fit: BoxFit.cover)),
+                                  Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: CategoryIcon(
+                                        color: itemslistinfo.color,
+                                        iconName: itemslistinfo.itemcategoryName,
+                                        size: 20,
+                                      )),
                                 ],
                               ),
-                            ),
-                            Column(
-                              children: [
-                                GestureDetector(
-                                  child: Icon(
-                                    Icons.highlight_off,
-                                    color: Colors.blue,
-                                    size: 25,
-                                  ),
-                                  onTap: () {
-                                    like.remove(context, item);
-                                  },
+                              SizedBox(width: 20),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      itemslistinfo.name,
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      itemslistinfo.itemaddress,
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    Text(
+                                      '₱ ' +
+                                          itemslistinfo.itempriceMin
+                                              .toStringAsFixed(2),
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                GestureDetector(
-                                  child: Icon(
-                                    CupertinoIcons.calendar,
-                                    color: Colors.blue[200],
-                                    size: 25,
-                                  ),
-                                  onTap: () => _showAction(item),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                GestureDetector(
-                                    onTap: () async {
-                                      BitmapDescriptor destinationIcon =
-                                          await BitmapDescriptor.fromAssetImage(
-                                              ImageConfiguration(
-                                                  devicePixelRatio: 0.2),
-                                              'assets/images/' +
-                                                  itemslistinfo.itemcategoryName +
-                                                  '.png');
-                                      showDialog<void>(
-                                          context: context,
-                                          builder: (context) {
-                                            Iterable _markers =
-                                                Iterable.generate(
-                                                    likeditems.length, (index) {
-                                              return Marker(
-                                                  markerId: MarkerId(
-                                                      itemslistinfo.name),
-                                                  position: LatLng(
-                                                      itemslistinfo.itemlat,
-                                                      itemslistinfo.itemlong),
-                                                  infoWindow: InfoWindow(
-                                                      title:
-                                                          itemslistinfo.name),
-                                                  icon: destinationIcon);
-                                              //
-                                            });
-
-                                            return AlertDialog(
-                                                title: Text("Map Search"),
-                                                contentPadding:
-                                                    EdgeInsets.all(0),
-                                                content: Stack(
-                                                  children: [
-                                                    Positioned.fill(
-                                                      child: GoogleMap(
-                                                        myLocationEnabled: true,
-                                                        mapType: MapType.normal,
-                                                        initialCameraPosition:
-                                                            _kGooglePlex,
-                                                        onMapCreated:
-                                                            (GoogleMapController
-                                                                controller) {
-                                                          googlemapcontroller
-                                                              .complete(
-                                                                  controller);
-                                                        },
-                                                        markers:
-                                                            Set.from(_markers),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ));
-                                          });
-                                    },
+                              ),
+                              Column(
+                                children: [
+                                  GestureDetector(
                                     child: Icon(
-                                      Icons.map,
-                                      size: 25,
+                                      Icons.highlight_off,
                                       color: Colors.blue,
-                                    )),
-                              ],
-                            )
-                          ],
-                        )),
+                                      size: 25,
+                                    ),
+                                    onTap: () {
+                                      like.remove(context, item);
+                                    },
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  GestureDetector(
+                                    child: Icon(
+                                      CupertinoIcons.calendar,
+                                      color: Colors.blue[200],
+                                      size: 25,
+                                    ),
+                                    onTap: () => _showAction(item),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  GestureDetector(
+                                      onTap: () async {
+                                        BitmapDescriptor destinationIcon =
+                                            await BitmapDescriptor.fromAssetImage(
+                                                ImageConfiguration(
+                                                    devicePixelRatio: 0.2),
+                                                'assets/images/' +
+                                                    itemslistinfo
+                                                        .itemcategoryName +
+                                                    '.png');
+                                        showDialog<void>(
+                                            context: context,
+                                            builder: (context) {
+                                              Iterable _markers =
+                                                  Iterable.generate(
+                                                      likeditems.length, (index) {
+                                                return Marker(
+                                                    markerId: MarkerId(
+                                                        itemslistinfo.name),
+                                                    position: LatLng(
+                                                        itemslistinfo.itemlat,
+                                                        itemslistinfo.itemlong),
+                                                    infoWindow: InfoWindow(
+                                                        title:
+                                                            itemslistinfo.name),
+                                                    icon: destinationIcon);
+                                                //
+                                              });
+
+                                              return AlertDialog(
+                                                  title: Text("Map Search"),
+                                                  contentPadding:
+                                                      EdgeInsets.all(0),
+                                                  content: Stack(
+                                                    children: [
+                                                      Positioned.fill(
+                                                        child: GoogleMap(
+                                                          myLocationEnabled: true,
+                                                          mapType: MapType.normal,
+                                                          initialCameraPosition:
+                                                              _kGooglePlex,
+                                                          onMapCreated:
+                                                              (GoogleMapController
+                                                                  controller) {
+                                                            googlemapcontroller
+                                                                .complete(
+                                                                    controller);
+                                                          },
+                                                          markers:
+                                                              Set.from(_markers),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ));
+                                            });
+                                      },
+                                      child: Icon(
+                                        Icons.map,
+                                        size: 25,
+                                        color: Colors.blue,
+                                      )),
+                                ],
+                              )
+                            ],
+                          )),
+                    
                   );
                 });
+
+               
+                
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -639,7 +636,11 @@ class _LikedPageState extends State<LikedPage> {
     List temp = await FunctionUtils().eventUsers(emails);
     int today = FunctionUtils().calculateDifference(_selectedDay);
     if (today < 0) {
-      showSimpleNotification(Text("You cannot create a event before today!"),  background: Colors.white, position: NotificationPosition.bottom,);
+      showSimpleNotification(
+        Text("You cannot create a event before today!"),
+        background: Colors.white,
+        position: NotificationPosition.bottom,
+      );
     } else {
       for (int i = 0; i < temp.length; i++) {
         List events = [];
@@ -669,18 +670,21 @@ class _LikedPageState extends State<LikedPage> {
         if (max <= 50) {
           if (data.exists) {
             snapShot.update({"EventList": FieldValue.arrayUnion(events)});
-            showSimpleNotification(Text("Event Added", style: TextStyle(color: Colors.blue)),
-                background: Colors.white, position: NotificationPosition.bottom,);
+            showSimpleNotification(
+              Text("Event Added", style: TextStyle(color: Colors.blue)),
+              background: Colors.white,
+              position: NotificationPosition.bottom,
+            );
             /*FunctionUtils()
                 .sendEmail(email, date, events[0]["time"], emails[0]);*/
           } else {
             snapShot.set({'EventList': events});
             showSimpleNotification(
-                Text(
-                  "Event Added", style: TextStyle(color: Colors.blue)
-                ),
-                background: Colors.white, position: NotificationPosition.bottom,);
-           /* FunctionUtils()
+              Text("Event Added", style: TextStyle(color: Colors.blue)),
+              background: Colors.white,
+              position: NotificationPosition.bottom,
+            );
+            /* FunctionUtils()
                 .sendEmail(email, date, events[0]["time"], emails[0]);*/
           }
         } else {
