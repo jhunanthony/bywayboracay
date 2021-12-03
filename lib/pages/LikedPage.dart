@@ -36,7 +36,7 @@ class _LikedPageState extends State<LikedPage> {
   Completer<GoogleMapController> googlemapcontroller = Completer();
   final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(11.962116499999999, 121.92994489999998),
-    zoom: 14,
+    zoom: 15,
   );
 
   @override
@@ -79,19 +79,6 @@ class _LikedPageState extends State<LikedPage> {
                 fontWeight: FontWeight.w300),
           )
         ]),
-        /*Set.from(
-                    markers = _markers = Iterable.generate(like.items.length, (index) {
-                  like.items.forEach((LikedItem item) {
-                    Items itemslistinfo = (item.category as Items);
-                    return Marker(
-                        markerId: MarkerId(itemslistinfo.name),
-                        position: LatLng(
-                          itemslistinfo.itemlat,
-                          itemslistinfo.itemlong,
-                        ),
-                        infoWindow: InfoWindow(title: itemslistinfo.name));
-                  });
-                })),*/
         SizedBox(
           height: 5,
         ),
@@ -108,10 +95,10 @@ class _LikedPageState extends State<LikedPage> {
                     Visibility(
                   visible: like.items.length > 0,
                   child: Text(
-                    'you have ${like.items.length} liked item!',
+                    '$userName you have ${like.items.length} liked item!',
                     style: TextStyle(
                       fontSize: 14,
-                      color: Colors.blue[100],
+                      color: Colors.blue,
                     ),
                   ),
                 );
@@ -128,8 +115,11 @@ class _LikedPageState extends State<LikedPage> {
             builder: (context, like, child) {
               List<Widget> likeditems = [];
               List<Map<String, dynamic>> markerlist = [];
+              
+              
 
-              //Iterable markers = [];
+              
+
               double mainTotal = 0;
 
               if (like.items.length > 0) {
@@ -144,167 +134,176 @@ class _LikedPageState extends State<LikedPage> {
                     "long": itemslistinfo.itemlong,
                     "name": itemslistinfo.name,
                     "cat": itemslistinfo.itemcategoryName,
-                    "subcat" : itemslistinfo.itemsubcategoryName,
-                    "station" : itemslistinfo.itemstation,
+                    "subcat": itemslistinfo.itemsubcategoryName,
+                    "station": itemslistinfo.itemstation,
                   });
 
                   likeditems.add(
                     //for each item create a container to hold the values
 
-                    Container(
-                        padding: EdgeInsets.all(10),
-                        margin: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 10,
-                                  offset: Offset.zero)
-                            ]),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Stack(
-                              children: [
-                                ClipOval(
-                                    child: Image.network(itemslistinfo.imgName,
-                                        width: 50,
-                                        height: 50,
-                                        fit: BoxFit.cover)),
-                                Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    child: CategoryIcon(
-                                      color: itemslistinfo.color,
-                                      iconName: itemslistinfo.itemcategoryName,
-                                      size: 20,
-                                    )),
-                              ],
-                            ),
-                            SizedBox(width: 20),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: Container(
+                          padding: EdgeInsets.all(10),
+                          margin: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 10,
+                                    offset: Offset.zero)
+                              ]),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Stack(
                                 children: [
-                                  Text(
-                                    itemslistinfo.name,
-                                    style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    itemslistinfo.itemaddress,
-                                    style: TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  Text(
-                                    '₱ ' +
-                                        itemslistinfo.itempriceMin
-                                            .toStringAsFixed(2),
-                                    style: TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 12,
-                                    ),
-                                  ),
+                                  ClipOval(
+                                      child: Image.network(
+                                          itemslistinfo.imgName,
+                                          width: 50,
+                                          height: 50,
+                                          fit: BoxFit.cover)),
+                                  Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: CategoryIcon(
+                                        color: itemslistinfo.color,
+                                        iconName:
+                                            itemslistinfo.itemcategoryName,
+                                        size: 20,
+                                      )),
                                 ],
                               ),
-                            ),
-                            Column(
-                              children: [
-                                GestureDetector(
-                                  child: Icon(
-                                    Icons.highlight_off,
-                                    color: Colors.blue,
-                                    size: 25,
-                                  ),
-                                  onTap: () {
-                                    like.remove(context, item);
-                                  },
+                              SizedBox(width: 20),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      itemslistinfo.name,
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      itemslistinfo.itemaddress,
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    Text(
+                                      '₱ ' +
+                                          itemslistinfo.itempriceMin
+                                              .toStringAsFixed(2),
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                GestureDetector(
-                                  child: Icon(
-                                    CupertinoIcons.calendar,
-                                    color: Colors.blue[200],
-                                    size: 25,
-                                  ),
-                                  onTap: () => _showAction(item),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                GestureDetector(
-                                    onTap: () async {
-                                      BitmapDescriptor destinationIcon =
-                                          await BitmapDescriptor.fromAssetImage(
-                                              ImageConfiguration(
-                                                  devicePixelRatio: 0.2),
-                                              'assets/images/' +
-                                                  itemslistinfo
-                                                      .itemcategoryName +
-                                                  '.png');
-                                      showDialog<void>(
-                                          context: context,
-                                          builder: (context) {
-                                            Iterable _markers =
-                                                Iterable.generate(
-                                                    likeditems.length, (index) {
-                                              return Marker(
-                                                  markerId: MarkerId(
-                                                      itemslistinfo.name),
-                                                  position: LatLng(
-                                                      itemslistinfo.itemlat,
-                                                      itemslistinfo.itemlong),
-                                                  infoWindow: InfoWindow(
-                                                      title:
-                                                          itemslistinfo.name),
-                                                  icon: destinationIcon);
-                                              //
-                                            });
-
-                                            return AlertDialog(
-                                                title: Text("Map Search"),
-                                                contentPadding:
-                                                    EdgeInsets.all(0),
-                                                content: Stack(
-                                                  children: [
-                                                    Positioned.fill(
-                                                      child: GoogleMap(
-                                                        myLocationEnabled: true,
-                                                        mapType: MapType.normal,
-                                                        initialCameraPosition:
-                                                            _kGooglePlex,
-                                                        onMapCreated:
-                                                            (GoogleMapController
-                                                                controller) {
-                                                          googlemapcontroller
-                                                              .complete(
-                                                                  controller);
-                                                        },
-                                                        markers:
-                                                            Set.from(_markers),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ));
-                                          });
-                                    },
+                              ),
+                              Column(
+                                children: [
+                                  GestureDetector(
                                     child: Icon(
-                                      Icons.map,
-                                      size: 25,
+                                      Icons.highlight_off,
                                       color: Colors.blue,
-                                    )),
-                              ],
-                            )
-                          ],
-                        )),
+                                      size: 25,
+                                    ),
+                                    onTap: () {
+                                      like.remove(context, item);
+                                    },
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  GestureDetector(
+                                    child: Icon(
+                                      CupertinoIcons.calendar,
+                                      color: Colors.blue[200],
+                                      size: 25,
+                                    ),
+                                    onTap: () => _showAction(item),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  GestureDetector(
+                                      onTap: () async {
+                                        BitmapDescriptor destinationIcon =
+                                            await BitmapDescriptor
+                                                .fromAssetImage(
+                                                    ImageConfiguration(
+                                                        devicePixelRatio: 0.2),
+                                                    'assets/images/' +
+                                                        itemslistinfo
+                                                            .itemcategoryName +
+                                                        '.png');
+                                        showDialog<void>(
+                                            context: context,
+                                            builder: (context) {
+                                              Iterable _markers =
+                                                  Iterable.generate(
+                                                      likeditems.length,
+                                                      (index) {
+                                                return Marker(
+                                                    markerId: MarkerId(
+                                                        itemslistinfo.name),
+                                                    position: LatLng(
+                                                        itemslistinfo.itemlat,
+                                                        itemslistinfo.itemlong),
+                                                    infoWindow: InfoWindow(
+                                                        title:
+                                                            itemslistinfo.name),
+                                                    icon: destinationIcon);
+                                                //
+                                              });
+
+                                              return AlertDialog(
+                                                  title: Text("Map Search"),
+                                                  contentPadding:
+                                                      EdgeInsets.all(0),
+                                                  content: Stack(
+                                                    children: [
+                                                      Positioned.fill(
+                                                        child: GoogleMap(
+                                                          myLocationEnabled:
+                                                              true,
+                                                          mapType:
+                                                              MapType.normal,
+                                                          initialCameraPosition:
+                                                              _kGooglePlex,
+                                                          onMapCreated:
+                                                              (GoogleMapController
+                                                                  controller) {
+                                                            googlemapcontroller
+                                                                .complete(
+                                                                    controller);
+                                                          },
+                                                          markers: Set.from(
+                                                              _markers),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ));
+                                            });
+                                      },
+                                      child: Icon(
+                                        Icons.map,
+                                        size: 25,
+                                        color: Colors.blue,
+                                      )),
+                                ],
+                              )
+                            ],
+                          )),
+                    ),
                   );
                 });
 
@@ -333,6 +332,23 @@ class _LikedPageState extends State<LikedPage> {
                                   size: 25, color: Colors.blue)),
                           //capture the success flag with async and await
                           onPressed: () async {
+                            BitmapDescriptor tostaymarker =
+                                await BitmapDescriptor.fromAssetImage(
+                                    ImageConfiguration(devicePixelRatio: 0.2),
+                                    'assets/images/ToStay.png');
+                            BitmapDescriptor toeatdrinkmarker =
+                                await BitmapDescriptor.fromAssetImage(
+                                    ImageConfiguration(devicePixelRatio: 0.2),
+                                    'assets/images/ToEat&Drink.png');
+                            BitmapDescriptor toseemarker =
+                                await BitmapDescriptor.fromAssetImage(
+                                    ImageConfiguration(devicePixelRatio: 0.2),
+                                    'assets/images/ToSee.png');
+                            BitmapDescriptor todomarker =
+                                await BitmapDescriptor.fromAssetImage(
+                                    ImageConfiguration(devicePixelRatio: 0.2),
+                                    'assets/images/ToDo.png');
+
                             Iterable _onemarkers =
                                 Iterable.generate(likeditems.length, (index) {
                               return Marker(
@@ -340,25 +356,21 @@ class _LikedPageState extends State<LikedPage> {
                                   position: LatLng(markerlist[index]['lat'],
                                       markerlist[index]['long']),
                                   infoWindow: InfoWindow(
-                                      title: markerlist[index]['name'] +
-                                          " • " +
-                                          markerlist[index]['cat'],
-                                      snippet: markerlist[index]['subcat'] + ", Station " + markerlist[index]['station']   
-                                          ),
+                                      title: markerlist[index]['name'],
+                                      snippet: markerlist[index]['subcat'] +
+                                          ", Station " +
+                                          markerlist[index]['station'],
+                                      onTap: () {}),
                                   icon: markerlist[index]['cat'] == "ToStay"
-                                      ? BitmapDescriptor.defaultMarkerWithHue(
-                                          270)
+                                      ? tostaymarker
                                       : markerlist[index]['cat'] ==
                                               "ToEat&Drink"
-                                          ? BitmapDescriptor
-                                              .defaultMarkerWithHue(15)
+                                          ? toeatdrinkmarker
                                           : markerlist[index]['cat'] == "ToDo"
-                                              ? BitmapDescriptor
-                                                  .defaultMarkerWithHue(200)
+                                              ? todomarker
                                               : markerlist[index]['cat'] ==
                                                       "ToSee"
-                                                  ? BitmapDescriptor
-                                                      .defaultMarkerWithHue(135)
+                                                  ? toseemarker
                                                   : BitmapDescriptor
                                                       .defaultMarkerWithHue(
                                                           200));
@@ -369,7 +381,11 @@ class _LikedPageState extends State<LikedPage> {
                                 builder: (context) {
                                   return AlertDialog(
                                       title: Text("Map Search"),
-                                      contentPadding: EdgeInsets.all(0),
+                                      contentPadding: EdgeInsets.only(
+                                          top: 10,
+                                          right: 0,
+                                          left: 0,
+                                          bottom: 10),
                                       content: Stack(
                                         children: [
                                           Positioned.fill(
@@ -430,12 +446,9 @@ class _LikedPageState extends State<LikedPage> {
                       height: 10,
                     ),
                     Expanded(
-                      child: Container(
-                          padding: EdgeInsets.all(10),
-                          child: SingleChildScrollView(
-                            child: Column(children: likeditems),
-                          )),
-                    ),
+                        child: ListView(
+                      children: likeditems,
+                    )),
                     Container(
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(

@@ -835,14 +835,7 @@ class _ItemsPageState extends State<ItemsPage> {
                                                 SizedBox(
                                                   height: 5,
                                                 ),
-                                                Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.location_pin,
-                                                      color: Colors.white,
-                                                      size: 10,
-                                                    ),
-                                                    SizedBox(width: 3),
+                                                
                                                     Text(
                                                       selectedCountList[index]
                                                           .itemaddress,
@@ -854,8 +847,7 @@ class _ItemsPageState extends State<ItemsPage> {
                                                           fontWeight:
                                                               FontWeight.w300),
                                                     ),
-                                                  ],
-                                                ),
+                                                 
                                               ]),
                                         ),
                                         Positioned(

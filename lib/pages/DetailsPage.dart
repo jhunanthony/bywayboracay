@@ -1384,21 +1384,23 @@ class _DetailsPageState extends State<DetailsPage> {
                       hintText: "Enter Time"),
                 ),
                 SizedBox(height: 7),
-                TextField(
-                  controller: event..text = "${widget.items.name}",
-                  textCapitalization: TextCapitalization.words,
-                  decoration: InputDecoration(
-                    labelText: 'Event',
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
-                      borderRadius: BorderRadius.circular(
-                        10.0,
+                IgnorePointer(
+                  child: TextField(
+                    controller: event..text = "${widget.items.name}",
+                    textCapitalization: TextCapitalization.words,
+                    decoration: InputDecoration(
+                      labelText: 'Event',
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                        borderRadius: BorderRadius.circular(
+                          10.0,
+                        ),
                       ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
-                      borderRadius: BorderRadius.circular(
-                        10.0,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                        borderRadius: BorderRadius.circular(
+                          10.0,
+                        ),
                       ),
                     ),
                   ),
