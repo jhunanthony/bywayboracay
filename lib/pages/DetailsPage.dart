@@ -899,11 +899,15 @@ class _DetailsPageState extends State<DetailsPage> {
                                       size: 20, color: Colors.blue)),
                               //capture the success flag with async and await
                               onPressed: () async {
-                                String url = widget.items.itemwebsite;
+                                String url = "${widget.items.itemwebsite}";
                                 if (await canLaunch(url)) {
                                   await launch(url);
                                 } else {
-                                  throw 'Could not launch $url';
+                                  showSimpleNotification(
+                                    Text("Could not lunch $url"),
+                                    background: Colors.green[400],
+                                    position: NotificationPosition.bottom,
+                                  );
                                 }
                               }),
                         ),

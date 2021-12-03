@@ -344,12 +344,10 @@ class Culture extends StatelessWidget {
   }
 }
 
-
 class AwardsAndRecognition extends StatelessWidget {
   List<AwardsModel> _awardsmodel = Utils.getawards();
 
   final _awardspageController = ScrollController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -386,51 +384,40 @@ class AwardsAndRecognition extends StatelessWidget {
                                 style: TextStyle(fontSize: 20)),
                             contentPadding: EdgeInsets.only(
                                 left: 0, right: 0, top: 10, bottom: 0),
-                            content: Stack(
-                              children: [
-                                Positioned.fill(
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(2.5),
-                                            bottomRight: Radius.circular(2.5),
-                                          ),
-                                          color: Colors.blue[300])),
-                                ),
-                                Positioned(
-                                  top: 10,
-                                  left: 10,
-                                  right: 10,
-                                  child: Column(
-                                    children: [
-                                      ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: Container(
-                                              height: 200,
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                    image: AssetImage(
-                                                        'assets/images/${_awardsmodel[index].imgName}.jpg'),
-                                                    fit: BoxFit.cover),
-                                              ))),
-                                      SizedBox(height: 10),
-                                      Text("${_awardsmodel[index].caption}",
-                                          textAlign: TextAlign.justify,
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15)),
-                                    ],
+                            content: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Container(
+                                            height: 200,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: AssetImage(
+                                                      'assets/images/${_awardsmodel[index].imgName}.jpg'),
+                                                  fit: BoxFit.cover),
+                                            ))),
                                   ),
-                                ),
-                              ],
+                                  SizedBox(height: 10),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Text(
+                                        "${_awardsmodel[index].caption}",
+                                        textAlign: TextAlign.justify,
+                                        style: TextStyle(
+                                            color: Colors.blue, fontSize: 15)),
+                                  ),
+                                ],
+                              ),
                             ));
                       });
                 },
                 child: Container(
                     height: 250,
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Colors.blue,
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
@@ -461,7 +448,7 @@ class AwardsAndRecognition extends StatelessWidget {
                         Text(' ' + _awardsmodel[index].name + ' ',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: Colors.blue,
+                              color: Colors.white,
                               fontSize: 14,
                             )),
                       ],
@@ -572,66 +559,50 @@ class Highlights extends StatelessWidget {
                                     //use iterable to map true items and return markers
 
                                     return AlertDialog(
-                                        title: Text(
-                                            "${_highlightmodel[index].name}",
-                                            style: TextStyle(fontSize: 20)),
-                                        contentPadding: EdgeInsets.only(
-                                            left: 0,
-                                            right: 0,
-                                            top: 10,
-                                            bottom: 0),
-                                        content: Stack(
-                                            children: [
-                                              Positioned.fill(
-                                                child: Container(
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          bottomLeft:
-                                                              Radius.circular(
-                                                                  2.5),
-                                                          bottomRight:
-                                                              Radius.circular(
-                                                                  2.5),
-                                                        ),
-                                                        color:
-                                                            _highlightmodel[index]
-                                                                .color)),
-                                              ),
-                                              Positioned(
-                                                top: 10,
-                                                left: 10,
-                                                right: 10,
-                                                child: Column(
-                                                  children: [
-                                                    ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                10),
-                                                        child: Container(
-                                                            height: 200,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              image: DecorationImage(
-                                                                  image: AssetImage(
-                                                                      'assets/images/${_highlightmodel[index].imgName}.jpg'),
-                                                                  fit: BoxFit
-                                                                      .cover),
-                                                            ))),
-                                                    SizedBox(height: 10),
-                                                    Text(
-                                                        "${_highlightmodel[index].caption}",
-                                                        textAlign:
-                                                            TextAlign.justify,
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 15)),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
+                                      title: Text(
+                                          "${_highlightmodel[index].name}",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: _highlightmodel[index]
+                                                  .color)),
+                                      contentPadding: EdgeInsets.only(
+                                          left: 0,
+                                          right: 0,
+                                          top: 10,
+                                          bottom: 0),
+                                      content: SingleChildScrollView(
+                                        child: Column(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(10),
+                                              child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: Container(
+                                                      height: 200,
+                                                      decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                            image: AssetImage(
+                                                                'assets/images/${_highlightmodel[index].imgName}.jpg'),
+                                                            fit: BoxFit.cover),
+                                                      ))),
+                                            ),
+                                            SizedBox(height: 10),
+                                            Padding(
+                                              padding: const EdgeInsets.all(10),
+                                              child: Text(
+                                                  "${_highlightmodel[index].caption}",
+                                                  textAlign: TextAlign.justify,
+                                                  style: TextStyle(
+                                                      color:
+                                                          _highlightmodel[index]
+                                                              .color,
+                                                      fontSize: 15)),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
                                   });
                             },
                             child: Container(

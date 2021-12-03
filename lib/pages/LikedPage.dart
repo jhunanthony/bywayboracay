@@ -36,7 +36,7 @@ class _LikedPageState extends State<LikedPage> {
   Completer<GoogleMapController> googlemapcontroller = Completer();
   final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(11.962116499999999, 121.92994489999998),
-    zoom: 13,
+    zoom: 14,
   );
 
   @override
@@ -99,7 +99,6 @@ class _LikedPageState extends State<LikedPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              
               SizedBox(height: 5),
               Consumer<LikeService>(
                   //a function called when notifier changes
@@ -118,49 +117,19 @@ class _LikedPageState extends State<LikedPage> {
                 );
               }),
             ]),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Consumer<LikeService>(builder: (context, like, child) {
-                  if (like.items.length > 0) {
-                    return GestureDetector(
-                      onTap: () {
-                        //remove all items
-                        likeService.removeAll(context);
-                      },
-                      child: Container(
-                          margin: EdgeInsets.only(right: 20, top: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.blue[50],
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          padding: EdgeInsets.only(
-                              top: 5, bottom: 5, left: 20, right: 20),
-                          child: Row(
-                            children: [
-                              Icon(Icons.delete, color: Colors.blue),
-                              SizedBox(width: 5),
-                              Text('Delete All',
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                    fontSize: 12,
-                                  ))
-                            ],
-                          )),
-                    );
-                  }
-
-                  return SizedBox();
-                })
-              ],
-            ),
           ],
+        ),
+        SizedBox(
+          height: 10,
         ),
         Expanded(
           child: Consumer<LikeService>(
             //a function called when notifier changes
             builder: (context, like, child) {
               List<Widget> likeditems = [];
+              List<Map<String, dynamic>> markerlist = [];
+
+              //Iterable markers = [];
               double mainTotal = 0;
 
               if (like.items.length > 0) {
@@ -170,173 +139,293 @@ class _LikedPageState extends State<LikedPage> {
                   double total = itemslistinfo.itempriceMin;
                   mainTotal += total;
 
+                  markerlist.add({
+                    "lat": itemslistinfo.itemlat,
+                    "long": itemslistinfo.itemlong,
+                    "name": itemslistinfo.name,
+                    "cat": itemslistinfo.itemcategoryName,
+                    "subcat" : itemslistinfo.itemsubcategoryName,
+                    "station" : itemslistinfo.itemstation,
+                  });
+
                   likeditems.add(
                     //for each item create a container to hold the values
 
                     Container(
-                          padding: EdgeInsets.all(10),
-                          margin: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 10,
-                                    offset: Offset.zero)
-                              ]),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Stack(
+                        padding: EdgeInsets.all(10),
+                        margin: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 10,
+                                  offset: Offset.zero)
+                            ]),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Stack(
+                              children: [
+                                ClipOval(
+                                    child: Image.network(itemslistinfo.imgName,
+                                        width: 50,
+                                        height: 50,
+                                        fit: BoxFit.cover)),
+                                Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: CategoryIcon(
+                                      color: itemslistinfo.color,
+                                      iconName: itemslistinfo.itemcategoryName,
+                                      size: 20,
+                                    )),
+                              ],
+                            ),
+                            SizedBox(width: 20),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ClipOval(
-                                      child: Image.network(itemslistinfo.imgName,
-                                          width: 50,
-                                          height: 50,
-                                          fit: BoxFit.cover)),
-                                  Positioned(
-                                      bottom: 0,
-                                      right: 0,
-                                      child: CategoryIcon(
-                                        color: itemslistinfo.color,
-                                        iconName: itemslistinfo.itemcategoryName,
-                                        size: 20,
-                                      )),
-                                ],
-                              ),
-                              SizedBox(width: 20),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      itemslistinfo.name,
-                                      style: TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      itemslistinfo.itemaddress,
-                                      style: TextStyle(
+                                  Text(
+                                    itemslistinfo.name,
+                                    style: TextStyle(
                                         color: Colors.blue,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    Text(
-                                      '₱ ' +
-                                          itemslistinfo.itempriceMin
-                                              .toStringAsFixed(2),
-                                      style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Column(
-                                children: [
-                                  GestureDetector(
-                                    child: Icon(
-                                      Icons.highlight_off,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    itemslistinfo.itemaddress,
+                                    style: TextStyle(
                                       color: Colors.blue,
-                                      size: 25,
+                                      fontSize: 12,
                                     ),
-                                    onTap: () {
-                                      like.remove(context, item);
-                                    },
                                   ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  GestureDetector(
-                                    child: Icon(
-                                      CupertinoIcons.calendar,
-                                      color: Colors.blue[200],
-                                      size: 25,
+                                  Text(
+                                    '₱ ' +
+                                        itemslistinfo.itempriceMin
+                                            .toStringAsFixed(2),
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 12,
                                     ),
-                                    onTap: () => _showAction(item),
                                   ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  GestureDetector(
-                                      onTap: () async {
-                                        BitmapDescriptor destinationIcon =
-                                            await BitmapDescriptor.fromAssetImage(
-                                                ImageConfiguration(
-                                                    devicePixelRatio: 0.2),
-                                                'assets/images/' +
-                                                    itemslistinfo
-                                                        .itemcategoryName +
-                                                    '.png');
-                                        showDialog<void>(
-                                            context: context,
-                                            builder: (context) {
-                                              Iterable _markers =
-                                                  Iterable.generate(
-                                                      likeditems.length, (index) {
-                                                return Marker(
-                                                    markerId: MarkerId(
-                                                        itemslistinfo.name),
-                                                    position: LatLng(
-                                                        itemslistinfo.itemlat,
-                                                        itemslistinfo.itemlong),
-                                                    infoWindow: InfoWindow(
-                                                        title:
-                                                            itemslistinfo.name),
-                                                    icon: destinationIcon);
-                                                //
-                                              });
-
-                                              return AlertDialog(
-                                                  title: Text("Map Search"),
-                                                  contentPadding:
-                                                      EdgeInsets.all(0),
-                                                  content: Stack(
-                                                    children: [
-                                                      Positioned.fill(
-                                                        child: GoogleMap(
-                                                          myLocationEnabled: true,
-                                                          mapType: MapType.normal,
-                                                          initialCameraPosition:
-                                                              _kGooglePlex,
-                                                          onMapCreated:
-                                                              (GoogleMapController
-                                                                  controller) {
-                                                            googlemapcontroller
-                                                                .complete(
-                                                                    controller);
-                                                          },
-                                                          markers:
-                                                              Set.from(_markers),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ));
-                                            });
-                                      },
-                                      child: Icon(
-                                        Icons.map,
-                                        size: 25,
-                                        color: Colors.blue,
-                                      )),
                                 ],
-                              )
-                            ],
-                          )),
-                    
+                              ),
+                            ),
+                            Column(
+                              children: [
+                                GestureDetector(
+                                  child: Icon(
+                                    Icons.highlight_off,
+                                    color: Colors.blue,
+                                    size: 25,
+                                  ),
+                                  onTap: () {
+                                    like.remove(context, item);
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                GestureDetector(
+                                  child: Icon(
+                                    CupertinoIcons.calendar,
+                                    color: Colors.blue[200],
+                                    size: 25,
+                                  ),
+                                  onTap: () => _showAction(item),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                GestureDetector(
+                                    onTap: () async {
+                                      BitmapDescriptor destinationIcon =
+                                          await BitmapDescriptor.fromAssetImage(
+                                              ImageConfiguration(
+                                                  devicePixelRatio: 0.2),
+                                              'assets/images/' +
+                                                  itemslistinfo
+                                                      .itemcategoryName +
+                                                  '.png');
+                                      showDialog<void>(
+                                          context: context,
+                                          builder: (context) {
+                                            Iterable _markers =
+                                                Iterable.generate(
+                                                    likeditems.length, (index) {
+                                              return Marker(
+                                                  markerId: MarkerId(
+                                                      itemslistinfo.name),
+                                                  position: LatLng(
+                                                      itemslistinfo.itemlat,
+                                                      itemslistinfo.itemlong),
+                                                  infoWindow: InfoWindow(
+                                                      title:
+                                                          itemslistinfo.name),
+                                                  icon: destinationIcon);
+                                              //
+                                            });
+
+                                            return AlertDialog(
+                                                title: Text("Map Search"),
+                                                contentPadding:
+                                                    EdgeInsets.all(0),
+                                                content: Stack(
+                                                  children: [
+                                                    Positioned.fill(
+                                                      child: GoogleMap(
+                                                        myLocationEnabled: true,
+                                                        mapType: MapType.normal,
+                                                        initialCameraPosition:
+                                                            _kGooglePlex,
+                                                        onMapCreated:
+                                                            (GoogleMapController
+                                                                controller) {
+                                                          googlemapcontroller
+                                                              .complete(
+                                                                  controller);
+                                                        },
+                                                        markers:
+                                                            Set.from(_markers),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ));
+                                          });
+                                    },
+                                    child: Icon(
+                                      Icons.map,
+                                      size: 25,
+                                      color: Colors.blue,
+                                    )),
+                              ],
+                            )
+                          ],
+                        )),
                   );
                 });
-
-               
-                
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.white, //background
+                            onPrimary: Colors.blue,
+                            //foreground
+                            shape: CircleBorder(),
+                          ),
+
+                          child: Container(
+                              alignment: Alignment.center,
+                              height: 30,
+                              width: 30,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(Icons.map_rounded,
+                                  size: 25, color: Colors.blue)),
+                          //capture the success flag with async and await
+                          onPressed: () async {
+                            Iterable _onemarkers =
+                                Iterable.generate(likeditems.length, (index) {
+                              return Marker(
+                                  markerId: MarkerId(markerlist[index]['name']),
+                                  position: LatLng(markerlist[index]['lat'],
+                                      markerlist[index]['long']),
+                                  infoWindow: InfoWindow(
+                                      title: markerlist[index]['name'] +
+                                          " • " +
+                                          markerlist[index]['cat'],
+                                      snippet: markerlist[index]['subcat'] + ", Station " + markerlist[index]['station']   
+                                          ),
+                                  icon: markerlist[index]['cat'] == "ToStay"
+                                      ? BitmapDescriptor.defaultMarkerWithHue(
+                                          270)
+                                      : markerlist[index]['cat'] ==
+                                              "ToEat&Drink"
+                                          ? BitmapDescriptor
+                                              .defaultMarkerWithHue(15)
+                                          : markerlist[index]['cat'] == "ToDo"
+                                              ? BitmapDescriptor
+                                                  .defaultMarkerWithHue(200)
+                                              : markerlist[index]['cat'] ==
+                                                      "ToSee"
+                                                  ? BitmapDescriptor
+                                                      .defaultMarkerWithHue(135)
+                                                  : BitmapDescriptor
+                                                      .defaultMarkerWithHue(
+                                                          200));
+                            });
+
+                            showDialog<void>(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                      title: Text("Map Search"),
+                                      contentPadding: EdgeInsets.all(0),
+                                      content: Stack(
+                                        children: [
+                                          Positioned.fill(
+                                            child: GoogleMap(
+                                              myLocationEnabled: true,
+                                              mapType: MapType.normal,
+                                              initialCameraPosition:
+                                                  _kGooglePlex,
+                                              onMapCreated: (GoogleMapController
+                                                  controller) {
+                                                googlemapcontroller
+                                                    .complete(controller);
+                                              },
+                                              markers: Set.from(_onemarkers),
+                                            ),
+                                          )
+                                        ],
+                                      ));
+                                });
+                          },
+                        ),
+                        SizedBox(width: 5),
+                        Consumer<LikeService>(builder: (context, like, child) {
+                          if (like.items.length > 0) {
+                            return ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.white, //background
+                                onPrimary: Colors.blue,
+                                //foreground
+                              ),
+                              child: Container(
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.delete_rounded,
+                                          size: 25, color: Colors.blue),
+                                      Text(" Delete All ",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.blue,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w400)),
+                                    ],
+                                  )),
+                              //capture the success flag with async and await
+                              onPressed: () => likeService.removeAll(context),
+                            );
+                          }
+
+                          return SizedBox();
+                        })
+                      ],
+                    ),
                     SizedBox(
                       height: 10,
                     ),
@@ -392,7 +481,7 @@ class _LikedPageState extends State<LikedPage> {
             },
           ),
         ),
-        SizedBox(height: 50),
+        SizedBox(height: 10),
       ]),
 
       //bottomNavigationBar: BottomNavBar(),
