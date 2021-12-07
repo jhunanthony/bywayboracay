@@ -34,50 +34,25 @@ class WeatherMainWidget extends StatelessWidget {
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(children: [
-              Text(
-                '${temp.toInt().toString()}°C',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 23,
-                ),
+            Text(
+              '${temp.toInt().toString()}°C in ${location.toString()}',
+              style: TextStyle(
+                color: Colors.grey[800],
+                fontSize: 20,
               ),
-              Text(
-                ' in ${location.toString()}',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 20,
-                ),
-              ),
-            ]),
+            ),
             SizedBox(height: 5),
-            Row(children: [
-              Text(
-                '${tempMax.toInt().toString()}°C / ',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 10,
-                ),
+            Text(
+              '${tempMax.toInt().toString()}°C / ${tempMin.toInt().toString()}°C · ${weather.toString().toUpperCase()}',
+              style: TextStyle(
+                color: Colors.blue,
+                fontSize: 10,
               ),
-              Text(
-                '${tempMin.toInt().toString()}°C',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 10,
-                ),
-              ),
-              Text(
-                ' · ${weather.toString().toUpperCase()}',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 10,
-                ),
-              ),
-            ])
+            ),
           ]),
           Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
             Container(
-              padding: EdgeInsets.all(0),
+              padding: EdgeInsets.all(2),
               decoration: BoxDecoration(
                   color: Colors.blue[200],
                   borderRadius: BorderRadius.circular(10)),

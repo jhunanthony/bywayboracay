@@ -1,21 +1,18 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
-import 'dart:isolate';
 import 'dart:math';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/pages/MainPage.dart';
 import 'package:bywayborcay/services/loginservice.dart';
-import 'package:bywayborcay/widgets/CalendarWidget/emailtext.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/utils.dart';
 import 'package:bywayborcay/widgets/WeatherWidgets/weather_forecast.dart';
 import 'package:bywayborcay/widgets/WeatherWidgets/weather_mainwidget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -81,6 +78,7 @@ class CalendarState extends State<CalendarPage> {
     List<DateTime> dates = [];
 
     events2 = [];
+
     for (int i = 0; i < d.docs.length; i++) {
       List temp = (d.docs[i].get("EventList"));
       print(temp);
@@ -101,6 +99,8 @@ class CalendarState extends State<CalendarPage> {
                 temp[index]["category"],
                 temp[index]["CreatedBy"]))
       });
+
+      //events2.sort((a,b) => a.compareTo(b));
     }
 
     Map<DateTime, List<Event>> k =
@@ -176,6 +176,7 @@ class CalendarState extends State<CalendarPage> {
     super.dispose();
   }
 
+  //get events for the day
   List<Event> _getEventsForDay(DateTime day) {
     return kEvents[day] ?? [];
   }
@@ -190,6 +191,8 @@ class CalendarState extends State<CalendarPage> {
       _selectedEvents.value = _getEventsForDay(selectedDay);
     }
   }
+
+  //save event in firebase
 
   Future setEvents() async {
     List temp = await FunctionUtils().eventUsers(emails);
@@ -534,7 +537,7 @@ class CalendarState extends State<CalendarPage> {
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       SvgPicture.asset(
                         'assets/icons/' + AppIcons.ItineraryIcon + '.svg',
-                        color: Colors.blue,
+                        color: Colors.grey[800],
                         height: 30,
                         width: 30,
                       ),
@@ -542,7 +545,7 @@ class CalendarState extends State<CalendarPage> {
                         " Itineray",
                         style: TextStyle(
                             fontSize: 14,
-                            color: Colors.blue,
+                            color: Colors.grey[800],
                             fontWeight: FontWeight.w300),
                       )
                     ]),
@@ -574,17 +577,10 @@ class CalendarState extends State<CalendarPage> {
                             return CircularProgressIndicator();
                           }),
                     ),
-
-                    /*Container(
-                        child: Text(
-                          "Hi, ${Auth().getCurrentUser().displayName}",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 20, color: Colors.grey[700]),
-                        ),
-                      ),*/
-                    Divider(
-                      thickness: 2,
+                    SizedBox(
+                      height: 10,
                     ),
+
                     TableCalendar(
                       // instead of day number can be mentioned as well.
                       weekendDays: [DateTime.sunday, 6],
@@ -1104,7 +1100,7 @@ class CalendarState extends State<CalendarPage> {
                                                                         double.parse(
                                                                             value[index].long),
                                                                       ),
-                                                                      zoom: 15,
+                                                                      zoom: 18,
                                                                     ),
                                                                     onMapCreated:
                                                                         (GoogleMapController
@@ -1162,7 +1158,7 @@ class CalendarState extends State<CalendarPage> {
                       ),
                     ),
                     SizedBox(
-                      height: 80,
+                      height: 70,
                     )
                   ],
                 ),
@@ -1185,7 +1181,7 @@ class CalendarState extends State<CalendarPage> {
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       SvgPicture.asset(
                         'assets/icons/' + AppIcons.ItineraryIcon + '.svg',
-                        color: Colors.blue,
+                        color: Colors.grey[800],
                         height: 14,
                         width: 14,
                       ),
@@ -1193,7 +1189,7 @@ class CalendarState extends State<CalendarPage> {
                         " Itineray",
                         style: TextStyle(
                             fontSize: 14,
-                            color: Colors.blue[100],
+                            color: Colors.grey[800],
                             fontWeight: FontWeight.w300),
                       )
                     ]),

@@ -127,17 +127,17 @@ class _ItemsPageState extends State<ItemsPage> {
       height: 480,
       headlineText: "Group Search",
       searchFieldHintText: "Search Here",
-      choiceChipLabel: (Items items) {
+      choiceChipLabel: (items) {
         return items.name;
       },
       validateSelectedItem: (list, val) {
         return list.contains(val);
       },
       onItemSearch: (list, text) {
-        if (list.any((Items items) =>
-            items.name.toLowerCase().contains(text.toLowerCase()))) {
+        if (list.any(
+            (items) => items.name.toLowerCase().contains(text.toLowerCase()))) {
           return list
-              .where((Items items) =>
+              .where((items) =>
                   items.name.toLowerCase().contains(text.toLowerCase()))
               .toList();
         } else {
@@ -463,11 +463,11 @@ class _ItemsPageState extends State<ItemsPage> {
                                                                         ),
                                                                       ),
                                                                       Icon(
-                                                                          Icons
-                                                                              .eco_rounded,
-                                                                          color:
-                                                                              Colors.green[400],
-                                                                        ),
+                                                                        Icons
+                                                                            .eco_rounded,
+                                                                        color: Colors
+                                                                            .green[400],
+                                                                      ),
                                                                     ],
                                                                   )
                                                                 : rating == null
@@ -516,28 +516,27 @@ class _ItemsPageState extends State<ItemsPage> {
                                                 SizedBox(
                                                   height: 5,
                                                 ),
-                                                
-                                                    /*Icon(
-                                                      Icons.location_pin,
+
+                                                /*Icon(
+                                                        Icons.location_pin,
+                                                        color: Colors.white,
+                                                        size: 10,
+                                                      ),
+                                                      SizedBox(width: 3),*/
+                                                Text(
+                                                  this
+                                                      .widget
+                                                      .selectedCategory
+                                                      .items[index]
+                                                      .itemaddress,
+                                                  style: TextStyle(
+                                                      overflow:
+                                                          TextOverflow.fade,
+                                                      fontSize: 12,
                                                       color: Colors.white,
-                                                      size: 10,
-                                                    ),
-                                                    SizedBox(width: 3),*/
-                                                    Text(
-                                                      this
-                                                          .widget
-                                                          .selectedCategory
-                                                          .items[index]
-                                                          .itemaddress,
-                                                      style: TextStyle(
-                                                          overflow:
-                                                              TextOverflow.fade,
-                                                          fontSize: 12,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w300),
-                                                    ),
-                                                  
+                                                      fontWeight:
+                                                          FontWeight.w300),
+                                                ),
                                               ]),
                                         ),
                                         Positioned(
@@ -780,12 +779,12 @@ class _ItemsPageState extends State<ItemsPage> {
                                                                               FontWeight.bold,
                                                                         ),
                                                                       ),
-                                                                       Icon(
-                                                                          Icons
-                                                                              .eco_rounded,
-                                                                          color:
-                                                                              Colors.green[400],
-                                                                        ),
+                                                                      Icon(
+                                                                        Icons
+                                                                            .eco_rounded,
+                                                                        color: Colors
+                                                                            .green[400],
+                                                                      ),
                                                                     ],
                                                                   )
                                                                 : rating == null
@@ -835,19 +834,18 @@ class _ItemsPageState extends State<ItemsPage> {
                                                 SizedBox(
                                                   height: 5,
                                                 ),
-                                                
-                                                    Text(
-                                                      selectedCountList[index]
-                                                          .itemaddress,
-                                                      style: TextStyle(
-                                                          overflow:
-                                                              TextOverflow.fade,
-                                                          fontSize: 12,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w300),
-                                                    ),
-                                                 
+
+                                                Text(
+                                                  selectedCountList[index]
+                                                      .itemaddress,
+                                                  style: TextStyle(
+                                                      overflow:
+                                                          TextOverflow.fade,
+                                                      fontSize: 12,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w300),
+                                                ),
                                               ]),
                                         ),
                                         Positioned(
