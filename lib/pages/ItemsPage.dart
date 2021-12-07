@@ -7,6 +7,7 @@ import 'package:bywayborcay/services/likeservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
+import 'package:chips_choice_null_safety/chips_choice_null_safety.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -118,6 +119,62 @@ class _ItemsPageState extends State<ItemsPage> {
               ));
         });
   }
+
+  List<String> tags = [];
+  List<String> options = [
+    '0',
+    '1',
+    '2',
+    '3',
+    'Balabag',
+    'Manocmanoc',
+    'Yapak',
+  ];
+  List<String> tags2 = [];
+  List<String> subcategoryoptions = [];
+
+  /*void _querylist(Category selectedCategory) {
+    Query _query = Query(station: tags);
+    List<Items> filter(List<Items> items, Query query) {
+      return items
+          .where((items) => (query.station == null ||
+              query.station.contains(items.itemstation)))
+          .toList();
+    }
+
+    List<Items> results = filter(this.widget.selectedCategory.items, _query);
+    if (results != null) {
+      results.forEach((Items filtered) {
+        selectedCountList.forEach((Items selecteditem) {
+          if (selecteditem.name == filtered.name) {
+            setState(() {
+              selectedCountList.remove(selecteditem);
+              selectedCountList.add(filtered);
+            });
+          }
+          if (selecteditem.name != filtered.name) {
+            setState(() {
+              selectedCountList.add(filtered);
+            });
+          }
+        });
+      });
+    }
+
+    /*showDialog<void>(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              title: Text("Filtered List"),
+              contentPadding:
+                  EdgeInsets.only(left: 0, right: 0, top: 10, bottom: 10),
+              content: ListView.builder(
+                  itemCount: results.length,
+                  itemBuilder: (context, index) {
+                    return Text("${results[index].name}");
+                  }));
+        });*/
+  }*/
 
   void _openFilterDialog(Category selectedCategory) async {
     await FilterListDialog.display<Items>(
@@ -263,13 +320,165 @@ class _ItemsPageState extends State<ItemsPage> {
                 }
                 return SizedBox();
               }),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    SizedBox(width: 30),
+                    Text(
+                      "Station",
+                      overflow: TextOverflow.fade,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    ChipsChoice<String>.multiple(
+                      choiceStyle: C2ChoiceStyle(color: Colors.blue),
+                      value: tags,
+                      onChanged: (val) => setState(() {
+                        tags = val;
+
+                        Query _query = Query(station: val);
+                        List<Items> filter(List<Items> items, Query query) {
+                          return items
+                              .where((items) => (query.station == null ||
+                                  query.station.contains(items.itemstation)))
+                              .toList();
+                        }
+
+                        List<Items> results =
+                            filter(this.widget.selectedCategory.items, _query);
+                        if (results != null) {
+                          selectedCountList = List.from(results);
+
+                          /*results.forEach((Items filtered) {
+
+
+                                  selectedCountList
+                                      .forEach((Items selecteditem) {
+                                    if (selecteditem.name != filtered.name) {
+                                      setState(() {
+                                        selectedCountList.add(filtered);
+                                      });
+                                    } else if (selecteditem.name ==
+                                        filtered.name) {
+                                      setState(() {
+                                        selectedCountList.remove(filtered);
+                                        selectedCountList.add(filtered);
+                                      });
+                                    }
+                                  });
+                                });*/
+                        }
+                      }),
+                      choiceItems: C2Choice.listFrom<String, String>(
+                        source: options,
+                        value: (i, v) => v,
+                        label: (i, v) => v,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              //subcategory filter
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    SizedBox(width: 30),
+                    Text(
+                      "Subcategory",
+                      overflow: TextOverflow.fade,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    ChipsChoice<String>.multiple(
+                      choiceStyle: C2ChoiceStyle(color: Colors.blue),
+                      value: tags2,
+                      onChanged: (val) => setState(() {
+                        tags2 = val;
+
+                        Query _query = Query(subcategory: val);
+                        List<Items> filter(List<Items> items, Query query) {
+                          return items
+                              .where((items) => (query.subcategory == null ||
+                                  query.subcategory
+                                      .contains(items.itemsubcategoryName)))
+                              .toList();
+                        }
+
+                        List<Items> results =
+                            filter(this.widget.selectedCategory.items, _query);
+                        if (results != null) {
+                          selectedCountList = List.from(results);
+                        }
+                      }),
+                      choiceItems: C2Choice.listFrom<String, String>(
+                        source: this
+                                    .widget
+                                    .selectedCategory
+                                    .items[0]
+                                    .itemcategoryName ==
+                                "ToStay"
+                            ? subcategoryoptions = [
+                                'Hotel',
+                                'Inn',
+                                'Villas',
+                                'Resort',
+                              ]
+                            : this
+                                        .widget
+                                        .selectedCategory
+                                        .items[0]
+                                        .itemcategoryName ==
+                                    "ToEat&Drink"
+                                ? subcategoryoptions = [
+                                    'Restaurant',
+                                    'FastFood',
+                                    'Cafe',
+                                    'Bar',
+                                    'FoodHouse',
+                                  ]
+                                : this
+                                            .widget
+                                            .selectedCategory
+                                            .items[0]
+                                            .itemcategoryName ==
+                                        "ToDo"
+                                    ? subcategoryoptions = [
+                                        'WaterActivities',
+                                        'LandActivities',
+                                        'LocalServices',
+                                        'OutsideBoracay',
+                                        'Environmental',
+                                        'Socail',
+                                      ]
+                                    : this
+                                                .widget
+                                                .selectedCategory
+                                                .items[0]
+                                                .itemcategoryName ==
+                                            "ToSee"
+                                        ? subcategoryoptions = [
+                                            'BeachSites',
+                                            'WetLands',
+                                            'LandMarks',
+                                            'Museums',
+                                          ]
+                                        : subcategoryoptions = [],
+                        value: (i, v) => v,
+                        label: (i, v) => v,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
               // create list builder to show subCategories this.selectedCategory.subCategory.length
-              /*child: ListView.builder(
-                      padding: EdgeInsets.only(
-                          top: 30, left: 20, right: 20, bottom: 80),
-                      itemCount: this.selectedCategory.items.length,
-                      itemBuilder: (BuildContext ctx, int index) {*/
+
               Consumer<LoginService>(builder: (context, loginService, child) {
                 if (loginService.isUserLoggedIn()) {
                   return Expanded(
@@ -933,4 +1142,12 @@ class _ItemsPageState extends State<ItemsPage> {
           ])),
     );
   }
+}
+
+class Query {
+  final List<String> station;
+  final List<String> subcategory;
+  //final List<String> weight;
+
+  Query({this.station, this.subcategory});
 }

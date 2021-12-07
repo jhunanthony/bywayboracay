@@ -54,6 +54,7 @@ dependencies:
 
   #for rating indicators
   flutter_rating_bar: ^4.0.0
+  chips_choice_null_safety: ^2.0.4
 
  
 
