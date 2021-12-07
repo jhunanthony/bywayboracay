@@ -1,13 +1,8 @@
-import 'dart:convert';
-import 'dart:ui';
-import 'package:bywayborcay/models/UserLogInModel.dart';
-import 'package:bywayborcay/services/loginservice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'auth.dart';
 
@@ -20,8 +15,11 @@ class Event {
   final String budget;
   final String website;
   final String imgName;
+  final String lat;
+  final String long;
+  final String category;
   final String creator;
-  const Event(this.title, this.users, this.desc, this.timer, this.budget, this.website,this.imgName, this.creator,);
+  const Event(this.title, this.users, this.desc, this.timer, this.budget, this.website,this.imgName, this.lat, this.long, this.category, this.creator,);
 
   @override
   String toString() => title;

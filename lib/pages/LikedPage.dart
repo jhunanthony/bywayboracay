@@ -115,10 +115,6 @@ class _LikedPageState extends State<LikedPage> {
             builder: (context, like, child) {
               List<Widget> likeditems = [];
               List<Map<String, dynamic>> markerlist = [];
-              
-              
-
-              
 
               double mainTotal = 0;
 
@@ -502,19 +498,16 @@ class _LikedPageState extends State<LikedPage> {
   }
 
   List<String> emails = [Auth().getCurrentUser().email];
-
   List<Map<DateTime, List<Event>>> events2 = [];
-
   TextEditingController event = TextEditingController();
-
   TextEditingController timer = TextEditingController();
-
   TextEditingController desc = TextEditingController();
-
   TextEditingController budget = TextEditingController();
-
   TextEditingController website = TextEditingController();
   String imgName;
+  String lat;
+  String long;
+  String category;
   DateTime _selectedDay = DateTime.now();
 
   RegExp time_24H = new RegExp(r"^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$");
@@ -644,9 +637,7 @@ class _LikedPageState extends State<LikedPage> {
                 ),
                 SizedBox(height: 7),
                 TextField(
-                  controller: website
-                    ..text =
-                        "https://www.google.com/maps/search/?api=1&query=${itemslistinfo.itemlat},${itemslistinfo.itemlong}",
+                  controller: website..text = "${itemslistinfo.itemwebsite}",
                   textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     labelText: 'Website',
@@ -687,6 +678,9 @@ class _LikedPageState extends State<LikedPage> {
             TextButton(
               onPressed: () {
                 imgName = itemslistinfo.imgName;
+                lat = itemslistinfo.itemlat.toString();
+                long = itemslistinfo.itemlong.toString();
+                category = itemslistinfo.itemcategoryName;
                 if (timer.text.isEmpty ||
                     !(time_12H.hasMatch(timer.text) ||
                         time_24H.hasMatch(timer.text))) {
@@ -754,6 +748,9 @@ class _LikedPageState extends State<LikedPage> {
           "budget": budget.text,
           "website": website.text,
           "imgName": imgName,
+          "lat": lat,
+          "long": long,
+          "category": category,
           "CreatedBy": emails[0],
           "users": emails
         });

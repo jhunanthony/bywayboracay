@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
 import 'dart:isolate';
@@ -17,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -33,6 +35,9 @@ class CalendarPage extends StatefulWidget {
 }
 
 class CalendarState extends State<CalendarPage> {
+  //map controller
+  Completer<GoogleMapController> googlemapcontroller = Completer();
+
   List<String> emails = [Auth().getCurrentUser().email];
   LinkedHashMap kEvents = LinkedHashMap();
   ValueNotifier<List<Event>> _selectedEvents;
@@ -46,6 +51,9 @@ class CalendarState extends State<CalendarPage> {
   TextEditingController budget = TextEditingController();
   TextEditingController website = TextEditingController();
   String imgName;
+  String lat;
+  String long;
+  String category;
 
   //awaits weather report
   Future<WeatherInfo> futureWeather;
@@ -88,6 +96,9 @@ class CalendarState extends State<CalendarPage> {
                 temp[index]["budget"],
                 temp[index]["website"],
                 temp[index]["imgName"],
+                temp[index]["lat"],
+                temp[index]["long"],
+                temp[index]["category"],
                 temp[index]["CreatedBy"]))
       });
     }
@@ -197,6 +208,9 @@ class CalendarState extends State<CalendarPage> {
           "budget": budget.text,
           "website": website.text,
           "imgName": imgName,
+          "lat": lat,
+          "long": long,
+          "category": category,
           "CreatedBy": emails[0],
           "users": emails
         });
@@ -215,28 +229,32 @@ class CalendarState extends State<CalendarPage> {
         if (max <= 50) {
           if (data.exists) {
             snapShot.update({"EventList": FieldValue.arrayUnion(events)});
-            showSimpleNotification(Text("Event Added", style: TextStyle(color: Colors.blue)),
-                background: Colors.white, position: NotificationPosition.bottom,);
+            showSimpleNotification(
+              Text("Event Added", style: TextStyle(color: Colors.blue)),
+              background: Colors.white,
+              position: NotificationPosition.bottom,
+            );
 
             /*FunctionUtils()
                 .sendEmail(email, date, events[0]["time"], emails[0]);*/
           } else {
             snapShot.set({'EventList': events});
             showSimpleNotification(
-                Text(
-                  "Event Added", style: TextStyle(color: Colors.blue)
-                ),
-                background: Colors.white, position: NotificationPosition.bottom,);
+              Text("Event Added", style: TextStyle(color: Colors.blue)),
+              background: Colors.white,
+              position: NotificationPosition.bottom,
+            );
             /*FunctionUtils()
                 .sendEmail(email, date, events[0]["time"], emails[0]);*/
           }
         } else {
           showSimpleNotification(
-              Text(
-                "$name isn't available",
-              ),
-              background: Colors.white, position: NotificationPosition.bottom,
-              );
+            Text(
+              "$name isn't available",
+            ),
+            background: Colors.white,
+            position: NotificationPosition.bottom,
+          );
           break;
         }
       }
@@ -281,6 +299,9 @@ class CalendarState extends State<CalendarPage> {
                     "budget": e.budget,
                     "website": e.website,
                     "imgName": e.imgName,
+                    "lat": e.lat,
+                    "long": e.long,
+                    "category": e.category,
                     "users": e.users
                   };
                   for (int i = 0; i < users.length; i++) {
@@ -310,7 +331,6 @@ class CalendarState extends State<CalendarPage> {
                       new MaterialPageRoute(builder: (BuildContext context) {
                     return new MainPage(currentIndex: 1);
                   }));
-                  
                 } else {
                   /*for (int i = 0; i < e.users.length; i++) {
                     FunctionUtils().sendEmail(
@@ -359,7 +379,6 @@ class CalendarState extends State<CalendarPage> {
                     },
                   ),
                 ),
-
                 SizedBox(height: 7),
                 TextField(
                   onTap: () {
@@ -408,38 +427,8 @@ class CalendarState extends State<CalendarPage> {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 7),
                 buildTextField(controller: website, hint: 'Website'),
-                //SizedBox( height: 8),
-
-                /*TextField(
-                       controller: event,
-                       decoration: InputDecoration(
-                           border: OutlineInputBorder(),
-                           labelText: "Event",
-                           hintText: "Enter Event Name"
-                       ),
-                     ),
-                     //SizedBox( height: 8),
-                     TextField(
-                       controller: desc,
-                       decoration: InputDecoration(
-                           border: OutlineInputBorder(),
-                           labelText: "Description",
-                           hintText: "Enter Event Description"
-                       ),
-                     ),*/
-                //SizedBox( height: 8),
-                /*Container(
-                    child: EmailInput(
-                  parentEmails: emails,
-                  setList: (e) {
-                    setState(() {
-                      emails = e;
-                    });
-                  },
-                ))*/
               ],
             ),
           ),
@@ -452,12 +441,6 @@ class CalendarState extends State<CalendarPage> {
                 budget.clear();
                 website.clear();
                 Navigator.of(context).pop();
-                /*Navigator.of(context).pushReplacement(
-                    new MaterialPageRoute(builder: (BuildContext context) {
-                  return new MainPage(
-                    currentIndex: 1,
-                  );
-                }));*/
               },
               child: const Text(
                 'CANCEL',
@@ -468,6 +451,9 @@ class CalendarState extends State<CalendarPage> {
               onPressed: () {
                 imgName =
                     "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/null_photos%2FHighlight2.jpg?alt=media&token=4d9d4510-3450-4bf8-92ea-8dddc68ba312";
+                lat = "0.00";
+                long = "0.00";
+                category = "none";
                 if (timer.text.isEmpty ||
                     !(time_12H.hasMatch(timer.text) ||
                         time_24H.hasMatch(timer.text))) {
@@ -824,26 +810,6 @@ class CalendarState extends State<CalendarPage> {
                                         )),
                                       ),
                                       ListTile(
-                                        /*onLongPress: () {
-                                                if (value[index].creator == emails[0]) {
-                                                  _tapEvents(value[index], 0);
-                                                } else {
-                                                  showSimpleNotification(
-                                                      Text(
-                                                          "You can't delete event since you aren't the owner of it"),
-                                                      background: Color(0xff29a39d));
-                                                }
-                                              },*/
-                                        /*onTap: () {
-                                                if (value[index].creator == emails[0]) {
-                                                  _tapEvents(value[index], 1);
-                                                } else {
-                                                  showSimpleNotification(
-                                                      Text(
-                                                          "You can't send reminders since you didn't create the event"),
-                                                      background: Color(0xff29a39d));
-                                                }
-                                              },*/
                                         leading: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
@@ -941,7 +907,22 @@ class CalendarState extends State<CalendarPage> {
                                             Container(
                                               padding: EdgeInsets.all(3),
                                               decoration: BoxDecoration(
-                                                color: Colors.blue,
+                                                color: value[index].category ==
+                                                        "ToStay"
+                                                    ? Colors.purple[400]
+                                                    : value[index].category ==
+                                                            "ToEat&Drink"
+                                                        ? Colors.red[400]
+                                                        : value[index]
+                                                                    .category ==
+                                                                "ToDo"
+                                                            ? Colors.blue[400]
+                                                            : value[index]
+                                                                        .category ==
+                                                                    "ToSee"
+                                                                ? Colors
+                                                                    .green[400]
+                                                                : Colors.blue,
                                                 borderRadius:
                                                     BorderRadius.circular(3),
                                               ),
@@ -1007,10 +988,147 @@ class CalendarState extends State<CalendarPage> {
                                                   }
                                                 },
                                                 child: Icon(
-                                                  value[index].website.contains('www.google.com/maps/search') ? Icons.location_on_rounded: CupertinoIcons.globe,
-                                                    color: Colors.blue[300]),
+                                                    value[index].website.contains(
+                                                            'www.google.com/maps/search')
+                                                        ? Icons
+                                                            .location_on_rounded
+                                                        : CupertinoIcons.globe,
+                                                    color: Colors.white),
                                               ),
                                             ), // icon-1
+
+                                            //show map items
+
+                                            Visibility(
+                                              visible: value[index].lat !=
+                                                      "0.00" &&
+                                                  value[index].long != "0.00",
+                                              child: GestureDetector(
+                                                onTap: () async {
+                                                  BitmapDescriptor
+                                                      tostaymarker =
+                                                      await BitmapDescriptor
+                                                          .fromAssetImage(
+                                                              ImageConfiguration(
+                                                                  devicePixelRatio:
+                                                                      0.2),
+                                                              'assets/images/ToStay.png');
+                                                  BitmapDescriptor
+                                                      toeatdrinkmarker =
+                                                      await BitmapDescriptor
+                                                          .fromAssetImage(
+                                                              ImageConfiguration(
+                                                                  devicePixelRatio:
+                                                                      0.2),
+                                                              'assets/images/ToEat&Drink.png');
+                                                  BitmapDescriptor toseemarker =
+                                                      await BitmapDescriptor
+                                                          .fromAssetImage(
+                                                              ImageConfiguration(
+                                                                  devicePixelRatio:
+                                                                      0.2),
+                                                              'assets/images/ToSee.png');
+                                                  BitmapDescriptor todomarker =
+                                                      await BitmapDescriptor
+                                                          .fromAssetImage(
+                                                              ImageConfiguration(
+                                                                  devicePixelRatio:
+                                                                      0.2),
+                                                              'assets/images/ToDo.png');
+
+                                                  showDialog<void>(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        Iterable _markers =
+                                                            Iterable.generate(
+                                                                value.length,
+                                                                (index) {
+                                                          return Marker(
+                                                              markerId: MarkerId(
+                                                                  value[index]
+                                                                      .lat),
+                                                              position: LatLng(
+                                                                double.parse(
+                                                                    value[index]
+                                                                        .lat),
+                                                                double.parse(
+                                                                    value[index]
+                                                                        .long),
+                                                              ),
+                                                              infoWindow: InfoWindow(
+                                                                  title: '"' +
+                                                                      (index +
+                                                                              1)
+                                                                          .toString() +
+                                                                      '" ' +
+                                                                      value[index]
+                                                                          .title),
+                                                              icon: value[index]
+                                                                          .category ==
+                                                                      "ToStay"
+                                                                  ? tostaymarker
+                                                                  : value[index]
+                                                                              .category ==
+                                                                          "ToEat&Drink"
+                                                                      ? toeatdrinkmarker
+                                                                      : value[index].category ==
+                                                                              "ToDo"
+                                                                          ? todomarker
+                                                                          : value[index].category == "ToSee"
+                                                                              ? toseemarker
+                                                                              : BitmapDescriptor.defaultMarkerWithHue(200));
+                                                          //
+                                                        });
+
+                                                        return AlertDialog(
+                                                            title: Text(
+                                                                "Map Search"),
+                                                            contentPadding:
+                                                                EdgeInsets.all(
+                                                                    0),
+                                                            content: Stack(
+                                                              children: [
+                                                                Positioned.fill(
+                                                                  child:
+                                                                      GoogleMap(
+                                                                    myLocationEnabled:
+                                                                        true,
+                                                                    mapType: MapType
+                                                                        .normal,
+                                                                    initialCameraPosition:
+                                                                        CameraPosition(
+                                                                      target:
+                                                                          LatLng(
+                                                                        double.parse(
+                                                                            value[index].lat),
+                                                                        double.parse(
+                                                                            value[index].long),
+                                                                      ),
+                                                                      zoom: 15,
+                                                                    ),
+                                                                    onMapCreated:
+                                                                        (GoogleMapController
+                                                                            controller) {
+                                                                      googlemapcontroller
+                                                                          .complete(
+                                                                              controller);
+                                                                    },
+                                                                    markers: Set
+                                                                        .from(
+                                                                            _markers),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ));
+                                                      });
+                                                },
+                                                child: Icon(
+                                                    Icons.location_on_rounded,
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+
+                                            //remove item from list
 
                                             GestureDetector(
                                               onTap: () {
@@ -1019,14 +1137,18 @@ class CalendarState extends State<CalendarPage> {
                                                   _tapEvents(value[index], 0);
                                                 } else {
                                                   showSimpleNotification(
-                                                      Text(
-                                                          "You can't delete event since you aren't the owner of it"),
-                                                       background: Colors.white, position: NotificationPosition.bottom,);
+                                                    Text(
+                                                        "You can't delete event since you aren't the owner of it"),
+                                                    background: Colors.white,
+                                                    position:
+                                                        NotificationPosition
+                                                            .bottom,
+                                                  );
                                                 }
                                               },
                                               child: Icon(Icons.highlight_off,
                                                   color: Colors.red[300]),
-                                            ), // icon-2
+                                            ),
                                           ],
                                         ),
                                       ),

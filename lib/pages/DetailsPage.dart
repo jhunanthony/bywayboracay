@@ -1324,6 +1324,9 @@ class _DetailsPageState extends State<DetailsPage> {
   TextEditingController budget = TextEditingController();
   TextEditingController website = TextEditingController();
   String imgName;
+  String lat;
+  String long;
+  String category;
 
   DateTime _selectedDay = DateTime.now();
   RegExp time_24H = new RegExp(r"^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$");
@@ -1363,7 +1366,6 @@ class _DetailsPageState extends State<DetailsPage> {
                     print(eventDate);
                   },
                 ),
-
                 SizedBox(height: 7),
                 TextField(
                   onTap: () {
@@ -1405,7 +1407,6 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 7),
                 TextField(
                   controller: desc,
@@ -1451,9 +1452,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 ),
                 SizedBox(height: 7),
                 TextField(
-                  controller: website
-                    ..text =
-                        "https://www.google.com/maps/search/?api=1&query=${destinationLocation.latitude},${destinationLocation.longitude}",
+                  controller: website..text = "${widget.items.itemwebsite}",
                   textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     labelText: 'Website',
@@ -1471,36 +1470,6 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                   ),
                 ),
-
-                //SizedBox( height: 8),
-
-                /*TextField(
-                       controller: event,
-                       decoration: InputDecoration(
-                           border: OutlineInputBorder(),
-                           labelText: "Event",
-                           hintText: "Enter Event Name"
-                       ),
-                     ),
-                     //SizedBox( height: 8),
-                     TextField(
-                       controller: desc,
-                       decoration: InputDecoration(
-                           border: OutlineInputBorder(),
-                           labelText: "Description",
-                           hintText: "Enter Event Description"
-                       ),
-                     ),*/
-                //SizedBox( height: 8),
-                /*Container(
-                    child: EmailInput(
-                  parentEmails: emails,
-                  setList: (e) {
-                    setState(() {
-                      emails = e;
-                    });
-                  },
-                ))*/
               ],
             ),
           ),
@@ -1522,6 +1491,9 @@ class _DetailsPageState extends State<DetailsPage> {
             TextButton(
               onPressed: () {
                 imgName = widget.items.imgName.toString();
+                lat = widget.items.itemlat.toString();
+                long = widget.items.itemlong.toString();
+                category = widget.items.itemcategoryName;
                 if (timer.text.isEmpty ||
                     !(time_12H.hasMatch(timer.text) ||
                         time_24H.hasMatch(timer.text))) {
@@ -1592,6 +1564,9 @@ class _DetailsPageState extends State<DetailsPage> {
           "budget": budget.text,
           "website": website.text,
           "imgName": imgName,
+          "lat": lat,
+          "long": long,
+          "category": category,
           "CreatedBy": emails[0],
           "users": emails
         });

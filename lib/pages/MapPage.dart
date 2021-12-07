@@ -179,36 +179,6 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver{
     }
   }
 
-  //get distance and duration using dio
-
-  /*Future<DistanceAndDurationInfo> getdistanceandduration() async {
-
-    CategorySelectionService catSelection =
-        Provider.of<CategorySelectionService>(context, listen: false);
-    widget.items = catSelection.items;
-    
-  LatLng destinationlatlong = LatLng(widget.items.itemlat, widget.items.itemlong);
-  destinationLocation =
-        LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
-  currentLocationref = await locationref.getLocation();
-
-
-    
-    final requestURL =
-        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocation.latitude},${destinationLocation.longitude}&key=$googleAPI";
-    //"https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${currentlocationlatlong.latitude},${currentlocationlatlong.longitude}&destinations=${destinationlatlong.latitude},${destinationlatlong.longitude}&travelmode=walking&dir_action=navigate&key=$googleAPI";
-    //"https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&key=$googleAPI";
-   
-    final response = await http.get(Uri.parse(requestURL));
-
-
-      
-    if (response.statusCode == 200) {
-    return DistanceAndDurationInfo.fromJson(jsonDecode(response.body));
-  } else {
-    throw Exception("Error Leoading request URL info.");
-  }
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -288,56 +258,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver{
               colorbackground: Colors.transparent,
               showTopProfile: false,
             )),
-        /*Positioned(
-          bottom: 10,
-          right: 10,
-          child: GestureDetector(
-            onTap: () async {
-              String googleUrl =
-                  'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&travelmode=walking&dir_action=navigate';
-
-              if (await canLaunch(googleUrl)) {
-                await launch(googleUrl);
-              } else {
-                throw 'Could not launch $googleUrl';
-              }
-            },
-
-            child: Row(children: [
-              Icon(Icons.directions, size: 20, color: Colors.blue[200]),
-              Text('Open on Google Map',
-                  style: TextStyle(color: Colors.grey[600])),
-            ]),
-            
-            //return info to redirect to google direction
-          ),
-        ),*/
-        /*Positioned(
-          top: 180,
-          right:0,
-          left:0,
-          
-          child: Align(
-            alignment: Alignment.center,
-            child: Container(
-             
-              child: FutureBuilder<DistanceAndDurationInfo>(
-                  future: futuredistanceandduration,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return DistanceAndDurationWidget(
-                        distancevalue: snapshot.data.distancevalue,
-                        distance: snapshot.data.distance,
-                        duration: snapshot.data.duration,
-                      );
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text("${snapshot.error}"));
-                    }
-                    return CircularProgressIndicator();
-                  }),
-            ),
-          ),
-        )*/
+        
       ])),
     );
   }
