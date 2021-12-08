@@ -1007,15 +1007,13 @@ class _DetailsPageState extends State<DetailsPage> {
                                                           itemratingval =
                                                               rating;
                                                         });
-                                                        print(rating);
                                                       }),
-                                                  //Text("$itemratingval"),
 
                                                   SizedBox(
                                                     height: 10,
                                                   ),
                                                   Text(
-                                                      "Tell us about the socio-economic impact provided by this business.",
+                                                      "Tell us about the socio-economic and/or environmental impact practiced by this business.",
                                                       style: TextStyle(
                                                           fontSize: 12,
                                                           color: Colors.grey)),
@@ -1062,7 +1060,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                     height: 10,
                                                   ),
                                                   Text(
-                                                      "You may talk about; Environmental Awareness, Water/Energy/Paper Savings, Food Waste Reduction, Proper Waste Management, Cultural Promotion, Employees well-being, Support on Charitable Projects, Responsible Tourist Advice, Child Protection, Local Support, etc. ",
+                                                      "Topics you may include; Environmental Awareness, Water/Energy/Paper Savings, Food Waste Reduction, Proper Waste Management, Cultural Promotion, Employees well-being, Support on Charitable Projects, Responsible Tourist Advice, Child Protection, Local Support, etc. ",
                                                       style: TextStyle(
                                                           fontSize: 12,
                                                           color: Colors.grey)),
@@ -1070,7 +1068,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                     height: 10,
                                                   ),
                                                   Text(
-                                                      "Note: This is not a certification. No on-site inspection has been conducted nor an assesment by an organization. This is a user-based peer ratings system that gathers user perspectives on how the business deals with sustainable tourism based on the user's personal experiences.",
+                                                      "Note: This is not a certification. No on-site inspection has been conducted nor an assesment by an organization. This is a user-based peer rating system that gathers user perspectives on how the business deals with sustainable tourism based on the user's personal experiences.",
                                                       style: TextStyle(
                                                           fontSize: 10,
                                                           color:

@@ -33,13 +33,10 @@ class MapPage extends StatefulWidget {
   _MapPageState createState() => _MapPageState();
 }
 
-class _MapPageState extends State<MapPage> with WidgetsBindingObserver{
+class _MapPageState extends State<MapPage> {
   //Google map Controller that controlls single instance of the google map
   Completer<GoogleMapController> _controller = Completer();
-  void onMapCreated(GoogleMapController controller) {
-    controller.setMapStyle(null);
-    _controller.complete(controller);
-  }
+  
 
   //for costum marker pin
   //custom marker to costumize assets to be used
@@ -106,7 +103,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver{
     //for api distance and duration
     // futuredistanceandduration = getdistanceandduration();
 
-    WidgetsBinding.instance.addObserver(this);
+    //WidgetsBinding.instance.addObserver(this);
   }
 
   /// Disposes of the platform resources
@@ -129,8 +126,6 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver{
         'assets/images/$parentCategory.png');
   }
 
-  // lifecycle
-
   //create a method to instantiate from const to hard coded coordinates
   void setInitialLocation() async {
     CategorySelectionService catSelection =
@@ -138,8 +133,8 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver{
     widget.items = catSelection.items;
     //add latlong value here
 
-    LatLng destinationlatlong =
-        LatLng(widget.items.itemlat, widget.items.itemlong);
+    /*LatLng destinationlatlong =
+        LatLng(widget.items.itemlat, widget.items.itemlong);*/
     // set the initial location by pulling the user's
     // current location from the location's getLocation()
     currentLocationref = await locationref.getLocation();
@@ -151,13 +146,13 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver{
     /*destinationLocation =
         LatLng(destinationlatlong.latitude, destinationlatlong.longitude);*/
     destinationLocationref = LocationData.fromMap({
-      "latitude": destinationlatlong.latitude,
-      "longitude": destinationlatlong.longitude
+      "latitude": widget.items.itemlat,
+      "longitude": widget.items.itemlong
     });
   }
 
   //observe phone status
-  @override
+  /*@override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     switch (state) {
@@ -177,7 +172,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver{
         print('appLifeCycleState detached');
         break;
     }
-  }
+  }*/
 
 
   @override

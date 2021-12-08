@@ -108,7 +108,13 @@ class _ItemsPageState extends State<ItemsPage> {
                     child: GoogleMap(
                       myLocationEnabled: true,
                       mapType: MapType.normal,
-                      initialCameraPosition: _kGooglePlex,
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(
+                          this.widget.selectedCategory.items[0].itemlat,
+                          this.widget.selectedCategory.items[0].itemlong,
+                        ),
+                        zoom: 18,
+                      ),
                       onMapCreated: (GoogleMapController controller) {
                         googlemapcontroller.complete(controller);
                       },
@@ -334,7 +340,8 @@ class _ItemsPageState extends State<ItemsPage> {
                       ),
                     ),
                     ChipsChoice<String>.multiple(
-                      choiceStyle: C2ChoiceStyle(color: Colors.blue),
+                      choiceStyle: C2ChoiceStyle(
+                          color: Colors.blue, margin: EdgeInsets.only(left: 5)),
                       value: tags,
                       onChanged: (val) => setState(() {
                         tags = val;
@@ -396,7 +403,8 @@ class _ItemsPageState extends State<ItemsPage> {
                       ),
                     ),
                     ChipsChoice<String>.multiple(
-                      choiceStyle: C2ChoiceStyle(color: Colors.blue),
+                      choiceStyle: C2ChoiceStyle(
+                          color: Colors.blue, margin: EdgeInsets.only(left: 5)),
                       value: tags2,
                       onChanged: (val) => setState(() {
                         tags2 = val;

@@ -805,348 +805,383 @@ class CalendarState extends State<CalendarPage> {
                                           ),
                                         )),
                                       ),
-                                      ListTile(
-                                        leading: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            GestureDetector(
-                                                //notification
-                                                onTap: () async {
-                                                  DateTime dateTime =
-                                                      DateFormat("h:mm a")
-                                                          .parse(value[index]
-                                                              .timer);
-                                                  TimeOfDay timeOfDay =
-                                                      TimeOfDay.fromDateTime(
-                                                          dateTime);
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10,
+                                            bottom: 10,
+                                            left: 15,
+                                            right: 15),
+                                        child: Row(children: [
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              GestureDetector(
+                                                  //notification
+                                                  onTap: () async {
+                                                    DateTime dateTime =
+                                                        DateFormat("h:mm a")
+                                                            .parse(value[index]
+                                                                .timer);
+                                                    TimeOfDay timeOfDay =
+                                                        TimeOfDay.fromDateTime(
+                                                            dateTime);
 
-                                                  await AwesomeNotifications()
-                                                      .createNotification(
-                                                          content:
-                                                              NotificationContent(
-                                                            id: createUniqueID(
-                                                                AwesomeNotifications
-                                                                    .maxID),
-                                                            channelKey:
-                                                                'scheduled_channel',
-                                                            title:
-                                                                '${Emojis.geographic_beach_with_umbrella} You have a scheduled event today!!!',
-                                                            body:
-                                                                '${value[index].title} • ${DateFormat('yyyy-MM-dd').format(_selectedDay)} • ${value[index].timer}',
-                                                            bigPicture:
-                                                                'asset://assets/images/Reminder.png',
-                                                            notificationLayout:
-                                                                NotificationLayout
-                                                                    .BigPicture,
-                                                          ),
-                                                          actionButtons: [
-                                                            NotificationActionButton(
-                                                              key: 'MARK_DONE',
-                                                              label:
-                                                                  'Mark Done',
-                                                            )
-                                                          ],
-                                                          schedule:
-                                                              NotificationCalendar(
-                                                            weekday:
-                                                                _selectedDay
-                                                                    .weekday,
-                                                            day: _selectedDay
-                                                                .day,
-                                                            month: _selectedDay
-                                                                .month,
-                                                            year: _selectedDay
-                                                                .year,
-                                                            hour:
-                                                                timeOfDay.hour,
-                                                            minute: timeOfDay
-                                                                .minute,
-                                                            second: 0,
-                                                            millisecond: 0,
-                                                          ));
-                                                  //initiate notification
-                                                  AwesomeNotifications()
-                                                      .createdStream
-                                                      .listen((notification) {
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(
-                                                      SnackBar(
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                        content: Text(
-                                                            'Notification Created for ${value[index].title}',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .blue)),
-                                                      ),
-                                                    );
-                                                  });
-                                                  //for badge dot if have notification
-                                                  AwesomeNotifications()
-                                                      .actionStream
-                                                      .listen(
-                                                          (notification) {});
-                                                },
-                                                child: InkWell(
+                                                    await AwesomeNotifications()
+                                                        .createNotification(
+                                                            content:
+                                                                NotificationContent(
+                                                              id: createUniqueID(
+                                                                  AwesomeNotifications
+                                                                      .maxID),
+                                                              channelKey:
+                                                                  'scheduled_channel',
+                                                              title:
+                                                                  '${Emojis.geographic_beach_with_umbrella} You have a scheduled event today!!!',
+                                                              body:
+                                                                  '${value[index].title} • ${DateFormat('yyyy-MM-dd').format(_selectedDay)} • ${value[index].timer}',
+                                                              bigPicture:
+                                                                  'asset://assets/images/Reminder.png',
+                                                              notificationLayout:
+                                                                  NotificationLayout
+                                                                      .BigPicture,
+                                                            ),
+                                                            actionButtons: [
+                                                              NotificationActionButton(
+                                                                key:
+                                                                    'MARK_DONE',
+                                                                label:
+                                                                    'Mark Done',
+                                                              )
+                                                            ],
+                                                            schedule:
+                                                                NotificationCalendar(
+                                                              weekday:
+                                                                  _selectedDay
+                                                                      .weekday,
+                                                              day: _selectedDay
+                                                                  .day,
+                                                              month:
+                                                                  _selectedDay
+                                                                      .month,
+                                                              year: _selectedDay
+                                                                  .year,
+                                                              hour: timeOfDay
+                                                                  .hour,
+                                                              minute: timeOfDay
+                                                                  .minute,
+                                                              second: 0,
+                                                              millisecond: 0,
+                                                            ));
+                                                    //initiate notification
+                                                    AwesomeNotifications()
+                                                        .createdStream
+                                                        .listen((notification) {
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        SnackBar(
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          content: Text(
+                                                              'Notification Created for ${value[index].title}',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .blue)),
+                                                        ),
+                                                      );
+                                                    });
+                                                    //for badge dot if have notification
+                                                    AwesomeNotifications()
+                                                        .actionStream
+                                                        .listen(
+                                                            (notification) {});
+                                                  },
+                                                  child: InkWell(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30),
+                                                    child: Icon(
+                                                      Icons
+                                                          .notifications_rounded,
+                                                      color: Colors.white,
+                                                    ),
+                                                  )),
+                                              SizedBox(
+                                                height: 2,
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.all(3),
+                                                decoration: BoxDecoration(
+                                                  color: value[index]
+                                                              .category ==
+                                                          "ToStay"
+                                                      ? Colors.purple[400]
+                                                      : value[index].category ==
+                                                              "ToEat&Drink"
+                                                          ? Colors.red[400]
+                                                          : value[index]
+                                                                      .category ==
+                                                                  "ToDo"
+                                                              ? Colors.blue[400]
+                                                              : value[index]
+                                                                          .category ==
+                                                                      "ToSee"
+                                                                  ? Colors
+                                                                      .green[400]
+                                                                  : Colors.blue,
                                                   borderRadius:
-                                                      BorderRadius.circular(30),
-                                                  child: Icon(
-                                                    Icons.notifications_rounded,
-                                                    color: Colors.white,
-                                                  ),
-                                                )),
-                                            SizedBox(
-                                              height: 2,
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.all(3),
-                                              decoration: BoxDecoration(
-                                                color: value[index].category ==
-                                                        "ToStay"
-                                                    ? Colors.purple[400]
-                                                    : value[index].category ==
-                                                            "ToEat&Drink"
-                                                        ? Colors.red[400]
-                                                        : value[index]
-                                                                    .category ==
-                                                                "ToDo"
-                                                            ? Colors.blue[400]
-                                                            : value[index]
-                                                                        .category ==
-                                                                    "ToSee"
-                                                                ? Colors
-                                                                    .green[400]
-                                                                : Colors.blue,
-                                                borderRadius:
-                                                    BorderRadius.circular(3),
+                                                      BorderRadius.circular(3),
+                                                ),
+                                                child: Text(
+                                                  "${value[index].timer}",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 14),
+                                                ),
                                               ),
-                                              child: Text(
-                                                "${value[index].timer}",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 14),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        isThreeLine: false,
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
 
-                                        //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
-                                        title: Text(
-                                          '${value[index].title}',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18),
-                                        ),
-                                        subtitle: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              '${value[index].desc}',
-                                              maxLines: 2,
-                                              style: TextStyle(
-                                                  overflow: TextOverflow.fade,
-                                                  color: Colors.white),
+                                          //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '${value[index].title}',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 20),
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Text(
+                                                  '${value[index].desc}',
+                                                  maxLines: 4,
+                                                  style: TextStyle(
+                                                      overflow:
+                                                          TextOverflow.fade,
+                                                      color: Colors.white),
+                                                ),
+                                                SizedBox(
+                                                  height: 2,
+                                                ),
+                                                Text(
+                                                  "₱${value[index].budget}",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 14),
+                                                ),
+                                              ],
                                             ),
-                                            SizedBox(
-                                              height: 2,
-                                            ),
-                                            Text(
-                                              "₱${value[index].budget}",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14),
-                                            ),
-                                          ],
-                                        ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
 
-                                        trailing: Wrap(
-                                          spacing:
-                                              10, // space between two icons
-                                          children: <Widget>[
-                                            Visibility(
-                                              visible: value[index].website !=
-                                                  "No Website Linked",
-                                              child: GestureDetector(
-                                                onTap: () async {
-                                                  if (await canLaunch(
-                                                      value[index].website)) {
-                                                    await launch(
-                                                        value[index].website);
+                                          Column(
+                                            // space between two icons
+
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  if (value[index].creator ==
+                                                      emails[0]) {
+                                                    _tapEvents(value[index], 0);
                                                   } else {
-                                                    throw SnackBar(
-                                                        content: Text(
-                                                            'Could not launch ${value[index].website}'));
+                                                    showSimpleNotification(
+                                                      Text(
+                                                          "You can't delete event since you aren't the owner of it"),
+                                                      background: Colors.white,
+                                                      position:
+                                                          NotificationPosition
+                                                              .bottom,
+                                                    );
                                                   }
                                                 },
-                                                child: Icon(
-                                                    value[index].website.contains(
-                                                            'www.google.com/maps/search')
-                                                        ? Icons
-                                                            .location_on_rounded
-                                                        : CupertinoIcons.globe,
-                                                    color: Colors.white),
+                                                child: Icon(Icons.highlight_off,
+                                                    color: Colors.red[300]),
                                               ),
-                                            ), // icon-1
+                                              SizedBox(
+                                                height: 10,
+                                              ),
 
-                                            //show map items
+                                              Visibility(
+                                                visible: value[index].website !=
+                                                    "No Website Linked",
+                                                child: GestureDetector(
+                                                  onTap: () async {
+                                                    if (await canLaunch(
+                                                        value[index].website)) {
+                                                      await launch(
+                                                          value[index].website);
+                                                    } else {
+                                                      throw SnackBar(
+                                                          content: Text(
+                                                              'Could not launch ${value[index].website}'));
+                                                    }
+                                                  },
+                                                  child: Icon(
+                                                      value[index].website.contains(
+                                                              'www.google.com/maps/search')
+                                                          ? Icons
+                                                              .location_on_rounded
+                                                          : CupertinoIcons
+                                                              .globe,
+                                                      color: Colors.white),
+                                                ),
+                                              ), // icon-1
+                                              SizedBox(
+                                                height: 10,
+                                              ),
 
-                                            Visibility(
-                                              visible: value[index].lat !=
-                                                      "0.00" &&
-                                                  value[index].long != "0.00",
-                                              child: GestureDetector(
-                                                onTap: () async {
-                                                  BitmapDescriptor
-                                                      tostaymarker =
-                                                      await BitmapDescriptor
-                                                          .fromAssetImage(
-                                                              ImageConfiguration(
-                                                                  devicePixelRatio:
-                                                                      0.2),
-                                                              'assets/images/ToStay.png');
-                                                  BitmapDescriptor
-                                                      toeatdrinkmarker =
-                                                      await BitmapDescriptor
-                                                          .fromAssetImage(
-                                                              ImageConfiguration(
-                                                                  devicePixelRatio:
-                                                                      0.2),
-                                                              'assets/images/ToEat&Drink.png');
-                                                  BitmapDescriptor toseemarker =
-                                                      await BitmapDescriptor
-                                                          .fromAssetImage(
-                                                              ImageConfiguration(
-                                                                  devicePixelRatio:
-                                                                      0.2),
-                                                              'assets/images/ToSee.png');
-                                                  BitmapDescriptor todomarker =
-                                                      await BitmapDescriptor
-                                                          .fromAssetImage(
-                                                              ImageConfiguration(
-                                                                  devicePixelRatio:
-                                                                      0.2),
-                                                              'assets/images/ToDo.png');
+                                              //show map items
 
-                                                  showDialog<void>(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        Iterable _markers =
-                                                            Iterable.generate(
-                                                                value.length,
-                                                                (index) {
-                                                          return Marker(
-                                                              markerId: MarkerId(
-                                                                  value[index]
-                                                                      .lat),
-                                                              position: LatLng(
-                                                                double.parse(
+                                              Visibility(
+                                                visible: value[index].lat !=
+                                                        "0.00" &&
+                                                    value[index].long != "0.00",
+                                                child: GestureDetector(
+                                                  onTap: () async {
+                                                    BitmapDescriptor
+                                                        tostaymarker =
+                                                        await BitmapDescriptor
+                                                            .fromAssetImage(
+                                                                ImageConfiguration(
+                                                                    devicePixelRatio:
+                                                                        0.2),
+                                                                'assets/images/ToStay.png');
+                                                    BitmapDescriptor
+                                                        toeatdrinkmarker =
+                                                        await BitmapDescriptor
+                                                            .fromAssetImage(
+                                                                ImageConfiguration(
+                                                                    devicePixelRatio:
+                                                                        0.2),
+                                                                'assets/images/ToEat&Drink.png');
+                                                    BitmapDescriptor
+                                                        toseemarker =
+                                                        await BitmapDescriptor
+                                                            .fromAssetImage(
+                                                                ImageConfiguration(
+                                                                    devicePixelRatio:
+                                                                        0.2),
+                                                                'assets/images/ToSee.png');
+                                                    BitmapDescriptor
+                                                        todomarker =
+                                                        await BitmapDescriptor
+                                                            .fromAssetImage(
+                                                                ImageConfiguration(
+                                                                    devicePixelRatio:
+                                                                        0.2),
+                                                                'assets/images/ToDo.png');
+
+                                                    showDialog<void>(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          Iterable _markers =
+                                                              Iterable.generate(
+                                                                  value.length,
+                                                                  (index) {
+                                                            return Marker(
+                                                                markerId: MarkerId(
                                                                     value[index]
                                                                         .lat),
-                                                                double.parse(
-                                                                    value[index]
-                                                                        .long),
-                                                              ),
-                                                              infoWindow: InfoWindow(
-                                                                  title: '"' +
-                                                                      (index +
-                                                                              1)
-                                                                          .toString() +
-                                                                      '" ' +
+                                                                position:
+                                                                    LatLng(
+                                                                  double.parse(
                                                                       value[index]
-                                                                          .title),
-                                                              icon: value[index]
-                                                                          .category ==
-                                                                      "ToStay"
-                                                                  ? tostaymarker
-                                                                  : value[index]
-                                                                              .category ==
-                                                                          "ToEat&Drink"
-                                                                      ? toeatdrinkmarker
-                                                                      : value[index].category ==
-                                                                              "ToDo"
-                                                                          ? todomarker
-                                                                          : value[index].category == "ToSee"
-                                                                              ? toseemarker
-                                                                              : BitmapDescriptor.defaultMarkerWithHue(200));
-                                                          //
-                                                        });
+                                                                          .lat),
+                                                                  double.parse(
+                                                                      value[index]
+                                                                          .long),
+                                                                ),
+                                                                infoWindow: InfoWindow(
+                                                                    title: '"' +
+                                                                        (index +
+                                                                                1)
+                                                                            .toString() +
+                                                                        '" ' +
+                                                                        value[index]
+                                                                            .title),
+                                                                icon: value[index]
+                                                                            .category ==
+                                                                        "ToStay"
+                                                                    ? tostaymarker
+                                                                    : value[index].category ==
+                                                                            "ToEat&Drink"
+                                                                        ? toeatdrinkmarker
+                                                                        : value[index].category ==
+                                                                                "ToDo"
+                                                                            ? todomarker
+                                                                            : value[index].category == "ToSee"
+                                                                                ? toseemarker
+                                                                                : BitmapDescriptor.defaultMarkerWithHue(200));
+                                                            //
+                                                          });
 
-                                                        return AlertDialog(
-                                                            title: Text(
-                                                                "Map Search"),
-                                                            contentPadding:
-                                                                EdgeInsets.all(
-                                                                    0),
-                                                            content: Stack(
-                                                              children: [
-                                                                Positioned.fill(
-                                                                  child:
-                                                                      GoogleMap(
-                                                                    myLocationEnabled:
-                                                                        true,
-                                                                    mapType: MapType
-                                                                        .normal,
-                                                                    initialCameraPosition:
-                                                                        CameraPosition(
-                                                                      target:
-                                                                          LatLng(
-                                                                        double.parse(
-                                                                            value[index].lat),
-                                                                        double.parse(
-                                                                            value[index].long),
+                                                          return AlertDialog(
+                                                              title: Text(
+                                                                  "Map Search"),
+                                                              contentPadding:
+                                                                  EdgeInsets
+                                                                      .all(0),
+                                                              content: Stack(
+                                                                children: [
+                                                                  Positioned
+                                                                      .fill(
+                                                                    child:
+                                                                        GoogleMap(
+                                                                      myLocationEnabled:
+                                                                          true,
+                                                                      mapType:
+                                                                          MapType
+                                                                              .normal,
+                                                                      initialCameraPosition:
+                                                                          CameraPosition(
+                                                                        target:
+                                                                            LatLng(
+                                                                          double.parse(
+                                                                              value[index].lat),
+                                                                          double.parse(
+                                                                              value[index].long),
+                                                                        ),
+                                                                        zoom:
+                                                                            18,
                                                                       ),
-                                                                      zoom: 18,
+                                                                      onMapCreated:
+                                                                          (GoogleMapController
+                                                                              controller) {
+                                                                        googlemapcontroller
+                                                                            .complete(controller);
+                                                                      },
+                                                                      markers: Set
+                                                                          .from(
+                                                                              _markers),
                                                                     ),
-                                                                    onMapCreated:
-                                                                        (GoogleMapController
-                                                                            controller) {
-                                                                      googlemapcontroller
-                                                                          .complete(
-                                                                              controller);
-                                                                    },
-                                                                    markers: Set
-                                                                        .from(
-                                                                            _markers),
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ));
-                                                      });
-                                                },
-                                                child: Icon(
-                                                    Icons.location_on_rounded,
-                                                    color: Colors.white),
+                                                                  )
+                                                                ],
+                                                              ));
+                                                        });
+                                                  },
+                                                  child: Icon(
+                                                      Icons.location_on_rounded,
+                                                      color: Colors.white),
+                                                ),
                                               ),
-                                            ),
 
-                                            //remove item from list
-
-                                            GestureDetector(
-                                              onTap: () {
-                                                if (value[index].creator ==
-                                                    emails[0]) {
-                                                  _tapEvents(value[index], 0);
-                                                } else {
-                                                  showSimpleNotification(
-                                                    Text(
-                                                        "You can't delete event since you aren't the owner of it"),
-                                                    background: Colors.white,
-                                                    position:
-                                                        NotificationPosition
-                                                            .bottom,
-                                                  );
-                                                }
-                                              },
-                                              child: Icon(Icons.highlight_off,
-                                                  color: Colors.red[300]),
-                                            ),
-                                          ],
-                                        ),
+                                              //remove item from list
+                                            ],
+                                          ),
+                                        ]),
                                       ),
                                     ],
                                   ),
