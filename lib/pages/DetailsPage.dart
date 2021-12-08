@@ -16,6 +16,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_social_content_share/flutter_social_content_share.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -98,7 +99,7 @@ class _DetailsPageState extends State<DetailsPage> {
               //wrap with stack to add components above images
               Stack(children: [
                 Container(
-                  height: 450,
+                  height: 520,
                   width: MediaQuery.of(context).size.width,
 
                   //wrap with stack to overlay other components
@@ -110,7 +111,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       itemBuilder: (BuildContext context, int index) {
                         //show photos here
                         return Container(
-                            height: 400,
+                            height: 470,
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
                               image: DecorationImage(
@@ -201,7 +202,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                 );
                               } else {
                                 renderedButton = Container(
-                                  padding: EdgeInsets.all(10),
+                                  padding: EdgeInsets.only(
+                                      top: 10, bottom: 15, left: 10, right: 10),
                                   child: Icon(Icons.favorite_rounded,
                                       color: Colors.pink, size: 25),
                                 );
@@ -261,7 +263,11 @@ class _DetailsPageState extends State<DetailsPage> {
                             showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
-                                    title: Text('Share To'),
+                                    title: Column(
+                                      children: [
+                                        Text('Share To'),
+                                      ],
+                                    ),
                                     content: SingleChildScrollView(
                                         child: Column(
                                       children: [
@@ -280,8 +286,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 ),
                                                 child: Container(
                                                     padding: EdgeInsets.only(
-                                                        top: 3,
-                                                        bottom: 3,
+                                                        top: 5,
+                                                        bottom: 5,
                                                         left: 5,
                                                         right: 5),
                                                     alignment: Alignment.center,
@@ -290,7 +296,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                     ),
                                                     child: Icon(
                                                         Icons.facebook_rounded,
-                                                        size: 20,
+                                                        size: 30,
                                                         color: Colors.blue)),
                                                 //capture the success flag with async and await
                                                 onPressed: () async {
@@ -311,19 +317,22 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   shape: CircleBorder(),
                                                 ),
                                                 child: Container(
-                                                    padding: EdgeInsets.only(
-                                                        top: 3,
-                                                        bottom: 3,
-                                                        left: 5,
-                                                        right: 5),
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                    child: Icon(
-                                                        Icons.camera_rounded,
-                                                        size: 20,
-                                                        color: Colors.blue)),
+                                                  padding: EdgeInsets.only(
+                                                      top: 5,
+                                                      bottom: 5,
+                                                      left: 5,
+                                                      right: 5),
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: SvgPicture.asset(
+                                                    'assets/icons/Instagram.svg',
+                                                    color: Colors.blue,
+                                                    height: 30,
+                                                    width: 30,
+                                                  ),
+                                                ),
                                                 //capture the success flag with async and await
                                                 onPressed: () async {
                                                   FlutterSocialContentShare
@@ -352,8 +361,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 ),
                                                 child: Container(
                                                     padding: EdgeInsets.only(
-                                                        top: 3,
-                                                        bottom: 3,
+                                                        top: 5,
+                                                        bottom: 5,
                                                         left: 5,
                                                         right: 5),
                                                     alignment: Alignment.center,
@@ -362,7 +371,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                     ),
                                                     child: Icon(
                                                         Icons.sms_rounded,
-                                                        size: 20,
+                                                        size: 30,
                                                         color: Colors.blue)),
                                                 //capture the success flag with async and await
                                                 onPressed: () async {
@@ -381,8 +390,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 ),
                                                 child: Container(
                                                     padding: EdgeInsets.only(
-                                                        top: 3,
-                                                        bottom: 3,
+                                                        top: 5,
+                                                        bottom: 5,
                                                         left: 5,
                                                         right: 5),
                                                     alignment: Alignment.center,
@@ -391,7 +400,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                     ),
                                                     child: Icon(
                                                         Icons.email_rounded,
-                                                        size: 20,
+                                                        size: 30,
                                                         color: Colors.blue)),
                                                 //capture the success flag with async and await
                                                 onPressed: () async {
@@ -423,7 +432,115 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                         ),
                         SizedBox(
-                          height: 30,
+                          height: 20,
+                        ),
+                        Container(
+                          width: 50,
+                          height: 100,
+                          child: StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection('ratings')
+                                  .doc('${widget.items.itemcategoryName}')
+                                  .snapshots(),
+                              builder: (context,
+                                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                if (snapshot.hasData) {
+                                  var userDocument = snapshot.data;
+                                  var path =
+                                      userDocument["${widget.items.name}.sets"];
+                                  return path.length > 0
+                                      ? Column(
+                                          children: [
+                                            Expanded(
+                                              child: ListView.builder(
+                                                  scrollDirection:
+                                                      Axis.vertical,
+                                                  itemCount: path.length > 3
+                                                      ? 3
+                                                      : path.length,
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int index) {
+                                                    var username = path[index];
+
+                                                    return Align(
+                                                      heightFactor: 0.6,
+                                                      child: CircleAvatar(
+                                                        backgroundColor: Colors
+                                                            .white
+                                                            .withOpacity(0.8),
+                                                        child: CircleAvatar(
+                                                          radius: 18,
+
+                                                          backgroundImage:
+                                                              NetworkImage(
+                                                            "${username["userimg"].toString()}",
+                                                          ), // Provide your custom image
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }),
+                                            ),
+                                            Text(
+                                              '${path.length.toString()} reviews',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.white,
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      : path.length == null
+                                          ? Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Text(
+                                                  'No reviews',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          : Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Text(
+                                                  'No reviews',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                } else if (snapshot.hasError) {
+                                  return Text(
+                                    'No Reviews',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.white,
+                                    ),
+                                  );
+                                } else
+                                  return Text(
+                                    'Loading',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.white,
+                                    ),
+                                  );
+                              }),
+                        ),
+                        SizedBox(
+                          height: 25,
                         ),
                         Align(
                           alignment: Alignment.topCenter,
@@ -549,7 +666,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                       width: 10,
                                     ),
                                     Text(
-                                      "${rating.toStringAsFixed(1)} • ${userDocument["${widget.items.name}.itemratingnum"].toString()} reviews",
+                                      "${rating.toStringAsFixed(1)} • ${userDocument["${widget.items.name}.itemratingnum"].toString()}",
                                       style: TextStyle(
                                         color: Colors.green[400],
                                         fontSize: 14,

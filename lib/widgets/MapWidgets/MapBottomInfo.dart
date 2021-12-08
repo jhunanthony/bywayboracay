@@ -17,7 +17,6 @@ import 'package:http/http.dart' as http;
 //create the transit/tariff features here
 
 class MapBottomInfo extends StatefulWidget {
- 
   @override
   State<MapBottomInfo> createState() => _MapBottomInfoState();
 }
@@ -29,7 +28,6 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
 
   Future<DistanceAndDurationInfo> futuredistanceandduration;
 
-  
   LatLng destinationLocation;
   // the user's initial location and current location
   // as it moves
@@ -39,7 +37,6 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
   // wrapper around the location API
   Location locationref;
   String googleAPI = 'AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE';
-
 
   @override
   void initState() {
@@ -55,15 +52,15 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
       // current user's position in real time,
       // so we're holding on to it
       currentLocationref = cLoc;
-   
     });
 
     futuredistanceandduration = getdistanceandduration();
   }
 
   void getcurrentLocation() async {
-     currentLocationref = await locationref.getLocation();
+    currentLocationref = await locationref.getLocation();
   }
+
 //get distance and duration using json parse
   Future<DistanceAndDurationInfo> getdistanceandduration() async {
     CategorySelectionService catSelection =
@@ -116,51 +113,56 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
                   clipBehavior: Clip.none,
                   children: [
                     ClipOval(
-                        child: Image.network(
-                           this.items.imgName,
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.cover)),
+                        child: Image.network(this.items.imgName,
+                            width: 60, height: 60, fit: BoxFit.cover)),
                     Positioned(
                       bottom: -10,
                       right: -10,
                       child: CategoryIcon(
-                    iconName: this.items.itemcategoryName,
-                    color: this.items.color,
-                    size: 30,
-                  ),
+                        iconName: this.items.itemcategoryName,
+                        color: this.items.color,
+                        size: 30,
+                      ),
                     ),
-                    
                   ],
                 ),
                 SizedBox(width: 20),
                 Expanded(
                   child: Column(
-                    
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      
                       children: [
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
                         Text(
                           this.items.name,
                           style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
-                            fontSize: 15,
+                            fontSize: 18,
                           ),
                         ),
-                        Text(this.items.itemaddress, style: TextStyle(
+                        Text(
+                          this.items.itemaddress,
+                          style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.normal,
-                            fontSize: 15,
-                          ),),
+                            fontSize: 12,
+                          ),
+                        ),
+                        Text(
+                          this.items.itemopenTime,
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 12,
+                          ),
+                        ),
                       ]),
                 ),
                 //marker
-                Image.asset(
-                          'assets/images/${this.items.itemcategoryName}.png',
-                          height: 40,
-                          width: 40),
+                Image.asset('assets/images/${this.items.itemcategoryName}.png',
+                    height: 40, width: 40),
                 SizedBox(width: 15),
 
                 /*Icon(Icons.location_pin,
@@ -186,80 +188,35 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
                       }
                       return Center(child: CircularProgressIndicator());
                     }),
-
                 ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.blue[200], //background
-                              onPrimary: Colors.white,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 17, vertical: 17), //foreground
-                              shape: CircleBorder()),
-                          child: Center(
-                            child: Icon(
-                              Icons.directions_rounded,
-                              size: 25,
-                              color: Colors.white,
-                            ),
-                          ),
-                          onPressed: () async {
-              String googleUrl =
-                  'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&travelmode=walking&dir_action=navigate';
-
-              if (await canLaunch(googleUrl)) {
-                await launch(googleUrl);
-              } else {
-                throw 'Could not launch $googleUrl';
-              }
-            },),
-              ],
-            ),
-          )
-          /*Container(
-              child: Column(children: [
-            Row(children: [
-              SizedBox(width: 10),
-              Expanded(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                    
-                    Row(children: [
-                      //add drop down to personalize fare
-                      DropdownButton(
-                        value: farevalue,
-                        icon: Icon(Icons.keyboard_arrow_down),
-                        items: fareitems.map((String items) {
-                          return DropdownMenuItem(
-                              value: items, child: Text(items));
-                        }).toList(),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            farevalue = newValue;
-                          });
-                        },
-                      ),
-                      Text(
-                        ': Php 100.00',
-                      )
-                    ]),
-                  ])),
-              ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       primary: Colors.blue[200], //background
                       onPrimary: Colors.white,
                       padding: EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 15), //foreground
+                          horizontal: 17, vertical: 17), //foreground
                       shape: CircleBorder()),
                   child: Center(
                     child: Icon(
-                      CupertinoIcons.car_fill,
+                      Icons.directions_rounded,
                       size: 25,
                       color: Colors.white,
                     ),
                   ),
-                  onPressed: () {}),
-            ])
-          ]))*/
+                  onPressed: () async {
+                    String googleUrl =
+                        'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&travelmode=walking&dir_action=navigate';
+
+                    if (await canLaunch(googleUrl)) {
+                      await launch(googleUrl);
+                    } else {
+                      throw 'Could not launch $googleUrl';
+                    }
+                  },
+                ),
+              ],
+            ),
+          )
+          
         ]));
   }
 }

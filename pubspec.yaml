@@ -43,7 +43,7 @@ dependencies:
   #to lunch http
   http: ^0.13.4
   #for google map 
-  google_maps_flutter: ^2.0.11
+  google_maps_flutter: ^2.1.1
   #For polylines
   flutter_polyline_points: ^1.0.0
   #for location stream
