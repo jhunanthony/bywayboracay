@@ -36,7 +36,6 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   //Google map Controller that controlls single instance of the google map
   Completer<GoogleMapController> _controller = Completer();
-  
 
   //for costum marker pin
   //custom marker to costumize assets to be used
@@ -90,8 +89,7 @@ class _MapPageState extends State<MapPage> {
       // current user's position in real time,
       // so we're holding on to it
       currentLocationref = cLoc;
-      updatePinOnMap();
-      
+      //updatePinOnMap();
     });
 
     //instantiate the polyline reference to call API
@@ -145,10 +143,8 @@ class _MapPageState extends State<MapPage> {
 
     /*destinationLocation =
         LatLng(destinationlatlong.latitude, destinationlatlong.longitude);*/
-    destinationLocationref = LocationData.fromMap({
-      "latitude": widget.items.itemlat,
-      "longitude": widget.items.itemlong
-    });
+    destinationLocationref = LocationData.fromMap(
+        {"latitude": widget.items.itemlat, "longitude": widget.items.itemlong});
   }
 
   //observe phone status
@@ -173,7 +169,6 @@ class _MapPageState extends State<MapPage> {
         break;
     }
   }*/
-
 
   @override
   Widget build(BuildContext context) {
@@ -237,6 +232,34 @@ class _MapPageState extends State<MapPage> {
             child: MapUserInformation(
               isSelected: this.userInfoSelected,
             )),
+        Positioned(
+          top: 155,
+          left: 0,
+          right: 0,
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.white, //background
+                onPrimary: Colors.blue,
+                //foreground
+                shape: CircleBorder(),
+              ),
+              child: Container(
+                  alignment: Alignment.center,
+                  height: 30,
+                  width: 30,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child:
+                      Icon(Icons.sync_rounded, size: 25, color: Colors.blue)),
+              //capture the success flag with async and await
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                    new MaterialPageRoute(builder: (BuildContext context) {
+                  return new MapPage();
+                }));
+              }),
+        ),
         AnimatedPositioned(
             //animate the bottom Info
             duration: const Duration(milliseconds: 500),
@@ -253,7 +276,6 @@ class _MapPageState extends State<MapPage> {
               colorbackground: Colors.transparent,
               showTopProfile: false,
             )),
-        
       ])),
     );
   }
@@ -332,7 +354,7 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
-  void updatePinOnMap() async {
+  /*void updatePinOnMap() async {
     //get user information from loginservice to display name on user pin
     LoginService loginService =
         Provider.of<LoginService>(context, listen: false);
@@ -373,5 +395,5 @@ class _MapPageState extends State<MapPage> {
             });
           }));
     });
-  }
+  }*/
 }
