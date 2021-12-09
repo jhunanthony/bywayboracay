@@ -51,10 +51,11 @@ dependencies:
   #for API request
   dio: ^4.0.0
   #for app setting
-
   #for rating indicators
   flutter_rating_bar: ^4.0.0
   chips_choice_null_safety: ^2.0.4
+  flutter_phone_direct_caller: ^2.1.0
+  direct_dialer: ^1.0.1+1
 
  
 
