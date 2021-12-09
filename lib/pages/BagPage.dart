@@ -3,6 +3,7 @@ import 'package:bywayborcay/widgets/MapWidgets/offline.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/BagPageWidgets/CurrencyConverter/currencywidget.dart';
+import '../widgets/BagPageWidgets/CurrencyConverter/travelguidelines.dart';
 import '../widgets/BagPageWidgets/commonphrase.dart';
 import '../widgets/BagPageWidgets/emergencywidget.dart';
 
@@ -42,7 +43,13 @@ class BagPage extends StatelessWidget {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15.0)),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          TravelGuidelines()));
+                            },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
 

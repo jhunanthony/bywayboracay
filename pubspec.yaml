@@ -80,6 +80,10 @@ dependencies:
   #for filter list
   filter_list: ^1.0.0
   flutter_social_content_share: ^1.0.2
+  #for travel tips
+  expandable: ^5.0.1
+  carousel_slider: ^4.0.0
+  flutter_linkify: ^5.0.2
 
 
 
