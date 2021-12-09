@@ -10,6 +10,8 @@ import 'package:bywayborcay/services/categoryservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/services/likeservice.dart';
 import 'package:bywayborcay/services/ratedservice.dart';
+
+import 'package:bywayborcay/widgets/BagPageWidgets/CurrencyConverter/currmodel.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/Itinerarypage2.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -33,16 +35,6 @@ void main() {
   locked: true,
   importance: NotificationImportance.High,
    ),
- 
-
-    /*NotificationChannel(
-      channelKey: 'basic_channel',
-      channelName: 'Basic Notifications',
-      channelDescription: 'For basic notification' ,
-      defaultColor: Colors.teal,
-      importance: NotificationImportance.High,
-      channelShowBadge: true,  
-    ),*/
   ],
   );
 
@@ -69,7 +61,9 @@ class MyApp extends StatelessWidget {
         create: (_) => RatingService()),
       Provider(
         create: (_) => CategoryService(),
-      )
+      ),
+      ChangeNotifierProvider(
+      create: (_) => CurrModel(),),
       ],
     
       child: OverlaySupport.global(

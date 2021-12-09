@@ -2,6 +2,7 @@ import 'package:bywayborcay/widgets/MapWidgets/offline.dart';
 
 import 'package:flutter/material.dart';
 
+import '../widgets/BagPageWidgets/CurrencyConverter/currencywidget.dart';
 import '../widgets/BagPageWidgets/emergencywidget.dart';
 
 class BagPage extends StatelessWidget {
@@ -227,10 +228,10 @@ class BagPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15.0)),
                   ),
                   onPressed: () {
-                    /*Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CurrencyPage()));*/
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CurrencyPage()));
                   },
                   child: Column(
                     // Replace with a Row for horizontal icon + text
