@@ -3,6 +3,7 @@ import 'package:bywayborcay/widgets/MapWidgets/offline.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/BagPageWidgets/CurrencyConverter/currencywidget.dart';
+import '../widgets/BagPageWidgets/commonphrase.dart';
 import '../widgets/BagPageWidgets/emergencywidget.dart';
 
 class BagPage extends StatelessWidget {
@@ -143,7 +144,12 @@ class BagPage extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0)),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CommonPhrasePage()));
+                  },
                   child: Column(
                     // Replace with a Row for horizontal icon + text
                     children: <Widget>[
@@ -220,7 +226,7 @@ class BagPage extends StatelessWidget {
                 ),
                 TextButton(
                   style: TextButton.styleFrom(
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.green[400],
                     primary: Colors.white,
                     padding: EdgeInsets.all(3.0),
                     fixedSize: Size(100.0, 90.0),

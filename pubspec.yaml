@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flutter_tts: ^3.2.2
   flutter:
     sdk: flutter
 
@@ -55,31 +56,22 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   chips_choice_null_safety: ^2.0.4
   flutter_phone_direct_caller: ^2.1.0
-  direct_dialer: ^1.0.1+1
-
- 
-
-  
-
+  direct_dialer: ^1.0.1
+  #for text to speech
   #for google authentication
   firebase_core: ^1.7.0
   firebase_auth: ^3.1.3
   google_sign_in: ^5.1.1
-
   #for state management
   provider: ^6.0.1
-
   #for firestore api
   cloud_firestore: ^2.5.4
-
   #for calendar
   table_calendar: ^3.0.3
-
   #googleapis: ^6.0.0
   #googleapis_auth: ^1.2.0
   date_utils: ^0.2.0
   intl: ^0.17.0
-
   #for overlayer ntoification
   overlay_support: ^1.2.1
   mailer: ^5.0.2
@@ -87,7 +79,6 @@ dependencies:
   awesome_notifications: ^0.6.17
   #for filter list
   filter_list: ^1.0.0
-
   flutter_social_content_share: ^1.0.2
 
 
