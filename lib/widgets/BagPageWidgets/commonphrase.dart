@@ -4,7 +4,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import '../Navigation/TopNavBar.dart';
 
 class CommonPhrasePage extends StatefulWidget {
-  //const TextToSpeech({Key key}) : super(key: key);
+  const CommonPhrasePage({Key key}) : super(key: key);
 
   @override
   _CommonPhrasePageState createState() => _CommonPhrasePageState();
