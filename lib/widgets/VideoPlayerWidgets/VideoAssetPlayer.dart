@@ -18,6 +18,7 @@ class _VideoAssetPlayerState extends State<VideoAssetPlayer> {
     videocontroller = VideoPlayerController.asset(asset)
       ..addListener(() => setState(() {}))
       ..initialize().then((_) => videocontroller.pause());
+     
   }
 
   @override
@@ -28,6 +29,6 @@ class _VideoAssetPlayerState extends State<VideoAssetPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [VideoPlayerWidget(controller: videocontroller)]);
+    return Stack(children: [VideoPlayerWidget(videocontroller: videocontroller)]);
   }
 }

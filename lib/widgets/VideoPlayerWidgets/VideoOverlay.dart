@@ -19,6 +19,7 @@ class AdvancedOverlayWidget extends StatelessWidget {
         .map((seg) => seg.remainder(60).toString().padLeft(2, '0'))
         .join(':');
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,22 @@ class AdvancedOverlayWidget extends StatelessWidget {
           : videocontroller.play(),
       child: Stack(
         children: <Widget>[
-          buildPlay(),
+          AnimatedSwitcher(
+            duration: Duration(milliseconds: 50),
+            reverseDuration: Duration(milliseconds: 200),
+            child: videocontroller.value.isPlaying
+                ? SizedBox()
+                : Container(
+                    color: Colors.black26,
+                    child: Center(
+                      child: Icon(
+                        Icons.play_arrow,
+                        color: Colors.white,
+                        size: 70,
+                      ),
+                    ),
+                  ),
+          ),
           buildSpeed(),
           Positioned(
             left: 8,
@@ -116,22 +132,5 @@ class AdvancedOverlayWidget extends StatelessWidget {
             ),
           ),
         ),
-      );
-
-  Widget buildPlay() => AnimatedSwitcher(
-        duration: Duration(milliseconds: 50),
-        reverseDuration: Duration(milliseconds: 200),
-        child: videocontroller.value.isPlaying
-            ? Container()
-            : Container(
-                color: Colors.black26,
-                child: Center(
-                  child: Icon(
-                    Icons.play_arrow,
-                    color: Colors.white,
-                    size: 70,
-                  ),
-                ),
-              ),
       );
 }

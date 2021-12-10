@@ -271,95 +271,99 @@ class _ItemsPageState extends State<ItemsPage> {
               ]),
               Consumer<LoginService>(builder: (context, loginService, child) {
                 if (loginService.isUserLoggedIn()) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  return Column(
                     children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.white, //background
-                          onPrimary: Colors.blue,
-                          //foreground
-                        ),
-                        child: Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50)),
-                            child: Row(
-                              children: [
-                                Icon(Icons.search_rounded,
-                                    size: 25, color: Colors.blue),
-                                Text(" Search Filter ",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w400)),
-                              ],
-                            )),
-                        //capture the success flag with async and await
-                        onPressed: () =>
-                            _openFilterDialog(widget.selectedCategory),
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.white, //background
-                          onPrimary: Colors.blue,
-                          //foreground
-                          shape: CircleBorder(),
-                        ),
-                        child: Container(
-                            alignment: Alignment.center,
-                            height: 30,
-                            width: 30,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.white, //background
+                              onPrimary: Colors.blue,
+                              //foreground
                             ),
-                            child: Icon(Icons.map_rounded,
-                                size: 25, color: Colors.blue)),
-                        //capture the success flag with async and await
-                        onPressed: () =>
-                            _showMapWidget(widget.selectedCategory),
+                            child: Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50)),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.search_rounded,
+                                        size: 25, color: Colors.blue),
+                                    Text(" Search Filter ",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.blue,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w400)),
+                                  ],
+                                )),
+                            //capture the success flag with async and await
+                            onPressed: () =>
+                                _openFilterDialog(widget.selectedCategory),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.white, //background
+                              onPrimary: Colors.blue,
+                              //foreground
+                              shape: CircleBorder(),
+                            ),
+                            child: Container(
+                                alignment: Alignment.center,
+                                height: 30,
+                                width: 30,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(Icons.map_rounded,
+                                    size: 25, color: Colors.blue)),
+                            //capture the success flag with async and await
+                            onPressed: () =>
+                                _showMapWidget(widget.selectedCategory),
+                          ),
+                        ],
                       ),
-                    ],
-                  );
-                }
-                return SizedBox();
-              }),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    SizedBox(width: 30),
-                    Text(
-                      "Station",
-                      overflow: TextOverflow.fade,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.blue,
-                      ),
-                    ),
-                    ChipsChoice<String>.multiple(
-                      choiceStyle: C2ChoiceStyle(
-                          color: Colors.blue, margin: EdgeInsets.only(left: 5)),
-                      value: tags,
-                      onChanged: (val) => setState(() {
-                        tags = val;
 
-                        Query _query = Query(station: val);
-                        List<Items> filter(List<Items> items, Query query) {
-                          return items
-                              .where((items) => (query.station == null ||
-                                  query.station.contains(items.itemstation)))
-                              .toList();
-                        }
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            SizedBox(width: 30),
+                            Text(
+                              "Station",
+                              overflow: TextOverflow.fade,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            ChipsChoice<String>.multiple(
+                              choiceStyle: C2ChoiceStyle(
+                                  color: Colors.blue,
+                                  margin: EdgeInsets.only(left: 5)),
+                              value: tags,
+                              onChanged: (val) => setState(() {
+                                tags = val;
 
-                        List<Items> results =
-                            filter(this.widget.selectedCategory.items, _query);
-                        if (results != null) {
-                          selectedCountList = List.from(results);
+                                Query _query = Query(station: val);
+                                List<Items> filter(
+                                    List<Items> items, Query query) {
+                                  return items
+                                      .where((items) =>
+                                          (query.station == null ||
+                                              query.station
+                                                  .contains(items.itemstation)))
+                                      .toList();
+                                }
 
-                          /*results.forEach((Items filtered) {
+                                List<Items> results = filter(
+                                    this.widget.selectedCategory.items, _query);
+                                if (results != null) {
+                                  selectedCountList = List.from(results);
+
+                                  /*results.forEach((Items filtered) {
 
 
                                   selectedCountList
@@ -377,113 +381,121 @@ class _ItemsPageState extends State<ItemsPage> {
                                     }
                                   });
                                 });*/
-                        }
-                      }),
-                      choiceItems: C2Choice.listFrom<String, String>(
-                        source: options,
-                        value: (i, v) => v,
-                        label: (i, v) => v,
+                                }
+                              }),
+                              choiceItems: C2Choice.listFrom<String, String>(
+                                source: options,
+                                value: (i, v) => v,
+                                label: (i, v) => v,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              //subcategory filter
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    SizedBox(width: 30),
-                    Text(
-                      "Subcategory",
-                      overflow: TextOverflow.fade,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.blue,
-                      ),
-                    ),
-                    ChipsChoice<String>.multiple(
-                      choiceStyle: C2ChoiceStyle(
-                          color: Colors.blue, margin: EdgeInsets.only(left: 5)),
-                      value: tags2,
-                      onChanged: (val) => setState(() {
-                        tags2 = val;
+                      //subcategory filter
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            SizedBox(width: 30),
+                            Text(
+                              "Subcategory",
+                              overflow: TextOverflow.fade,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            ChipsChoice<String>.multiple(
+                              choiceStyle: C2ChoiceStyle(
+                                  color: Colors.blue,
+                                  margin: EdgeInsets.only(left: 5)),
+                              value: tags2,
+                              onChanged: (val) => setState(() {
+                                tags2 = val;
 
-                        Query _query = Query(subcategory: val);
-                        List<Items> filter(List<Items> items, Query query) {
-                          return items
-                              .where((items) => (query.subcategory == null ||
-                                  query.subcategory
-                                      .contains(items.itemsubcategoryName)))
-                              .toList();
-                        }
+                                Query _query = Query(subcategory: val);
+                                List<Items> filter(
+                                    List<Items> items, Query query) {
+                                  return items
+                                      .where((items) =>
+                                          (query.subcategory == null ||
+                                              query.subcategory.contains(
+                                                  items.itemsubcategoryName)))
+                                      .toList();
+                                }
 
-                        List<Items> results =
-                            filter(this.widget.selectedCategory.items, _query);
-                        if (results != null) {
-                          selectedCountList = List.from(results);
-                        }
-                      }),
-                      choiceItems: C2Choice.listFrom<String, String>(
-                        source: this
-                                    .widget
-                                    .selectedCategory
-                                    .items[0]
-                                    .itemcategoryName ==
-                                "ToStay"
-                            ? subcategoryoptions = [
-                                'Hotel',
-                                'Inn',
-                                'Villas',
-                                'Resort',
-                              ]
-                            : this
-                                        .widget
-                                        .selectedCategory
-                                        .items[0]
-                                        .itemcategoryName ==
-                                    "ToEat&Drink"
-                                ? subcategoryoptions = [
-                                    'Restaurant',
-                                    'FastFood',
-                                    'Cafe',
-                                    'Bar',
-                                    'FoodHouse',
-                                  ]
-                                : this
+                                List<Items> results = filter(
+                                    this.widget.selectedCategory.items, _query);
+                                if (results != null) {
+                                  selectedCountList = List.from(results);
+                                }
+                              }),
+                              choiceItems: C2Choice.listFrom<String, String>(
+                                source: this
                                             .widget
                                             .selectedCategory
                                             .items[0]
                                             .itemcategoryName ==
-                                        "ToDo"
+                                        "ToStay"
                                     ? subcategoryoptions = [
-                                        'WaterActivities',
-                                        'LandActivities',
-                                        'LocalServices',
-                                        'OutsideBoracay',
-                                        'Environmental',
-                                        'Socail',
+                                        'Hotel',
+                                        'Inn',
+                                        'Villas',
+                                        'Resort',
                                       ]
                                     : this
                                                 .widget
                                                 .selectedCategory
                                                 .items[0]
                                                 .itemcategoryName ==
-                                            "ToSee"
+                                            "ToEat&Drink"
                                         ? subcategoryoptions = [
-                                            'BeachSites',
-                                            'WetLands',
-                                            'LandMarks',
-                                            'Museums',
+                                            'Restaurant',
+                                            'FastFood',
+                                            'Cafe',
+                                            'Bar',
+                                            'FoodHouse',
                                           ]
-                                        : subcategoryoptions = [],
-                        value: (i, v) => v,
-                        label: (i, v) => v,
+                                        : this
+                                                    .widget
+                                                    .selectedCategory
+                                                    .items[0]
+                                                    .itemcategoryName ==
+                                                "ToDo"
+                                            ? subcategoryoptions = [
+                                                'WaterActivities',
+                                                'LandActivities',
+                                                'LocalServices',
+                                                'OutsideBoracay',
+                                                'Environmental',
+                                                'Socail',
+                                              ]
+                                            : this
+                                                        .widget
+                                                        .selectedCategory
+                                                        .items[0]
+                                                        .itemcategoryName ==
+                                                    "ToSee"
+                                                ? subcategoryoptions = [
+                                                    'BeachSites',
+                                                    'WetLands',
+                                                    'LandMarks',
+                                                    'Museums',
+                                                  ]
+                                                : subcategoryoptions = [],
+                                value: (i, v) => v,
+                                label: (i, v) => v,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
+                    ],
+                  );
+                }
+                return SizedBox();
+              }),
 
               // create list builder to show subCategories this.selectedCategory.subCategory.length
 

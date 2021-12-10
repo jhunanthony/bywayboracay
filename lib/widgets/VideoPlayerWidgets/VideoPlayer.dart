@@ -4,16 +4,16 @@ import 'package:video_player/video_player.dart';
 import 'VideoOverlay.dart';
 
 class VideoPlayerWidget extends StatelessWidget {
-  final VideoPlayerController controller;
+  final VideoPlayerController videocontroller;
 
   const VideoPlayerWidget({
     Key key,
-    @required this.controller,
+    @required this.videocontroller,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>
-      controller != null && controller.value.isInitialized
+      videocontroller != null && videocontroller.value.isInitialized
           ? Container(
               margin: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
               alignment: Alignment.center,
@@ -28,12 +28,12 @@ class VideoPlayerWidget extends StatelessWidget {
   Widget buildVideo() => Stack(
         children: <Widget>[
           buildVideoPlayer(),
-          Positioned.fill(child: AdvancedOverlayWidget(videocontroller: controller)),
+          Positioned.fill(child: AdvancedOverlayWidget(videocontroller: videocontroller)),
         ],
       );
 
   Widget buildVideoPlayer() => AspectRatio(
-        aspectRatio: controller.value.aspectRatio,
-        child: VideoPlayer(controller),
+        aspectRatio: videocontroller.value.aspectRatio,
+        child: VideoPlayer(videocontroller),
       );
 }
