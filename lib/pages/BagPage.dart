@@ -1,9 +1,11 @@
 import 'package:bywayborcay/widgets/BagPageWidgets/local_products/localproducts.dart';
-import 'package:bywayborcay/widgets/MapWidgets/offline.dart';
+import 'package:flutter/cupertino.dart';
+
 
 import 'package:flutter/material.dart';
 
 import '../widgets/BagPageWidgets/CurrencyConverter/currencywidget.dart';
+import '../widgets/BagPageWidgets/tobring.dart';
 import '../widgets/BagPageWidgets/travelguidelines.dart';
 import '../widgets/BagPageWidgets/commonphrase.dart';
 import '../widgets/BagPageWidgets/emergencywidget.dart';
@@ -131,9 +133,39 @@ class BagPage extends StatelessWidget {
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.blue,
                       primary: Colors.white,
+                      padding: EdgeInsets.only(
+                          left: 24, right: 24, top: 14, bottom: 14),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0)),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ToBringPage()));
+                    },
+                    child: Column(
+                      // Replace with a Row for horizontal icon + text
+                      children: <Widget>[
+                        Icon(
+                          CupertinoIcons.bag,
+                        ),
+                        Text("\To Bring"),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      primary: Colors.white,
                       onSurface: Colors.grey,
                       padding: EdgeInsets.only(
-                          left: 22, right: 22, top: 10, bottom: 10),
+                          left: 25, right: 25, top: 10, bottom: 10),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0)),
                     ),
@@ -148,34 +180,6 @@ class BagPage extends StatelessWidget {
                       children: <Widget>[
                         Icon(Icons.textsms_rounded),
                         Text("\Common\nPhrases")
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      primary: Colors.white,
-                      padding: EdgeInsets.only(
-                          left: 35, right: 35, top: 10, bottom: 10),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0)),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Offline_Map()));
-                    },
-                    child: Column(
-                      // Replace with a Row for horizontal icon + text
-                      children: <Widget>[
-                        Icon(Icons.fmd_good_rounded),
-                        Text("\Offline\nMap")
                       ],
                     ),
                   ),
