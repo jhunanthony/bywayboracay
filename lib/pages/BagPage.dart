@@ -1,7 +1,6 @@
 import 'package:bywayborcay/widgets/BagPageWidgets/local_products/localproducts.dart';
 import 'package:flutter/cupertino.dart';
 
-
 import 'package:flutter/material.dart';
 
 import '../widgets/BagPageWidgets/CurrencyConverter/currencywidget.dart';
@@ -41,8 +40,10 @@ class BagPage extends StatelessWidget {
                 children: [
                   TextButton(
                     style: TextButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      primary: Colors.white,
+                      shadowColor: Colors.black,
+                      elevation: 4,
+                      backgroundColor: Colors.white,
+                      primary: Colors.blue,
                       padding: EdgeInsets.only(
                           left: 50, right: 50, top: 20, bottom: 20),
                       shape: RoundedRectangleBorder(
@@ -75,8 +76,10 @@ class BagPage extends StatelessWidget {
                   ),
                   TextButton(
                     style: TextButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      primary: Colors.white,
+                      shadowColor: Colors.black,
+                      elevation: 4,
+                      backgroundColor: Colors.white,
+                      primary: Colors.blue,
                       onSurface: Colors.grey,
                       padding: EdgeInsets.only(
                           left: 30, right: 30, top: 10, bottom: 10),
@@ -104,6 +107,8 @@ class BagPage extends StatelessWidget {
                 children: [
                   TextButton(
                     style: TextButton.styleFrom(
+                      shadowColor: Colors.black,
+                      elevation: 4,
                       primary: Colors.white,
                       backgroundColor: Colors.red[300],
                       padding: EdgeInsets.only(
@@ -131,8 +136,10 @@ class BagPage extends StatelessWidget {
                   ),
                   TextButton(
                     style: TextButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      primary: Colors.white,
+                      shadowColor: Colors.black,
+                      elevation: 4,
+                      backgroundColor: Colors.white,
+                      primary: Colors.blue,
                       padding: EdgeInsets.only(
                           left: 24, right: 24, top: 14, bottom: 14),
                       shape: RoundedRectangleBorder(
@@ -161,6 +168,8 @@ class BagPage extends StatelessWidget {
                 children: [
                   TextButton(
                     style: TextButton.styleFrom(
+                      shadowColor: Colors.black,
+                      elevation: 4,
                       backgroundColor: Colors.blue,
                       primary: Colors.white,
                       onSurface: Colors.grey,
@@ -185,6 +194,8 @@ class BagPage extends StatelessWidget {
                   ),
                   TextButton(
                     style: TextButton.styleFrom(
+                      shadowColor: Colors.black,
+                      elevation: 4,
                       backgroundColor: Colors.green[400],
                       primary: Colors.white,
                       padding: EdgeInsets.only(
@@ -215,7 +226,9 @@ class BagPage extends StatelessWidget {
                 children: [
                   TextButton(
                     style: TextButton.styleFrom(
-                      backgroundColor: Colors.blue[100],
+                      shadowColor: Colors.black,
+                      elevation: 4,
+                      backgroundColor: Colors.white,
                       primary: Colors.blue,
                       padding: EdgeInsets.only(
                           left: 35, right: 35, top: 10, bottom: 10),
@@ -238,7 +251,9 @@ class BagPage extends StatelessWidget {
                   ),
                   TextButton(
                     style: TextButton.styleFrom(
-                      backgroundColor: Colors.blue[100],
+                      shadowColor: Colors.black,
+                      elevation: 4,
+                      backgroundColor: Colors.white,
                       primary: Colors.blue,
                       padding: EdgeInsets.only(
                           left: 50, right: 50, top: 20, bottom: 20),
