@@ -1,13 +1,8 @@
-
-
-
 import 'package:bywayborcay/widgets/BagPageWidgets/local_events/locations.dart';
 import 'package:flutter/material.dart';
 
-
-
 class ExpandedContentWidget extends StatelessWidget {
-  final Location location;
+  final LocalEventsModel location;
 
   const ExpandedContentWidget({
     @required this.location,
@@ -25,28 +20,13 @@ class ExpandedContentWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text(location.addressLine1),
+            Text(location.description,
+                style: TextStyle(
+                  color: Colors.grey[800],
+                  fontSize: 18,
+                )),
             SizedBox(height: 8),
-            buildAddressRating(location: location),
-            SizedBox(height: 12),
-           
           ],
         ),
       );
-
-  Widget buildAddressRating({
-    @required Location location,
-  }) =>
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            location.addressLine2,
-            style: TextStyle(color: Colors.black, 
-            fontWeight: FontWeight.bold),
-          ),
-        ],
-      );
-
 }
-

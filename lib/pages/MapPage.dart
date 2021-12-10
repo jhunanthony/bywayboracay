@@ -282,15 +282,11 @@ class _MapPageState extends State<MapPage> {
 
   //this method will perform network call from the API
   void setPolylines() async {
-    var currentPosition =
-        LatLng(currentLocationref.latitude, currentLocationref.longitude);
-
-    LatLng destinationlatlong =
-        LatLng(widget.items.itemlat, widget.items.itemlong);
+    
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       'AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE',
-      PointLatLng(currentPosition.latitude, currentPosition.longitude),
-      PointLatLng(destinationlatlong.latitude, destinationlatlong.longitude),
+      PointLatLng(currentLocationref.latitude, currentLocationref.longitude ),
+      PointLatLng(widget.items.itemlat, widget.items.itemlong),
 
       //wayPoints: [PolylineWayPoint(location: "Philippines")]
     );
@@ -301,6 +297,8 @@ class _MapPageState extends State<MapPage> {
       result.points.forEach((PointLatLng point) {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
       });
+
+      
 
       setState(() {
         _polylines.add(Polyline(

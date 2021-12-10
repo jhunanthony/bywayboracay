@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class AdvancedOverlayWidget extends StatelessWidget {
-  final VideoPlayerController controller;
+  final VideoPlayerController videocontroller;
 
   static const allSpeeds = <double>[0.25, 0.5, 1, 1.5, 2, 3, 5, 10];
 
   const AdvancedOverlayWidget({
     Key key,
-    @required this.controller,
+    @required this.videocontroller,
   }) : super(key: key);
 
   String getPosition() {
     final duration = Duration(
-        milliseconds: controller.value.position.inMilliseconds.round());
+        milliseconds: videocontroller.value.position.inMilliseconds.round());
 
     return [duration.inMinutes, duration.inSeconds]
         .map((seg) => seg.remainder(60).toString().padLeft(2, '0'))
@@ -22,11 +22,12 @@ class AdvancedOverlayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMuted = controller.value.volume == 0;
+    final isMuted = videocontroller.value.volume == 0;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: () =>
-          controller.value.isPlaying ? controller.pause() : controller.play(),
+      onTap: () => videocontroller.value.isPlaying
+          ? videocontroller.pause()
+          : videocontroller.play(),
       child: Stack(
         children: <Widget>[
           buildPlay(),
@@ -56,7 +57,7 @@ class AdvancedOverlayWidget extends StatelessWidget {
                   SizedBox(width: 10),
                 ],
               )),
-          if (controller != null && controller.value.isInitialized)
+          if (videocontroller != null && videocontroller.value.isInitialized)
             Positioned(
               right: 0,
               top: 30,
@@ -64,9 +65,9 @@ class AdvancedOverlayWidget extends StatelessWidget {
                 height: 30,
                 width: 40,
                 decoration: BoxDecoration(
-                  color: Colors.white38,
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10))
-                ),
+                    color: Colors.white38,
+                    borderRadius:
+                        BorderRadius.only(bottomLeft: Radius.circular(10))),
                 alignment: Alignment.center,
                 child: IconButton(
                   icon: Icon(
@@ -74,7 +75,7 @@ class AdvancedOverlayWidget extends StatelessWidget {
                     color: Colors.white,
                     size: 12,
                   ),
-                  onPressed: () => controller.setVolume(isMuted ? 1 : 0),
+                  onPressed: () => videocontroller.setVolume(isMuted ? 1 : 0),
                 ),
               ),
             )
@@ -87,7 +88,7 @@ class AdvancedOverlayWidget extends StatelessWidget {
         margin: EdgeInsets.all(8).copyWith(right: 0),
         height: 16,
         child: VideoProgressIndicator(
-          controller,
+          videocontroller,
           allowScrubbing: true,
         ),
       );
@@ -95,9 +96,9 @@ class AdvancedOverlayWidget extends StatelessWidget {
   Widget buildSpeed() => Align(
         alignment: Alignment.topRight,
         child: PopupMenuButton<double>(
-          initialValue: controller.value.playbackSpeed,
+          initialValue: videocontroller.value.playbackSpeed,
           tooltip: 'Playback speed',
-          onSelected: controller.setPlaybackSpeed,
+          onSelected: videocontroller.setPlaybackSpeed,
           itemBuilder: (context) => allSpeeds
               .map<PopupMenuEntry<double>>((speed) => PopupMenuItem(
                     value: speed,
@@ -110,7 +111,7 @@ class AdvancedOverlayWidget extends StatelessWidget {
             color: Colors.white38,
             alignment: Alignment.center,
             child: Text(
-              '${controller.value.playbackSpeed}x',
+              '${videocontroller.value.playbackSpeed}x',
               style: TextStyle(color: Colors.white, fontSize: 10),
             ),
           ),
@@ -120,7 +121,7 @@ class AdvancedOverlayWidget extends StatelessWidget {
   Widget buildPlay() => AnimatedSwitcher(
         duration: Duration(milliseconds: 50),
         reverseDuration: Duration(milliseconds: 200),
-        child: controller.value.isPlaying
+        child: videocontroller.value.isPlaying
             ? Container()
             : Container(
                 color: Colors.black26,

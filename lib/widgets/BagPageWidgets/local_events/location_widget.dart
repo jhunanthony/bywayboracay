@@ -10,7 +10,7 @@ import 'expanded_content_widget.dart';
 import 'image_widget.dart';
 
 class LocationWidget extends StatefulWidget {
-  final Location location;
+  final LocalEventsModel location;
 
   const LocationWidget({
     @required this.location,

@@ -4,7 +4,7 @@ import 'package:bywayborcay/widgets/MapWidgets/offline.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/BagPageWidgets/CurrencyConverter/currencywidget.dart';
-import '../widgets/BagPageWidgets/CurrencyConverter/travelguidelines.dart';
+import '../widgets/BagPageWidgets/travelguidelines.dart';
 import '../widgets/BagPageWidgets/commonphrase.dart';
 import '../widgets/BagPageWidgets/emergencywidget.dart';
 import '../widgets/BagPageWidgets/local_events/localevents.dart';

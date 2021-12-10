@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/link.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../Navigation/TopNavBar.dart';
+import '../Navigation/TopNavBar.dart';
 
 class TravelGuidelines extends StatefulWidget {
   @override
@@ -27,6 +27,7 @@ class TravelGuidelinesState extends State<TravelGuidelines> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: TopNavBar(
         colorbackground: Colors.transparent,
       ),

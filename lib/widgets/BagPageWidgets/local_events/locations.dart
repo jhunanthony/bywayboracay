@@ -1,58 +1,48 @@
 
-class Location {
+class LocalEventsModel {
   final String name;
   final String urlImage;
-  final String latitude;
-  final String longitude;
-  final String addressLine1;
-  final String addressLine2;
 
-  Location({
+  final String description;
+
+
+  LocalEventsModel({
     this.name,
     this.urlImage,
-    this.latitude,
-    this.longitude,
-    this.addressLine1,
-    this.addressLine2,
+  
+    this.description,
+
   });
 }
 
 
-List<Location> locations = [
-  Location(
+List<LocalEventsModel> localevents = [
+  LocalEventsModel(
     name: 'DRAGON BOAT FESTIVAL',
     urlImage: 'assets/images/dragon.jpg',
-    addressLine1:
+    description:
         'The Dragon Boat Festival includes competitions for teams of men, women, and mixed rowers who race to the finish line using a dragon-inspired, 15-meter-long boat.',
-    addressLine2: 'SPORTING EVENTS',
-    latitude: 'BORACAY',
-    longitude: 'EVENTS',
+
   ),
-  Location(
+  LocalEventsModel(
     name: 'ATIATIHAN FESTIVAL',
     urlImage: 'assets/images/atiatihan.jpg',
-    addressLine1:
+    description:
         'Boracay’s version of Aklan’s Ati-Atihan on the second Sunday of January wows foreigners with the motley-colored bodily decorations of the dancers grooving to lively music.',
-    addressLine2: 'CULTURAL EVENTS',
-    latitude: 'BORACAY',
-    longitude: 'EVENTS',
+
   ),
-  Location(
+  LocalEventsModel(
     name: 'NEW YEAR',
     urlImage: 'assets/images/newyear.jpeg',
-    addressLine1:
+    description:
         'Boracay entertains tourists in ushering in the New Year, just like a renowned tourist attraction must do. Colorful fireworks are set off in the last minutes of December 31 to welcome New Year.',
-    addressLine2: 'CULTURAL EVENTS',
-    latitude: 'BORACAY',
-    longitude: 'EVENTS',
+  
   ),
-  Location(
+  LocalEventsModel(
     name: 'PARAW CUP',
     urlImage: 'assets/images/paraw.jpg',
-    addressLine1:
+    description:
         'Combining a cultural and sports event in one, the International Paraw Cup Challenge showcases locals’ skills in steering the native outrigger boats of the Philippines .',
-    addressLine2: 'SPORTING EVENTS',
-    latitude: 'BORACAY',
-    longitude: 'EVENTS',
+  
   ),
 ];

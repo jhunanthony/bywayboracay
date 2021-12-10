@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 import 'location_widget.dart';
 import 'locations.dart';
 
@@ -16,12 +15,19 @@ class _LocationsWidgetState extends State<LocationsWidget> {
   @override
   Widget build(BuildContext context) => Column(
         children: [
+          SizedBox(height: 5),
+          Text("LOCAL EVENTS",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+              )),
+        
           Expanded(
             child: PageView.builder(
               controller: pageController,
-              itemCount: locations.length,
+              itemCount: localevents.length,
               itemBuilder: (context, index) {
-                final location = locations[index];
+                final location = localevents[index];
 
                 return LocationWidget(location: location);
               },
@@ -29,10 +35,10 @@ class _LocationsWidgetState extends State<LocationsWidget> {
             ),
           ),
           Text(
-            '${pageIndex + 1}/${locations.length}',
+            '${pageIndex + 1}/${localevents.length}',
             style: TextStyle(color: Colors.white70),
           ),
-          SizedBox(height: 12)
+          SizedBox(height: 5)
         ],
       );
 }

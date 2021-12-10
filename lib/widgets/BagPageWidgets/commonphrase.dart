@@ -19,6 +19,7 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
   bool isSpeaking6 = false;
   bool isSpeaking7 = false;
   bool isSpeaking8 = false;
+  bool isSpeaking9 = false;
   final String _controller1 = 'Hay';
   final String _controller2 = 'huo';
   final String _controller3 = 'indi';
@@ -27,6 +28,7 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
   final String _controller6 = 'kamusta ka?';
   final String _controller7 = 'saeamat';
   final String _controller8 = 'mayad nga agahon';
+  final String _controller9 = 'tig pila?';
 
   final _flutterTts1 = FlutterTts();
   final _flutterTts2 = FlutterTts();
@@ -36,6 +38,7 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
   final _flutterTts6 = FlutterTts();
   final _flutterTts7 = FlutterTts();
   final _flutterTts8 = FlutterTts();
+  final _flutterTts9 = FlutterTts();
 
   void initializeTts() {
     _flutterTts1.setStartHandler(() {
@@ -57,7 +60,6 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     initializeTts();
   }
@@ -78,6 +80,13 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
   @override
   void dispose() {
     _flutterTts1.stop();
+    _flutterTts2.stop();
+    _flutterTts3.stop();
+    _flutterTts4.stop();
+    _flutterTts5.stop();
+    _flutterTts6.stop();
+    _flutterTts7.stop();
+    _flutterTts8.stop();
     super.dispose();
   }
 
@@ -114,19 +123,6 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
     });
   }
 
-  @override
-  void initState2() {
-    // TODO: implement initState
-    super.initState();
-    initializeTts();
-  }
-
-  @override
-  void dispose2() {
-    _flutterTts2.stop();
-    super.dispose();
-  }
-
   //3RD BATCH
   //
   void speak3() async {
@@ -158,19 +154,6 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
         isSpeaking3 = false;
       });
     });
-  }
-
-  @override
-  void initState3() {
-    // TODO: implement initState
-    super.initState();
-    initializeTts();
-  }
-
-  @override
-  void dispose3() {
-    _flutterTts3.stop();
-    super.dispose();
   }
 
 // 4TH BATCH
@@ -205,19 +188,6 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
     });
   }
 
-  @override
-  void initState4() {
-    // TODO: implement initState
-    super.initState();
-    initializeTts();
-  }
-
-  @override
-  void dispose4() {
-    _flutterTts3.stop();
-    super.dispose();
-  }
-
 // 5TH BATCH
   void speak5() async {
     if (_controller5.toString().isNotEmpty) {
@@ -248,19 +218,6 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
         isSpeaking5 = false;
       });
     });
-  }
-
-  @override
-  void initState5() {
-    // TODO: implement initState
-    super.initState();
-    initializeTts();
-  }
-
-  @override
-  void dispose5() {
-    _flutterTts5.stop();
-    super.dispose();
   }
 
 // 6TH BATCH
@@ -295,19 +252,6 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
     });
   }
 
-  @override
-  void initState6() {
-    // TODO: implement initState
-    super.initState();
-    initializeTts();
-  }
-
-  @override
-  void dispose6() {
-    _flutterTts6.stop();
-    super.dispose();
-  }
-
 // 7TH BATCH
   void speak7() async {
     if (_controller7.toString().isNotEmpty) {
@@ -340,19 +284,6 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
     });
   }
 
-  @override
-  void initState7() {
-    // TODO: implement initState
-    super.initState();
-    initializeTts();
-  }
-
-  @override
-  void dispose7() {
-    _flutterTts7.stop();
-    super.dispose();
-  }
-
 // 8TH BATCH
   void speak8() async {
     if (_controller8.toString().isNotEmpty) {
@@ -378,24 +309,43 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
         isSpeaking8 = false;
       });
     });
-    _flutterTts7.setErrorHandler((message) {
+    _flutterTts8.setErrorHandler((message) {
       setState(() {
         isSpeaking8 = false;
       });
     });
   }
 
-  @override
-  void initState8() {
-    // TODO: implement initState
-    super.initState();
-    initializeTts();
+  //9th
+  void speak9() async {
+    if (_controller9.toString().isNotEmpty) {
+      await _flutterTts9.speak(_controller9.toString());
+    }
   }
 
-  @override
-  void dispose8() {
-    _flutterTts8.stop();
-    super.dispose();
+  void stop9() async {
+    await _flutterTts9.stop();
+    setState(() {
+      isSpeaking9 = false;
+    });
+  }
+
+  void initializeTts9() {
+    _flutterTts9.setStartHandler(() {
+      setState(() {
+        isSpeaking9 = true;
+      });
+    });
+    _flutterTts9.setCompletionHandler(() {
+      setState(() {
+        isSpeaking9 = false;
+      });
+    });
+    _flutterTts9.setErrorHandler((message) {
+      setState(() {
+        isSpeaking9 = false;
+      });
+    });
   }
 
   @override
@@ -696,7 +646,35 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
                 color: Colors.grey[400],
                 thickness: 2,
               ),
-
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('How much?', style: TextStyle(fontSize: 15)),
+                  Text('Tig Pila?', style: TextStyle(fontSize: 15)),
+                  ElevatedButton(
+                    onPressed: () {
+                      isSpeaking9 ? stop9() : speak9();
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.volume_up_rounded),
+                        Text(isSpeaking9 ? "Stop" : "")
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red, //background
+                      onPrimary: Colors.white,
+                      //foreground
+                      shape: CircleBorder(),
+                    ),
+                  )
+                ],
+              ),
+              Divider(
+                color: Colors.grey[400],
+                thickness: 2,
+              ),
               ///////////2ND COLUMN ////////////
             ],
           ),

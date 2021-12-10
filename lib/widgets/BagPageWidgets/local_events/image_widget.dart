@@ -1,11 +1,10 @@
-import 'package:bywayborcay/widgets/BagPageWidgets/local_events/lat_long_widget.dart';
+import 'dart:ui';
 
 import 'package:bywayborcay/widgets/BagPageWidgets/local_events/locations.dart';
 import 'package:flutter/material.dart';
 
-
 class ImageWidget extends StatelessWidget {
-  final Location location;
+  final LocalEventsModel location;
 
   const ImageWidget({
     @required this.location,
@@ -30,14 +29,39 @@ class ImageWidget extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            buildImage(),
+            SizedBox.expand(
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                child: Image.asset(location.urlImage, fit: BoxFit.cover),
+              ),
+            ),
             Container(
               padding: const EdgeInsets.all(8),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  buildTopText(),
-                  LatLongWidget(location: location),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: BackdropFilter(
+                              filter:
+                                  ImageFilter.blur(sigmaY: 19.2, sigmaX: 19.2),
+                              child: Container(
+                                  padding: EdgeInsets.only(
+                                      left: 10, right: 10, top: 15, bottom: 15),
+                                  alignment: Alignment.center,
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(location.name,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18,
+                                            )),
+                                      ]))))),
+                 
                 ],
               ),
             )
@@ -46,20 +70,4 @@ class ImageWidget extends StatelessWidget {
       ),
     );
   }
-
-  Widget buildImage() => SizedBox.expand(
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          child: Image.asset(location.urlImage, fit: BoxFit.cover),
-        ),
-      );
-
-  Widget buildTopText() => Text(
-        location.name,
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-        ),
-      );
 }

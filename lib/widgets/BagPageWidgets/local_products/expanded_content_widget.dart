@@ -1,8 +1,13 @@
-import 'package:bywayborcay/widgets/BagPageWidgets/local_products/location.dart';
+
+
+
+import 'package:bywayborcay/widgets/BagPageWidgets/local_products/locations.dart';
 import 'package:flutter/material.dart';
 
+
+
 class ExpandedContentWidget extends StatelessWidget {
-  final Location location;
+  final LocalProductModel location;
 
   const ExpandedContentWidget({
     @required this.location,
@@ -20,9 +25,16 @@ class ExpandedContentWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text(location.addressLine1),
+            Text(location.description),
             SizedBox(height: 8),
+           
+           
           ],
         ),
       );
+
+  
+      
+
 }
+

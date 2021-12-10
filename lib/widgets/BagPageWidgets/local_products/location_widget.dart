@@ -1,16 +1,17 @@
 
 
 
-import 'package:bywayborcay/widgets/BagPageWidgets/local_products/location.dart';
-import 'package:flutter/foundation.dart';
+import 'package:bywayborcay/widgets/BagPageWidgets/local_products/expanded_content_widget.dart';
+import 'package:bywayborcay/widgets/BagPageWidgets/local_products/locations.dart';
+
 import 'package:flutter/material.dart';
 
 
-import 'expanded_content_widget.dart';
+
 import 'image_widget.dart';
 
 class LocationWidget extends StatefulWidget {
-  final Location location;
+  final LocalProductModel location;
 
   const LocationWidget({
     @required this.location,
