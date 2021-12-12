@@ -39,14 +39,26 @@ class SideMenuBar extends StatelessWidget {
               children: [
                 //show logo
                 Column(children: [
-                  ClipOval(
-                    child: Image.asset(
-                      "assets/images/" + AppIcons.LogoIcon + ".png",
-                      height: 40,
-                      width: 40,
-                      fit: BoxFit.scaleDown,
-                    ),
-                  ),
+                  Container(
+            padding: EdgeInsets.all(3),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.center,
+                end: Alignment.bottomCenter,
+                colors: <Color>[
+                  Colors.white.withOpacity(0.3),
+                  Colors.white,
+                ],
+              ),
+              shape: BoxShape.circle,
+            ),
+            child: Image.asset(
+              "assets/images/Logo_Test.png",
+              height: 35,
+              width: 35,
+              fit: BoxFit.scaleDown,
+            ),
+          ),
                   SizedBox(height: 40),
                   //display user information
                   //user visibility to hide if empty

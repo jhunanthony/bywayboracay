@@ -101,7 +101,7 @@ class _MapPageState extends State<MapPage> {
     //for api distance and duration
     // futuredistanceandduration = getdistanceandduration();
 
-    //WidgetsBinding.instance.addObserver(this);
+
   }
 
   /// Disposes of the platform resources
@@ -226,7 +226,7 @@ class _MapPageState extends State<MapPage> {
           ),
         ),
         Positioned(
-            top: 80,
+            top: 70,
             left: 0,
             right: 0,
             child: MapUserInformation(

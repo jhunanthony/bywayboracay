@@ -691,34 +691,45 @@ class _ItemsPageState extends State<ItemsPage> {
                                                                               FontWeight.bold,
                                                                         ),
                                                                       ),
-                                                                      Icon(
-                                                                        Icons
-                                                                            .eco_rounded,
-                                                                        color: Colors
-                                                                            .green[400],
+                                                                      RatingBarIndicator(
+                                                                        rating:
+                                                                            rating /
+                                                                                5,
+                                                                        itemBuilder:
+                                                                            (context, index) =>
+                                                                                Icon(
+                                                                          Icons
+                                                                              .eco_rounded,
+                                                                          color:
+                                                                              Colors.green[400],
+                                                                        ),
+                                                                        itemCount:
+                                                                            1,
+                                                                        itemSize:
+                                                                            18,
+                                                                        direction:
+                                                                            Axis.horizontal,
+                                                                        unratedColor:
+                                                                            Colors.grey[400],
                                                                       ),
                                                                     ],
                                                                   )
                                                                 : rating == null
-                                                                    ? Text(
-                                                                        'unrated',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              12,
-                                                                          color:
-                                                                              Colors.green,
-                                                                        ),
+                                                                    ? Icon(
+                                                                        Icons
+                                                                            .eco_rounded,
+                                                                        size:
+                                                                            18,
+                                                                        color: Colors
+                                                                            .grey,
                                                                       )
-                                                                    : Text(
-                                                                        'unrated',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              12,
-                                                                          color:
-                                                                              Colors.green,
-                                                                        ),
+                                                                    : Icon(
+                                                                        Icons
+                                                                            .eco_rounded,
+                                                                        size:
+                                                                            18,
+                                                                        color: Colors
+                                                                            .grey,
                                                                       );
                                                           } else if (snapshot
                                                               .hasError) {

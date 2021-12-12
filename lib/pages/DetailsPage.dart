@@ -25,6 +25,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:ical/serializer.dart';
+import 'dart:io';
 
 import '../models/RatedItemsModel.dart';
 
@@ -260,165 +262,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           iconSize: 25,
                           splashColor: Colors.blue[300],
                           onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                    title: Column(
-                                      children: [
-                                        Text('Share To'),
-                                      ],
-                                    ),
-                                    content: SingleChildScrollView(
-                                        child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            //share to facebook
-                                            ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  primary:
-                                                      Colors.white, //background
-                                                  onPrimary: Colors.blue,
-                                                  //foreground
-                                                  shape: CircleBorder(),
-                                                ),
-                                                child: Container(
-                                                    padding: EdgeInsets.only(
-                                                        top: 5,
-                                                        bottom: 5,
-                                                        left: 5,
-                                                        right: 5),
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                    child: Icon(
-                                                        Icons.facebook_rounded,
-                                                        size: 30,
-                                                        color: Colors.blue)),
-                                                //capture the success flag with async and await
-                                                onPressed: () async {
-                                                  FlutterSocialContentShare.share(
-                                                      type: ShareType
-                                                          .facebookWithoutImage,
-                                                      url:
-                                                          "${widget.items.itemwebsite}",
-                                                      quote:
-                                                          "Hey, check this awesome place at Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}.");
-                                                }),
-                                            ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  primary:
-                                                      Colors.white, //background
-                                                  onPrimary: Colors.blue,
-                                                  //foreground
-                                                  shape: CircleBorder(),
-                                                ),
-                                                child: Container(
-                                                  padding: EdgeInsets.only(
-                                                      top: 5,
-                                                      bottom: 5,
-                                                      left: 5,
-                                                      right: 5),
-                                                  alignment: Alignment.center,
-                                                  decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  child: SvgPicture.asset(
-                                                    'assets/icons/Instagram.svg',
-                                                    color: Colors.blue,
-                                                    height: 30,
-                                                    width: 30,
-                                                  ),
-                                                ),
-                                                //capture the success flag with async and await
-                                                onPressed: () async {
-                                                  FlutterSocialContentShare
-                                                      .share(
-                                                    type: ShareType
-                                                        .instagramWithImageUrl,
-                                                    imageUrl:
-                                                        "${widget.items.imgName}",
-                                                    quote:
-                                                        "Hey, check this awesome place at Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}.",
-                                                  );
-                                                }),
-                                          ],
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  primary:
-                                                      Colors.white, //background
-                                                  onPrimary: Colors.blue,
-                                                  //foreground
-                                                  shape: CircleBorder(),
-                                                ),
-                                                child: Container(
-                                                    padding: EdgeInsets.only(
-                                                        top: 5,
-                                                        bottom: 5,
-                                                        left: 5,
-                                                        right: 5),
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                    child: Icon(
-                                                        Icons.sms_rounded,
-                                                        size: 30,
-                                                        color: Colors.blue)),
-                                                //capture the success flag with async and await
-                                                onPressed: () async {
-                                                  FlutterSocialContentShare
-                                                      .shareOnSMS(recipients: [
-                                                    "xxxxxx"
-                                                  ], text: "Hey, check this awesome place Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}, ${widget.items.itemwebsite}");
-                                                }),
-                                            ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  primary:
-                                                      Colors.white, //background
-                                                  onPrimary: Colors.blue,
-                                                  //foreground
-                                                  shape: CircleBorder(),
-                                                ),
-                                                child: Container(
-                                                    padding: EdgeInsets.only(
-                                                        top: 5,
-                                                        bottom: 5,
-                                                        left: 5,
-                                                        right: 5),
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                    child: Icon(
-                                                        Icons.email_rounded,
-                                                        size: 30,
-                                                        color: Colors.blue)),
-                                                //capture the success flag with async and await
-                                                onPressed: () async {
-                                                  FlutterSocialContentShare.shareOnEmail(
-                                                      recipients: [
-                                                        "xxxx.xxx@gmail.com"
-                                                      ],
-                                                      subject:
-                                                          "Hey, check this awesome place at Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}.",
-                                                      body:
-                                                          "${widget.items.itemwebsite}",
-                                                      isHTML:
-                                                          true); //default isHTML: False
-                                                }),
-                                          ],
-                                        )
-                                      ],
-                                    ))));
+                            _showShare(context);
                           },
                         ),
                         SizedBox(
@@ -608,13 +452,14 @@ class _DetailsPageState extends State<DetailsPage> {
                                 child: Material(
                                   color: Colors.transparent,
                                   child: IconButton(
-                                    padding: EdgeInsets.all(0),
-                                    icon: Icon(CupertinoIcons.calendar),
-                                    color: Colors.blue[200],
-                                    iconSize: 25,
-                                    splashColor: Colors.blue,
-                                    onPressed: () => _showAction(context),
-                                  ),
+                                      padding: EdgeInsets.all(0),
+                                      icon: Icon(CupertinoIcons.calendar),
+                                      color: Colors.blue[200],
+                                      iconSize: 25,
+                                      splashColor: Colors.blue,
+                                      onPressed: () async {
+                                        _showAction(context);
+                                      }),
                                 ),
                               );
                             }
@@ -1442,28 +1287,25 @@ class _DetailsPageState extends State<DetailsPage> {
   String lat;
   String long;
   String category;
+ 
 
   DateTime _selectedDay = DateTime.now();
   RegExp time_24H = new RegExp(r"^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$");
   RegExp time_12H =
       new RegExp(r"^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]) ?((a|p)m|(A|P)M)$");
-  List tapTitles = [
-    "Are you sure you want to delete the event?",
-    "Are you sure you want to send  the event reminders?"
-  ];
+
   Timestamp t;
   DateTime eventDate;
   Map res = Map();
 
 //action dialog for calendar here
-  static const _actionTitle = 'Add Event';
 
   void _showAction(BuildContext context) {
     showDialog<void>(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(_actionTitle),
+          title: Text('Add Event'),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -1585,6 +1427,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                   ),
                 ),
+             
               ],
             ),
           ),
@@ -1596,6 +1439,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 timer.clear();
                 budget.clear();
                 website.clear();
+           
                 Navigator.of(context).pop();
               },
               child: const Text(
@@ -1627,11 +1471,13 @@ class _DetailsPageState extends State<DetailsPage> {
                   website.text = 'No Website Linked';
                 } else {
                   print(emails);
-                  setEvents().whenComplete(() {
+                  setEvents().whenComplete(() async {
+                   
                     event.clear();
                     desc.clear();
                     budget.clear();
                     website.clear();
+                  
                     Navigator.of(context).pop();
                   });
                 }
@@ -1688,7 +1534,7 @@ class _DetailsPageState extends State<DetailsPage> {
         final sp =
             await databaseReference.collection('Users').doc(temp[i]).get();
         String name = sp.get("Name");
-        String email = sp.get("Email");
+
         String date = DateFormat('yyyy-MM-dd').format(eventDate);
         final snapShot = databaseReference
             .collection('Users')
@@ -1727,5 +1573,137 @@ class _DetailsPageState extends State<DetailsPage> {
         }
       }
     }
+  }
+
+
+
+//show share dialog
+  void _showShare(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+            title: Column(
+              children: [
+                Text('Share To'),
+              ],
+            ),
+            content: SingleChildScrollView(
+                child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    //share to facebook
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white, //background
+                          onPrimary: Colors.blue,
+                          //foreground
+                          shape: CircleBorder(),
+                        ),
+                        child: Container(
+                            padding: EdgeInsets.only(
+                                top: 5, bottom: 5, left: 5, right: 5),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(Icons.facebook_rounded,
+                                size: 30, color: Colors.blue)),
+                        //capture the success flag with async and await
+                        onPressed: () async {
+                          FlutterSocialContentShare.share(
+                              type: ShareType.facebookWithoutImage,
+                              url: "${widget.items.itemwebsite}",
+                              quote:
+                                  "Hey, check this awesome place at Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}.");
+                        }),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white, //background
+                          onPrimary: Colors.blue,
+                          //foreground
+                          shape: CircleBorder(),
+                        ),
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              top: 5, bottom: 5, left: 5, right: 5),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          child: SvgPicture.asset(
+                            'assets/icons/Instagram.svg',
+                            color: Colors.blue,
+                            height: 30,
+                            width: 30,
+                          ),
+                        ),
+                        //capture the success flag with async and await
+                        onPressed: () async {
+                          FlutterSocialContentShare.share(
+                            type: ShareType.instagramWithImageUrl,
+                            imageUrl: "${widget.items.imgName}",
+                            quote:
+                                "Hey, check this awesome place at Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}.",
+                          );
+                        }),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white, //background
+                          onPrimary: Colors.blue,
+                          //foreground
+                          shape: CircleBorder(),
+                        ),
+                        child: Container(
+                            padding: EdgeInsets.only(
+                                top: 5, bottom: 5, left: 5, right: 5),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(Icons.sms_rounded,
+                                size: 30, color: Colors.blue)),
+                        //capture the success flag with async and await
+                        onPressed: () async {
+                          FlutterSocialContentShare.shareOnSMS(
+                              recipients: ["xxxxxx"],
+                              text:
+                                  "Hey, check this awesome place Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}, ${widget.items.itemwebsite}");
+                        }),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white, //background
+                          onPrimary: Colors.blue,
+                          //foreground
+                          shape: CircleBorder(),
+                        ),
+                        child: Container(
+                            padding: EdgeInsets.only(
+                                top: 5, bottom: 5, left: 5, right: 5),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(Icons.email_rounded,
+                                size: 30, color: Colors.blue)),
+                        //capture the success flag with async and await
+                        onPressed: () async {
+                          FlutterSocialContentShare.shareOnEmail(
+                              recipients: ["xxxx.xxx@gmail.com"],
+                              subject:
+                                  "Hey, check this awesome place at Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}.",
+                              body: "${widget.items.itemwebsite}",
+                              isHTML: true); //default isHTML: False
+                        }),
+                  ],
+                )
+              ],
+            ))));
   }
 }

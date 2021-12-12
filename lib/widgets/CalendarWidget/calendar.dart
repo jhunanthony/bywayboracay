@@ -55,6 +55,13 @@ class CalendarState extends State<CalendarPage> {
   String long;
   String category;
 
+  LocationData currentLocationref;
+  LocationData destinationLocationref;
+
+  // wrapper around the location API
+  Location locationref;
+  PolylinePoints polylinePoints;
+
   //awaits weather report
   Future<WeatherInfo> futureWeather;
 
@@ -171,7 +178,24 @@ class CalendarState extends State<CalendarPage> {
         }
       },
     );
+
+    // create an instance of Location
+    locationref = new Location();
+
+    locationref.onLocationChanged.listen((LocationData cLoc) {
+      locationref.enableBackgroundMode(enable: true);
+
+      currentLocationref = cLoc;
+    });
+
+    //instantiate the polyline reference to call API
+    polylinePoints = new PolylinePoints();
+
+    //set up initial Locations & invoke the method
+  
   }
+
+ 
 
   @override
   void dispose() {
@@ -727,15 +751,45 @@ class CalendarState extends State<CalendarPage> {
                         valueListenable: _selectedEvents,
                         builder: (context, value, _) {
                           double maintotal = 0.00;
+                          List<Event> markerlist = [];
+                          
+                 
+
+                          
+                                  
 
                           return ListView.builder(
                             itemCount: value.length,
                             itemBuilder: (context, index) {
                               if (value.length > 0) {
+                                
+
                                 value.forEach((Event value) {
                                   double total = double.parse(value.budget);
 
                                   maintotal += total;
+
+
+                                  if (value.lat != "0.00" ||
+                                      value.lat != "0.0") {
+                                    markerlist.add(Event(
+                                      value.title,
+                                      [
+                                        {
+                                          "${Auth().getCurrentUser().displayName}"
+                                        }
+                                      ],
+                                      value.desc,
+                                      value.timer,
+                                      value.budget,
+                                      value.website,
+                                      value.imgName,
+                                      value.lat,
+                                      value.long,
+                                      value.category,
+                                      "${Auth().getCurrentUser().displayName}",
+                                    ));
+                                  }
                                 });
                               }
 
@@ -1058,6 +1112,25 @@ class CalendarState extends State<CalendarPage> {
                                                           "0.00",
                                                   child: GestureDetector(
                                                     onTap: () async {
+
+    currentLocationref = await locationref.getLocation();
+                                                      markerlist.insert(
+                                      0,
+                                      Event(
+                                        "sourcemarker",
+                                        [
+                                          {"user"}
+                                        ],
+                                        "source",
+                                        "12:00",
+                                        "0.00",
+                                        "No Website Linked",
+                                        "none",
+                                        currentLocationref.latitude.toString(),
+                                        currentLocationref.longitude.toString(),
+                                        "none",
+                                        "user",
+                                      ));
                                                       BitmapDescriptor
                                                           tostaymarker =
                                                           await BitmapDescriptor
@@ -1090,6 +1163,35 @@ class CalendarState extends State<CalendarPage> {
                                                                       devicePixelRatio:
                                                                           0.2),
                                                                   'assets/images/ToDo.png');
+                                                      BitmapDescriptor
+                                                          usermarker =
+                                                          await BitmapDescriptor
+                                                              .fromAssetImage(
+                                                                  ImageConfiguration(
+                                                                      devicePixelRatio:
+                                                                          0.2),
+                                                                  'assets/images/User_Location_Marker.png');
+                                                      /*value.insert(
+                                                          0,
+                                                          Event(
+                                                            "sourcemarker",
+                                                            [
+                                                              {"user"}
+                                                            ],
+                                                            "source",
+                                                            "12:00",
+                                                            "0.00",
+                                                            "No Website Linked",
+                                                            "none",
+                                                            currentLocationref
+                                                                .latitude
+                                                                .toString(),
+                                                            currentLocationref
+                                                                .longitude
+                                                                .toString(),
+                                                            "none",
+                                                            "user",
+                                                          ));*/
                                                       //add a dummy record for source
                                                       /*value.insert(
                                                           0,
@@ -1120,20 +1222,21 @@ class CalendarState extends State<CalendarPage> {
                                                           builder: (context) {
                                                             Iterable _markers =
                                                                 Iterable.generate(
-                                                                    value
+                                                                    markerlist
                                                                         .length,
                                                                     (index) {
                                                               return Marker(
                                                                   markerId: MarkerId(
-                                                                      value[index]
+                                                                      markerlist[
+                                                                              index]
                                                                           .lat),
                                                                   position:
                                                                       LatLng(
                                                                     double.parse(
-                                                                        value[index]
+                                                                        markerlist[index]
                                                                             .lat),
                                                                     double.parse(
-                                                                        value[index]
+                                                                        markerlist[index]
                                                                             .long),
                                                                   ),
                                                                   infoWindow: InfoWindow(
@@ -1141,20 +1244,22 @@ class CalendarState extends State<CalendarPage> {
                                                                           (index)
                                                                               .toString() +
                                                                           '" ' +
-                                                                          value[index]
+                                                                          markerlist[index]
                                                                               .title),
-                                                                  icon: value[index]
+                                                                  icon: markerlist[index]
                                                                               .category ==
                                                                           "ToStay"
                                                                       ? tostaymarker
-                                                                      : value[index].category ==
+                                                                      : markerlist[index].category ==
                                                                               "ToEat&Drink"
                                                                           ? toeatdrinkmarker
-                                                                          : value[index].category == "ToDo"
+                                                                          : markerlist[index].category == "ToDo"
                                                                               ? todomarker
-                                                                              : value[index].category == "ToSee"
+                                                                              : markerlist[index].category == "ToSee"
                                                                                   ? toseemarker
-                                                                                  : BitmapDescriptor.defaultMarkerWithHue(200));
+                                                                                  : markerlist[index].title == "sourcemarker"
+                                                                                      ? usermarker
+                                                                                      : BitmapDescriptor.defaultMarkerWithHue(200));
                                                               //
                                                             });
 
@@ -1176,11 +1281,9 @@ class CalendarState extends State<CalendarPage> {
                                                                             MapType.normal,
                                                                         initialCameraPosition:
                                                                             CameraPosition(
-                                                                          target:
-                                                                              LatLng(
-                                                                            double.parse(value[index].lat),
-                                                                            double.parse(value[index].long),
-                                                                          ),
+                                                                          target: LatLng(
+                                                                              double.parse(value[index].lat),
+                                                                              double.parse(value[index].long)),
                                                                           zoom:
                                                                               18,
                                                                         ),
