@@ -89,7 +89,7 @@ class _MapPageState extends State<MapPage> {
       // current user's position in real time,
       // so we're holding on to it
       currentLocationref = cLoc;
-      //updatePinOnMap();
+      updatePinOnMap();
     });
 
     //instantiate the polyline reference to call API
@@ -100,8 +100,6 @@ class _MapPageState extends State<MapPage> {
 
     //for api distance and duration
     // futuredistanceandduration = getdistanceandduration();
-
-
   }
 
   /// Disposes of the platform resources
@@ -147,29 +145,6 @@ class _MapPageState extends State<MapPage> {
         {"latitude": widget.items.itemlat, "longitude": widget.items.itemlong});
   }
 
-  //observe phone status
-  /*@override
-  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-    super.didChangeAppLifecycleState(state);
-    switch (state) {
-      case AppLifecycleState.inactive:
-        print('appLifeCycleState inactive');
-        break;
-      case AppLifecycleState.resumed:
-        //Add These lines
-        final GoogleMapController controller = await _controller.future;
-        onMapCreated(controller);
-        print('appLifeCycleState resumed');
-        break;
-      case AppLifecycleState.paused:
-        print('appLifeCycleState paused');
-        break;
-      case AppLifecycleState.detached:
-        print('appLifeCycleState detached');
-        break;
-    }
-  }*/
-
   @override
   Widget build(BuildContext context) {
     CategorySelectionService catSelection =
@@ -214,7 +189,7 @@ class _MapPageState extends State<MapPage> {
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
               setPolylines();
-              showPinsOnMap();
+              //showPinsOnMap();
             },
             onTap: (LatLng loc) {
               setState(() {
@@ -233,7 +208,7 @@ class _MapPageState extends State<MapPage> {
               isSelected: this.userInfoSelected,
             )),
         Positioned(
-          top: 155,
+          top: 145,
           left: 0,
           right: 0,
           child: ElevatedButton(
@@ -282,11 +257,16 @@ class _MapPageState extends State<MapPage> {
 
   //this method will perform network call from the API
   void setPolylines() async {
-    
+    currentLocationref = await locationref.getLocation();
+
+    destinationLocationref = LocationData.fromMap(
+        {"latitude": widget.items.itemlat, "longitude": widget.items.itemlong});
+
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       'AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE',
-      PointLatLng(currentLocationref.latitude, currentLocationref.longitude ),
-      PointLatLng(widget.items.itemlat, widget.items.itemlong),
+      PointLatLng(currentLocationref.latitude, currentLocationref.longitude),
+      PointLatLng(
+          destinationLocationref.latitude, destinationLocationref.longitude),
 
       //wayPoints: [PolylineWayPoint(location: "Philippines")]
     );
@@ -298,8 +278,6 @@ class _MapPageState extends State<MapPage> {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
       });
 
-      
-
       setState(() {
         _polylines.add(Polyline(
             width: 3,
@@ -308,10 +286,12 @@ class _MapPageState extends State<MapPage> {
             points: polylineCoordinates));
       });
     }
+
+    showPinsOnMap();
   }
 
   //create two marker reference and surround inside set state to trigger rebuild
-  void showPinsOnMap() {
+  void showPinsOnMap() async {
     //get user information from loginservice to display name on user pin
     LoginService loginService =
         Provider.of<LoginService>(context, listen: false);
@@ -322,10 +302,15 @@ class _MapPageState extends State<MapPage> {
     // get a LatLng for the source location
     // from the LocationData currentLocation object
 
+    currentLocationref = await locationref.getLocation();
+
+    destinationLocationref = LocationData.fromMap(
+        {"latitude": widget.items.itemlat, "longitude": widget.items.itemlong});
+
     var currentPosition =
         LatLng(currentLocationref.latitude, currentLocationref.longitude);
-    var destinationlatlong =
-        LatLng(widget.items.itemlat, widget.items.itemlong);
+    var destinationlatlong = LatLng(
+        destinationLocationref.latitude, destinationLocationref.longitude);
 
     setState(() {
       _markers.add(Marker(
@@ -352,7 +337,7 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
-  /*void updatePinOnMap() async {
+  void updatePinOnMap() async {
     //get user information from loginservice to display name on user pin
     LoginService loginService =
         Provider.of<LoginService>(context, listen: false);
@@ -374,8 +359,9 @@ class _MapPageState extends State<MapPage> {
     controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
     // do this inside the setState() so Flutter gets notified
     // that a widget update is due
-    setState(() {
+    setState(()  {
       // updated position
+      
       var currentPosition =
           LatLng(currentLocationref.latitude, currentLocationref.longitude);
 
@@ -393,5 +379,5 @@ class _MapPageState extends State<MapPage> {
             });
           }));
     });
-  }*/
+  }
 }

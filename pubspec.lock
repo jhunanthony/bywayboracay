@@ -387,13 +387,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
-  ical:
-    dependency: "direct main"
-    description:
-      name: ical
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.2"
   intl:
     dependency: "direct main"
     description:
@@ -478,13 +471,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
-  nanoid:
-    dependency: transitive
-    description:
-      name: nanoid
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   nested:
     dependency: transitive
     description:

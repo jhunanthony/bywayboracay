@@ -192,10 +192,7 @@ class CalendarState extends State<CalendarPage> {
     polylinePoints = new PolylinePoints();
 
     //set up initial Locations & invoke the method
-  
   }
-
- 
 
   @override
   void dispose() {
@@ -752,23 +749,15 @@ class CalendarState extends State<CalendarPage> {
                         builder: (context, value, _) {
                           double maintotal = 0.00;
                           List<Event> markerlist = [];
-                          
-                 
-
-                          
-                                  
 
                           return ListView.builder(
                             itemCount: value.length,
                             itemBuilder: (context, index) {
                               if (value.length > 0) {
-                                
-
                                 value.forEach((Event value) {
                                   double total = double.parse(value.budget);
 
                                   maintotal += total;
-
 
                                   if (value.lat != "0.00" ||
                                       value.lat != "0.0") {
@@ -1112,25 +1101,30 @@ class CalendarState extends State<CalendarPage> {
                                                           "0.00",
                                                   child: GestureDetector(
                                                     onTap: () async {
-
-    currentLocationref = await locationref.getLocation();
+                                                      currentLocationref =
+                                                          await locationref
+                                                              .getLocation();
                                                       markerlist.insert(
-                                      0,
-                                      Event(
-                                        "sourcemarker",
-                                        [
-                                          {"user"}
-                                        ],
-                                        "source",
-                                        "12:00",
-                                        "0.00",
-                                        "No Website Linked",
-                                        "none",
-                                        currentLocationref.latitude.toString(),
-                                        currentLocationref.longitude.toString(),
-                                        "none",
-                                        "user",
-                                      ));
+                                                          0,
+                                                          Event(
+                                                            "sourcemarker",
+                                                            [
+                                                              {"user"}
+                                                            ],
+                                                            "source",
+                                                            "12:00",
+                                                            "0.00",
+                                                            "No Website Linked",
+                                                            "none",
+                                                            currentLocationref
+                                                                .latitude
+                                                                .toString(),
+                                                            currentLocationref
+                                                                .longitude
+                                                                .toString(),
+                                                            "none",
+                                                            "user",
+                                                          ));
                                                       BitmapDescriptor
                                                           tostaymarker =
                                                           await BitmapDescriptor
@@ -1171,49 +1165,6 @@ class CalendarState extends State<CalendarPage> {
                                                                       devicePixelRatio:
                                                                           0.2),
                                                                   'assets/images/User_Location_Marker.png');
-                                                      /*value.insert(
-                                                          0,
-                                                          Event(
-                                                            "sourcemarker",
-                                                            [
-                                                              {"user"}
-                                                            ],
-                                                            "source",
-                                                            "12:00",
-                                                            "0.00",
-                                                            "No Website Linked",
-                                                            "none",
-                                                            currentLocationref
-                                                                .latitude
-                                                                .toString(),
-                                                            currentLocationref
-                                                                .longitude
-                                                                .toString(),
-                                                            "none",
-                                                            "user",
-                                                          ));*/
-                                                      //add a dummy record for source
-                                                      /*value.insert(
-                                                          0,
-                                                          Event(
-                                                            "sourcemarker",
-                                                            [
-                                                              {"user"}
-                                                            ],
-                                                            "source",
-                                                            "12:00",
-                                                            "0.00",
-                                                            "No Website Linked",
-                                                            "none",
-                                                            currentLocationref
-                                                                .latitude
-                                                                .toString(),
-                                                            currentLocationref
-                                                                .longitude
-                                                                .toString(),
-                                                            "none",
-                                                            "user",
-                                                          ));*/
 
                                                       //pins
 
@@ -1240,10 +1191,9 @@ class CalendarState extends State<CalendarPage> {
                                                                             .long),
                                                                   ),
                                                                   infoWindow: InfoWindow(
-                                                                      title: '"' +
-                                                                          (index)
+                                                                      title: (index)
                                                                               .toString() +
-                                                                          '" ' +
+                                                                          ' • ' +
                                                                           markerlist[index]
                                                                               .title),
                                                                   icon: markerlist[index]

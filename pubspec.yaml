@@ -68,9 +68,7 @@ dependencies:
   cloud_firestore: ^2.5.4
   #for calendar
   table_calendar: ^3.0.3
-  #for ical export
-  ical: ^0.2.2
-
+  
   date_utils: ^0.2.0
   intl: ^0.17.0
   #for overlayer ntoification
