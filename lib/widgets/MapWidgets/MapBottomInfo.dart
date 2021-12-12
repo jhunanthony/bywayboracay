@@ -28,11 +28,11 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
 
   Future<DistanceAndDurationInfo> futuredistanceandduration;
 
-  LatLng destinationLocation;
+
   // the user's initial location and current location
   // as it moves
   LocationData currentLocationref;
-  //LocationData destinationLocationref;
+  LocationData destinationLocationref;
 
   // wrapper around the location API
   Location locationref;
@@ -54,6 +54,8 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
       currentLocationref = cLoc;
     });
 
+   
+
     futuredistanceandduration = getdistanceandduration();
   }
 
@@ -63,18 +65,22 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
 
 //get distance and duration using json parse
   Future<DistanceAndDurationInfo> getdistanceandduration() async {
+    
     CategorySelectionService catSelection =
         Provider.of<CategorySelectionService>(context, listen: false);
     this.items = catSelection.items;
 
-    LatLng destinationlatlong = LatLng(this.items.itemlat, this.items.itemlong);
-    destinationLocation =
-        LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
+    
+
+
+        destinationLocationref = LocationData.fromMap(
+        {"latitude": this.items.itemlat, "longitude": this.items.itemlong});
+
 
     currentLocationref = await locationref.getLocation();
 
     final requestURL =
-        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocation.latitude},${destinationLocation.longitude}&key=$googleAPI";
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=$googleAPI";
     //"https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${currentlocationlatlong.latitude},${currentlocationlatlong.longitude}&destinations=${destinationlatlong.latitude},${destinationlatlong.longitude}&travelmode=walking&dir_action=navigate&key=$googleAPI";
     //"https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&key=$googleAPI";
 
@@ -204,7 +210,7 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
                   ),
                   onPressed: () async {
                     String googleUrl =
-                        'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&travelmode=walking&dir_action=navigate';
+                        'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocationref.latitude},${destinationLocationref.longitude}&travelmode=walking&dir_action=navigate';
 
                     if (await canLaunch(googleUrl)) {
                       await launch(googleUrl);
@@ -216,7 +222,6 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
               ],
             ),
           )
-          
         ]));
   }
 }

@@ -32,8 +32,8 @@ class MapUserInformation extends StatelessWidget {
       child: AnimatedContainer(
           duration: const Duration(milliseconds: 500),
           curve: Curves.easeInOut,
-          padding: EdgeInsets.all(12),
-          margin: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+          padding: EdgeInsets.only(right: 12, left: 12, top: 10, bottom: 10),
+          margin: EdgeInsets.only(top: 5, bottom: 5, left: 20, right: 20),
           decoration: BoxDecoration(
               color: this.isSelected ? Colors.blue[100] : Colors.white,
               borderRadius: BorderRadius.circular(100),
@@ -50,8 +50,7 @@ class MapUserInformation extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
                   image: DecorationImage(
-                      image: NetworkImage(userImg),
-                      fit: BoxFit.cover),
+                      image: NetworkImage(userImg), fit: BoxFit.cover),
                   border: Border.all(
                     color: this.isSelected ? Colors.white : Colors.blue[100],
                     width: 2,

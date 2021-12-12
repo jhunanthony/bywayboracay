@@ -189,7 +189,7 @@ class _MapPageState extends State<MapPage> {
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
               setPolylines();
-              //showPinsOnMap();
+              // showPinsOnMap();
             },
             onTap: (LatLng loc) {
               setState(() {
@@ -208,7 +208,7 @@ class _MapPageState extends State<MapPage> {
               isSelected: this.userInfoSelected,
             )),
         Positioned(
-          top: 145,
+          top: 140,
           left: 0,
           right: 0,
           child: ElevatedButton(
@@ -230,7 +230,7 @@ class _MapPageState extends State<MapPage> {
               //capture the success flag with async and await
               onPressed: () {
                 Navigator.of(context).pushReplacement(
-                    new MaterialPageRoute(builder: (BuildContext context) {
+                    MaterialPageRoute(builder: (BuildContext context) {
                   return new MapPage();
                 }));
               }),
@@ -359,9 +359,9 @@ class _MapPageState extends State<MapPage> {
     controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
     // do this inside the setState() so Flutter gets notified
     // that a widget update is due
-    setState(()  {
+    setState(() {
       // updated position
-      
+
       var currentPosition =
           LatLng(currentLocationref.latitude, currentLocationref.longitude);
 
