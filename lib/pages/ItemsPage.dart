@@ -129,7 +129,7 @@ class _ItemsPageState extends State<ItemsPage> {
 
   List<String> tags = [];
   List<String> options = [
-    '0',
+    
     '1',
     '2',
     '3',

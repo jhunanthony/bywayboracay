@@ -26,7 +26,6 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-
 import '../models/RatedItemsModel.dart';
 
 const double CAMERA_ZOOM_DETAILSPAGE = 16;
@@ -57,9 +56,22 @@ class _DetailsPageState extends State<DetailsPage> {
         'assets/images/$parentCategory.png');
   }
 
+  PageController _pagecontroller;
+
+  @override
+  void initState() {
+    super.initState();
+    _pagecontroller = PageController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pagecontroller.dispose();
+  }
+
   //indicator if button is liked or not
 
-  final _imagepageController = PageController(viewportFraction: 0.877);
   @override
   Widget build(BuildContext context) {
     CategorySelectionService catSelection =
@@ -100,48 +112,45 @@ class _DetailsPageState extends State<DetailsPage> {
               //wrap with stack to add components above images
               Stack(children: [
                 Container(
-                  height: 520,
-                  width: MediaQuery.of(context).size.width,
+                    height: 520,
+                    width: MediaQuery.of(context).size.width,
 
-                  //wrap with stack to overlay other components
-                  child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      controller: _imagepageController,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: widget.items.detailsimages.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        //show photos here
-                        return Container(
-                            height: 470,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                    widget.items.detailsimages[index].imgName),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            child: Stack(
-                              children: [
-                                //add gradient
-                                Positioned.fill(
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.center,
-                                      end: Alignment.centerRight,
-                                      colors: <Color>[
-                                        Colors.transparent,
-                                        Colors.black.withOpacity(0.5),
-                                      ],
-                                    ),
-                                  )),
+                    //wrap with stack to overlay other components
+                    child: PageView(
+                        controller: _pagecontroller,
+                        children: List.generate(
+                            widget.items.detailsimages.length,
+                            (index) => Container(
+                                height: 470,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: NetworkImage(widget
+                                        .items.detailsimages[index].imgName),
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                              ],
-                            ));
-                        //add spacing
-                      }),
-                ),
+                                child: Stack(
+                                  children: [
+                                    //add gradient
+                                    Positioned.fill(
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.center,
+                                          end: Alignment.centerRight,
+                                          colors: <Color>[
+                                            Colors.transparent,
+                                            Colors.black.withOpacity(0.5),
+                                          ],
+                                        ),
+                                      )),
+                                    ),
+                                  ],
+                                ))))
+
+                    
+                    ),
 
                 //add save button
 
@@ -151,17 +160,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 5),
                       child: Column(children: [
-                        /*Consumer<LikeService>(
-                            //a function called when notifier changes
-                            builder: (context, save, child) {
-                          return Text(
-                            '${save.items.length} likes',
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w300),
-                          );
-                        }),*/
+                       
 
                         SizedBox(
                           height: 10,
@@ -388,7 +387,7 @@ class _DetailsPageState extends State<DetailsPage> {
                         Align(
                           alignment: Alignment.topCenter,
                           child: SmoothPageIndicator(
-                            controller: _imagepageController,
+                            controller: _pagecontroller,
                             count: widget.items.detailsimages.length,
                             effect: ExpandingDotsEffect(
                                 activeDotColor: widget.items.color,
@@ -1286,7 +1285,6 @@ class _DetailsPageState extends State<DetailsPage> {
   String lat;
   String long;
   String category;
- 
 
   DateTime _selectedDay = DateTime.now();
   RegExp time_24H = new RegExp(r"^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$");
@@ -1426,7 +1424,6 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                   ),
                 ),
-             
               ],
             ),
           ),
@@ -1438,7 +1435,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 timer.clear();
                 budget.clear();
                 website.clear();
-           
+
                 Navigator.of(context).pop();
               },
               child: const Text(
@@ -1471,12 +1468,11 @@ class _DetailsPageState extends State<DetailsPage> {
                 } else {
                   print(emails);
                   setEvents().whenComplete(() async {
-                   
                     event.clear();
                     desc.clear();
                     budget.clear();
                     website.clear();
-                  
+
                     Navigator.of(context).pop();
                   });
                 }
@@ -1573,8 +1569,6 @@ class _DetailsPageState extends State<DetailsPage> {
       }
     }
   }
-
-
 
 //show share dialog
   void _showShare(BuildContext context) {

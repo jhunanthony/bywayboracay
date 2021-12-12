@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class EmailInput extends StatefulWidget {
+/*class EmailInput extends StatefulWidget {
   final Function setList;
   final String hint;
   final List<String> parentEmails;
@@ -126,4 +126,4 @@ bool validateEmail(String value) {
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
   RegExp regex = new RegExp(pattern);
   return regex.hasMatch(value);
-}
+}*/

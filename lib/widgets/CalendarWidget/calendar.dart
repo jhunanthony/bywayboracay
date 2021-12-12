@@ -60,7 +60,7 @@ class CalendarState extends State<CalendarPage> {
 
   // wrapper around the location API
   Location locationref;
-  PolylinePoints polylinePoints;
+
 
   //awaits weather report
   Future<WeatherInfo> futureWeather;
@@ -189,7 +189,7 @@ class CalendarState extends State<CalendarPage> {
     });
 
     //instantiate the polyline reference to call API
-    polylinePoints = new PolylinePoints();
+
 
     //set up initial Locations & invoke the method
   }
@@ -244,7 +244,6 @@ class CalendarState extends State<CalendarPage> {
         final sp =
             await databaseReference.collection('Users').doc(temp[i]).get();
         String name = sp.get("Name");
-        String email = sp.get("Email");
         String date = DateFormat('yyyy-MM-dd').format(_selectedDay);
         final snapShot = databaseReference
             .collection('Users')
@@ -1103,6 +1102,7 @@ class CalendarState extends State<CalendarPage> {
                                                       currentLocationref =
                                                           await locationref
                                                               .getLocation();
+                                                      //insert new dummy record for user marker
                                                       markerlist.insert(
                                                           0,
                                                           Event(
@@ -1124,6 +1124,8 @@ class CalendarState extends State<CalendarPage> {
                                                             "none",
                                                             "user",
                                                           ));
+
+                                                      //load markers
                                                       BitmapDescriptor
                                                           tostaymarker =
                                                           await BitmapDescriptor
@@ -1164,8 +1166,6 @@ class CalendarState extends State<CalendarPage> {
                                                                       devicePixelRatio:
                                                                           0.2),
                                                                   'assets/images/User_Location_Marker.png');
-
-                                                      //pins
 
                                                       showDialog<void>(
                                                           context: context,
@@ -1212,6 +1212,8 @@ class CalendarState extends State<CalendarPage> {
                                                               //
                                                             });
 
+                                                           
+
                                                             return AlertDialog(
                                                                 title: Text(
                                                                     "Itinerary Map"),
@@ -1241,11 +1243,14 @@ class CalendarState extends State<CalendarPage> {
                                                                                 controller) {
                                                                           googlemapcontroller
                                                                               .complete(controller);
+                                                                          
                                                                         },
                                                                         markers:
                                                                             Set.from(_markers),
+                                                                      
                                                                       ),
-                                                                    )
+                                                                    ),
+                                                                    
                                                                   ],
                                                                 ));
                                                           });

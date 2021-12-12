@@ -208,7 +208,7 @@ class _MapPageState extends State<MapPage> {
               isSelected: this.userInfoSelected,
             )),
         Positioned(
-          top: 140,
+          top: 135,
           left: 0,
           right: 0,
           child: ElevatedButton(

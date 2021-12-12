@@ -101,7 +101,7 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
 
     return Container(
         margin: EdgeInsets.all(20),
-        padding: EdgeInsets.all(15),
+        padding: EdgeInsets.only(left:15, right: 15, top: 10, bottom:10),
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(40),

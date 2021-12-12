@@ -417,7 +417,15 @@ class AwardsAndRecognition extends StatelessWidget {
                 child: Container(
                     height: 250,
                     decoration: BoxDecoration(
-                        color: Colors.blue,
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: <Color>[
+                            Colors.blue[100],
+                            Colors.blue[400],
+                            Colors.blue,
+                          ],
+                        ),
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
