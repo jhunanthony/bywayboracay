@@ -759,8 +759,7 @@ class CalendarState extends State<CalendarPage> {
 
                                   maintotal += total;
 
-                                  if (value.lat != "0.00" ||
-                                      value.lat != "0.0") {
+                                  if (value.lat != "0.00") {
                                     markerlist.add(Event(
                                       value.title,
                                       [
@@ -960,12 +959,12 @@ class CalendarState extends State<CalendarPage> {
                                                             ? Colors.red[400]
                                                             : value[index]
                                                                         .category ==
-                                                                    "ToDo"
+                                                                    "ToSee"
                                                                 ? Colors
                                                                     .blue[400]
                                                                 : value[index]
                                                                             .category ==
-                                                                        "ToSee"
+                                                                        "ToDo"
                                                                     ? Colors.green[
                                                                         400]
                                                                     : Colors

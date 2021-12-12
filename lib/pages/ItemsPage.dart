@@ -13,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:filter_list/filter_list.dart';
 
@@ -139,48 +140,6 @@ class _ItemsPageState extends State<ItemsPage> {
   List<String> tags2 = [];
   List<String> subcategoryoptions = [];
 
-  /*void _querylist(Category selectedCategory) {
-    Query _query = Query(station: tags);
-    List<Items> filter(List<Items> items, Query query) {
-      return items
-          .where((items) => (query.station == null ||
-              query.station.contains(items.itemstation)))
-          .toList();
-    }
-
-    List<Items> results = filter(this.widget.selectedCategory.items, _query);
-    if (results != null) {
-      results.forEach((Items filtered) {
-        selectedCountList.forEach((Items selecteditem) {
-          if (selecteditem.name == filtered.name) {
-            setState(() {
-              selectedCountList.remove(selecteditem);
-              selectedCountList.add(filtered);
-            });
-          }
-          if (selecteditem.name != filtered.name) {
-            setState(() {
-              selectedCountList.add(filtered);
-            });
-          }
-        });
-      });
-    }
-
-    /*showDialog<void>(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-              title: Text("Filtered List"),
-              contentPadding:
-                  EdgeInsets.only(left: 0, right: 0, top: 10, bottom: 10),
-              content: ListView.builder(
-                  itemCount: results.length,
-                  itemBuilder: (context, index) {
-                    return Text("${results[index].name}");
-                  }));
-        });*/
-  }*/
 
   void _openFilterDialog(Category selectedCategory) async {
     await FilterListDialog.display<Items>(

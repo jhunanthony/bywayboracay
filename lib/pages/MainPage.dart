@@ -7,6 +7,7 @@ import 'package:bywayborcay/services/likeservice.dart';
 import 'package:bywayborcay/services/ratedservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/Itinerarypage2.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +39,8 @@ class _MainPageState extends State<MainPage> {
     //fetch liked items and load on likepage
     likeService.loadLikedItemsFromFirebase(context);
 
-    RatingService ratingService = Provider.of<RatingService>(context, listen: false);
+    RatingService ratingService =
+        Provider.of<RatingService>(context, listen: false);
     //fetch liked items and load on likepage
     ratingService.loadRatedItemsFromFirebase(context);
 
@@ -74,79 +76,43 @@ class _MainPageState extends State<MainPage> {
                   },
                   items: <BottomNavyBarItem>[
                     BottomNavyBarItem(
-                      icon: SvgPicture.asset(
+                      icon: Icon(CupertinoIcons.compass, size: 30),
+                      /* icon: SvgPicture.asset(
                         'assets/icons/' + AppIcons.ExploreIcon + '.svg',
                         color: Colors.blue,
                         height: 30,
                         width: 30,
-                      ),
+                      ),*/
                       title: Text('Explore'),
                       textAlign: TextAlign.center,
                       activeColor: Colors.blue,
+                      inactiveColor: Colors.blue[200],
                     ),
                     BottomNavyBarItem(
-                      icon: SvgPicture.asset(
+                      icon: Icon(CupertinoIcons.calendar, size: 30),
+                      /*icon: SvgPicture.asset(
                         'assets/icons/' + AppIcons.ItineraryIcon + '.svg',
                         color: Colors.blue,
                         height: 30,
                         width: 30,
-                      ),
+                      ),*/
                       title: Text('Itinerary'),
                       textAlign: TextAlign.center,
                       activeColor: Colors.blue,
+                      inactiveColor: Colors.blue[200],
                     ),
-                    /*BottomNavyBarItem(
-                      icon: Consumer<LikeService>(
-                          //a function called when notifier changes
-                          builder: (context, like, child) {
-                        return
-                            //hide if 0 likes
-                            Stack(children: [
-                          SvgPicture.asset(
-                            'assets/icons/' + AppIcons.LikesIcon + '.svg',
-                            color: Colors.blue,
-                            height: 30,
-                            width: 30,
-                          ),
-                          //get the number of like values
-                          Positioned(
-                            top: 0,
-                            right: 0,
-                            child: Visibility(
-                              visible: like.items.length > 0,
-                              child: Container(
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.yellow[50],
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                child: Text(
-                                  '${like.items.length}',
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ]);
-                      }),
-                      title: Text('Likes'),
-                      textAlign: TextAlign.center,
-                      inactiveColor: Colors.blue,
-                      activeColor: Colors.blue,
-                    ),*/
                     BottomNavyBarItem(
-                      icon: SvgPicture.asset(
+                      icon: Icon(CupertinoIcons.bag, size: 30),
+                      /*icon: SvgPicture.asset(
                         'assets/icons/' + AppIcons.BagIcon + '.svg',
                         color: Colors.blue,
                         height: 30,
                         width: 30,
-                      ),
+                      ),*/
                       title: Text('Bag'),
                       textAlign: TextAlign.center,
                       activeColor: Colors.blue,
+                      inactiveColor: Colors.blue[200],
                     ),
                   ]),
             ),
