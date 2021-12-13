@@ -7,6 +7,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/pages/MainPage.dart';
 import 'package:bywayborcay/services/loginservice.dart';
+import 'package:bywayborcay/widgets/CalendarWidget/itineraryMap.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/utils.dart';
 import 'package:bywayborcay/widgets/WeatherWidgets/weather_forecast.dart';
 import 'package:bywayborcay/widgets/WeatherWidgets/weather_mainwidget.dart';
@@ -60,7 +61,6 @@ class CalendarState extends State<CalendarPage> {
 
   // wrapper around the location API
   Location locationref;
-
 
   //awaits weather report
   Future<WeatherInfo> futureWeather;
@@ -189,7 +189,6 @@ class CalendarState extends State<CalendarPage> {
     });
 
     //instantiate the polyline reference to call API
-
 
     //set up initial Locations & invoke the method
   }
@@ -1099,7 +1098,24 @@ class CalendarState extends State<CalendarPage> {
                                                           "0.00",
                                                   child: GestureDetector(
                                                     onTap: () async {
-                                                      currentLocationref =
+                                                      LatLng dest = LatLng(
+                                                          double.parse(
+                                                              value[index].lat),
+                                                          double.parse(
+                                                              value[index]
+                                                                  .long));
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ItineraryMap(
+                                                                    markerlist:
+                                                                        markerlist,
+                                                                        dest: dest,
+                                                                      
+
+                                                                  )));
+                                                      /*currentLocationref =
                                                           await locationref
                                                               .getLocation();
                                                       //insert new dummy record for user marker
@@ -1253,7 +1269,7 @@ class CalendarState extends State<CalendarPage> {
                                                                     
                                                                   ],
                                                                 ));
-                                                          });
+                                                          });*/
                                                     },
                                                     child: Icon(
                                                         Icons

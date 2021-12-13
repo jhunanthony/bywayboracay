@@ -32,20 +32,7 @@ class TopNavBarState extends State<TopNavBar> {
       centerTitle: true,
       //able to tap and return to landing page
 
-      /*leading: GestureDetector(
-        onTap: () => Navigator.of(context).pop(),
-        child: Padding(
-          padding: EdgeInsets.all(7),
-          child: Container(
-           
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(Icons.arrow_back, color: Colors.white, size: 30),
-          ),
-        ),
-      ),*/
+      
 
       title: Visibility(
         visible: widget.showTopLogo,

@@ -3,6 +3,7 @@ import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
+import 'package:bywayborcay/widgets/CalendarWidget/utils.dart';
 import 'package:bywayborcay/widgets/MapWidgets/MapBottomInfo.dart';
 import 'package:bywayborcay/widgets/MapWidgets/MapUpperInfo.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
@@ -24,28 +25,22 @@ const double PIN_VISIBLE_POSITION = 20;
 const double PIN_NOTVISIBLE_POSITION = -300;
 
 // ignore: must_be_immutable
-class MapPage extends StatefulWidget {
-  MapPage({Key key, this.items}) : super(key: key);
+class ItineraryMap extends StatefulWidget {
+  ItineraryMap({
+    Key key,
+    this.markerlist,
+    this.dest,
+  }) : super(key: key);
 
-  Items items;
+  List<Event> markerlist;
+  LatLng dest;
 
   @override
-  _MapPageState createState() => _MapPageState();
+  _ItineraryMapState createState() => _ItineraryMapState();
 }
 
-class _MapPageState extends State<MapPage> {
-  //Google map Controller that controlls single instance of the google map
+class _ItineraryMapState extends State<ItineraryMap> {
   Completer<GoogleMapController> _controller = Completer();
-
-  //for costum marker pin
-  //custom marker to costumize assets to be used
-  BitmapDescriptor sourceIcon;
-  BitmapDescriptor destinationIcon;
-  //set to hold list of markers
-  Set<Marker> _markers = Set<Marker>();
-
-  //call the distance info model
-  //Future<DistanceAndDurationInfo> futuredistanceandduration;
 
   //control the state of bottom info position
   double pinBottomInfoPosition = PIN_VISIBLE_POSITION;
@@ -57,7 +52,7 @@ class _MapPageState extends State<MapPage> {
   // the user's initial location and current location
   // as it moves
   LocationData currentLocationref;
-  LocationData destinationLocationref;
+  //LocationData destinationLocationref;
 
   // wrapper around the location API
   Location locationref;
@@ -67,15 +62,12 @@ class _MapPageState extends State<MapPage> {
   //a way to fetch the coordinates
 
   //for drawn routes on map
-  Set<Polyline> _polylines = Set<Polyline>();
+  /*Set<Polyline> _polylines = Set<Polyline>();
   List<LatLng> polylineCoordinates = [];
-  PolylinePoints polylinePoints;
+  PolylinePoints polylinePoints;*/
 
   @override
   void initState() {
-    CategorySelectionService catSelection =
-        Provider.of<CategorySelectionService>(context, listen: false);
-    widget.items = catSelection.items;
     super.initState();
 
     // create an instance of Location
@@ -89,77 +81,161 @@ class _MapPageState extends State<MapPage> {
       // current user's position in real time,
       // so we're holding on to it
       currentLocationref = cLoc;
-      updatePinOnMap();
+      //updatePinOnMap();
     });
 
-    //instantiate the polyline reference to call API
-    polylinePoints = new PolylinePoints();
-
-    //set up initial Locations & invoke the method
     this.setInitialLocation();
 
-    //for api distance and duration
-    // futuredistanceandduration = getdistanceandduration();
+    //instantiate the polyline reference to call API
+    // polylinePoints = new PolylinePoints();
+  }
+
+  void setInitialLocation() async {
+    currentLocationref = await locationref.getLocation();
   }
 
   /// Disposes of the platform resources
 
   // location custom marker
 
+  BitmapDescriptor tostaymarker;
+  BitmapDescriptor toeatdrinkmarker;
+  BitmapDescriptor toseemarker;
+  BitmapDescriptor todomarker;
+  BitmapDescriptor usermarker;
+
   void setSourceAndDestinationMarkerIcons(BuildContext context) async {
-    CategorySelectionService catSelection =
-        Provider.of<CategorySelectionService>(context, listen: false);
-    widget.items = catSelection.items;
-
-    String parentCategory = widget.items.itemcategoryName;
-
-    sourceIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 0.5),
+    tostaymarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 0.2), 'assets/images/ToStay.png');
+    toeatdrinkmarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 0.2),
+        'assets/images/ToEat&Drink.png');
+    toseemarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 0.2), 'assets/images/ToSee.png');
+    todomarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 0.2), 'assets/images/ToDo.png');
+    usermarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 0.2),
         'assets/images/User_Location_Marker.png');
-
-    destinationIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 0.5),
-        'assets/images/$parentCategory.png');
   }
 
-  //create a method to instantiate from const to hard coded coordinates
-  void setInitialLocation() async {
-    CategorySelectionService catSelection =
-        Provider.of<CategorySelectionService>(context, listen: false);
-    widget.items = catSelection.items;
-    //add latlong value here
+  /*Iterable _markers;
 
-    /*LatLng destinationlatlong =
-        LatLng(widget.items.itemlat, widget.items.itemlong);*/
-    // set the initial location by pulling the user's
-    // current location from the location's getLocation()
+  void _setmarkers(BuildContext context) async {
+    this.setSourceAndDestinationMarkerIcons(context);
+    _markers = Iterable.generate(this.widget.markerlist.length, (index) {
+      return Marker(
+          markerId: MarkerId(this.widget.markerlist[index].title),
+          position: LatLng(
+            double.parse(this.widget.markerlist[index].lat),
+            double.parse(this.widget.markerlist[index].long),
+          ),
+          infoWindow: InfoWindow(
+              title: (index).toString() +
+                  ' • ' +
+                  this.widget.markerlist[index].title),
+          icon: this.widget.markerlist[index].category == "ToStay"
+              ? tostaymarker
+              : this.widget.markerlist[index].category == "ToEat&Drink"
+                  ? toeatdrinkmarker
+                  : this.widget.markerlist[index].category == "ToDo"
+                      ? todomarker
+                      : this.widget.markerlist[index].category == "ToSee"
+                          ? toseemarker
+                          : this.widget.markerlist[index].title ==
+                                  "sourcemarker"
+                              ? usermarker
+                              : toseemarker);
+      //
+    });
+  }*/
+  Set<Marker> _markers = Set<Marker>();
+
+  void showPinsOnMap() async {
+    int indexvalue = 0;
+    this.setSourceAndDestinationMarkerIcons(context);
     currentLocationref = await locationref.getLocation();
 
-    /*sourceLocation =
-        LatLng(SOURCE_LOCATION.latitude, SOURCE_LOCATION.longitude);*/
-    //display latlong value here
+    this.widget.markerlist.insert(
+        0,
+        Event(
+          "sourcemarker",
+          [
+            {"user"}
+          ],
+          "source",
+          "12:00",
+          "0.00",
+          "No Website Linked",
+          "none",
+          currentLocationref.latitude.toString(),
+          currentLocationref.longitude.toString(),
+          "none",
+          "user",
+        ));
 
-    /*destinationLocation =
-        LatLng(destinationlatlong.latitude, destinationlatlong.longitude);*/
-    destinationLocationref = LocationData.fromMap(
-        {"latitude": widget.items.itemlat, "longitude": widget.items.itemlong});
+    this.widget.markerlist.forEach((item) {
+      setState(() {
+        indexvalue++;
+        _markers.add(Marker(
+            markerId: MarkerId(item.title),
+            position: LatLng(
+              double.parse(item.lat),
+              double.parse(item.long),
+            ),
+            infoWindow: InfoWindow(
+                title: indexvalue.toString() +
+                    ' ' +
+                    item.timer +
+                    ' • ' +
+                    item.title),
+            icon: item.category == "ToStay"
+                ? tostaymarker
+                : item.category == "ToEat&Drink"
+                    ? toeatdrinkmarker
+                    : item.category == "ToDo"
+                        ? todomarker
+                        : item.category == "ToSee"
+                            ? toseemarker
+                            : item.title == "sourcemarker"
+                                ? usermarker
+                                : toseemarker));
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    CategorySelectionService catSelection =
-        Provider.of<CategorySelectionService>(context, listen: false);
-    widget.items = catSelection.items;
+    this.setSourceAndDestinationMarkerIcons(context);
+
+    /*this.widget.markerlist.insert(
+        0,
+        Event(
+          "sourcemarker",
+          [
+            {"user"}
+          ],
+          "source",
+          "12:00",
+          "0.00",
+          "No Website Linked",
+          "none",
+          currentLocationref.latitude.toString(),
+          currentLocationref.longitude.toString(),
+          "none",
+          "user",
+        ));*/
 
     // set up the marker icons & invoke the method
-    this.setSourceAndDestinationMarkerIcons(context);
 
     //create a camera position instance to feed to the map
     CameraPosition initialCameraPosition = CameraPosition(
         zoom: CAMERA_ZOOM,
         tilt: CAMERA_TILT,
         bearing: CAMERA_BEARING,
-        target: LatLng(widget.items.itemlat, widget.items.itemlong));
+        target: LatLng(this.widget.dest.latitude, this.widget.dest.longitude)
+        //target: LatLng(this.widget.dest.latitude, this.widget.dest.longitude)
+        );
 
     if (currentLocationref != null) {
       initialCameraPosition = CameraPosition(
@@ -173,6 +249,12 @@ class _MapPageState extends State<MapPage> {
     return SafeArea(
       child: Scaffold(
           body: Stack(children: [
+        /*Text(this.widget.markerlist[0].title),
+        Text(this.widget.markerlist[1].title),
+        Text(this.widget.markerlist[2].title),
+        Text(this.widget.dest.latitude.toString()),
+        Text(this.widget.dest.latitude.toString()),*/
+
         Positioned.fill(
           child: GoogleMap(
             myLocationEnabled: true,
@@ -181,42 +263,42 @@ class _MapPageState extends State<MapPage> {
             tiltGesturesEnabled: false,
             mapToolbarEnabled: false,
             myLocationButtonEnabled: false,
-            polylines: _polylines,
-            markers: Set.from(_markers),
+            //polylines: _polylines,
+            markers: _markers,
 
             mapType: MapType.normal,
             initialCameraPosition: initialCameraPosition,
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
-              setPolylines();
-              // showPinsOnMap();
+
+              showPinsOnMap();
+
+              //setPolylines();
             },
-           /* onTap: (LatLng loc) {
+            /* onTap: (LatLng loc) {
               setState(() {
-                this.pinBottomInfoPosition = PIN_NOTVISIBLE_POSITION;
+                //this.pinBottomInfoPosition = PIN_NOTVISIBLE_POSITION;
                 this.userInfoSelected = false;
-              }
-              );
+              });
             },*/
             //tapping will hide the bottom info //grab custom pins //grab the polylines
           ),
         ),
-        Positioned(
+        /*Positioned(
             top: 70,
             left: 0,
             right: 0,
             child: MapUserInformation(
               isSelected: this.userInfoSelected,
-            )),
-        
-        AnimatedPositioned(
+            )),*/
+        /* AnimatedPositioned(
             //animate the bottom Info
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
             left: 0,
             right: 0,
             bottom: this.pinBottomInfoPosition,
-            child: MapBottomInfo()),
+            child: MapBottomInfo()),*/
         Positioned(
             top: 0,
             left: 0,
@@ -230,7 +312,7 @@ class _MapPageState extends State<MapPage> {
   }
 
   //this method will perform network call from the API
-  void setPolylines() async {
+  /*void setPolylines() async {
     currentLocationref = await locationref.getLocation();
 
     destinationLocationref = LocationData.fromMap(
@@ -262,56 +344,11 @@ class _MapPageState extends State<MapPage> {
     }
 
     showPinsOnMap();
-  }
+  }*/
 
   //create two marker reference and surround inside set state to trigger rebuild
-  void showPinsOnMap() async {
-    //get user information from loginservice to display name on user pin
-    LoginService loginService =
-        Provider.of<LoginService>(context, listen: false);
-    //grab the
-    UserLogInModel userModel = loginService.loggedInUserModel;
-    String userName = userModel != null ? userModel.displayName : 'User';
 
-    // get a LatLng for the source location
-    // from the LocationData currentLocation object
-
-    currentLocationref = await locationref.getLocation();
-
-    destinationLocationref = LocationData.fromMap(
-        {"latitude": widget.items.itemlat, "longitude": widget.items.itemlong});
-
-    var currentPosition =
-        LatLng(currentLocationref.latitude, currentLocationref.longitude);
-    var destinationlatlong = LatLng(
-        destinationLocationref.latitude, destinationLocationref.longitude);
-
-    setState(() {
-      _markers.add(Marker(
-          markerId: MarkerId('sourcePin'),
-          position: currentPosition,
-          icon: sourceIcon,
-          infoWindow: InfoWindow(title: userName),
-          onTap: () {
-            setState(() {
-              this.userInfoSelected = true;
-            });
-          }));
-
-      _markers.add(Marker(
-          markerId: MarkerId('destinationPin'),
-          position: destinationlatlong,
-          icon: destinationIcon,
-          infoWindow: InfoWindow(title: this.widget.items.name),
-          onTap: () {
-            setState(() {
-              this.pinBottomInfoPosition = PIN_VISIBLE_POSITION;
-            });
-          }));
-    });
-  }
-
-  void updatePinOnMap() async {
+  /*void updatePinOnMap() async {
     //get user information from loginservice to display name on user pin
     LoginService loginService =
         Provider.of<LoginService>(context, listen: false);
@@ -353,5 +390,5 @@ class _MapPageState extends State<MapPage> {
             });
           }));
     });
-  }
+  }*/
 }
