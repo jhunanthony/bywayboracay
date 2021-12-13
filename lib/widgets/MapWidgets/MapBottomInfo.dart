@@ -65,6 +65,7 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
 
 //get distance and duration using json parse
   Future<DistanceAndDurationInfo> getdistanceandduration() async {
+     currentLocationref = await locationref.getLocation();
     
     CategorySelectionService catSelection =
         Provider.of<CategorySelectionService>(context, listen: false);

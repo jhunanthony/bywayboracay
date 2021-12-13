@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/utils.dart';
+import 'package:bywayborcay/widgets/MapWidgets/DistanceAndDurationWidget.dart';
 import 'package:bywayborcay/widgets/MapWidgets/MapBottomInfo.dart';
 import 'package:bywayborcay/widgets/MapWidgets/MapUpperInfo.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
@@ -12,6 +14,10 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
+
+import '../CategoryWidgets/CategoryIcon.dart';
 
 //construct a widget that passes user location as source location
 //const LatLng DEST_LOCATION = LatLng(11.98189918417696, 121.9151854334716);
@@ -26,20 +32,32 @@ const double PIN_NOTVISIBLE_POSITION = -300;
 
 // ignore: must_be_immutable
 class ItineraryMap extends StatefulWidget {
-  ItineraryMap({
-    Key key,
-    this.markerlist,
-    this.dest,
-  }) : super(key: key);
+  ItineraryMap(
+      {Key key,
+      this.markerlist,
+      this.dest,
+      this.category,
+      this.imgName,
+      this.name,
+      this.timer,
+      this.budget})
+      : super(key: key);
 
   List<Event> markerlist;
   LatLng dest;
+  String category;
+  String imgName;
+  String name;
+  String timer;
+  String budget;
 
   @override
   _ItineraryMapState createState() => _ItineraryMapState();
 }
 
 class _ItineraryMapState extends State<ItineraryMap> {
+  Future<DistanceAndDurationInfo> futuredistanceandduration;
+  String googleAPI = 'AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE';
   Completer<GoogleMapController> _controller = Completer();
 
   //control the state of bottom info position
@@ -52,7 +70,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
   // the user's initial location and current location
   // as it moves
   LocationData currentLocationref;
-  //LocationData destinationLocationref;
+  LocationData destinationLocationref;
 
   // wrapper around the location API
   Location locationref;
@@ -62,9 +80,9 @@ class _ItineraryMapState extends State<ItineraryMap> {
   //a way to fetch the coordinates
 
   //for drawn routes on map
-  /*Set<Polyline> _polylines = Set<Polyline>();
+  Set<Polyline> _polylines = Set<Polyline>();
   List<LatLng> polylineCoordinates = [];
-  PolylinePoints polylinePoints;*/
+  PolylinePoints polylinePoints;
 
   @override
   void initState() {
@@ -81,13 +99,13 @@ class _ItineraryMapState extends State<ItineraryMap> {
       // current user's position in real time,
       // so we're holding on to it
       currentLocationref = cLoc;
-      //updatePinOnMap();
+      updatePinOnMap();
     });
 
     this.setInitialLocation();
 
     //instantiate the polyline reference to call API
-    // polylinePoints = new PolylinePoints();
+    polylinePoints = new PolylinePoints();
   }
 
   void setInitialLocation() async {
@@ -119,94 +137,34 @@ class _ItineraryMapState extends State<ItineraryMap> {
         'assets/images/User_Location_Marker.png');
   }
 
-  /*Iterable _markers;
+  //get distance and duration using json parse
+  Future<DistanceAndDurationInfo> getdistanceandduration() async {
+    currentLocationref = await locationref.getLocation();
 
-  void _setmarkers(BuildContext context) async {
-    this.setSourceAndDestinationMarkerIcons(context);
-    _markers = Iterable.generate(this.widget.markerlist.length, (index) {
-      return Marker(
-          markerId: MarkerId(this.widget.markerlist[index].title),
-          position: LatLng(
-            double.parse(this.widget.markerlist[index].lat),
-            double.parse(this.widget.markerlist[index].long),
-          ),
-          infoWindow: InfoWindow(
-              title: (index).toString() +
-                  ' • ' +
-                  this.widget.markerlist[index].title),
-          icon: this.widget.markerlist[index].category == "ToStay"
-              ? tostaymarker
-              : this.widget.markerlist[index].category == "ToEat&Drink"
-                  ? toeatdrinkmarker
-                  : this.widget.markerlist[index].category == "ToDo"
-                      ? todomarker
-                      : this.widget.markerlist[index].category == "ToSee"
-                          ? toseemarker
-                          : this.widget.markerlist[index].title ==
-                                  "sourcemarker"
-                              ? usermarker
-                              : toseemarker);
-      //
+    destinationLocationref = LocationData.fromMap({
+      "latitude": this.widget.dest.latitude,
+      "longitude": this.widget.dest.longitude,
     });
-  }*/
+
+    currentLocationref = await locationref.getLocation();
+
+    final requestURL =
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=$googleAPI";
+
+    final response = await http.get(Uri.parse(requestURL));
+
+    if (response.statusCode == 200) {
+      return DistanceAndDurationInfo.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Error Leoading request URL info.");
+    }
+  }
+
   Set<Marker> _markers = Set<Marker>();
 
   void showPinsOnMap() async {
-    int indexvalue = 0;
     this.setSourceAndDestinationMarkerIcons(context);
     currentLocationref = await locationref.getLocation();
-
-    this.widget.markerlist.insert(
-        0,
-        Event(
-          "sourcemarker",
-          [
-            {"user"}
-          ],
-          "source",
-          "12:00",
-          "0.00",
-          "No Website Linked",
-          "none",
-          currentLocationref.latitude.toString(),
-          currentLocationref.longitude.toString(),
-          "none",
-          "user",
-        ));
-
-    this.widget.markerlist.forEach((item) {
-      setState(() {
-        indexvalue++;
-        _markers.add(Marker(
-            markerId: MarkerId(item.title),
-            position: LatLng(
-              double.parse(item.lat),
-              double.parse(item.long),
-            ),
-            infoWindow: InfoWindow(
-                title: indexvalue.toString() +
-                    ' ' +
-                    item.timer +
-                    ' • ' +
-                    item.title),
-            icon: item.category == "ToStay"
-                ? tostaymarker
-                : item.category == "ToEat&Drink"
-                    ? toeatdrinkmarker
-                    : item.category == "ToDo"
-                        ? todomarker
-                        : item.category == "ToSee"
-                            ? toseemarker
-                            : item.title == "sourcemarker"
-                                ? usermarker
-                                : toseemarker));
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    this.setSourceAndDestinationMarkerIcons(context);
 
     /*this.widget.markerlist.insert(
         0,
@@ -226,7 +184,39 @@ class _ItineraryMapState extends State<ItineraryMap> {
           "user",
         ));*/
 
-    // set up the marker icons & invoke the method
+    this.widget.markerlist.forEach((item) {
+      setState(() {
+        _markers.add(Marker(
+            markerId: MarkerId(item.title),
+            position: LatLng(
+              double.parse(item.lat),
+              double.parse(item.long),
+            ),
+            infoWindow: InfoWindow(
+                title:
+                    " ${this.widget.markerlist.indexWhere((markerdata) => markerdata.title == item.title && markerdata.timer == item.timer) + 1}" +
+                        ' • ' +
+                        item.timer +
+                        ' • ' +
+                        item.title),
+            icon: item.category == "ToStay"
+                ? tostaymarker
+                : item.category == "ToEat&Drink"
+                    ? toeatdrinkmarker
+                    : item.category == "ToDo"
+                        ? todomarker
+                        : item.category == "ToSee"
+                            ? toseemarker
+                            : item.title == "sourcemarker"
+                                ? usermarker
+                                : toseemarker));
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    this.setSourceAndDestinationMarkerIcons(context);
 
     //create a camera position instance to feed to the map
     CameraPosition initialCameraPosition = CameraPosition(
@@ -241,7 +231,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
       initialCameraPosition = CameraPosition(
           target:
               LatLng(currentLocationref.latitude, currentLocationref.longitude),
-          zoom: CAMERA_ZOOM,
+          zoom: 14,
           tilt: CAMERA_TILT,
           bearing: CAMERA_BEARING);
     }
@@ -249,12 +239,6 @@ class _ItineraryMapState extends State<ItineraryMap> {
     return SafeArea(
       child: Scaffold(
           body: Stack(children: [
-        /*Text(this.widget.markerlist[0].title),
-        Text(this.widget.markerlist[1].title),
-        Text(this.widget.markerlist[2].title),
-        Text(this.widget.dest.latitude.toString()),
-        Text(this.widget.dest.latitude.toString()),*/
-
         Positioned.fill(
           child: GoogleMap(
             myLocationEnabled: true,
@@ -263,7 +247,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
             tiltGesturesEnabled: false,
             mapToolbarEnabled: false,
             myLocationButtonEnabled: false,
-            //polylines: _polylines,
+            polylines: _polylines,
             markers: _markers,
 
             mapType: MapType.normal,
@@ -273,32 +257,163 @@ class _ItineraryMapState extends State<ItineraryMap> {
 
               showPinsOnMap();
 
-              //setPolylines();
+              setPolylines();
             },
-            /* onTap: (LatLng loc) {
+            onTap: (LatLng loc) {
               setState(() {
-                //this.pinBottomInfoPosition = PIN_NOTVISIBLE_POSITION;
-                this.userInfoSelected = false;
+                this.pinBottomInfoPosition = PIN_NOTVISIBLE_POSITION;
               });
-            },*/
+            },
             //tapping will hide the bottom info //grab custom pins //grab the polylines
           ),
         ),
-        /*Positioned(
+        Positioned(
             top: 70,
             left: 0,
             right: 0,
             child: MapUserInformation(
               isSelected: this.userInfoSelected,
-            )),*/
-        /* AnimatedPositioned(
+            )),
+        AnimatedPositioned(
             //animate the bottom Info
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
             left: 0,
             right: 0,
             bottom: this.pinBottomInfoPosition,
-            child: MapBottomInfo()),*/
+            child: Container(
+                margin: EdgeInsets.all(20),
+                padding:
+                    EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(40),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 10,
+                          offset: Offset.zero)
+                    ]),
+                child: Column(children: [
+                  Container(
+                      color: Colors.transparent,
+                      child: Row(children: [
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            ClipOval(
+                                child: Image.network(this.widget.imgName,
+                                    width: 60, height: 60, fit: BoxFit.cover)),
+                            Positioned(
+                              bottom: -10,
+                              right: -10,
+                              child: CategoryIcon(
+                                iconName: this.widget.category,
+                                color: this.widget.category == "ToStay"
+                                    ? Colors.purple[400]
+                                    : this.widget.category == "ToEat&Drink"
+                                        ? Colors.red[400]
+                                        : this.widget.category == "ToSee"
+                                            ? Colors.blue[400]
+                                            : this.widget.category == "ToDo"
+                                                ? Colors.green[400]
+                                                : Colors.blue,
+                                size: 30,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 20),
+                        Expanded(
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                  this.widget.name,
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                Text(
+                                  this.widget.timer,
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
+                                  "PHP ${this.widget.budget}",
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ]),
+                        ),
+                        //marker
+                        Image.asset('assets/images/${this.widget.category}.png',
+                            height: 40, width: 40),
+                        SizedBox(width: 15),
+
+                        /*Icon(Icons.location_pin,
+                    color: AppColors.accomodations, size: 50)*/
+                      ])),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FutureBuilder<DistanceAndDurationInfo>(
+                            future: futuredistanceandduration,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return DistanceAndDurationWidget(
+                                  distancevalue: snapshot.data.distancevalue,
+                                  distance: snapshot.data.distance,
+                                  duration: snapshot.data.duration,
+                                );
+                              } else if (snapshot.hasError) {
+                                return Center(child: Text("${snapshot.error}"));
+                              }
+                              return Center(child: CircularProgressIndicator());
+                            }),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.blue[200], //background
+                              onPrimary: Colors.white,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 17, vertical: 17), //foreground
+                              shape: CircleBorder()),
+                          child: Center(
+                            child: Icon(
+                              Icons.directions_rounded,
+                              size: 25,
+                              color: Colors.white,
+                            ),
+                          ),
+                          onPressed: () async {
+                            String googleUrl =
+                                'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocationref.latitude},${destinationLocationref.longitude}&travelmode=walking&dir_action=navigate';
+
+                            if (await canLaunch(googleUrl)) {
+                              await launch(googleUrl);
+                            } else {
+                              throw 'Could not launch $googleUrl';
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  )
+                ]))),
         Positioned(
             top: 0,
             left: 0,
@@ -312,11 +427,13 @@ class _ItineraryMapState extends State<ItineraryMap> {
   }
 
   //this method will perform network call from the API
-  /*void setPolylines() async {
+  void setPolylines() async {
     currentLocationref = await locationref.getLocation();
 
-    destinationLocationref = LocationData.fromMap(
-        {"latitude": widget.items.itemlat, "longitude": widget.items.itemlong});
+    destinationLocationref = LocationData.fromMap({
+      "latitude": this.widget.dest.latitude,
+      "longitude": this.widget.dest.longitude,
+    });
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       'AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE',
@@ -338,17 +455,25 @@ class _ItineraryMapState extends State<ItineraryMap> {
         _polylines.add(Polyline(
             width: 3,
             polylineId: PolylineId('polyLine'),
-            color: widget.items.color,
+            color: this.widget.category == "ToStay"
+                ? Colors.purple[400]
+                : this.widget.category == "ToEat&Drink"
+                    ? Colors.red[400]
+                    : this.widget.category == "ToSee"
+                        ? Colors.blue[400]
+                        : this.widget.category == "ToDo"
+                            ? Colors.green[400]
+                            : Colors.blue,
             points: polylineCoordinates));
       });
     }
 
     showPinsOnMap();
-  }*/
+  }
 
   //create two marker reference and surround inside set state to trigger rebuild
 
-  /*void updatePinOnMap() async {
+  void updatePinOnMap() async {
     //get user information from loginservice to display name on user pin
     LoginService loginService =
         Provider.of<LoginService>(context, listen: false);
@@ -360,7 +485,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
     // every time the location changes, so the camera
     // follows the pin as it moves with an animation
     CameraPosition cPosition = CameraPosition(
-      zoom: CAMERA_ZOOM,
+      zoom: 16,
       tilt: CAMERA_TILT,
       bearing: CAMERA_BEARING,
       target: LatLng(currentLocationref.latitude, currentLocationref.longitude),
@@ -382,7 +507,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
       _markers.add(Marker(
           markerId: MarkerId('sourcePin'),
           position: currentPosition,
-          icon: sourceIcon,
+          icon: usermarker,
           infoWindow: InfoWindow(title: userName),
           onTap: () {
             setState(() {
@@ -390,5 +515,5 @@ class _ItineraryMapState extends State<ItineraryMap> {
             });
           }));
     });
-  }*/
+  }
 }

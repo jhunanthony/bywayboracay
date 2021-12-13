@@ -1112,7 +1112,17 @@ class CalendarState extends State<CalendarPage> {
                                                                     markerlist:
                                                                         markerlist,
                                                                         dest: dest,
-                                                                      
+                                                                      category:  value[index]
+                                                                  .category,
+                                                                  imgName: value[index]
+                                                                  .imgName,
+                                                                  name: value[index]
+                                                                  .title,
+                                                                  timer: value[index]
+                                                                  .timer,
+                                                                  budget: value[index]
+                                                                  .budget,
+
 
                                                                   )));
                                                       /*currentLocationref =

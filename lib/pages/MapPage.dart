@@ -191,13 +191,13 @@ class _MapPageState extends State<MapPage> {
               setPolylines();
               // showPinsOnMap();
             },
-           /* onTap: (LatLng loc) {
+           onTap: (LatLng loc) {
               setState(() {
                 this.pinBottomInfoPosition = PIN_NOTVISIBLE_POSITION;
                 this.userInfoSelected = false;
               }
               );
-            },*/
+            },
             //tapping will hide the bottom info //grab custom pins //grab the polylines
           ),
         ),
@@ -323,7 +323,7 @@ class _MapPageState extends State<MapPage> {
     // every time the location changes, so the camera
     // follows the pin as it moves with an animation
     CameraPosition cPosition = CameraPosition(
-      zoom: CAMERA_ZOOM,
+      zoom: 16,
       tilt: CAMERA_TILT,
       bearing: CAMERA_BEARING,
       target: LatLng(currentLocationref.latitude, currentLocationref.longitude),
