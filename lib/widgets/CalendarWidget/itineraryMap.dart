@@ -57,7 +57,7 @@ class ItineraryMap extends StatefulWidget {
 
 class _ItineraryMapState extends State<ItineraryMap> {
   Future<DistanceAndDurationInfo> futuredistanceandduration;
-  String googleAPI = 'AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE';
+
   Completer<GoogleMapController> _controller = Completer();
 
   //control the state of bottom info position
@@ -103,6 +103,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
     });
 
     this.setInitialLocation();
+    futuredistanceandduration = getdistanceandduration();
 
     //instantiate the polyline reference to call API
     polylinePoints = new PolylinePoints();
@@ -149,7 +150,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
     currentLocationref = await locationref.getLocation();
 
     final requestURL =
-        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=$googleAPI";
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE";
 
     final response = await http.get(Uri.parse(requestURL));
 
@@ -165,25 +166,6 @@ class _ItineraryMapState extends State<ItineraryMap> {
   void showPinsOnMap() async {
     this.setSourceAndDestinationMarkerIcons(context);
     currentLocationref = await locationref.getLocation();
-
-    /*this.widget.markerlist.insert(
-        0,
-        Event(
-          "sourcemarker",
-          [
-            {"user"}
-          ],
-          "source",
-          "12:00",
-          "0.00",
-          "No Website Linked",
-          "none",
-          currentLocationref.latitude.toString(),
-          currentLocationref.longitude.toString(),
-          "none",
-          "user",
-        ));*/
-
     this.widget.markerlist.forEach((item) {
       setState(() {
         _markers.add(Marker(
@@ -209,7 +191,20 @@ class _ItineraryMapState extends State<ItineraryMap> {
                             ? toseemarker
                             : item.title == "sourcemarker"
                                 ? usermarker
-                                : toseemarker));
+                                : toseemarker,
+            onTap: () {
+              setState(() {
+            this.pinBottomInfoPosition = PIN_VISIBLE_POSITION;
+                this.widget.name = item.title;
+                this.widget.imgName = item.imgName;
+                this.widget.budget = item.budget;
+                this.widget.category = item.category;
+                this.widget.timer = item.timer;
+                LatLng destlocal =
+                    LatLng(double.parse(item.lat), double.parse(item.long));
+                this.widget.dest = destlocal;
+              });
+            }));
       });
     });
   }
@@ -262,6 +257,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
             onTap: (LatLng loc) {
               setState(() {
                 this.pinBottomInfoPosition = PIN_NOTVISIBLE_POSITION;
+
               });
             },
             //tapping will hide the bottom info //grab custom pins //grab the polylines
