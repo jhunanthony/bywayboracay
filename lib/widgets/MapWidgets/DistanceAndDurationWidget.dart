@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DistanceAndDurationWidget extends StatelessWidget {
@@ -47,9 +46,25 @@ class DistanceAndDurationWidget extends StatelessWidget {
                       fontSize: 13,
                     ),
                   ),
-         
+            /*Visibility(
+          //if distancevalue is less than 500 show walking distance
+          visible: distancevalue < 500,
+          child: Text(
+            ' • Walking Distance',
+            style: TextStyle(
+              color: Colors.blue,
+              fontSize: 13,
+            ),
+          ),
+        ),*/
           ]),
-       
+          /*Text(
+        '${distancevalue.toString()}',
+        style: TextStyle(
+          color: Colors.blue,
+          fontSize: 12,
+        ),
+      ),*/
           Row(children: [
             Icon(Icons.emoji_transportation_rounded,
                 size: 13, color: Colors.blue),
@@ -85,7 +100,7 @@ class DistanceAndDurationWidget extends StatelessWidget {
             //since 20.00 is minimum fare then return 20 pesos
             estimatedfare <= 20.00
                 ? Text(
-                    '25.00',
+                    '20.00',
                     style: TextStyle(
                         color: Colors.blue,
                         fontSize: 13,
@@ -93,7 +108,7 @@ class DistanceAndDurationWidget extends StatelessWidget {
                   )
                 : estimatedfare > 20.00 && estimatedfare <= 25.00
                     ? Text(
-                        '30.00',
+                        '25.00',
                         style: TextStyle(
                             color: Colors.blue,
                             fontSize: 13,
@@ -103,7 +118,7 @@ class DistanceAndDurationWidget extends StatelessWidget {
                         ?
                         //return 20.00 as minimum fare
                         Text(
-                            '35.00',
+                            '30.00',
                             style: TextStyle(
                                 color: Colors.blue,
                                 fontSize: 13,
@@ -111,7 +126,7 @@ class DistanceAndDurationWidget extends StatelessWidget {
                           )
                         : estimatedfare > 30.00 && estimatedfare <= 35.00
                             ? Text(
-                                '40.00',
+                                '35.00',
                                 style: TextStyle(
                                     color: Colors.blue,
                                     fontSize: 13,
@@ -119,7 +134,7 @@ class DistanceAndDurationWidget extends StatelessWidget {
                               )
                             : estimatedfare > 35.00 && estimatedfare <= 40.00
                                 ? Text(
-                                    '45.00',
+                                    '40.00',
                                     style: TextStyle(
                                         color: Colors.blue,
                                         fontSize: 13,
@@ -128,14 +143,14 @@ class DistanceAndDurationWidget extends StatelessWidget {
                                 : estimatedfare > 40.00 &&
                                         estimatedfare <= 45.00
                                     ? Text(
-                                        '50.00',
+                                        '45.00',
                                         style: TextStyle(
                                             color: Colors.blue,
                                             fontSize: 13,
                                             fontWeight: FontWeight.bold),
                                       )
                                     : Text(
-                                        estimatedfare.toStringAsFixed(2),
+                                        '50',
                                         style: TextStyle(
                                             color: Colors.blue,
                                             fontSize: 13,

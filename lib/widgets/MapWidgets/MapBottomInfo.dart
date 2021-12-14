@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'DistanceAndDurationWidget.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as https;
 
 // ignore: must_be_immutable
 //create the transit/tariff features here
@@ -28,11 +28,11 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
 
   Future<DistanceAndDurationInfo> futuredistanceandduration;
 
-
+  LatLng destinationLocation;
   // the user's initial location and current location
   // as it moves
   LocationData currentLocationref;
-  LocationData destinationLocationref;
+  //LocationData destinationLocationref;
 
   // wrapper around the location API
   Location locationref;
@@ -53,44 +53,35 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
       // so we're holding on to it
       currentLocationref = cLoc;
     });
-
-   
+    getcurrentLocation();
 
     futuredistanceandduration = getdistanceandduration();
   }
 
   void getcurrentLocation() async {
     currentLocationref = await locationref.getLocation();
+    destinationLocation = LatLng(this.items.itemlat, this.items.itemlong);
   }
 
 //get distance and duration using json parse
   Future<DistanceAndDurationInfo> getdistanceandduration() async {
-     currentLocationref = await locationref.getLocation();
-    
     CategorySelectionService catSelection =
         Provider.of<CategorySelectionService>(context, listen: false);
     this.items = catSelection.items;
-
-    
-
-
-        destinationLocationref = LocationData.fromMap(
-        {"latitude": this.items.itemlat, "longitude": this.items.itemlong});
-
-
     currentLocationref = await locationref.getLocation();
+    destinationLocation = LatLng(this.items.itemlat, this.items.itemlong);
 
     final requestURL =
-        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=$googleAPI";
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocation.latitude},${destinationLocation.longitude}&key=$googleAPI";
     //"https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${currentlocationlatlong.latitude},${currentlocationlatlong.longitude}&destinations=${destinationlatlong.latitude},${destinationlatlong.longitude}&travelmode=walking&dir_action=navigate&key=$googleAPI";
     //"https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&key=$googleAPI";
 
-    final response = await http.get(Uri.parse(requestURL));
+    final response = await https.get(Uri.parse(requestURL));
 
     if (response.statusCode == 200) {
       return DistanceAndDurationInfo.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception("Error Leoading request URL info.");
+      throw Exception("Error Loading request URL info.");
     }
   }
 
@@ -102,7 +93,7 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
 
     return Container(
         margin: EdgeInsets.all(20),
-        padding: EdgeInsets.only(left:15, right: 15, top: 10, bottom:10),
+        padding: EdgeInsets.all(15),
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(40),
@@ -146,7 +137,7 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
                           style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: 15,
                           ),
                         ),
                         Text(
@@ -154,28 +145,28 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
                           style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.normal,
-                            fontSize: 12,
-                          ),
-                        ),
-                        Text(
-                          this.items.itemopenTime,
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 12,
+                            fontSize: 15,
                           ),
                         ),
                       ]),
                 ),
                 //marker
-                Image.asset('assets/images/${this.items.itemcategoryName}.png',
-                    height: 40, width: 40),
+                Image.asset(
+                    'assets/images/' + this.items.itemcategoryName + '.png',
+                    height: 40,
+                    width: 40),
                 SizedBox(width: 15),
 
                 /*Icon(Icons.location_pin,
                     color: AppColors.accomodations, size: 50)*/
               ])),
-          SizedBox(height: 10),
+          SizedBox(
+            height: 5,
+          ),
+          Divider(
+            thickness: 1,
+            color: Colors.grey[400],
+          ),
           Padding(
             padding: const EdgeInsets.all(5),
             child: Row(
@@ -211,7 +202,7 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
                   ),
                   onPressed: () async {
                     String googleUrl =
-                        'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocationref.latitude},${destinationLocationref.longitude}&travelmode=walking&dir_action=navigate';
+                        'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&travelmode=walking&dir_action=navigate';
 
                     if (await canLaunch(googleUrl)) {
                       await launch(googleUrl);
@@ -223,6 +214,52 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
               ],
             ),
           )
+          /*Container(
+              child: Column(children: [
+            Row(children: [
+              SizedBox(width: 10),
+              Expanded(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                    
+                    Row(children: [
+                      //add drop down to personalize fare
+                      DropdownButton(
+                        value: farevalue,
+                        icon: Icon(Icons.keyboard_arrow_down),
+                        items: fareitems.map((String items) {
+                          return DropdownMenuItem(
+                              value: items, child: Text(items));
+                        }).toList(),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            farevalue = newValue;
+                          });
+                        },
+                      ),
+                      Text(
+                        ': Php 100.00',
+                      )
+                    ]),
+                  ])),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.blue[200], //background
+                      onPrimary: Colors.white,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 15), //foreground
+                      shape: CircleBorder()),
+                  child: Center(
+                    child: Icon(
+                      CupertinoIcons.car_fill,
+                      size: 25,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onPressed: () {}),
+            ])
+          ]))*/
         ]));
   }
 }

@@ -99,7 +99,7 @@ class _MapPageState extends State<MapPage> {
     this.setInitialLocation();
 
     //for api distance and duration
-    // futuredistanceandduration = getdistanceandduration();
+    //futuredistanceandduration = getdistanceandduration();
   }
 
   /// Disposes of the platform resources
@@ -191,12 +191,11 @@ class _MapPageState extends State<MapPage> {
               setPolylines();
               // showPinsOnMap();
             },
-           onTap: (LatLng loc) {
+            onTap: (LatLng loc) {
               setState(() {
                 this.pinBottomInfoPosition = PIN_NOTVISIBLE_POSITION;
                 this.userInfoSelected = false;
-              }
-              );
+              });
             },
             //tapping will hide the bottom info //grab custom pins //grab the polylines
           ),
@@ -208,7 +207,6 @@ class _MapPageState extends State<MapPage> {
             child: MapUserInformation(
               isSelected: this.userInfoSelected,
             )),
-        
         AnimatedPositioned(
             //animate the bottom Info
             duration: const Duration(milliseconds: 500),

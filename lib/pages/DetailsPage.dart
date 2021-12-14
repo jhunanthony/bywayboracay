@@ -612,7 +612,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             borderRadius: BorderRadius.circular(3),
                           ),
                           child: Text(
-                            'Min. ₱' +
+                            'from. ₱' +
                                 widget.items.itempriceMin.toStringAsFixed(2),
                             style: TextStyle(
                               fontSize: 14,

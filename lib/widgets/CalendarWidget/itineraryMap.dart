@@ -14,7 +14,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as https;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../CategoryWidgets/CategoryIcon.dart';
@@ -147,12 +147,10 @@ class _ItineraryMapState extends State<ItineraryMap> {
       "longitude": this.widget.dest.longitude,
     });
 
-    currentLocationref = await locationref.getLocation();
-
     final requestURL =
         "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE";
 
-    final response = await http.get(Uri.parse(requestURL));
+    final response = await https.get(Uri.parse(requestURL));
 
     if (response.statusCode == 200) {
       return DistanceAndDurationInfo.fromJson(jsonDecode(response.body));
@@ -194,7 +192,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
                                 : toseemarker,
             onTap: () {
               setState(() {
-            this.pinBottomInfoPosition = PIN_VISIBLE_POSITION;
+                this.pinBottomInfoPosition = PIN_VISIBLE_POSITION;
                 this.widget.name = item.title;
                 this.widget.imgName = item.imgName;
                 this.widget.budget = item.budget;
@@ -257,7 +255,6 @@ class _ItineraryMapState extends State<ItineraryMap> {
             onTap: (LatLng loc) {
               setState(() {
                 this.pinBottomInfoPosition = PIN_NOTVISIBLE_POSITION;
-
               });
             },
             //tapping will hide the bottom info //grab custom pins //grab the polylines
