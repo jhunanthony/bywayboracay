@@ -14,7 +14,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as https;
+import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../CategoryWidgets/CategoryIcon.dart';
@@ -150,7 +150,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
     final requestURL =
         "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE";
 
-    final response = await https.get(Uri.parse(requestURL));
+    final response = await http.get(Uri.parse(requestURL));
 
     if (response.statusCode == 200) {
       return DistanceAndDurationInfo.fromJson(jsonDecode(response.body));
@@ -358,7 +358,13 @@ class _ItineraryMapState extends State<ItineraryMap> {
                         /*Icon(Icons.location_pin,
                     color: AppColors.accomodations, size: 50)*/
                       ])),
-                  SizedBox(height: 10),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.grey[400],
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(5),
                     child: Row(
