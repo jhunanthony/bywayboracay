@@ -130,30 +130,30 @@ class LikeService extends ChangeNotifier {
           .then((DocumentSnapshot snapshot) {
         //extract data
 
-        if (snapshot.exists){
+        if (snapshot.exists) {
           Map<String, dynamic> likedItems =
-            snapshot.get(FieldPath(['LikedItems']));
+              snapshot.get(FieldPath(['LikedItems']));
 
-        catService.getCategories().forEach((Category cat) {
-          cat.items.forEach((Category itemref) {
-            //match the keys
-            //keys correspond with unique name
-            if (likedItems.keys.contains(itemref.imgName)) {
-              //keys correspond with unique image name
-              var amount = likedItems[itemref.imgName] as int;
-              (itemref as Items).amount = amount;
+          catService.getCategories().forEach((Category cat) {
+            cat.items.forEach((Category itemref) {
+              //match the keys
+              //keys correspond with unique name
+              if (likedItems.keys.contains(itemref.imgName)) {
+                //keys correspond with unique image name
+                var amount = likedItems[itemref.imgName] as int;
+                (itemref as Items).amount = amount;
 
-              _items.add(LikedItem(category: itemref));
+                _items.add(LikedItem(category: itemref));
 
-              //check if currently selected category
-              if (categorySelectionService.items != null &&
-                  categorySelectionService.items.name == itemref.name) {
-                categorySelectionService.items = itemref;
+                //check if currently selected category
+                if (categorySelectionService.items != null &&
+                    categorySelectionService.items.name == itemref.name) {
+                  categorySelectionService.items = itemref;
+                }
               }
-            }
+            });
           });
-        });
-        notifyListeners();
+          notifyListeners();
         }
       });
     }

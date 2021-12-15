@@ -51,6 +51,7 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
     // subscribe to changes in the user's location
     // by "listening" to the location's onLocationChanged event
     locationref.onLocationChanged.listen((LocationData cLoc) {
+       locationref.enableBackgroundMode(enable: true);
       // cLoc contains the lat and long of the
       // current user's position in real time,
       // so we're holding on to it
@@ -166,7 +167,13 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
                 /*Icon(Icons.location_pin,
                     color: AppColors.accomodations, size: 50)*/
               ])),
-          SizedBox(height: 10),
+            SizedBox(
+                    height: 5,
+                  ),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.grey[400],
+                  ),
           Padding(
             padding: const EdgeInsets.all(5),
             child: Row(

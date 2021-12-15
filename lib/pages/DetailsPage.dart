@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/models/LikedItemsModel.dart';
+import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/likeservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
@@ -97,6 +98,11 @@ class _DetailsPageState extends State<DetailsPage> {
     LikeService likeService = Provider.of<LikeService>(context, listen: false);
     RatingService ratingService =
         Provider.of<RatingService>(context, listen: false);
+    LoginService loginService =
+        Provider.of<LoginService>(context, listen: false);
+    UserLogInModel userModel = loginService.loggedInUserModel;
+
+    String uid = userModel != null ? userModel.uid : '';
 
     //canvas starts here
 
@@ -147,10 +153,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                       )),
                                     ),
                                   ],
-                                ))))
-
-                    
-                    ),
+                                ))))),
 
                 //add save button
 
@@ -160,8 +163,6 @@ class _DetailsPageState extends State<DetailsPage> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 5),
                       child: Column(children: [
-                       
-
                         SizedBox(
                           height: 10,
                         ),
@@ -201,11 +202,22 @@ class _DetailsPageState extends State<DetailsPage> {
                                   ),
                                 );
                               } else {
-                                renderedButton = Container(
-                                  padding: EdgeInsets.only(
-                                      top: 10, bottom: 15, left: 10, right: 10),
-                                  child: Icon(Icons.favorite_rounded,
-                                      color: Colors.pink, size: 25),
+                                renderedButton = ClipOval(
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: IconButton(
+                                        padding: EdgeInsets.all(0),
+                                        icon: Icon(Icons.favorite_rounded),
+                                        color: Colors.pink,
+                                        iconSize: 25,
+                                        splashColor: Colors.white,
+                                        onPressed: () {
+                                          likeService.remove(
+                                              context,
+                                              LikedItem(
+                                                  category: widget.items));
+                                        }),
+                                  ),
                                 );
                               }
 
@@ -767,6 +779,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     //column for text call and fb
                     Visibility(
                       visible: widget.items.itemcontactNumber != "none" ||
+                          widget.items.itemcontactNumber != "None" ||
                           widget.items.itemcontactNumber != null,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -809,6 +822,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       children: [
                         Visibility(
                           visible: widget.items.itememail != "none" ||
+                              widget.items.itememail != "None" ||
                               widget.items.itememail != null,
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -840,6 +854,7 @@ class _DetailsPageState extends State<DetailsPage> {
                         ),
                         Visibility(
                           visible: widget.items.itemwebsite != "none" ||
+                              widget.items.itemwebsite != "None" ||
                               widget.items.itemwebsite != null,
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(

@@ -1,12 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/models/UserLogInModel.dart';
-import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/utils.dart';
-import 'package:bywayborcay/widgets/MapWidgets/DistanceAndDurationWidget.dart';
-import 'package:bywayborcay/widgets/MapWidgets/MapBottomInfo.dart';
+import 'package:bywayborcay/widgets/MapWidgets/ItineraryDistanceAndDurationWidget.dart';
 import 'package:bywayborcay/widgets/MapWidgets/MapUpperInfo.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +53,7 @@ class ItineraryMap extends StatefulWidget {
 }
 
 class _ItineraryMapState extends State<ItineraryMap> {
-  Future<DistanceAndDurationInfo> futuredistanceandduration;
+  Future<ItineraryDestDurInfo> futuredistanceandduration;
 
   Completer<GoogleMapController> _controller = Completer();
 
@@ -139,7 +136,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
   }
 
   //get distance and duration using json parse
-  Future<DistanceAndDurationInfo> getdistanceandduration() async {
+  Future<ItineraryDestDurInfo> getdistanceandduration() async {
     currentLocationref = await locationref.getLocation();
 
     destinationLocationref = LocationData.fromMap({
@@ -153,7 +150,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
     final response = await http.get(Uri.parse(requestURL));
 
     if (response.statusCode == 200) {
-      return DistanceAndDurationInfo.fromJson(jsonDecode(response.body));
+      return ItineraryDestDurInfo.fromJson(jsonDecode(response.body));
     } else {
       throw Exception("Error Leoading request URL info.");
     }
@@ -173,12 +170,11 @@ class _ItineraryMapState extends State<ItineraryMap> {
               double.parse(item.long),
             ),
             infoWindow: InfoWindow(
-                title:
-                    " ${this.widget.markerlist.indexWhere((markerdata) => markerdata.title == item.title && markerdata.timer == item.timer) + 1}" +
-                        ' • ' +
-                        item.timer +
-                        ' • ' +
-                        item.title),
+                title: ' "' +
+                    "${this.widget.markerlist.indexWhere((markerdata) => markerdata.title == item.title && markerdata.timer == item.timer) + 1}" +
+                    '" ' +
+                    // ' • ' +
+                    item.title),
             icon: item.category == "ToStay"
                 ? tostaymarker
                 : item.category == "ToEat&Drink"
@@ -277,7 +273,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
             child: Container(
                 margin: EdgeInsets.all(20),
                 padding:
-                    EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                    EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 10),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(40),
@@ -370,11 +366,11 @@ class _ItineraryMapState extends State<ItineraryMap> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        FutureBuilder<DistanceAndDurationInfo>(
+                        FutureBuilder<ItineraryDestDurInfo>(
                             future: futuredistanceandduration,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                return DistanceAndDurationWidget(
+                                return ItineraryDistDur(
                                   distancevalue: snapshot.data.distancevalue,
                                   distance: snapshot.data.distance,
                                   duration: snapshot.data.duration,

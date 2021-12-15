@@ -378,6 +378,8 @@ class CalendarState extends State<CalendarPage> {
         });
   }
 
+  //add reminder
+
   static const _actionTitle = 'Add Event';
   void _showAction(BuildContext context) {
     showDialog<void>(
@@ -586,93 +588,96 @@ class CalendarState extends State<CalendarPage> {
                       height: 10,
                     ),
 
-                    TableCalendar(
-                      // instead of day number can be mentioned as well.
-                      weekendDays: [DateTime.sunday, 6],
-                      // default is Sunday but can be changed according to locale
-                      startingDayOfWeek: StartingDayOfWeek.sunday,
-                      // height between the day row and 1st date row, default is 16.0
-                      daysOfWeekHeight: 35.0,
-                      // height between the date rows, default is 52.0
-                      rowHeight: 40.0,
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10, left: 10),
+                      child: TableCalendar(
+                        // instead of day number can be mentioned as well.
+                        weekendDays: [DateTime.sunday, 6],
+                        // default is Sunday but can be changed according to locale
+                        startingDayOfWeek: StartingDayOfWeek.sunday,
+                        // height between the day row and 1st date row, default is 16.0
+                        daysOfWeekHeight: 35.0,
+                        // height between the date rows, default is 52.0
+                        rowHeight: 40.0,
 
-                      firstDay: kFirstDay,
-                      lastDay: kLastDay,
-                      daysOfWeekVisible: true,
-                      focusedDay: _focusedDay,
-                      selectedDayPredicate: (day) =>
-                          isSameDay(_selectedDay, day),
-                      calendarFormat: _calendarFormat,
+                        firstDay: kFirstDay,
+                        lastDay: kLastDay,
+                        daysOfWeekVisible: true,
+                        focusedDay: _focusedDay,
+                        selectedDayPredicate: (day) =>
+                            isSameDay(_selectedDay, day),
+                        calendarFormat: _calendarFormat,
 
-                      eventLoader: _getEventsForDay,
+                        eventLoader: _getEventsForDay,
 
-                      calendarStyle: CalendarStyle(
-                        outsideDaysVisible: true,
+                        calendarStyle: CalendarStyle(
+                          outsideDaysVisible: true,
 
-                        // Weekend dates color (Sat & Sun Column)
-                        weekendTextStyle: TextStyle(
-                          color: Colors.grey[400],
-                        ),
-                        // highlighted color for today
-                        todayDecoration: BoxDecoration(
-                          color: Colors.yellow[50],
-                          shape: BoxShape.circle,
-                          //borderRadius: BorderRadius.circular(10),
-                        ),
-                        todayTextStyle: TextStyle(color: Colors.grey[700]),
-                        // highlighted color for selected day
-                        selectedDecoration: BoxDecoration(
-                          color: Colors.blue[50],
-                          shape: BoxShape.circle,
-                        ),
-                        selectedTextStyle: TextStyle(color: Colors.blue),
-                        markerDecoration: BoxDecoration(
-                            color: Colors.blue, shape: BoxShape.circle),
-                        markerSize: 3.00,
-                        markersMaxCount: 8,
-                      ),
-                      headerStyle: HeaderStyle(
-                        formatButtonVisible: true,
-                        formatButtonShowsNext: false,
-                        titleTextStyle:
-                            TextStyle(color: Colors.blue, fontSize: 20.0),
-                        decoration: BoxDecoration(
-                            color: Colors.blue[50],
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10))),
-                        formatButtonTextStyle:
-                            TextStyle(color: Colors.white, fontSize: 12.0),
-                        formatButtonDecoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(5.0),
+                          // Weekend dates color (Sat & Sun Column)
+                          weekendTextStyle: TextStyle(
+                            color: Colors.grey[400],
                           ),
+                          // highlighted color for today
+                          todayDecoration: BoxDecoration(
+                            color: Colors.yellow[50],
+                            shape: BoxShape.circle,
+                            //borderRadius: BorderRadius.circular(10),
+                          ),
+                          todayTextStyle: TextStyle(color: Colors.grey[700]),
+                          // highlighted color for selected day
+                          selectedDecoration: BoxDecoration(
+                            color: Colors.blue[50],
+                            shape: BoxShape.circle,
+                          ),
+                          selectedTextStyle: TextStyle(color: Colors.blue),
+                          markerDecoration: BoxDecoration(
+                              color: Colors.blue, shape: BoxShape.circle),
+                          markerSize: 3.00,
+                          markersMaxCount: 8,
                         ),
-                        leftChevronIcon: Icon(
-                          Icons.chevron_left,
-                          color: Colors.grey[700],
-                          size: 28,
+                        headerStyle: HeaderStyle(
+                          formatButtonVisible: true,
+                          formatButtonShowsNext: false,
+                          titleTextStyle: TextStyle(
+                              color: Colors.grey[800], fontSize: 20.0),
+                          decoration: BoxDecoration(
+                              color: Colors.blue[50],
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10))),
+                          formatButtonTextStyle:
+                              TextStyle(color: Colors.white, fontSize: 12.0),
+                          formatButtonDecoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5.0),
+                            ),
+                          ),
+                          leftChevronIcon: Icon(
+                            Icons.chevron_left,
+                            color: Colors.grey[700],
+                            size: 28,
+                          ),
+                          leftChevronPadding: EdgeInsets.all(5),
+                          rightChevronIcon: Icon(
+                            Icons.chevron_right,
+                            color: Colors.grey[700],
+                            size: 28,
+                          ),
+                          rightChevronPadding: EdgeInsets.all(5),
                         ),
-                        leftChevronPadding: EdgeInsets.all(5),
-                        rightChevronIcon: Icon(
-                          Icons.chevron_right,
-                          color: Colors.grey[700],
-                          size: 28,
-                        ),
-                        rightChevronPadding: EdgeInsets.all(5),
+                        onDaySelected: _onDaySelected,
+                        onFormatChanged: (format) {
+                          if (_calendarFormat != format) {
+                            setState(() {
+                              _calendarFormat = format;
+                            });
+                          }
+                        },
+                        onPageChanged: (focusedDay) {
+                          _focusedDay = focusedDay;
+                        },
                       ),
-                      onDaySelected: _onDaySelected,
-                      onFormatChanged: (format) {
-                        if (_calendarFormat != format) {
-                          setState(() {
-                            _calendarFormat = format;
-                          });
-                        }
-                      },
-                      onPageChanged: (focusedDay) {
-                        _focusedDay = focusedDay;
-                      },
                     ),
                     const SizedBox(height: 5),
                     Padding(
@@ -746,16 +751,18 @@ class CalendarState extends State<CalendarPage> {
                         valueListenable: _selectedEvents,
                         builder: (context, value, _) {
                           double maintotal = 0.00;
-                          List<Event> markerlist = [];
 
-                          
+                          List<Event> markerlist = [];
 
                           return ListView.builder(
                             itemCount: value.length,
                             itemBuilder: (context, index) {
-
-
-
+                              //sort value
+                              value
+                                ..sort((item1, item2) => DateFormat("h:mm a")
+                                    .parse(item1.timer)
+                                    .compareTo(DateFormat("h:mm a")
+                                        .parse(item2.timer)));
 
                               if (value.length > 0) {
                                 value.forEach((Event value) {
@@ -794,7 +801,7 @@ class CalendarState extends State<CalendarPage> {
                                       "Budget for today ₱${maintotal.toStringAsFixed(2)}",
                                       style: TextStyle(
                                           fontSize: 14,
-                                          color: Colors.blue,
+                                          color: Colors.grey[800],
                                           fontWeight: FontWeight.w300),
                                     ),
                                   ),
@@ -1113,25 +1120,24 @@ class CalendarState extends State<CalendarPage> {
                                                       Navigator.push(
                                                           context,
                                                           MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  ItineraryMap(
-                                                                    markerlist:
-                                                                        markerlist,
-                                                                        dest: dest,
-                                                                      category:  value[index]
-                                                                  .category,
-                                                                  imgName: value[index]
-                                                                  .imgName,
-                                                                  name: value[index]
-                                                                  .title,
-                                                                  timer: value[index]
-                                                                  .timer,
-                                                                  budget: value[index]
-                                                                  .budget,
-
-
-                                                                  )));
-                                                      
+                                                              builder:
+                                                                  (context) =>
+                                                                      ItineraryMap(
+                                                                        markerlist:
+                                                                            markerlist,
+                                                                        dest:
+                                                                            dest,
+                                                                        category:
+                                                                            value[index].category,
+                                                                        imgName:
+                                                                            value[index].imgName,
+                                                                        name: value[index]
+                                                                            .title,
+                                                                        timer: value[index]
+                                                                            .timer,
+                                                                        budget:
+                                                                            value[index].budget,
+                                                                      )));
                                                     },
                                                     child: Icon(
                                                         Icons
