@@ -72,7 +72,7 @@ class _LikedPageState extends State<LikedPage> {
             width: 30,
           ),
           Text(
-            " Likes",
+            " Saves",
             style: TextStyle(
                 fontSize: 14,
                 color: Colors.blue[100],
@@ -95,7 +95,7 @@ class _LikedPageState extends State<LikedPage> {
                     Visibility(
                   visible: like.items.length > 0,
                   child: Text(
-                    '$userName you have ${like.items.length} liked item!',
+                    '$userName you have ${like.items.length} Saved item!',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.blue,
@@ -217,7 +217,7 @@ class _LikedPageState extends State<LikedPage> {
                                     },
                                   ),
                                   SizedBox(
-                                    height: 5,
+                                    height: 10,
                                   ),
                                   GestureDetector(
                                     child: Icon(
@@ -227,10 +227,8 @@ class _LikedPageState extends State<LikedPage> {
                                     ),
                                     onTap: () => _showAction(item),
                                   ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  GestureDetector(
+
+                                  /*GestureDetector(
                                       onTap: () async {
                                         BitmapDescriptor destinationIcon =
                                             await BitmapDescriptor
@@ -294,7 +292,7 @@ class _LikedPageState extends State<LikedPage> {
                                         Icons.map,
                                         size: 25,
                                         color: Colors.blue,
-                                      )),
+                                      )),*/
                                 ],
                               )
                             ],

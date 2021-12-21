@@ -15,7 +15,6 @@ import 'package:provider/provider.dart';
 //construct a widget that passes user location as source location
 //const LatLng DEST_LOCATION = LatLng(11.98189918417696, 121.9151854334716);
 //default location is central boracay
-const LatLng DEFAULT_LOCATION = LatLng(11.96151239329021, 121.92470019282162);
 
 const double CAMERA_ZOOM = 20;
 const double CAMERA_TILT = 0;
@@ -84,7 +83,7 @@ class _MapPageState extends State<MapPage> {
     // subscribe to changes in the user's location
     // by "listening" to the location's onLocationChanged event
     locationref.onLocationChanged.listen((LocationData cLoc) {
-      locationref.enableBackgroundMode(enable: true);
+      //locationref.enableBackgroundMode(enable: true);
       // cLoc contains the lat and long of the
       // current user's position in real time,
       // so we're holding on to it
@@ -93,7 +92,7 @@ class _MapPageState extends State<MapPage> {
     });
 
     //instantiate the polyline reference to call API
-    polylinePoints = new PolylinePoints();
+    polylinePoints = PolylinePoints();
 
     //set up initial Locations & invoke the method
     this.setInitialLocation();
@@ -101,6 +100,8 @@ class _MapPageState extends State<MapPage> {
     //for api distance and duration
     //futuredistanceandduration = getdistanceandduration();
   }
+
+
 
   /// Disposes of the platform resources
 
@@ -189,7 +190,7 @@ class _MapPageState extends State<MapPage> {
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
               setPolylines();
-              // showPinsOnMap();
+              //showPinsOnMap();
             },
             onTap: (LatLng loc) {
               setState(() {
@@ -264,6 +265,7 @@ class _MapPageState extends State<MapPage> {
 
   //create two marker reference and surround inside set state to trigger rebuild
   void showPinsOnMap() async {
+
     //get user information from loginservice to display name on user pin
     LoginService loginService =
         Provider.of<LoginService>(context, listen: false);
@@ -316,7 +318,7 @@ class _MapPageState extends State<MapPage> {
     //grab the
     UserLogInModel userModel = loginService.loggedInUserModel;
     String userName = userModel != null ? userModel.displayName : 'User';
-
+     
     // create a new CameraPosition instance
     // every time the location changes, so the camera
     // follows the pin as it moves with an animation

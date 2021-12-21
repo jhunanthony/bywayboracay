@@ -20,15 +20,17 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
   bool isSpeaking7 = false;
   bool isSpeaking8 = false;
   bool isSpeaking9 = false;
-  final String _controller1 = 'Hay';
-  final String _controller2 = 'huo';
-  final String _controller3 = 'indi';
+  bool isSpeaking10 = false;
+  final String _controller1 = 'Hai';
+  final String _controller2 = 'Ho-o';
+  final String _controller3 = 'indiii';
   final String _controller4 = 'kun mahimo';
   final String _controller5 = 'pasensyaha ako';
   final String _controller6 = 'kamusta ka?';
-  final String _controller7 = 'saeamat';
-  final String _controller8 = 'mayad nga agahon';
+  final String _controller7 = 'saeeamat';
+  final String _controller8 = 'mayad - nga agahooon';
   final String _controller9 = 'tig pila?';
+  final String _controller10 = 'An-oo i-mong pa-nga-lan?';
 
   final _flutterTts1 = FlutterTts();
   final _flutterTts2 = FlutterTts();
@@ -39,6 +41,7 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
   final _flutterTts7 = FlutterTts();
   final _flutterTts8 = FlutterTts();
   final _flutterTts9 = FlutterTts();
+  final _flutterTts10 = FlutterTts();
 
   void initializeTts() {
     _flutterTts1.setStartHandler(() {
@@ -348,6 +351,37 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
     });
   }
 
+  void speak10() async {
+    if (_controller10.toString().isNotEmpty) {
+      await _flutterTts10.speak(_controller10.toString());
+    }
+  }
+
+  void stop10() async {
+    await _flutterTts10.stop();
+    setState(() {
+      isSpeaking10 = false;
+    });
+  }
+
+  void initializeTts10() {
+    _flutterTts10.setStartHandler(() {
+      setState(() {
+        isSpeaking10 = true;
+      });
+    });
+    _flutterTts10.setCompletionHandler(() {
+      setState(() {
+        isSpeaking10 = false;
+      });
+    });
+    _flutterTts10.setErrorHandler((message) {
+      setState(() {
+        isSpeaking10 = false;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -378,7 +412,7 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.black)),
-                  Text('LOCAL',
+                  Text('AKEANON',
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -621,8 +655,8 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text('Good Morning', style: TextStyle(fontSize: 15)),
-                  Text('Mayad nga agahan', style: TextStyle(fontSize: 15)),
+                  Text('Good Morning', style: TextStyle(fontSize: 12)),
+                  Text('Mayad nga agahan', style: TextStyle(fontSize: 12)),
                   ElevatedButton(
                     onPressed: () {
                       isSpeaking8 ? stop8() : speak8();
@@ -674,6 +708,31 @@ class _CommonPhrasePageState extends State<CommonPhrasePage> {
               Divider(
                 color: Colors.grey[400],
                 thickness: 2,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text("What's your name?", style: TextStyle(fontSize: 12)),
+                  Text('Ano imong pangaean?', style: TextStyle(fontSize: 12)),
+                  ElevatedButton(
+                    onPressed: () {
+                      isSpeaking10 ? stop10() : speak10();
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.volume_up_rounded),
+                        Text(isSpeaking10 ? "Stop" : "")
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red, //background
+                      onPrimary: Colors.white,
+                      //foreground
+                      shape: CircleBorder(),
+                    ),
+                  )
+                ],
               ),
               ///////////2ND COLUMN ////////////
             ],

@@ -91,7 +91,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
     // subscribe to changes in the user's location
     // by "listening" to the location's onLocationChanged event
     locationref.onLocationChanged.listen((LocationData cLoc) {
-      locationref.enableBackgroundMode(enable: true);
+      //locationref.enableBackgroundMode(enable: true);
       // cLoc contains the lat and long of the
       // current user's position in real time,
       // so we're holding on to it
@@ -194,9 +194,9 @@ class _ItineraryMapState extends State<ItineraryMap> {
                 this.widget.budget = item.budget;
                 this.widget.category = item.category;
                 this.widget.timer = item.timer;
-                LatLng destlocal =
+                /*LatLng destlocal =
                     LatLng(double.parse(item.lat), double.parse(item.long));
-                this.widget.dest = destlocal;
+                this.widget.dest = destlocal;*/
               });
             }));
       });

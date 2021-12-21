@@ -190,7 +190,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                     color: Colors.transparent,
                                     child: IconButton(
                                       padding: EdgeInsets.all(0),
-                                      icon: Icon(Icons.favorite_rounded),
+                                      icon: Icon(Icons.bookmark_add_rounded),
                                       color: Colors.white,
                                       iconSize: 25,
                                       splashColor: Colors.pink[300],
@@ -207,15 +207,15 @@ class _DetailsPageState extends State<DetailsPage> {
                                     color: Colors.transparent,
                                     child: IconButton(
                                         padding: EdgeInsets.all(0),
-                                        icon: Icon(Icons.favorite_rounded),
-                                        color: Colors.pink,
+                                        icon: Icon(Icons.bookmark_added_rounded),
+                                        color: Colors.blue[200],
                                         iconSize: 25,
                                         splashColor: Colors.white,
                                         onPressed: () {
-                                          likeService.remove(
+                                          /*likeService.remove(
                                               context,
                                               LikedItem(
-                                                  category: widget.items));
+                                                  category: widget.items));*/
                                         }),
                                   ),
                                 );
@@ -241,7 +241,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
                               if (!like.isLiked(widget.items)) {
                                 likedtext = Text(
-                                  'Like',
+                                  'Save',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Colors.white,
@@ -249,7 +249,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 );
                               } else {
                                 likedtext = Text(
-                                  'Liked',
+                                  'Saved',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Colors.white,
