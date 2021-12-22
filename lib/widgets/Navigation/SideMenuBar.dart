@@ -238,10 +238,10 @@ class SideMenuBar extends StatelessWidget {
                           ),
                         ),
                         onPressed: () async {
-                          Navigator.push(
+                          /*Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => LikedPage()));
+                                  builder: (context) => LikedPage()));*/
                         },
                         child: Container(
                           padding: EdgeInsets.only(
@@ -275,10 +275,10 @@ class SideMenuBar extends StatelessWidget {
                           ),
                         ),
                         onPressed: () async {
-                          Navigator.push(
+                        /*  Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => LikedPage()));
+                                  builder: (context) => LikedPage()));*/
                         },
                         child: Container(
                           padding: EdgeInsets.only(

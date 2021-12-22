@@ -37,7 +37,9 @@ class ItineraryMap extends StatefulWidget {
       this.imgName,
       this.name,
       this.timer,
-      this.budget})
+      this.budget,
+      this.address,
+      })
       : super(key: key);
 
   List<Event> markerlist;
@@ -47,6 +49,7 @@ class ItineraryMap extends StatefulWidget {
   String name;
   String timer;
   String budget;
+   String address;
 
   @override
   _ItineraryMapState createState() => _ItineraryMapState();
@@ -189,7 +192,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
             onTap: () {
               setState(() {
                 this.pinBottomInfoPosition = PIN_VISIBLE_POSITION;
-                this.widget.name = item.title;
+                this.widget.name = item.itemname;
                 this.widget.imgName = item.imgName;
                 this.widget.budget = item.budget;
                 this.widget.category = item.category;
@@ -329,20 +332,34 @@ class _ItineraryMapState extends State<ItineraryMap> {
                                   ),
                                 ),
                                 Text(
-                                  this.widget.timer,
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                Text(
-                                  "PHP ${this.widget.budget}",
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 12,
-                                  ),
+                                      this.widget.address,
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                
+                                Row(
+                                  children: [
+                                    Text(
+                                      this.widget.timer,
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    SizedBox(width: 10,),
+                                    Text(
+                                      "PHP ${this.widget.budget}",
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ]),
                         ),

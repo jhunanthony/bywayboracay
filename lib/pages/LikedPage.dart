@@ -505,6 +505,8 @@ class _LikedPageState extends State<LikedPage> {
   String imgName;
   String lat;
   String long;
+   String address;
+    String itemname;
   String category;
   DateTime _selectedDay = DateTime.now();
 
@@ -570,8 +572,7 @@ class _LikedPageState extends State<LikedPage> {
                       hintText: "Enter Time"),
                 ),
                 SizedBox(height: 7),
-                IgnorePointer(
-                  child: TextField(
+                TextField(
                     controller: event..text = "${itemslistinfo.name}",
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecoration(
@@ -590,7 +591,7 @@ class _LikedPageState extends State<LikedPage> {
                       ),
                     ),
                   ),
-                ),
+                
 
                 SizedBox(height: 7),
                 TextField(
@@ -680,6 +681,8 @@ class _LikedPageState extends State<LikedPage> {
                 imgName = itemslistinfo.imgName;
                 lat = itemslistinfo.itemlat.toString();
                 long = itemslistinfo.itemlong.toString();
+                address = itemslistinfo.itemaddress.toString();
+                itemname = itemslistinfo.name.toString();
                 category = itemslistinfo.itemcategoryName;
                 if (timer.text.isEmpty ||
                     !(time_12H.hasMatch(timer.text) ||
@@ -750,6 +753,8 @@ class _LikedPageState extends State<LikedPage> {
           "imgName": imgName,
           "lat": lat,
           "long": long,
+          "address" : address,
+          "itemname":itemname,
           "category": category,
           "CreatedBy": emails[0],
           "users": emails

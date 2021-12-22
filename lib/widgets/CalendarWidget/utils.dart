@@ -17,9 +17,11 @@ class Event {
   final String imgName;
   final String lat;
   final String long;
+    final String address;
+      final String itemname;
   final String category;
   final String creator;
-  const Event(this.title, this.users, this.desc, this.timer, this.budget, this.website,this.imgName, this.lat, this.long, this.category, this.creator,);
+  const Event(this.title, this.users, this.desc, this.timer, this.budget, this.website,this.imgName, this.lat, this.long, this.address, this.itemname, this.category, this.creator,);
 
   @override
   String toString() => title;

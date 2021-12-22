@@ -13,10 +13,10 @@ import 'package:bywayborcay/widgets/WeatherWidgets/weather_forecast.dart';
 import 'package:bywayborcay/widgets/WeatherWidgets/weather_mainwidget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:intl/intl.dart';
@@ -25,8 +25,10 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
+import 'package:flutter_dash/flutter_dash.dart';
+
+import '../CategoryWidgets/CategoryIcon.dart';
 import 'auth.dart';
 import 'datepicker.dart';
 
@@ -54,6 +56,8 @@ class CalendarState extends State<CalendarPage> {
   String imgName;
   String lat;
   String long;
+  String address;
+  String itemname;
   String category;
 
   LocationData currentLocationref;
@@ -106,6 +110,8 @@ class CalendarState extends State<CalendarPage> {
                 temp[index]["imgName"],
                 temp[index]["lat"],
                 temp[index]["long"],
+                temp[index]["address"],
+                temp[index]["itemname"],
                 temp[index]["category"],
                 temp[index]["CreatedBy"]))
       });
@@ -236,6 +242,8 @@ class CalendarState extends State<CalendarPage> {
           "imgName": imgName,
           "lat": lat,
           "long": long,
+          "address": address,
+          "itemname": itemname,
           "category": category,
           "CreatedBy": emails[0],
           "users": emails
@@ -326,6 +334,8 @@ class CalendarState extends State<CalendarPage> {
                     "imgName": e.imgName,
                     "lat": e.lat,
                     "long": e.long,
+                    "address": e.address,
+                    "itemname": e.itemname,
                     "category": e.category,
                     "users": e.users
                   };
@@ -481,6 +491,9 @@ class CalendarState extends State<CalendarPage> {
                 lat = "0.00";
                 long = "0.00";
                 category = "none";
+                address = "none";
+                itemname = "none";
+
                 if (timer.text.isEmpty ||
                     !(time_12H.hasMatch(timer.text) ||
                         time_24H.hasMatch(timer.text))) {
@@ -785,6 +798,8 @@ class CalendarState extends State<CalendarPage> {
                                       value.imgName,
                                       value.lat,
                                       value.long,
+                                      value.address,
+                                      value.itemname,
                                       value.category,
                                       "${Auth().getCurrentUser().displayName}",
                                     ));
@@ -795,12 +810,15 @@ class CalendarState extends State<CalendarPage> {
                               return Column(children: [
                                 Visibility(
                                   visible: index == 0,
-                                  child: Text(
-                                    "Budget for today ₱${maintotal.toStringAsFixed(2)}",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey[800],
-                                        fontWeight: FontWeight.w300),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: Text(
+                                      "Budget for today ₱${maintotal.toStringAsFixed(2)}",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[800],
+                                          fontWeight: FontWeight.w300),
+                                    ),
                                   ),
                                 ),
                                 Row(
@@ -808,34 +826,13 @@ class CalendarState extends State<CalendarPage> {
                                     SizedBox(width: 10),
                                     Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Container(
-                                          padding: EdgeInsets.all(3),
-                                          decoration: BoxDecoration(
-                                            color: value[index].category ==
-                                                    "ToStay"
-                                                ? Colors.purple[400]
-                                                : value[index].category ==
-                                                        "ToEat&Drink"
-                                                    ? Colors.red[400]
-                                                    : value[index].category ==
-                                                            "ToSee"
-                                                        ? Colors.blue[400]
-                                                        : value[index]
-                                                                    .category ==
-                                                                "ToDo"
-                                                            ? Colors.green[400]
-                                                            : Colors.grey[700],
-                                            borderRadius:
-                                                BorderRadius.circular(3),
-                                          ),
-                                          child: Text(
-                                            "${value[index].timer}",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14),
-                                          ),
+                                        Text(
+                                          "${value[index].timer}",
+                                          style: TextStyle(
+                                              color: Colors.grey[700],
+                                              fontSize: 14),
                                         ),
                                         SizedBox(
                                           height: 10,
@@ -921,167 +918,83 @@ class CalendarState extends State<CalendarPage> {
                                             )),
                                       ],
                                     ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Column(children: [
+                                      Visibility(
+                                        replacement: SizedBox(
+                                          height: 25,
+                                          width: 25,
+                                        ),
+                                        visible: value[index].lat != "0.00" &&
+                                            value[index].long != "0.00",
+                                        child: CategoryIcon(
+                                          iconName: value[index].category,
+                                          color: value[index].category ==
+                                                  "ToStay"
+                                              ? Colors.purple[400]
+                                              : value[index].category ==
+                                                      "ToEat&Drink"
+                                                  ? Colors.red[400]
+                                                  : value[index].category ==
+                                                          "ToSee"
+                                                      ? Colors.blue[400]
+                                                      : value[index].category ==
+                                                              "ToDo"
+                                                          ? Colors.green[400]
+                                                          : Colors.grey[700],
+                                          size: 25,
+                                        ),
+                                      ),
+                                      Dash(
+                                          direction: Axis.vertical,
+                                          length: 90,
+                                          dashLength: 15,
+                                          dashColor: Colors.grey),
+                                    ]),
+                                    SizedBox(width: 5),
                                     Expanded(
                                       child: Container(
-                                        margin: const EdgeInsets.symmetric(
-                                          horizontal: 12.0,
-                                          vertical: 4.0,
-                                        ),
+                                        margin: const EdgeInsets.only(
+                                            right: 10,
+                                            top: 10,
+                                            bottom: 10,
+                                            left: 10),
                                         decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: Colors.grey,
-                                                blurRadius: 3,
-                                                offset: Offset(2, 2)),
-                                          ],
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                              value[index].imgName,
-                                            ),
-                                            fit: BoxFit.fitWidth,
-                                          ),
-
+                                          color: value[index].category ==
+                                                  "ToStay"
+                                              ? Colors.purple[100]
+                                              : value[index].category ==
+                                                      "ToEat&Drink"
+                                                  ? Colors.red[100]
+                                                  : value[index].category ==
+                                                          "ToSee"
+                                                      ? Colors.blue[100]
+                                                      : value[index].category ==
+                                                              "ToDo"
+                                                          ? Colors.green[100]
+                                                          : Colors.grey[300],
                                           /*color: Colors.yellow[50],*/
                                           borderRadius:
                                               BorderRadius.circular(12.0),
                                         ),
-                                        child: Stack(
-                                          children: [
-                                            Positioned.fill(
-                                              child: Container(
-                                                  decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(12.0),
-                                                gradient: LinearGradient(
-                                                  begin: Alignment.centerLeft,
-                                                  end: Alignment.center,
-                                                  colors: <Color>[
-                                                    //Colors.transparent,
-                                                    Colors.black
-                                                        .withOpacity(0.1),
-                                                    Colors.black
-                                                        .withOpacity(0.5),
-                                                    Colors.black
-                                                        .withOpacity(0.7),
-                                                  ],
-                                                ),
-                                              )),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10,
-                                                  bottom: 10,
-                                                  left: 15,
-                                                  right: 15),
-                                              child: Row(children: [
-                                                /*Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    GestureDetector(
-                                                        //notification
-                                                        onTap: () async {
-                                                          DateTime dateTime =
-                                                              DateFormat(
-                                                                      "h:mm a")
-                                                                  .parse(value[
-                                                                          index]
-                                                                      .timer);
-                                                          TimeOfDay timeOfDay =
-                                                              TimeOfDay
-                                                                  .fromDateTime(
-                                                                      dateTime);
-
-                                                          await AwesomeNotifications()
-                                                              .createNotification(
-                                                                  content:
-                                                                      NotificationContent(
-                                                                    id: createUniqueID(
-                                                                        AwesomeNotifications
-                                                                            .maxID),
-                                                                    channelKey:
-                                                                        'scheduled_channel',
-                                                                    title:
-                                                                        '${Emojis.geographic_beach_with_umbrella} You have a scheduled event today!!!',
-                                                                    body:
-                                                                        '${value[index].title} • ${DateFormat('yyyy-MM-dd').format(_selectedDay)} • ${value[index].timer}',
-                                                                    bigPicture:
-                                                                        'asset://assets/images/Reminder.png',
-                                                                    notificationLayout:
-                                                                        NotificationLayout
-                                                                            .BigPicture,
-                                                                  ),
-                                                                  actionButtons: [
-                                                                    NotificationActionButton(
-                                                                      key:
-                                                                          'MARK_DONE',
-                                                                      label:
-                                                                          'Mark Done',
-                                                                    )
-                                                                  ],
-                                                                  schedule:
-                                                                      NotificationCalendar(
-                                                                    weekday:
-                                                                        _selectedDay
-                                                                            .weekday,
-                                                                    day: _selectedDay
-                                                                        .day,
-                                                                    month: _selectedDay
-                                                                        .month,
-                                                                    year: _selectedDay
-                                                                        .year,
-                                                                    hour: timeOfDay
-                                                                        .hour,
-                                                                    minute: timeOfDay
-                                                                        .minute,
-                                                                    second: 0,
-                                                                    millisecond:
-                                                                        0,
-                                                                  ));
-                                                          //initiate notification
-                                                          AwesomeNotifications()
-                                                              .createdStream
-                                                              .listen(
-                                                                  (notification) {
-                                                            ScaffoldMessenger
-                                                                    .of(context)
-                                                                .showSnackBar(
-                                                              SnackBar(
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .white,
-                                                                content: Text(
-                                                                    'Notification Created for ${value[index].title}',
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .blue)),
-                                                              ),
-                                                            );
-                                                          });
-                                                          //for badge dot if have notification
-                                                          AwesomeNotifications()
-                                                              .actionStream
-                                                              .listen(
-                                                                  (notification) {});
-                                                        },
-                                                        child: InkWell(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(30),
-                                                          child: Icon(
-                                                            Icons
-                                                                .notifications_rounded,
-                                                            color: Colors.white,
-                                                          ),
-                                                        )),
-                                                    SizedBox(
-                                                      height: 2,
-                                                    ),
-                                                    Container(
-                                                      padding:
-                                                          EdgeInsets.all(3),
-                                                      decoration: BoxDecoration(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 10,
+                                              bottom: 10,
+                                              left: 15,
+                                              right: 15),
+                                          child: Row(children: [
+                                            //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    '${value[index].title}',
+                                                    style: TextStyle(
                                                         color: value[index]
                                                                     .category ==
                                                                 "ToStay"
@@ -1100,197 +1013,298 @@ class CalendarState extends State<CalendarPage> {
                                                                             "ToDo"
                                                                         ? Colors.green[
                                                                             400]
-                                                                        : Colors
-                                                                            .blue,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(3),
-                                                      ),
-                                                      child: Text(
-                                                        "${value[index].timer}",
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 14),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),*/
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
-
-                                                //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
-                                                Expanded(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        '${value[index].title}',
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 20),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 5,
-                                                      ),
-                                                      Text(
-                                                        '${value[index].desc}',
-                                                        maxLines: 4,
-                                                        style: TextStyle(
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .fade,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 2,
-                                                      ),
-                                                      Text(
-                                                        "₱${value[index].budget}",
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 14),
-                                                      ),
-                                                    ],
+                                                                        : Colors.grey[
+                                                                            700],
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 18),
                                                   ),
-                                                ),
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
-
-                                                Column(
-                                                  // space between two icons
-
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        if (value[index]
-                                                                .creator ==
-                                                            emails[0]) {
-                                                          _tapEvents(
-                                                              value[index], 0);
-                                                        } else {
-                                                          showSimpleNotification(
-                                                            Text(
-                                                                "You can't delete event since you aren't the owner of it"),
-                                                            background:
-                                                                Colors.white,
-                                                            position:
-                                                                NotificationPosition
-                                                                    .bottom,
-                                                          );
-                                                        }
-                                                      },
-                                                      child: Icon(
-                                                          Icons.highlight_off,
-                                                          color:
-                                                              Colors.red[300]),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-
-                                                    Visibility(
-                                                      visible: value[index]
-                                                              .website !=
-                                                          "No Website Linked",
-                                                      child: GestureDetector(
-                                                        onTap: () async {
-                                                          if (await canLaunch(
-                                                              value[index]
-                                                                  .website)) {
-                                                            await launch(
-                                                                value[index]
-                                                                    .website);
-                                                          } else {
-                                                            throw SnackBar(
-                                                                content: Text(
-                                                                    'Could not launch ${value[index].website}'));
-                                                          }
-                                                        },
-                                                        child: Icon(
-                                                            value[index]
-                                                                    .website
-                                                                    .contains(
-                                                                        'www.google.com/maps/search')
-                                                                ? Icons
-                                                                    .location_on_rounded
-                                                                : CupertinoIcons
-                                                                    .globe,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                    ), // icon-1
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-
-                                                    //show map items
-
-                                                    Visibility(
-                                                      visible: value[index]
-                                                                  .lat !=
-                                                              "0.00" &&
-                                                          value[index].long !=
-                                                              "0.00",
-                                                      child: GestureDetector(
-                                                        onTap: () async {
-                                                          LatLng dest = LatLng(
-                                                              double.parse(
-                                                                  value[index]
-                                                                      .lat),
-                                                              double.parse(
-                                                                  value[index]
-                                                                      .long));
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          ItineraryMap(
-                                                                            markerlist:
-                                                                                markerlist,
-                                                                            dest:
-                                                                                dest,
-                                                                            category:
-                                                                                value[index].category,
-                                                                            imgName:
-                                                                                value[index].imgName,
-                                                                            name:
-                                                                                value[index].title,
-                                                                            timer:
-                                                                                value[index].timer,
-                                                                            budget:
-                                                                                value[index].budget,
-                                                                          )));
-                                                        },
-                                                        child: Icon(
-                                                            Icons
-                                                                .location_on_rounded,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                    ),
-
-                                                    //remove item from list
-                                                  ],
-                                                ),
-                                              ]),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(
+                                                    '${value[index].desc}',
+                                                    maxLines: 4,
+                                                    style: TextStyle(
+                                                        overflow:
+                                                            TextOverflow.fade,
+                                                        color: Colors.grey[700],
+                                                        fontSize: 14),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 2,
+                                                  ),
+                                                  Text(
+                                                    "₱${value[index].budget}",
+                                                    style: TextStyle(
+                                                        color: Colors.grey[700],
+                                                        fontSize: 14),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ],
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+
+                                            Column(
+                                              // space between two icons
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    if (value[index].creator ==
+                                                        emails[0]) {
+                                                      _tapEvents(
+                                                          value[index], 0);
+                                                    } else {
+                                                      showSimpleNotification(
+                                                        Text(
+                                                            "You can't delete event since you aren't the owner of it"),
+                                                        background:
+                                                            Colors.white,
+                                                        position:
+                                                            NotificationPosition
+                                                                .bottom,
+                                                      );
+                                                    }
+                                                  },
+                                                  child: Icon(
+                                                      Icons.highlight_off,
+                                                      color: Colors.red[300]),
+                                                ),
+                                              ],
+                                            ),
+                                          ]),
                                         ),
                                       ),
                                     ),
                                   ],
                                 ),
+                                Row(
+                                  children: [
+                                    Visibility(
+                                        visible: value[index].lat != "0.00" &&
+                                            value[index].long != "0.00",
+                                        child: Expanded(
+                                          child: Container(
+                                              margin: const EdgeInsets.only(
+                                                  right: 10,
+                                                  bottom: 10,
+                                                  left: 10),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                color: value[index].category ==
+                                                        "ToStay"
+                                                    ? Colors.purple[100]
+                                                    : value[index].category ==
+                                                            "ToEat&Drink"
+                                                        ? Colors.red[100]
+                                                        : value[index]
+                                                                    .category ==
+                                                                "ToSee"
+                                                            ? Colors.blue[100]
+                                                            : value[index]
+                                                                        .category ==
+                                                                    "ToDo"
+                                                                ? Colors
+                                                                    .green[100]
+                                                                : Colors
+                                                                    .grey[200],
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                      height: 100,
+                                                      width: 90,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  12),
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  12),
+                                                        ),
+                                                        image: DecorationImage(
+                                                          image: NetworkImage(
+                                                            value[index]
+                                                                .imgName,
+                                                          ),
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      )),
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            '${value[index].itemname}',
+                                                            style: TextStyle(
+                                                                color: value[index]
+                                                                            .category ==
+                                                                        "ToStay"
+                                                                    ? Colors.purple[
+                                                                        400]
+                                                                    : value[index].category ==
+                                                                            "ToEat&Drink"
+                                                                        ? Colors.red[
+                                                                            400]
+                                                                        : value[index].category ==
+                                                                                "ToSee"
+                                                                            ? Colors.blue[
+                                                                                400]
+                                                                            : value[index].category ==
+                                                                                    "ToDo"
+                                                                                ? Colors.green[
+                                                                                    400]
+                                                                                : Colors.grey[
+                                                                                    700],
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 18),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Text(
+                                                            '${value[index].address}',
+                                                            maxLines: 4,
+                                                            style: TextStyle(
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .fade,
+                                                                color: Colors
+                                                                    .grey[700],
+                                                                fontSize: 14),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 2,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )),
+                                        )),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Visibility(
+                                      visible: value[index].lat != "0.00" &&
+                                          value[index].long != "0.00",
+                                      child: Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () async {
+                                              LatLng dest = LatLng(
+                                                  double.parse(
+                                                      value[index].lat),
+                                                  double.parse(
+                                                      value[index].long));
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ItineraryMap(
+                                                            markerlist:
+                                                                markerlist,
+                                                            dest: dest,
+                                                            category:
+                                                                value[index]
+                                                                    .category,
+                                                            imgName:
+                                                                value[index]
+                                                                    .imgName,
+                                                            name: value[index]
+                                                                .itemname,
+                                                            timer: value[index]
+                                                                .timer,
+                                                            budget: value[index]
+                                                                .budget,
+                                                            address:
+                                                                value[index]
+                                                                    .address,
+                                                          )));
+                                            },
+                                            child: Icon(
+                                              Icons.location_on_rounded,
+                                              color: value[index].category ==
+                                                      "ToStay"
+                                                  ? Colors.purple[400]
+                                                  : value[index].category ==
+                                                          "ToEat&Drink"
+                                                      ? Colors.red[400]
+                                                      : value[index].category ==
+                                                              "ToSee"
+                                                          ? Colors.blue[400]
+                                                          : value[index]
+                                                                      .category ==
+                                                                  "ToDo"
+                                                              ? Colors
+                                                                  .green[400]
+                                                              : Colors
+                                                                  .grey[700],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () async {
+                                              if (await canLaunch(
+                                                  value[index].website)) {
+                                                await launch(
+                                                    value[index].website);
+                                              } else {
+                                                throw SnackBar(
+                                                    content: Text(
+                                                        'Could not launch ${value[index].website}'));
+                                              }
+                                            },
+                                            child: Icon(
+                                              value[index].website.contains(
+                                                      'www.google.com/maps/search')
+                                                  ? Icons.location_on_rounded
+                                                  : CupertinoIcons.globe,
+                                              color: value[index].category ==
+                                                      "ToStay"
+                                                  ? Colors.purple[400]
+                                                  : value[index].category ==
+                                                          "ToEat&Drink"
+                                                      ? Colors.red[400]
+                                                      : value[index].category ==
+                                                              "ToSee"
+                                                          ? Colors.blue[400]
+                                                          : value[index]
+                                                                      .category ==
+                                                                  "ToDo"
+                                                              ? Colors
+                                                                  .green[400]
+                                                              : Colors
+                                                                  .grey[700],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 25,
+                                    ),
+                                  ],
+                                )
                               ]);
                             },
                           );

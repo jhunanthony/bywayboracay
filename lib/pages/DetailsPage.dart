@@ -1299,6 +1299,8 @@ class _DetailsPageState extends State<DetailsPage> {
   String imgName;
   String lat;
   String long;
+   String address;
+    String itemname;
   String category;
 
   DateTime _selectedDay = DateTime.now();
@@ -1355,8 +1357,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       hintText: "Enter Time"),
                 ),
                 SizedBox(height: 7),
-                IgnorePointer(
-                  child: TextField(
+                TextField(
                     controller: event..text = "${widget.items.name}",
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecoration(
@@ -1375,7 +1376,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       ),
                     ),
                   ),
-                ),
+                
                 SizedBox(height: 7),
                 TextField(
                   controller: desc,
@@ -1463,6 +1464,8 @@ class _DetailsPageState extends State<DetailsPage> {
                 imgName = widget.items.imgName.toString();
                 lat = widget.items.itemlat.toString();
                 long = widget.items.itemlong.toString();
+                address = widget.items.itemaddress.toString();
+                itemname = widget.items.name.toString();
                 category = widget.items.itemcategoryName;
                 if (timer.text.isEmpty ||
                     !(time_12H.hasMatch(timer.text) ||
@@ -1537,6 +1540,10 @@ class _DetailsPageState extends State<DetailsPage> {
           "imgName": imgName,
           "lat": lat,
           "long": long,
+          "address" : address,
+          "itemname" : itemname,
+
+
           "category": category,
           "CreatedBy": emails[0],
           "users": emails
