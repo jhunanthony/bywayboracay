@@ -17,7 +17,6 @@ import 'package:http/http.dart' as http;
 //create the transit/tariff features here
 
 class MapBottomInfo extends StatefulWidget {
- 
   @override
   State<MapBottomInfo> createState() => _MapBottomInfoState();
 }
@@ -29,7 +28,6 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
 
   Future<DistanceAndDurationInfo> futuredistanceandduration;
 
-  
   LatLng destinationLocation;
   // the user's initial location and current location
   // as it moves
@@ -39,7 +37,6 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
   // wrapper around the location API
   Location locationref;
   String googleAPI = 'AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE';
-
 
   @override
   void initState() {
@@ -51,20 +48,20 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
     // subscribe to changes in the user's location
     // by "listening" to the location's onLocationChanged event
     locationref.onLocationChanged.listen((LocationData cLoc) {
-       locationref.enableBackgroundMode(enable: true);
+      locationref.enableBackgroundMode(enable: true);
       // cLoc contains the lat and long of the
       // current user's position in real time,
       // so we're holding on to it
       currentLocationref = cLoc;
-   
     });
 
     futuredistanceandduration = getdistanceandduration();
   }
 
   void getcurrentLocation() async {
-     currentLocationref = await locationref.getLocation();
+    currentLocationref = await locationref.getLocation();
   }
+
 //get distance and duration using json parse
   Future<DistanceAndDurationInfo> getdistanceandduration() async {
     CategorySelectionService catSelection =
@@ -117,31 +114,27 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
                   clipBehavior: Clip.none,
                   children: [
                     ClipOval(
-                        child: Image.network(
-                           this.items.imgName,
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.cover)),
+                        child: Image.network(this.items.imgName,
+                            width: 60, height: 60, fit: BoxFit.cover)),
                     Positioned(
                       bottom: -10,
                       right: -10,
                       child: CategoryIcon(
-                    iconName: this.items.itemcategoryName,
-                    color: this.items.color,
-                    size: 30,
-                  ),
+                        iconName: this.items.itemcategoryName,
+                        color: this.items.color,
+                        size: 30,
+                      ),
                     ),
-                    
                   ],
                 ),
                 SizedBox(width: 20),
                 Expanded(
                   child: Column(
-                    
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      
                       children: [
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
                         Text(
                           this.items.name,
                           style: TextStyle(
@@ -150,30 +143,33 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
                             fontSize: 15,
                           ),
                         ),
-                        Text(this.items.itemaddress, style: TextStyle(
+                        Text(
+                          this.items.itemaddress,
+                          style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.normal,
                             fontSize: 15,
-                          ),),
+                          ),
+                        ),
                       ]),
                 ),
                 //marker
                 Image.asset(
-                          'assets/images/' + this.items.itemcategoryName + '.png',
-                          height: 40,
-                          width: 40),
+                    'assets/images/' + this.items.itemcategoryName + '.png',
+                    height: 40,
+                    width: 40),
                 SizedBox(width: 15),
 
                 /*Icon(Icons.location_pin,
                     color: AppColors.accomodations, size: 50)*/
               ])),
-            SizedBox(
-                    height: 5,
-                  ),
-                  Divider(
-                    thickness: 1,
-                    color: Colors.grey[400],
-                  ),
+          SizedBox(
+            height: 8,
+          ),
+          Divider(
+            thickness: 1,
+            color: Colors.grey[400],
+          ),
           Padding(
             padding: const EdgeInsets.all(5),
             child: Row(
@@ -193,31 +189,31 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
                       }
                       return Center(child: CircularProgressIndicator());
                     }),
-
                 ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.blue[200], //background
-                              onPrimary: Colors.white,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 17, vertical: 17), //foreground
-                              shape: CircleBorder()),
-                          child: Center(
-                            child: Icon(
-                              Icons.directions_rounded,
-                              size: 25,
-                              color: Colors.white,
-                            ),
-                          ),
-                          onPressed: () async {
-              String googleUrl =
-                  'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&travelmode=walking&dir_action=navigate';
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.blue[200], //background
+                      onPrimary: Colors.white,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 17, vertical: 17), //foreground
+                      shape: CircleBorder()),
+                  child: Center(
+                    child: Icon(
+                      Icons.directions_rounded,
+                      size: 25,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onPressed: () async {
+                    String googleUrl =
+                        'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&travelmode=walking&dir_action=navigate';
 
-              if (await canLaunch(googleUrl)) {
-                await launch(googleUrl);
-              } else {
-                throw 'Could not launch $googleUrl';
-              }
-            },),
+                    if (await canLaunch(googleUrl)) {
+                      await launch(googleUrl);
+                    } else {
+                      throw 'Could not launch $googleUrl';
+                    }
+                  },
+                ),
               ],
             ),
           )

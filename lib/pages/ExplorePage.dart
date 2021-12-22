@@ -77,7 +77,7 @@ class _ExplorePageState extends State<ExplorePage> {
           Culture(),
           History(),
           SizedBox(
-            height: 100,
+            height: 120,
           ),
         ]),
         Positioned(
@@ -107,29 +107,14 @@ class _ExplorePageState extends State<ExplorePage> {
                 ),
         )
       ]),
-
-      //show top bar
-      /*Positioned(top: 0, left:0,right:0, child: TopNavBar(
-                    colorbackground: Colors.transparent,
-                  ),),
-                Positioned(bottom: 0, left:0,right:0, child: BottomNavBar(
-                    
-                  ),)*/
-      /*floatingActionButton: _showBackToTopButton == false
-          ? null
-          : FloatingActionButton(
-              
-               onPressed: () =>
-                    _goToElement(0), 
-              
-              child: Icon(Icons.arrow_upward),
-            ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterTop,*/
     ));
   }
 }
 
 class History extends StatelessWidget {
+     History({
+    Key key,
+  }) : super(key: key);
   List<HistoryModel> _historymodel = Utils.getHistory();
   final _historypageController = PageController(viewportFraction: 0.877);
 
@@ -222,6 +207,9 @@ class History extends StatelessWidget {
 }
 
 class Culture extends StatelessWidget {
+    Culture({
+    Key key,
+  }) : super(key: key);
   List<CultureModel> _culturemodel = Utils.getculture();
   final _culturepageController = PageController(viewportFraction: 0.8777);
 
@@ -345,6 +333,9 @@ class Culture extends StatelessWidget {
 }
 
 class AwardsAndRecognition extends StatelessWidget {
+  AwardsAndRecognition({
+    Key key,
+  }) : super(key: key);
   List<AwardsModel> _awardsmodel = Utils.getawards();
 
   final _awardspageController = ScrollController();
@@ -470,6 +461,9 @@ class AwardsAndRecognition extends StatelessWidget {
 }
 
 class Geography extends StatelessWidget {
+  Geography({
+    Key key,
+  }) : super(key: key);
   Completer<GoogleMapController> googlemapcontroller = Completer();
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(11.962116499999999, 121.92994489999998),
@@ -521,6 +515,9 @@ class Geography extends StatelessWidget {
 }
 
 class Highlights extends StatelessWidget {
+   Highlights({
+    Key key,
+  }) : super(key: key);
   List<HighlightModel> _highlightmodel = Utils.getHighlight();
   final _highlightpageController = PageController(viewportFraction: 0.877);
   @override
@@ -693,9 +690,13 @@ class Highlights extends StatelessWidget {
 }
 
 class ForYouTabs extends StatelessWidget {
+   ForYouTabs({
+    Key key,
+  }) : super(key: key);
+
   final _imagepageController = PageController(viewportFraction: 0.877);
 
-  List<ForYouContent> _foryoucontent = Utils.getForyouContents();
+  final List<ForYouContent> _foryoucontent = Utils.getForyouContents();
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -802,8 +803,11 @@ class ForYouTabs extends StatelessWidget {
 }
 
 //show category buttons and scroll buttons
-// ignore: must_be_immutable
+
 class CategoryButtons extends StatelessWidget {
+  CategoryButtons({
+    Key key,
+  }) : super(key: key);
 //create a member variable that will hold reference to the list of category
   //List<Category> categories = Utils.getMockedCategory();
   List<Category> categories = [];
@@ -1129,4 +1133,6 @@ class Header extends StatelessWidget {
           ],
         ));
   }
+
+  
 }
