@@ -824,99 +824,104 @@ class CalendarState extends State<CalendarPage> {
                                 Row(
                                   children: [
                                     SizedBox(width: 10),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "${value[index].timer}",
-                                          style: TextStyle(
-                                              color: Colors.grey[700],
-                                              fontSize: 14),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        GestureDetector(
-                                            //notification
-                                            onTap: () async {
-                                              DateTime dateTime =
-                                                  DateFormat("h:mm a").parse(
-                                                      value[index].timer);
-                                              TimeOfDay timeOfDay =
-                                                  TimeOfDay.fromDateTime(
-                                                      dateTime);
+                                    Container(
+                                      height: 80,
+                                      width: 70,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                            "${value[index].timer}",
+                                            style: TextStyle(
+                                                color: Colors.grey[700],
+                                                fontSize: 14),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          GestureDetector(
+                                              //notification
+                                              onTap: () async {
+                                                DateTime dateTime =
+                                                    DateFormat("h:mm a").parse(
+                                                        value[index].timer);
+                                                TimeOfDay timeOfDay =
+                                                    TimeOfDay.fromDateTime(
+                                                        dateTime);
 
-                                              await AwesomeNotifications()
-                                                  .createNotification(
-                                                      content:
-                                                          NotificationContent(
-                                                        id: createUniqueID(
-                                                            AwesomeNotifications
-                                                                .maxID),
-                                                        channelKey:
-                                                            'scheduled_channel',
-                                                        title:
-                                                            '${Emojis.geographic_beach_with_umbrella} You have a scheduled event today!!!',
-                                                        body:
-                                                            '${value[index].title} • ${DateFormat('yyyy-MM-dd').format(_selectedDay)} • ${value[index].timer}',
-                                                        bigPicture:
-                                                            'asset://assets/images/Reminder.png',
-                                                        notificationLayout:
-                                                            NotificationLayout
-                                                                .BigPicture,
-                                                      ),
-                                                      actionButtons: [
-                                                        NotificationActionButton(
-                                                          key: 'MARK_DONE',
-                                                          label: 'Mark Done',
-                                                        )
-                                                      ],
-                                                      schedule:
-                                                          NotificationCalendar(
-                                                        weekday: _selectedDay
-                                                            .weekday,
-                                                        day: _selectedDay.day,
-                                                        month:
-                                                            _selectedDay.month,
-                                                        year: _selectedDay.year,
-                                                        hour: timeOfDay.hour,
-                                                        minute:
-                                                            timeOfDay.minute,
-                                                        second: 0,
-                                                        millisecond: 0,
-                                                      ));
-                                              //initiate notification
-                                              AwesomeNotifications()
-                                                  .createdStream
-                                                  .listen((notification) {
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    content: Text(
-                                                        'Notification Created for ${value[index].title}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.blue)),
-                                                  ),
-                                                );
-                                              });
-                                              //for badge dot if have notification
-                                              AwesomeNotifications()
-                                                  .actionStream
-                                                  .listen((notification) {});
-                                            },
-                                            child: InkWell(
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                              child: Icon(
-                                                Icons.notifications_rounded,
-                                                color: Colors.yellow[800],
-                                              ),
-                                            )),
-                                      ],
+                                                await AwesomeNotifications()
+                                                    .createNotification(
+                                                        content:
+                                                            NotificationContent(
+                                                          id: createUniqueID(
+                                                              AwesomeNotifications
+                                                                  .maxID),
+                                                          channelKey:
+                                                              'scheduled_channel',
+                                                          title:
+                                                              '${Emojis.geographic_beach_with_umbrella} You have a scheduled event today!!!',
+                                                          body:
+                                                              '${value[index].title} • ${DateFormat('yyyy-MM-dd').format(_selectedDay)} • ${value[index].timer}',
+                                                          bigPicture:
+                                                              'asset://assets/images/Reminder.png',
+                                                          notificationLayout:
+                                                              NotificationLayout
+                                                                  .BigPicture,
+                                                        ),
+                                                        actionButtons: [
+                                                          NotificationActionButton(
+                                                            key: 'MARK_DONE',
+                                                            label: 'Mark Done',
+                                                          )
+                                                        ],
+                                                        schedule:
+                                                            NotificationCalendar(
+                                                          weekday: _selectedDay
+                                                              .weekday,
+                                                          day: _selectedDay.day,
+                                                          month: _selectedDay
+                                                              .month,
+                                                          year:
+                                                              _selectedDay.year,
+                                                          hour: timeOfDay.hour,
+                                                          minute:
+                                                              timeOfDay.minute,
+                                                          second: 0,
+                                                          millisecond: 0,
+                                                        ));
+                                                //initiate notification
+                                                AwesomeNotifications()
+                                                    .createdStream
+                                                    .listen((notification) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                      content: Text(
+                                                          'Notification Created for ${value[index].title}',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.blue)),
+                                                    ),
+                                                  );
+                                                });
+                                                //for badge dot if have notification
+                                                AwesomeNotifications()
+                                                    .actionStream
+                                                    .listen((notification) {});
+                                              },
+                                              child: InkWell(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                                child: Icon(
+                                                  Icons.notifications_rounded,
+                                                  color: Colors.yellow[800],
+                                                ),
+                                              )),
+                                        ],
+                                      ),
                                     ),
                                     SizedBox(
                                       width: 5,
