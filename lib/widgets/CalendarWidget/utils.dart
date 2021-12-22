@@ -27,7 +27,7 @@ class Event {
 
 final kNow = DateTime.now();
 final kFirstDay = DateTime(kNow.year, 1, 1);
-final kLastDay = DateTime(kNow.year + 1, 1, 1);
+final kLastDay = DateTime(kNow.year + 3, 1, 1);
 
 abstract class Functions {
   Future sendEmail(String s, String d, String t, String u);

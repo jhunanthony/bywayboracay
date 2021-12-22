@@ -792,370 +792,506 @@ class CalendarState extends State<CalendarPage> {
                                 });
                               }
 
-                              return Visibility(
-                                visible: value[index].title != "sourcemarker",
-                                child: Column(children: [
-                                  Visibility(
-                                    visible: index == 0,
-                                    child: Text(
-                                      "Budget for today ₱${maintotal.toStringAsFixed(2)}",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey[800],
-                                          fontWeight: FontWeight.w300),
-                                    ),
+                              return Column(children: [
+                                Visibility(
+                                  visible: index == 0,
+                                  child: Text(
+                                    "Budget for today ₱${maintotal.toStringAsFixed(2)}",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey[800],
+                                        fontWeight: FontWeight.w300),
                                   ),
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(
-                                      horizontal: 12.0,
-                                      vertical: 4.0,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: Colors.grey,
-                                            blurRadius: 3,
-                                            offset: Offset(2, 2)),
-                                      ],
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                          value[index].imgName,
-                                        ),
-                                        fit: BoxFit.fitWidth,
-                                      ),
-
-                                      /*color: Colors.yellow[50],*/
-                                      borderRadius: BorderRadius.circular(12.0),
-                                    ),
-                                    child: Stack(
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(width: 10),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
                                       children: [
-                                        Positioned.fill(
-                                          child: Container(
-                                              decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                            gradient: LinearGradient(
-                                              begin: Alignment.centerLeft,
-                                              end: Alignment.center,
-                                              colors: <Color>[
-                                                Colors.transparent,
-                                                Colors.black.withOpacity(0.3),
-                                                Colors.black.withOpacity(0.5),
-                                                Colors.black.withOpacity(0.7),
-                                              ],
-                                            ),
-                                          )),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 10,
-                                              bottom: 10,
-                                              left: 15,
-                                              right: 15),
-                                          child: Row(children: [
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                GestureDetector(
-                                                    //notification
-                                                    onTap: () async {
-                                                      DateTime dateTime =
-                                                          DateFormat("h:mm a")
-                                                              .parse(
-                                                                  value[index]
-                                                                      .timer);
-                                                      TimeOfDay timeOfDay =
-                                                          TimeOfDay
-                                                              .fromDateTime(
-                                                                  dateTime);
-
-                                                      await AwesomeNotifications()
-                                                          .createNotification(
-                                                              content:
-                                                                  NotificationContent(
-                                                                id: createUniqueID(
-                                                                    AwesomeNotifications
-                                                                        .maxID),
-                                                                channelKey:
-                                                                    'scheduled_channel',
-                                                                title:
-                                                                    '${Emojis.geographic_beach_with_umbrella} You have a scheduled event today!!!',
-                                                                body:
-                                                                    '${value[index].title} • ${DateFormat('yyyy-MM-dd').format(_selectedDay)} • ${value[index].timer}',
-                                                                bigPicture:
-                                                                    'asset://assets/images/Reminder.png',
-                                                                notificationLayout:
-                                                                    NotificationLayout
-                                                                        .BigPicture,
-                                                              ),
-                                                              actionButtons: [
-                                                                NotificationActionButton(
-                                                                  key:
-                                                                      'MARK_DONE',
-                                                                  label:
-                                                                      'Mark Done',
-                                                                )
-                                                              ],
-                                                              schedule:
-                                                                  NotificationCalendar(
-                                                                weekday:
-                                                                    _selectedDay
-                                                                        .weekday,
-                                                                day:
-                                                                    _selectedDay
-                                                                        .day,
-                                                                month:
-                                                                    _selectedDay
-                                                                        .month,
-                                                                year:
-                                                                    _selectedDay
-                                                                        .year,
-                                                                hour: timeOfDay
-                                                                    .hour,
-                                                                minute:
-                                                                    timeOfDay
-                                                                        .minute,
-                                                                second: 0,
-                                                                millisecond: 0,
-                                                              ));
-                                                      //initiate notification
-                                                      AwesomeNotifications()
-                                                          .createdStream
-                                                          .listen(
-                                                              (notification) {
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          SnackBar(
-                                                            backgroundColor:
-                                                                Colors.white,
-                                                            content: Text(
-                                                                'Notification Created for ${value[index].title}',
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .blue)),
-                                                          ),
-                                                        );
-                                                      });
-                                                      //for badge dot if have notification
-                                                      AwesomeNotifications()
-                                                          .actionStream
-                                                          .listen(
-                                                              (notification) {});
-                                                    },
-                                                    child: InkWell(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30),
-                                                      child: Icon(
-                                                        Icons
-                                                            .notifications_rounded,
-                                                        color: Colors.white,
-                                                      ),
-                                                    )),
-                                                SizedBox(
-                                                  height: 2,
-                                                ),
-                                                Container(
-                                                  padding: EdgeInsets.all(3),
-                                                  decoration: BoxDecoration(
-                                                    color: value[index]
-                                                                .category ==
-                                                            "ToStay"
-                                                        ? Colors.purple[400]
+                                        Container(
+                                          padding: EdgeInsets.all(3),
+                                          decoration: BoxDecoration(
+                                            color: value[index].category ==
+                                                    "ToStay"
+                                                ? Colors.purple[400]
+                                                : value[index].category ==
+                                                        "ToEat&Drink"
+                                                    ? Colors.red[400]
+                                                    : value[index].category ==
+                                                            "ToSee"
+                                                        ? Colors.blue[400]
                                                         : value[index]
                                                                     .category ==
-                                                                "ToEat&Drink"
-                                                            ? Colors.red[400]
-                                                            : value[index]
-                                                                        .category ==
-                                                                    "ToSee"
-                                                                ? Colors
-                                                                    .blue[400]
-                                                                : value[index]
-                                                                            .category ==
-                                                                        "ToDo"
-                                                                    ? Colors.green[
-                                                                        400]
-                                                                    : Colors
-                                                                        .blue,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            3),
-                                                  ),
-                                                  child: Text(
-                                                    "${value[index].timer}",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 14),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-
-                                            //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    '${value[index].title}',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Text(
-                                                    '${value[index].desc}',
-                                                    maxLines: 4,
-                                                    style: TextStyle(
-                                                        overflow:
-                                                            TextOverflow.fade,
-                                                        color: Colors.white),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 2,
-                                                  ),
-                                                  Text(
-                                                    "₱${value[index].budget}",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 14),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-
-                                            Column(
-                                              // space between two icons
-
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    if (value[index].creator ==
-                                                        emails[0]) {
-                                                      _tapEvents(
-                                                          value[index], 0);
-                                                    } else {
-                                                      showSimpleNotification(
-                                                        Text(
-                                                            "You can't delete event since you aren't the owner of it"),
-                                                        background:
-                                                            Colors.white,
-                                                        position:
-                                                            NotificationPosition
-                                                                .bottom,
-                                                      );
-                                                    }
-                                                  },
-                                                  child: Icon(
-                                                      Icons.highlight_off,
-                                                      color: Colors.red[300]),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-
-                                                Visibility(
-                                                  visible:
-                                                      value[index].website !=
-                                                          "No Website Linked",
-                                                  child: GestureDetector(
-                                                    onTap: () async {
-                                                      if (await canLaunch(
-                                                          value[index]
-                                                              .website)) {
-                                                        await launch(
-                                                            value[index]
-                                                                .website);
-                                                      } else {
-                                                        throw SnackBar(
-                                                            content: Text(
-                                                                'Could not launch ${value[index].website}'));
-                                                      }
-                                                    },
-                                                    child: Icon(
-                                                        value[index]
-                                                                .website
-                                                                .contains(
-                                                                    'www.google.com/maps/search')
-                                                            ? Icons
-                                                                .location_on_rounded
-                                                            : CupertinoIcons
-                                                                .globe,
-                                                        color: Colors.white),
-                                                  ),
-                                                ), // icon-1
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-
-                                                //show map items
-
-                                                Visibility(
-                                                  visible: value[index].lat !=
-                                                          "0.00" &&
-                                                      value[index].long !=
-                                                          "0.00",
-                                                  child: GestureDetector(
-                                                    onTap: () async {
-                                                      LatLng dest = LatLng(
-                                                          double.parse(
-                                                              value[index].lat),
-                                                          double.parse(
-                                                              value[index]
-                                                                  .long));
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder:
-                                                                  (context) =>
-                                                                      ItineraryMap(
-                                                                        markerlist:
-                                                                            markerlist,
-                                                                        dest:
-                                                                            dest,
-                                                                        category:
-                                                                            value[index].category,
-                                                                        imgName:
-                                                                            value[index].imgName,
-                                                                        name: value[index]
-                                                                            .title,
-                                                                        timer: value[index]
-                                                                            .timer,
-                                                                        budget:
-                                                                            value[index].budget,
-                                                                      )));
-                                                    },
-                                                    child: Icon(
-                                                        Icons
-                                                            .location_on_rounded,
-                                                        color: Colors.white),
-                                                  ),
-                                                ),
-
-                                                //remove item from list
-                                              ],
-                                            ),
-                                          ]),
+                                                                "ToDo"
+                                                            ? Colors.green[400]
+                                                            : Colors.grey[700],
+                                            borderRadius:
+                                                BorderRadius.circular(3),
+                                          ),
+                                          child: Text(
+                                            "${value[index].timer}",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14),
+                                          ),
                                         ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        GestureDetector(
+                                            //notification
+                                            onTap: () async {
+                                              DateTime dateTime =
+                                                  DateFormat("h:mm a").parse(
+                                                      value[index].timer);
+                                              TimeOfDay timeOfDay =
+                                                  TimeOfDay.fromDateTime(
+                                                      dateTime);
+
+                                              await AwesomeNotifications()
+                                                  .createNotification(
+                                                      content:
+                                                          NotificationContent(
+                                                        id: createUniqueID(
+                                                            AwesomeNotifications
+                                                                .maxID),
+                                                        channelKey:
+                                                            'scheduled_channel',
+                                                        title:
+                                                            '${Emojis.geographic_beach_with_umbrella} You have a scheduled event today!!!',
+                                                        body:
+                                                            '${value[index].title} • ${DateFormat('yyyy-MM-dd').format(_selectedDay)} • ${value[index].timer}',
+                                                        bigPicture:
+                                                            'asset://assets/images/Reminder.png',
+                                                        notificationLayout:
+                                                            NotificationLayout
+                                                                .BigPicture,
+                                                      ),
+                                                      actionButtons: [
+                                                        NotificationActionButton(
+                                                          key: 'MARK_DONE',
+                                                          label: 'Mark Done',
+                                                        )
+                                                      ],
+                                                      schedule:
+                                                          NotificationCalendar(
+                                                        weekday: _selectedDay
+                                                            .weekday,
+                                                        day: _selectedDay.day,
+                                                        month:
+                                                            _selectedDay.month,
+                                                        year: _selectedDay.year,
+                                                        hour: timeOfDay.hour,
+                                                        minute:
+                                                            timeOfDay.minute,
+                                                        second: 0,
+                                                        millisecond: 0,
+                                                      ));
+                                              //initiate notification
+                                              AwesomeNotifications()
+                                                  .createdStream
+                                                  .listen((notification) {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    content: Text(
+                                                        'Notification Created for ${value[index].title}',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.blue)),
+                                                  ),
+                                                );
+                                              });
+                                              //for badge dot if have notification
+                                              AwesomeNotifications()
+                                                  .actionStream
+                                                  .listen((notification) {});
+                                            },
+                                            child: InkWell(
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
+                                              child: Icon(
+                                                Icons.notifications_rounded,
+                                                color: Colors.yellow[800],
+                                              ),
+                                            )),
                                       ],
                                     ),
-                                  ),
-                                ]),
-                              );
+                                    Expanded(
+                                      child: Container(
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 12.0,
+                                          vertical: 4.0,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Colors.grey,
+                                                blurRadius: 3,
+                                                offset: Offset(2, 2)),
+                                          ],
+                                          image: DecorationImage(
+                                            image: NetworkImage(
+                                              value[index].imgName,
+                                            ),
+                                            fit: BoxFit.fitWidth,
+                                          ),
+
+                                          /*color: Colors.yellow[50],*/
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                        ),
+                                        child: Stack(
+                                          children: [
+                                            Positioned.fill(
+                                              child: Container(
+                                                  decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
+                                                gradient: LinearGradient(
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.center,
+                                                  colors: <Color>[
+                                                    //Colors.transparent,
+                                                    Colors.black
+                                                        .withOpacity(0.1),
+                                                    Colors.black
+                                                        .withOpacity(0.5),
+                                                    Colors.black
+                                                        .withOpacity(0.7),
+                                                  ],
+                                                ),
+                                              )),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10,
+                                                  bottom: 10,
+                                                  left: 15,
+                                                  right: 15),
+                                              child: Row(children: [
+                                                /*Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    GestureDetector(
+                                                        //notification
+                                                        onTap: () async {
+                                                          DateTime dateTime =
+                                                              DateFormat(
+                                                                      "h:mm a")
+                                                                  .parse(value[
+                                                                          index]
+                                                                      .timer);
+                                                          TimeOfDay timeOfDay =
+                                                              TimeOfDay
+                                                                  .fromDateTime(
+                                                                      dateTime);
+
+                                                          await AwesomeNotifications()
+                                                              .createNotification(
+                                                                  content:
+                                                                      NotificationContent(
+                                                                    id: createUniqueID(
+                                                                        AwesomeNotifications
+                                                                            .maxID),
+                                                                    channelKey:
+                                                                        'scheduled_channel',
+                                                                    title:
+                                                                        '${Emojis.geographic_beach_with_umbrella} You have a scheduled event today!!!',
+                                                                    body:
+                                                                        '${value[index].title} • ${DateFormat('yyyy-MM-dd').format(_selectedDay)} • ${value[index].timer}',
+                                                                    bigPicture:
+                                                                        'asset://assets/images/Reminder.png',
+                                                                    notificationLayout:
+                                                                        NotificationLayout
+                                                                            .BigPicture,
+                                                                  ),
+                                                                  actionButtons: [
+                                                                    NotificationActionButton(
+                                                                      key:
+                                                                          'MARK_DONE',
+                                                                      label:
+                                                                          'Mark Done',
+                                                                    )
+                                                                  ],
+                                                                  schedule:
+                                                                      NotificationCalendar(
+                                                                    weekday:
+                                                                        _selectedDay
+                                                                            .weekday,
+                                                                    day: _selectedDay
+                                                                        .day,
+                                                                    month: _selectedDay
+                                                                        .month,
+                                                                    year: _selectedDay
+                                                                        .year,
+                                                                    hour: timeOfDay
+                                                                        .hour,
+                                                                    minute: timeOfDay
+                                                                        .minute,
+                                                                    second: 0,
+                                                                    millisecond:
+                                                                        0,
+                                                                  ));
+                                                          //initiate notification
+                                                          AwesomeNotifications()
+                                                              .createdStream
+                                                              .listen(
+                                                                  (notification) {
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                              SnackBar(
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                                content: Text(
+                                                                    'Notification Created for ${value[index].title}',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .blue)),
+                                                              ),
+                                                            );
+                                                          });
+                                                          //for badge dot if have notification
+                                                          AwesomeNotifications()
+                                                              .actionStream
+                                                              .listen(
+                                                                  (notification) {});
+                                                        },
+                                                        child: InkWell(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(30),
+                                                          child: Icon(
+                                                            Icons
+                                                                .notifications_rounded,
+                                                            color: Colors.white,
+                                                          ),
+                                                        )),
+                                                    SizedBox(
+                                                      height: 2,
+                                                    ),
+                                                    Container(
+                                                      padding:
+                                                          EdgeInsets.all(3),
+                                                      decoration: BoxDecoration(
+                                                        color: value[index]
+                                                                    .category ==
+                                                                "ToStay"
+                                                            ? Colors.purple[400]
+                                                            : value[index]
+                                                                        .category ==
+                                                                    "ToEat&Drink"
+                                                                ? Colors
+                                                                    .red[400]
+                                                                : value[index]
+                                                                            .category ==
+                                                                        "ToSee"
+                                                                    ? Colors.blue[
+                                                                        400]
+                                                                    : value[index].category ==
+                                                                            "ToDo"
+                                                                        ? Colors.green[
+                                                                            400]
+                                                                        : Colors
+                                                                            .blue,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(3),
+                                                      ),
+                                                      child: Text(
+                                                        "${value[index].timer}",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 14),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),*/
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+
+                                                //leading: Text((index+1).toString(),style: TextStyle(color: Colors.blue),),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        '${value[index].title}',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 20),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      Text(
+                                                        '${value[index].desc}',
+                                                        maxLines: 4,
+                                                        style: TextStyle(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .fade,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 2,
+                                                      ),
+                                                      Text(
+                                                        "₱${value[index].budget}",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 14),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+
+                                                Column(
+                                                  // space between two icons
+
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        if (value[index]
+                                                                .creator ==
+                                                            emails[0]) {
+                                                          _tapEvents(
+                                                              value[index], 0);
+                                                        } else {
+                                                          showSimpleNotification(
+                                                            Text(
+                                                                "You can't delete event since you aren't the owner of it"),
+                                                            background:
+                                                                Colors.white,
+                                                            position:
+                                                                NotificationPosition
+                                                                    .bottom,
+                                                          );
+                                                        }
+                                                      },
+                                                      child: Icon(
+                                                          Icons.highlight_off,
+                                                          color:
+                                                              Colors.red[300]),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+
+                                                    Visibility(
+                                                      visible: value[index]
+                                                              .website !=
+                                                          "No Website Linked",
+                                                      child: GestureDetector(
+                                                        onTap: () async {
+                                                          if (await canLaunch(
+                                                              value[index]
+                                                                  .website)) {
+                                                            await launch(
+                                                                value[index]
+                                                                    .website);
+                                                          } else {
+                                                            throw SnackBar(
+                                                                content: Text(
+                                                                    'Could not launch ${value[index].website}'));
+                                                          }
+                                                        },
+                                                        child: Icon(
+                                                            value[index]
+                                                                    .website
+                                                                    .contains(
+                                                                        'www.google.com/maps/search')
+                                                                ? Icons
+                                                                    .location_on_rounded
+                                                                : CupertinoIcons
+                                                                    .globe,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ), // icon-1
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+
+                                                    //show map items
+
+                                                    Visibility(
+                                                      visible: value[index]
+                                                                  .lat !=
+                                                              "0.00" &&
+                                                          value[index].long !=
+                                                              "0.00",
+                                                      child: GestureDetector(
+                                                        onTap: () async {
+                                                          LatLng dest = LatLng(
+                                                              double.parse(
+                                                                  value[index]
+                                                                      .lat),
+                                                              double.parse(
+                                                                  value[index]
+                                                                      .long));
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          ItineraryMap(
+                                                                            markerlist:
+                                                                                markerlist,
+                                                                            dest:
+                                                                                dest,
+                                                                            category:
+                                                                                value[index].category,
+                                                                            imgName:
+                                                                                value[index].imgName,
+                                                                            name:
+                                                                                value[index].title,
+                                                                            timer:
+                                                                                value[index].timer,
+                                                                            budget:
+                                                                                value[index].budget,
+                                                                          )));
+                                                        },
+                                                        child: Icon(
+                                                            Icons
+                                                                .location_on_rounded,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ),
+
+                                                    //remove item from list
+                                                  ],
+                                                ),
+                                              ]),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ]);
                             },
                           );
                         },

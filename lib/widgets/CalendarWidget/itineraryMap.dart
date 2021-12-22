@@ -103,7 +103,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
     futuredistanceandduration = getdistanceandduration();
 
     //instantiate the polyline reference to call API
-    polylinePoints = new PolylinePoints();
+    polylinePoints = PolylinePoints();
   }
 
   void setInitialLocation() async {
@@ -475,6 +475,8 @@ class _ItineraryMapState extends State<ItineraryMap> {
     //grab the
     UserLogInModel userModel = loginService.loggedInUserModel;
     String userName = userModel != null ? userModel.displayName : 'User';
+
+    currentLocationref = await locationref.getLocation();
 
     // create a new CameraPosition instance
     // every time the location changes, so the camera

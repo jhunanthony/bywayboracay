@@ -97,7 +97,7 @@ class SideMenuBar extends StatelessWidget {
                                 return Visibility(
                                   visible: rating.rateditems.length > 0,
                                   child: Text(
-                                    'You have ${rating.rateditems.length} contribution.',
+                                    'You have ${rating.rateditems.length} reviewed item.',
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.white,
@@ -139,7 +139,7 @@ class SideMenuBar extends StatelessWidget {
                                 padding: EdgeInsets.only(
                                     left: 10, right: 10, top: 15, bottom: 15),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     //use userLoggedIn flag to change icon and text
                                     Stack(children: [
@@ -172,7 +172,7 @@ class SideMenuBar extends StatelessWidget {
                                     SizedBox(width: 5),
                                     Text("Saved Items",
                                         style: TextStyle(
-                                            color: Colors.blue, fontSize: 20)),
+                                            color: Colors.blue, fontSize: 14)),
                                   ],
                                 ),
                               ),
@@ -247,7 +247,7 @@ class SideMenuBar extends StatelessWidget {
                           padding: EdgeInsets.only(
                               left: 10, right: 10, top: 15, bottom: 15),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               //use userLoggedIn flag to change icon and text
                               Icon(CupertinoIcons.question_circle_fill,
@@ -256,7 +256,44 @@ class SideMenuBar extends StatelessWidget {
                               SizedBox(width: 5),
                               Text("About Us",
                                   style: TextStyle(
-                                      color: Colors.blue, fontSize: 20)),
+                                      color: Colors.blue, fontSize: 14)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white, //background
+                          onPrimary: Colors.blue,
+                          //foreground
+                          //remove border radius
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () async {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LikedPage()));
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              left: 10, right: 10, top: 15, bottom: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              //use userLoggedIn flag to change icon and text
+                              Icon(Icons.shield_rounded,
+                                  color: Colors.blue, size: 25),
+
+                              SizedBox(width: 5),
+                              Text("Terms & Policies",
+                                  style: TextStyle(
+                                      color: Colors.blue, fontSize: 14)),
                             ],
                           ),
                         ),
