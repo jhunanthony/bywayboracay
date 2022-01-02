@@ -1455,6 +1455,10 @@ class CalendarState extends State<CalendarPage> {
 
   //show share dialog
   void _showShare(List<Event> itemevents) {
+    itemevents
+      ..sort((item1, item2) => DateFormat("h:mm a")
+          .parse(item1.timer)
+          .compareTo(DateFormat("h:mm a").parse(item2.timer)));
     List<String> sharecomment = [];
     itemevents.forEach((item) {
       setState(() {
