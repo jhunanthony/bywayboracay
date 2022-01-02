@@ -136,6 +136,7 @@ class _ItemsPageState extends State<ItemsPage> {
     'Balabag',
     'Manocmanoc',
     'Yapak',
+    'MainLand',
   ];
   List<String> tags2 = [];
   List<String> subcategoryoptions = [];
@@ -426,9 +427,9 @@ class _ItemsPageState extends State<ItemsPage> {
                                                 'WaterActivities',
                                                 'LandActivities',
                                                 'LocalServices',
-                                                'OutsideBoracay',
+                                                
                                                 'Environmental',
-                                                'Socail',
+                                                'Social',
                                               ]
                                             : this
                                                         .widget

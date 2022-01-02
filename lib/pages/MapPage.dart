@@ -253,7 +253,15 @@ class _MapPageState extends State<MapPage> {
         _polylines.add(Polyline(
             width: 3,
             polylineId: PolylineId('polyLine'),
-            color: widget.items.color,
+            color: widget.items.itemcategoryName == "ToStay"
+                ? Colors.purple[400]
+                :  widget.items.itemcategoryName  == "ToEat&Drink"
+                    ? Colors.red[400]
+                    :  widget.items.itemcategoryName  == "ToSee"
+                        ? Colors.blue[400]
+                        :  widget.items.itemcategoryName  == "ToDo"
+                            ? Colors.green[400]
+                            : Colors.blue,
             points: polylineCoordinates));
       });
     }

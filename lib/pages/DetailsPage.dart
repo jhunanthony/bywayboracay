@@ -207,7 +207,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                     color: Colors.transparent,
                                     child: IconButton(
                                         padding: EdgeInsets.all(0),
-                                        icon: Icon(Icons.bookmark_added_rounded),
+                                        icon:
+                                            Icon(Icons.bookmark_added_rounded),
                                         color: Colors.blue[200],
                                         iconSize: 25,
                                         splashColor: Colors.white,
@@ -1299,8 +1300,8 @@ class _DetailsPageState extends State<DetailsPage> {
   String imgName;
   String lat;
   String long;
-   String address;
-    String itemname;
+  String address;
+  String itemname;
   String category;
 
   DateTime _selectedDay = DateTime.now();
@@ -1357,26 +1358,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       hintText: "Enter Time"),
                 ),
                 SizedBox(height: 7),
-                TextField(
-                    controller: event..text = "${widget.items.name}",
-                    textCapitalization: TextCapitalization.words,
-                    decoration: InputDecoration(
-                      labelText: 'Event',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 1.5),
-                        borderRadius: BorderRadius.circular(
-                          10.0,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 1.5),
-                        borderRadius: BorderRadius.circular(
-                          10.0,
-                        ),
-                      ),
-                    ),
-                  ),
-                
+                buildTextField(controller: event, hint: 'Event'),
                 SizedBox(height: 7),
                 TextField(
                   controller: desc,
@@ -1402,7 +1384,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   keyboardType: TextInputType.numberWithOptions(),
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   controller: budget
-                    ..text = "${widget.items.itempriceMin.toStringAsFixed(2)}",
+                    ..text = "${widget.items.itempriceMin.toString()}",
                   textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     labelText: 'Budget',
@@ -1466,7 +1448,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 long = widget.items.itemlong.toString();
                 address = widget.items.itemaddress.toString();
                 itemname = widget.items.name.toString();
-                category = widget.items.itemcategoryName;
+                category = widget.items.itemcategoryName.toString();
                 if (timer.text.isEmpty ||
                     !(time_12H.hasMatch(timer.text) ||
                         time_24H.hasMatch(timer.text))) {
@@ -1480,7 +1462,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 } else if (desc.text.isEmpty) {
                   desc.text = 'No Description';
                 } else if (budget.text.isEmpty) {
-                  website.text = '0.00';
+                  budget.text = '0.00';
                 } else if (website.text.isEmpty) {
                   website.text = 'No Website Linked';
                 } else {
@@ -1490,7 +1472,6 @@ class _DetailsPageState extends State<DetailsPage> {
                     desc.clear();
                     budget.clear();
                     website.clear();
-
                     Navigator.of(context).pop();
                   });
                 }
@@ -1500,6 +1481,29 @@ class _DetailsPageState extends State<DetailsPage> {
           ],
         );
       },
+    );
+  }
+
+   Widget buildTextField(
+      {String hint, @required TextEditingController controller}) {
+    return TextField(
+      controller: controller,
+      textCapitalization: TextCapitalization.words,
+      decoration: InputDecoration(
+        labelText: hint ?? '',
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue, width: 1.5),
+          borderRadius: BorderRadius.circular(
+            10.0,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue, width: 1.5),
+          borderRadius: BorderRadius.circular(
+            10.0,
+          ),
+        ),
+      ),
     );
   }
 
@@ -1540,10 +1544,8 @@ class _DetailsPageState extends State<DetailsPage> {
           "imgName": imgName,
           "lat": lat,
           "long": long,
-          "address" : address,
-          "itemname" : itemname,
-
-
+          "address": address,
+          "itemname": itemname,
           "category": category,
           "CreatedBy": emails[0],
           "users": emails
@@ -1597,6 +1599,7 @@ class _DetailsPageState extends State<DetailsPage> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
+            contentPadding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 15.0),
             title: Column(
               children: [
                 Text('Share To'),
@@ -1605,119 +1608,201 @@ class _DetailsPageState extends State<DetailsPage> {
             content: SingleChildScrollView(
                 child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    //share to facebook
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.white, //background
-                          onPrimary: Colors.blue,
-                          //foreground
-                          shape: CircleBorder(),
-                        ),
-                        child: Container(
-                            padding: EdgeInsets.only(
-                                top: 5, bottom: 5, left: 5, right: 5),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(Icons.facebook_rounded,
-                                size: 30, color: Colors.blue)),
-                        //capture the success flag with async and await
-                        onPressed: () async {
-                          FlutterSocialContentShare.share(
-                              type: ShareType.facebookWithoutImage,
-                              url: "${widget.items.itemwebsite}",
-                              quote:
-                                  "Hey, check this awesome place at Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}.");
-                        }),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.white, //background
-                          onPrimary: Colors.blue,
-                          //foreground
-                          shape: CircleBorder(),
-                        ),
-                        child: Container(
-                          padding: EdgeInsets.only(
-                              top: 5, bottom: 5, left: 5, right: 5),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: SvgPicture.asset(
-                            'assets/icons/Instagram.svg',
+                //facebook
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white, //background
+                      onPrimary: Colors.blue,
+                      //foreground
+                      //remove border radius
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () async {
+                      FlutterSocialContentShare.share(
+                          type: ShareType.facebookWithoutImage,
+                          url: "${widget.items.itemwebsite}",
+                          quote:
+                              "Hey, check this awesome place at Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}.");
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          left: 5, right: 5, top: 10, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //use userLoggedIn flag to change icon and text
+                          Icon(Icons.facebook_rounded,
+                              size: 30, color: Colors.blue),
+                          SizedBox(width: 5),
+                          Text("Facebook",
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 14)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                //instagram
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white, //background
+                      onPrimary: Colors.blue,
+                      //foreground
+                      //remove border radius
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () async {
+                      FlutterSocialContentShare.share(
+                        type: ShareType.instagramWithImageUrl,
+                        imageUrl: "${widget.items.imgName}",
+                        quote:
+                            "Hey, check this awesome place at Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}.",
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          left: 5, right: 5, top: 10, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //use userLoggedIn flag to change icon and text
+                          SvgPicture.asset(
+                            'assets/icons/InstagramIcon.svg',
                             color: Colors.blue,
                             height: 30,
                             width: 30,
                           ),
-                        ),
-                        //capture the success flag with async and await
-                        onPressed: () async {
-                          FlutterSocialContentShare.share(
-                            type: ShareType.instagramWithImageUrl,
-                            imageUrl: "${widget.items.imgName}",
-                            quote:
-                                "Hey, check this awesome place at Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}.",
-                          );
-                        }),
-                  ],
+                          SizedBox(width: 5),
+                          Text("Instagram",
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 14)),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.white, //background
-                          onPrimary: Colors.blue,
-                          //foreground
-                          shape: CircleBorder(),
-                        ),
-                        child: Container(
-                            padding: EdgeInsets.only(
-                                top: 5, bottom: 5, left: 5, right: 5),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(Icons.sms_rounded,
-                                size: 30, color: Colors.blue)),
-                        //capture the success flag with async and await
-                        onPressed: () async {
-                          FlutterSocialContentShare.shareOnSMS(
-                              recipients: ["xxxxxx"],
-                              text:
-                                  "Hey, check this awesome place Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}, ${widget.items.itemwebsite}");
-                        }),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.white, //background
-                          onPrimary: Colors.blue,
-                          //foreground
-                          shape: CircleBorder(),
-                        ),
-                        child: Container(
-                            padding: EdgeInsets.only(
-                                top: 5, bottom: 5, left: 5, right: 5),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(Icons.email_rounded,
-                                size: 30, color: Colors.blue)),
-                        //capture the success flag with async and await
-                        onPressed: () async {
-                          FlutterSocialContentShare.shareOnEmail(
-                              recipients: ["xxxx.xxx@gmail.com"],
-                              subject:
-                                  "Hey, check this awesome place at Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}.",
-                              body: "${widget.items.itemwebsite}",
-                              isHTML: true); //default isHTML: False
-                        }),
-                  ],
-                )
+                //whatsapp
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white, //background
+                      onPrimary: Colors.blue,
+                      //foreground
+                      //remove border radius
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () async {
+                      FlutterSocialContentShare.shareOnWhatsapp("xxxxxx",
+                          "Hey, check this awesome place at Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}.  ${widget.items.itemwebsite}");
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          left: 5, right: 5, top: 10, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //use userLoggedIn flag to change icon and text
+                          SvgPicture.asset(
+                            'assets/icons/WhatsAppIcon.svg',
+                            color: Colors.blue,
+                            height: 30,
+                            width: 30,
+                          ),
+                          SizedBox(width: 5),
+                          Text("WhatsApp",
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 14)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                //email
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white, //background
+                      onPrimary: Colors.blue,
+                      //foreground
+                      //remove border radius
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () async {
+                      FlutterSocialContentShare.shareOnEmail(
+                          recipients: ["xxxx.xxx@gmail.com"],
+                          subject:
+                              "Hey, check this awesome place at Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}.",
+                          body: "${widget.items.itemwebsite}",
+                          isHTML: true); //default isHTML: False
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          left: 5, right: 5, top: 10, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //use userLoggedIn flag to change icon and text
+                          Icon(Icons.email_rounded,
+                              size: 30, color: Colors.blue),
+                          SizedBox(width: 5),
+                          Text("Email",
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 14)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                //sms
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white, //background
+                      onPrimary: Colors.blue,
+                      //foreground
+                      //remove border radius
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () async {
+                      FlutterSocialContentShare.shareOnSMS(
+                          recipients: ["xxxxxx"],
+                          text:
+                              "Hey, check this awesome place Boracay Island! ${widget.items.name} - ${widget.items.itemaddress}, ${widget.items.itemwebsite}");
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          left: 5, right: 5, top: 10, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //use userLoggedIn flag to change icon and text
+                          Icon(Icons.sms_rounded, size: 30, color: Colors.blue),
+                          SizedBox(width: 5),
+                          Text("SMS",
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 14)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ))));
   }

@@ -29,18 +29,17 @@ const double PIN_NOTVISIBLE_POSITION = -300;
 
 // ignore: must_be_immutable
 class ItineraryMap extends StatefulWidget {
-  ItineraryMap(
-      {Key key,
-      this.markerlist,
-      this.dest,
-      this.category,
-      this.imgName,
-      this.name,
-      this.timer,
-      this.budget,
-      this.address,
-      })
-      : super(key: key);
+  ItineraryMap({
+    Key key,
+    this.markerlist,
+    this.dest,
+    this.category,
+    this.imgName,
+    this.name,
+    this.timer,
+    this.budget,
+    this.address,
+  }) : super(key: key);
 
   List<Event> markerlist;
   LatLng dest;
@@ -49,7 +48,7 @@ class ItineraryMap extends StatefulWidget {
   String name;
   String timer;
   String budget;
-   String address;
+  String address;
 
   @override
   _ItineraryMapState createState() => _ItineraryMapState();
@@ -138,32 +137,12 @@ class _ItineraryMapState extends State<ItineraryMap> {
         'assets/images/User_Location_Marker.png');
   }
 
-  //get distance and duration using json parse
-  Future<ItineraryDestDurInfo> getdistanceandduration() async {
-    currentLocationref = await locationref.getLocation();
-
-    destinationLocationref = LocationData.fromMap({
-      "latitude": this.widget.dest.latitude,
-      "longitude": this.widget.dest.longitude,
-    });
-
-    final requestURL =
-        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE";
-
-    final response = await http.get(Uri.parse(requestURL));
-
-    if (response.statusCode == 200) {
-      return ItineraryDestDurInfo.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception("Error Leoading request URL info.");
-    }
-  }
-
   Set<Marker> _markers = Set<Marker>();
 
-  void showPinsOnMap() async {
+  void showMarkers() async {
     this.setSourceAndDestinationMarkerIcons(context);
     currentLocationref = await locationref.getLocation();
+
     this.widget.markerlist.forEach((item) {
       setState(() {
         _markers.add(Marker(
@@ -186,9 +165,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
                         ? todomarker
                         : item.category == "ToSee"
                             ? toseemarker
-                            : item.title == "sourcemarker"
-                                ? usermarker
-                                : toseemarker,
+                            : toseemarker,
             onTap: () {
               setState(() {
                 this.pinBottomInfoPosition = PIN_VISIBLE_POSITION;
@@ -204,6 +181,48 @@ class _ItineraryMapState extends State<ItineraryMap> {
             }));
       });
     });
+
+    LatLng currentLoc =
+        LatLng(currentLocationref.latitude, currentLocationref.longitude);
+    LoginService loginService =
+        Provider.of<LoginService>(context, listen: false);
+    //grab the
+    UserLogInModel userModel = loginService.loggedInUserModel;
+    String userName = userModel != null ? userModel.displayName : 'User';
+
+    setState(() {
+      _markers.add(Marker(
+          markerId: MarkerId('sourcePin'),
+          position: currentLoc,
+          icon: usermarker,
+          infoWindow: InfoWindow(title: userName),
+          onTap: () {
+            setState(() {
+              this.userInfoSelected = true;
+            });
+          }));
+    });
+  }
+
+  //get distance and duration using json parse
+  Future<ItineraryDestDurInfo> getdistanceandduration() async {
+    currentLocationref = await locationref.getLocation();
+
+    destinationLocationref = LocationData.fromMap({
+      "latitude": this.widget.dest.latitude,
+      "longitude": this.widget.dest.longitude,
+    });
+
+    final requestURL =
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE";
+
+    final response = await http.get(Uri.parse(requestURL));
+
+    if (response.statusCode == 200) {
+      return ItineraryDestDurInfo.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Error Leoading request URL info.");
+    }
   }
 
   @override
@@ -247,8 +266,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
 
-              showPinsOnMap();
-
+              // showPinsOnMap();
               setPolylines();
             },
             onTap: (LatLng loc) {
@@ -331,15 +349,22 @@ class _ItineraryMapState extends State<ItineraryMap> {
                                     fontSize: 18,
                                   ),
                                 ),
+                                /*Text(
+                                  this.widget.markerlist.toString(),
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 5,
+                                  ),
+                                ),*/
                                 Text(
-                                      this.widget.address,
-                                      style: TextStyle(
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                
+                                  this.widget.address,
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 12,
+                                  ),
+                                ),
                                 Row(
                                   children: [
                                     Text(
@@ -350,7 +375,9 @@ class _ItineraryMapState extends State<ItineraryMap> {
                                         fontSize: 12,
                                       ),
                                     ),
-                                    SizedBox(width: 10,),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
                                     Text(
                                       "PHP ${this.widget.budget}",
                                       style: TextStyle(
@@ -480,7 +507,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
       });
     }
 
-    showPinsOnMap();
+    showMarkers();
   }
 
   //create two marker reference and surround inside set state to trigger rebuild

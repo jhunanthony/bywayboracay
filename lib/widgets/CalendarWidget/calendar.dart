@@ -8,6 +8,7 @@ import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/pages/MainPage.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/itineraryMap.dart';
+
 import 'package:bywayborcay/widgets/CalendarWidget/utils.dart';
 import 'package:bywayborcay/widgets/WeatherWidgets/weather_forecast.dart';
 import 'package:bywayborcay/widgets/WeatherWidgets/weather_mainwidget.dart';
@@ -767,6 +768,34 @@ class CalendarState extends State<CalendarPage> {
 
                           List<Event> markerlist = [];
 
+                          if (value.length > 0) {
+                            value.forEach((Event value) {
+                              double total = double.parse(value.budget);
+
+                              maintotal += total;
+
+                              if (value.lat != "0.00") {
+                                markerlist.add(Event(
+                                  value.title,
+                                  [
+                                    {"${Auth().getCurrentUser().displayName}"}
+                                  ],
+                                  value.desc,
+                                  value.timer,
+                                  value.budget,
+                                  value.website,
+                                  value.imgName,
+                                  value.lat,
+                                  value.long,
+                                  value.address,
+                                  value.itemname,
+                                  value.category,
+                                  "${Auth().getCurrentUser().displayName}",
+                                ));
+                              }
+                            });
+                          }
+
                           return ListView.builder(
                             itemCount: value.length,
                             itemBuilder: (context, index) {
@@ -777,9 +806,9 @@ class CalendarState extends State<CalendarPage> {
                                     .compareTo(DateFormat("h:mm a")
                                         .parse(item2.timer)));
 
-                              if (value.length > 0) {
+                              /* if (value.length > 0) {
                                 value.forEach((Event value) {
-                                  double total = double.parse(value.budget);
+                                double total = double.parse(value.budget);
 
                                   maintotal += total;
 
@@ -805,7 +834,7 @@ class CalendarState extends State<CalendarPage> {
                                     ));
                                   }
                                 });
-                              }
+                              }*/
 
                               return Column(children: [
                                 Visibility(
