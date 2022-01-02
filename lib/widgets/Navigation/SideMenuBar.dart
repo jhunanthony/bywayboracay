@@ -1,13 +1,10 @@
-import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/models/UserLogInModel.dart';
-import 'package:bywayborcay/pages/LikedPage.dart';
-import 'package:bywayborcay/services/likeservice.dart';
+import 'package:bywayborcay/pages/SavePage.dart';
+import 'package:bywayborcay/services/savecategory.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-
 import '../../services/ratedservice.dart';
 
 //create a side menu bar
@@ -112,7 +109,7 @@ class SideMenuBar extends StatelessWidget {
                     Consumer<LoginService>(
                         builder: (context, loginService, child) {
                       if (loginService.isUserLoggedIn()) {
-                        return Consumer<LikeService>(
+                        return Consumer<SaveService>(
                             //a function called when notifier changes
                             builder: (context, like, child) {
                           return
@@ -133,7 +130,7 @@ class SideMenuBar extends StatelessWidget {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => LikedPage()));
+                                        builder: (context) => SavedPage()));
                               },
                               child: Container(
                                 padding: EdgeInsets.only(

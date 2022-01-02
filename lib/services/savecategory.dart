@@ -3,7 +3,7 @@ import 'dart:collection';
 
 import 'package:bywayborcay/models/CategoryModel.dart';
 import 'package:bywayborcay/models/ItemsModel.dart';
-import 'package:bywayborcay/models/LikedItemsModel.dart';
+import 'package:bywayborcay/models/SavedItemModel.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/categoryservice.dart';
 import 'package:bywayborcay/services/loginservice.dart';
@@ -14,15 +14,15 @@ import 'package:provider/provider.dart';
 
 import '../models/RatedItemsModel.dart';
 
-class LikeService extends ChangeNotifier {
+class SaveService extends ChangeNotifier {
   //this will hold the items being saved
-  final List<LikedItem> _items = [];
+  final List<SavedItem> _items = [];
 
   //only allow adding items
-  UnmodifiableListView<LikedItem> get items => UnmodifiableListView(_items);
+  UnmodifiableListView<SavedItem> get items => UnmodifiableListView(_items);
 
   //brodcast that something is changed
-  void add(BuildContext context, LikedItem item) {
+  void add(BuildContext context, SavedItem item) {
     //add locally and then add on firebase
     _items.add(item);
 
@@ -30,7 +30,7 @@ class LikeService extends ChangeNotifier {
         Provider.of<LoginService>(context, listen: false);
 
     Map<String, int> likeMap = Map();
-    _items.forEach((LikedItem item) {
+    _items.forEach((SavedItem item) {
       likeMap[item.category.imgName] = (item.category as Items).amount;
     });
 
@@ -45,14 +45,14 @@ class LikeService extends ChangeNotifier {
 
   //if an item is already in saveditem then false the button
   //recent change here
-  bool isLiked(Items cat) {
+  bool isSaved(Items cat) {
     return _items.length > 0
-        ? _items.any((LikedItem item) => item.category.name == cat.name)
+        ? _items.any((SavedItem item) => item.category.name == cat.name)
         : false;
   }
 
   //method to remove item individually
-  void remove(BuildContext context, LikedItem item) {
+  void remove(BuildContext context, SavedItem item) {
     //fetch login service
     LoginService loginService =
         Provider.of<LoginService>(context, listen: false);
@@ -80,7 +80,7 @@ class LikeService extends ChangeNotifier {
         .collection('tourist')
         .doc(loginService.loggedInUserModel.uid)
         .update({'LikedItems': FieldValue.delete()}).then((value) {
-      _items.forEach((LikedItem item) {
+      _items.forEach((SavedItem item) {
         (item.category as Items).amount = 0;
       });
       _items.clear();
@@ -92,9 +92,9 @@ class LikeService extends ChangeNotifier {
   Items getCategoryFromLikedItems(Items cat) {
     Items itemcat = cat;
     if (_items.length > 0 &&
-        _items.any((LikedItem item) => item.category.name == cat.name)) {
-      LikedItem likedItem =
-          _items.firstWhere((LikedItem item) => item.category.name == cat.name);
+        _items.any((SavedItem item) => item.category.name == cat.name)) {
+      SavedItem likedItem =
+          _items.firstWhere((SavedItem item) => item.category.name == cat.name);
 
       if (likedItem != null) {
         itemcat = likedItem.category;
@@ -143,7 +143,7 @@ class LikeService extends ChangeNotifier {
                 var amount = likedItems[itemref.imgName] as int;
                 (itemref as Items).amount = amount;
 
-                _items.add(LikedItem(category: itemref));
+                _items.add(SavedItem(category: itemref));
 
                 //check if currently selected category
                 if (categorySelectionService.items != null &&

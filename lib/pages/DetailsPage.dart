@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:bywayborcay/models/ItemsModel.dart';
-import 'package:bywayborcay/models/LikedItemsModel.dart';
+import 'package:bywayborcay/models/SavedItemModel.dart';
 import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
-import 'package:bywayborcay/services/likeservice.dart';
+import 'package:bywayborcay/services/savecategory.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/services/ratedservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/auth.dart';
@@ -95,7 +95,7 @@ class _DetailsPageState extends State<DetailsPage> {
         target: destinationLocation);
 
     //to activate change notifier on saves
-    LikeService likeService = Provider.of<LikeService>(context, listen: false);
+    SaveService likeService = Provider.of<SaveService>(context, listen: false);
     RatingService ratingService =
         Provider.of<RatingService>(context, listen: false);
     LoginService loginService =
@@ -177,14 +177,14 @@ class _DetailsPageState extends State<DetailsPage> {
                         Consumer<LoginService>(
                             builder: (context, loginService, child) {
                           if (loginService.isUserLoggedIn()) {
-                            return Consumer<LikeService>(
+                            return Consumer<SaveService>(
                                 builder: (context, like, child) {
                               //check if saved
                               Widget renderedButton;
 
                               //check is it is saved then display regular button
 
-                              if (!like.isLiked(widget.items)) {
+                              if (!like.isSaved(widget.items)) {
                                 renderedButton = ClipOval(
                                   child: Material(
                                     color: Colors.transparent,
@@ -196,7 +196,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                       splashColor: Colors.pink[300],
                                       onPressed: () {
                                         likeService.add(context,
-                                            LikedItem(category: widget.items));
+                                            SavedItem(category: widget.items));
                                       },
                                     ),
                                   ),
@@ -232,14 +232,14 @@ class _DetailsPageState extends State<DetailsPage> {
                         Consumer<LoginService>(
                             builder: (context, loginService, child) {
                           if (loginService.isUserLoggedIn()) {
-                            return Consumer<LikeService>(
+                            return Consumer<SaveService>(
                                 builder: (context, like, child) {
                               //check if saved
                               Widget likedtext;
 
                               //check is it is saved then display regular button
 
-                              if (!like.isLiked(widget.items)) {
+                              if (!like.isSaved(widget.items)) {
                                 likedtext = Text(
                                   'Save',
                                   style: TextStyle(

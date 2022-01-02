@@ -3,7 +3,7 @@ import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/pages/BagPage.dart';
 import 'package:bywayborcay/pages/ExplorePage.dart';
 
-import 'package:bywayborcay/services/likeservice.dart';
+import 'package:bywayborcay/services/savecategory.dart';
 import 'package:bywayborcay/services/ratedservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/Itinerarypage2.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
@@ -35,7 +35,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     //implement a method that clears likeitems when users log out and new user come in
-    LikeService likeService = Provider.of<LikeService>(context, listen: false);
+    SaveService likeService = Provider.of<SaveService>(context, listen: false);
     //fetch liked items and load on likepage
     likeService.loadLikedItemsFromFirebase(context);
 

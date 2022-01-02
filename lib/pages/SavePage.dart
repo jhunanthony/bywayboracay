@@ -3,11 +3,11 @@ import 'dart:ui';
 
 import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/models/ItemsModel.dart';
-import 'package:bywayborcay/models/LikedItemsModel.dart';
+import 'package:bywayborcay/models/SavedItemModel.dart';
 import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:bywayborcay/pages/DetailsPage.dart';
 
-import 'package:bywayborcay/services/likeservice.dart';
+import 'package:bywayborcay/services/savecategory.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/services/ratedservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/auth.dart';
@@ -25,14 +25,14 @@ import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 
-class LikedPage extends StatefulWidget {
+class SavedPage extends StatefulWidget {
   @override
-  State<LikedPage> createState() => _LikedPageState();
+  State<SavedPage> createState() => _SavedPageState();
 
   static const _actionTitle = 'Add Event';
 }
 
-class _LikedPageState extends State<LikedPage> {
+class _SavedPageState extends State<SavedPage> {
   Completer<GoogleMapController> googlemapcontroller = Completer();
   final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(11.962116499999999, 121.92994489999998),
@@ -53,7 +53,7 @@ class _LikedPageState extends State<LikedPage> {
 
     //import like service provider
 
-    LikeService likeService = Provider.of<LikeService>(context, listen: false);
+    SaveService likeService = Provider.of<SaveService>(context, listen: false);
 
     //bool if a user is currently logged in
 
@@ -72,7 +72,7 @@ class _LikedPageState extends State<LikedPage> {
             width: 30,
           ),
           Text(
-            " Saves",
+            " Saved Items",
             style: TextStyle(
                 fontSize: 14,
                 color: Colors.blue[100],
@@ -87,7 +87,7 @@ class _LikedPageState extends State<LikedPage> {
           children: [
             Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               SizedBox(height: 5),
-              Consumer<LikeService>(
+              Consumer<SaveService>(
                   //a function called when notifier changes
                   builder: (context, like, child) {
                 return
@@ -110,7 +110,7 @@ class _LikedPageState extends State<LikedPage> {
           height: 10,
         ),
         Expanded(
-          child: Consumer<LikeService>(
+          child: Consumer<SaveService>(
             //a function called when notifier changes
             builder: (context, like, child) {
               List<Widget> likeditems = [];
@@ -119,7 +119,7 @@ class _LikedPageState extends State<LikedPage> {
               double mainTotal = 0;
 
               if (like.items.length > 0) {
-                like.items.forEach((LikedItem item) {
+                like.items.forEach((SavedItem item) {
                   Items itemslistinfo = (item.category as Items);
 
                   double total = itemslistinfo.itempriceMin;
@@ -402,7 +402,7 @@ class _LikedPageState extends State<LikedPage> {
                           },
                         ),
                         SizedBox(width: 5),
-                        Consumer<LikeService>(builder: (context, like, child) {
+                        Consumer<SaveService>(builder: (context, like, child) {
                           if (like.items.length > 0) {
                             return ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -526,14 +526,14 @@ class _LikedPageState extends State<LikedPage> {
 
   Map res = Map();
 
-  void _showAction(LikedItem item) {
+  void _showAction(SavedItem item) {
     Items itemslistinfo = (item.category as Items);
     showDialog<void>(
       context: context,
       builder: (context) {
         return AlertDialog(
           titlePadding: EdgeInsets.all(10),
-          title: Text(LikedPage._actionTitle),
+          title: Text(SavedPage._actionTitle),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -697,7 +697,7 @@ class _LikedPageState extends State<LikedPage> {
                 } else if (desc.text.isEmpty) {
                   desc.text = 'No Description';
                 } else if (budget.text.isEmpty) {
-                  website.text = '0.00';
+                  budget.text = '0.00';
                 } else if (website.text.isEmpty) {
                   website.text = 'No Website Linked';
                 } else {

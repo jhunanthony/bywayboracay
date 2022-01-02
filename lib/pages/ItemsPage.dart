@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bywayborcay/models/CategoryModel.dart';
 import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
-import 'package:bywayborcay/services/likeservice.dart';
+import 'package:bywayborcay/services/savecategory.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
@@ -57,7 +57,7 @@ class _ItemsPageState extends State<ItemsPage> {
         Provider.of<CategorySelectionService>(context, listen: false);
     widget.selectedCategory = catSelection.selectedCategory;
 
-    LikeService likedService = Provider.of<LikeService>(context, listen: false);
+    SaveService likedService = Provider.of<SaveService>(context, listen: false);
 
     BitmapDescriptor destinationIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 0.2),
@@ -190,7 +190,7 @@ class _ItemsPageState extends State<ItemsPage> {
     RatingService ratingService =
         Provider.of<RatingService>(context, listen: false);
 
-    LikeService likedService = Provider.of<LikeService>(context, listen: false);
+    SaveService likedService = Provider.of<SaveService>(context, listen: false);
 
     return SafeArea(
       child: Scaffold(

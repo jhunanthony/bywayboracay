@@ -8,7 +8,7 @@ import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/categoryservice.dart';
 
 import 'package:bywayborcay/services/loginservice.dart';
-import 'package:bywayborcay/services/likeservice.dart';
+import 'package:bywayborcay/services/savecategory.dart';
 import 'package:bywayborcay/services/ratedservice.dart';
 
 import 'package:bywayborcay/widgets/BagPageWidgets/CurrencyConverter/currmodel.dart';
@@ -18,7 +18,7 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 
 import 'pages/ExplorePage.dart';
-import 'pages/LikedPage.dart';
+import 'pages/SavePage.dart';
 import 'pages/SplashPage.dart';
 import 'pages/MainPage.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
       )),
       //tells all widget if there's a need for revuild
       ChangeNotifierProvider(
-        create: (_) => LikeService()),
+        create: (_) => SaveService()),
       //import instances from provider firebase
      ChangeNotifierProvider(
         create: (_) => RatingService()),
@@ -92,7 +92,7 @@ class MyApp extends StatelessWidget {
           '/mappage':(context)=> MapPage(),
           '/onboardingpage':(context)=> OnBoardingPage(),
           '/itinerarypage':(context)=> ItineraryPage(),
-          '/likedpage':(context)=> LikedPage(),
+          '/likedpage':(context)=> SavedPage(),
           '/bagpage':(context)=> BagPage(),
          }
           ),
