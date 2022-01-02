@@ -17,6 +17,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_social_content_share/flutter_social_content_share.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -840,13 +841,49 @@ class CalendarState extends State<CalendarPage> {
                                 Visibility(
                                   visible: index == 0,
                                   child: Padding(
-                                    padding: const EdgeInsets.all(5),
-                                    child: Text(
-                                      "Budget for today ₱${maintotal.toStringAsFixed(2)}",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey[800],
-                                          fontWeight: FontWeight.w300),
+                                    padding: const EdgeInsets.only(
+                                        left: 5, right: 5, top: 2, bottom: 2),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(3),
+                                          decoration: BoxDecoration(
+                                            color: Colors.blue,
+                                            borderRadius:
+                                                BorderRadius.circular(3),
+                                          ),
+                                          child: Text(
+                                            "Budget for today ₱${maintotal.toStringAsFixed(2)}",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w300),
+                                          ),
+                                        ),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Colors.white, //background
+                                            onPrimary: Colors.blue,
+                                            //foreground
+                                            shape: CircleBorder(),
+                                          ),
+                                          child: Container(
+                                              alignment: Alignment.center,
+                                              padding: EdgeInsets.all(3),
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: Icon(Icons.share_rounded,
+                                                  size: 15,
+                                                  color: Colors.blue)),
+                                          //capture the success flag with async and await
+                                          onPressed: () {
+                                            _showShare(markerlist);
+                                          },
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -1414,5 +1451,228 @@ class CalendarState extends State<CalendarPage> {
 
   Future<void> cancelScheduledNotifications() async {
     await AwesomeNotifications().cancelAllSchedules();
+  }
+
+  //show share dialog
+  void _showShare(List<Event> itemevents) {
+    List<String> sharecomment = [];
+    itemevents.forEach((item) {
+      setState(() {
+        sharecomment.add(
+            " \n  ${itemevents.indexWhere((markerdata) => markerdata.title == item.title && markerdata.timer == item.timer) + 1}. [ ${item.timer} ] ${item.itemname} - ${item.address}\n${item.website}\n");
+      });
+    });
+
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+            contentPadding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 15.0),
+            title: Column(
+              children: [
+                Text('Share Itinerary To'),
+              ],
+            ),
+            content: SingleChildScrollView(
+                child: Column(
+              children: [
+                //facebook
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white, //background
+                      onPrimary: Colors.blue,
+                      //foreground
+                      //remove border radius
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () async {
+                      FlutterSocialContentShare.share(
+                          type: ShareType.facebookWithoutImage,
+                          url:
+                              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/null_photos%2FHighlight2.jpg?alt=media&token=4d9d4510-3450-4bf8-92ea-8dddc68ba312",
+                          quote:
+                              "Itinerary • ${DateFormat('MMMM dd, yyyy').format(_selectedDay)}\n\n$sharecomment");
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          left: 5, right: 5, top: 10, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //use userLoggedIn flag to change icon and text
+                          Icon(Icons.facebook_rounded,
+                              size: 30, color: Colors.blue),
+                          SizedBox(width: 5),
+                          Text("Facebook",
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 14)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                //instagram
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white, //background
+                      onPrimary: Colors.blue,
+                      //foreground
+                      //remove border radius
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () async {
+                      FlutterSocialContentShare.share(
+                          type: ShareType.instagramWithImageUrl,
+                          imageUrl:
+                              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/null_photos%2FHighlight2.jpg?alt=media&token=4d9d4510-3450-4bf8-92ea-8dddc68ba312",
+                          quote:
+                              "Itinerary • ${DateFormat('MMMM dd, yyyy').format(_selectedDay)}\n\n$sharecomment");
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          left: 5, right: 5, top: 10, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //use userLoggedIn flag to change icon and text
+                          SvgPicture.asset(
+                            'assets/icons/InstagramIcon.svg',
+                            color: Colors.blue,
+                            height: 30,
+                            width: 30,
+                          ),
+                          SizedBox(width: 5),
+                          Text("Instagram",
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 14)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                //whatsapp
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white, //background
+                      onPrimary: Colors.blue,
+                      //foreground
+                      //remove border radius
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () async {
+                      FlutterSocialContentShare.shareOnWhatsapp("xxxxxx",
+                          "Itinerary • ${DateFormat('MMMM dd, yyyy').format(_selectedDay)}\n\n$sharecomment");
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          left: 5, right: 5, top: 10, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //use userLoggedIn flag to change icon and text
+                          SvgPicture.asset(
+                            'assets/icons/WhatsAppIcon.svg',
+                            color: Colors.blue,
+                            height: 30,
+                            width: 30,
+                          ),
+                          SizedBox(width: 5),
+                          Text("WhatsApp",
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 14)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                //email
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white, //background
+                      onPrimary: Colors.blue,
+                      //foreground
+                      //remove border radius
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () async {
+                      FlutterSocialContentShare.shareOnEmail(
+                          recipients: ["xxxx.xxx@gmail.com"],
+                          subject:
+                              "Hey, check this awesome places in Boracay Island!",
+                          body:
+                              "Itinerary • ${DateFormat('MMMM dd, yyyy').format(_selectedDay)}\n\n$sharecomment",
+                          isHTML: true); //default isHTML: False
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          left: 5, right: 5, top: 10, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //use userLoggedIn flag to change icon and text
+                          Icon(Icons.email_rounded,
+                              size: 30, color: Colors.blue),
+                          SizedBox(width: 5),
+                          Text("Email",
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 14)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                //sms
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white, //background
+                      onPrimary: Colors.blue,
+                      //foreground
+                      //remove border radius
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () async {
+                      FlutterSocialContentShare.shareOnSMS(
+                          recipients: ["xxxxxx"],
+                          text:
+                              "Itinerary • ${DateFormat('MMMM dd, yyyy').format(_selectedDay)}\n\n$sharecomment");
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          left: 5, right: 5, top: 10, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //use userLoggedIn flag to change icon and text
+                          Icon(Icons.sms_rounded, size: 30, color: Colors.blue),
+                          SizedBox(width: 5),
+                          Text("SMS",
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 14)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ))));
   }
 }
