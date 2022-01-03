@@ -1,11 +1,19 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:url_launcher/link.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../Navigation/TopNavBar.dart';
+
+class LinkList {
+  String link;
+  String name;
+  LinkList(this.link, this.name);
+}
 
 class TravelGuidelines extends StatefulWidget {
   @override
@@ -62,6 +70,63 @@ class TravelGuidelinesState extends State<TravelGuidelines> {
                   ),
                 ],
               ),
+            ),
+            Container(
+              width: 50,
+              height: 100,
+              child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('website')
+                      .doc('links')
+                      .snapshots(),
+                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    if (snapshot.hasData) {
+                      var userDocument = snapshot.data;
+
+                      final List<LinkList> linklist = [];
+
+                      userDocument['linklist'].forEach((value) {
+                        linklist.add(LinkList(value['link'], value['name']));
+                      });
+                      return linklist.length > 0
+                          ? Column(
+                              children: [
+                                Expanded(
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: linklist.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Column(
+                                          children: [
+                                            Text("${linklist[index].name}",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15)),
+                                            Text("${linklist[index].link}",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15))
+                                          ],
+                                        );
+                                      }),
+                                ),
+                              ],
+                            )
+                          : linklist.length == null
+                              ? SizedBox()
+                              : SizedBox();
+                    } else if (snapshot.hasError) {
+                      return SizedBox();
+                    } else
+                      return Text(
+                        'Loading',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.white,
+                        ),
+                      );
+                  }),
             ),
             CarouselWithDotsPage(imgList: imgList),
             Card1(),
@@ -1693,12 +1758,55 @@ class Card9 extends StatelessWidget {
     }
 
     buildList() {
-      return Container(
-        child: Center(
-          child: Column(
-            // ignore: prefer_const_constructors
-            children: [
-              Link(
+      return StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('website')
+              .doc('links')
+              .snapshots(),
+          builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            if (snapshot.hasData) {
+              var userDocument = snapshot.data;
+
+              final List<LinkList> linklist = [];
+
+              userDocument['linklist'].forEach((value) {
+                linklist.add(LinkList(value['link'], value['name']));
+              });
+              return linklist.length > 0
+                  ? ListView.builder(
+                      itemCount: linklist.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return TextButton(
+                          onPressed: () async {
+                            String url = "${linklist[index].link}";
+                            if (await canLaunch(url)) {
+                              await launch(url);
+                            } else {
+                              showSimpleNotification(
+                                Text("Could not lunch $url"),
+                                background: Colors.green[400],
+                                position: NotificationPosition.bottom,
+                              );
+                            }
+                          },
+                          child: Text('${linklist[index].name}'),
+                        );
+                      })
+                  : linklist.length == null
+                      ? SizedBox()
+                      : SizedBox();
+            } else if (snapshot.hasError) {
+              return SizedBox();
+            } else
+              return Text(
+                'Loading',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
+              );
+          });
+      /*Link(
                 uri: Uri.parse(
                     'https://pub.dev/documentation/url_launcher/latest/link/link-library.html'),
                 target: LinkTarget.blank,
@@ -1750,11 +1858,7 @@ class Card9 extends StatelessWidget {
                     child: const Text('Aklan Government'),
                   );
                 },
-              ),
-            ],
-          ),
-        ),
-      );
+              ),*/
     }
 
     return ExpandableNotifier(
@@ -1766,44 +1870,109 @@ class Card9 extends StatelessWidget {
           child: Column(
             children: <Widget>[
               ExpandablePanel(
-                theme: const ExpandableThemeData(
-                  headerAlignment: ExpandablePanelHeaderAlignment.center,
-                  tapBodyToExpand: true,
-                  tapBodyToCollapse: true,
-                  hasIcon: false,
-                ),
-                header: Container(
-                  color: Color(0xff0470a2),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      children: [
-                        ExpandableIcon(
-                          theme: const ExpandableThemeData(
-                            expandIcon: Icons.arrow_right,
-                            collapseIcon: Icons.arrow_drop_down,
-                            iconColor: Colors.white,
-                            iconSize: 28.0,
-                            iconPadding: EdgeInsets.only(right: 5),
-                            hasIcon: false,
+                  theme: const ExpandableThemeData(
+                    headerAlignment: ExpandablePanelHeaderAlignment.center,
+                    tapBodyToExpand: true,
+                    tapBodyToCollapse: true,
+                    hasIcon: false,
+                  ),
+                  header: Container(
+                    color: Color(0xff0470a2),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        children: [
+                          ExpandableIcon(
+                            theme: const ExpandableThemeData(
+                              expandIcon: Icons.arrow_right,
+                              collapseIcon: Icons.arrow_drop_down,
+                              iconColor: Colors.white,
+                              iconSize: 28.0,
+                              iconPadding: EdgeInsets.only(right: 5),
+                              hasIcon: false,
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            "List of Sites",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                .copyWith(color: Colors.white),
+                          Expanded(
+                            child: Text(
+                              "List of Sites",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  .copyWith(color: Colors.white),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                collapsed: Container(),
-                expanded: buildList(),
-              ),
+                  collapsed: Container(),
+                  expanded: Container(
+                    height: 400,
+                    width: MediaQuery.of(context).size.width,
+                    child: StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('website')
+                            .doc('links')
+                            .snapshots(),
+                        builder: (context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.hasData) {
+                            var userDocument = snapshot.data;
+
+                            final List<LinkList> linklist = [];
+
+                            userDocument['linklist'].forEach((value) {
+                              linklist
+                                  .add(LinkList(value['link'], value['name']));
+                            });
+                            return linklist.length > 0
+                                ? Column(
+                                    children: [
+                                      Expanded(
+                                        child: ListView.builder(
+                                            itemCount: linklist.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return TextButton(
+                                                onPressed: () async {
+                                                  String url =
+                                                      "${linklist[index].link}";
+                                                  if (await canLaunch(url)) {
+                                                    await launch(url);
+                                                  } else {
+                                                    showSimpleNotification(
+                                                      Text(
+                                                          "Could not lunch $url"),
+                                                      background:
+                                                          Colors.green[400],
+                                                      position:
+                                                          NotificationPosition
+                                                              .bottom,
+                                                    );
+                                                  }
+                                                },
+                                                child: Text(
+                                                    '${linklist[index].name}'),
+                                              );
+                                            }),
+                                      ),
+                                    ],
+                                  )
+                                : linklist.length == null
+                                    ? SizedBox()
+                                    : SizedBox();
+                          } else if (snapshot.hasError) {
+                            return SizedBox();
+                          } else
+                            return Text(
+                              'Loading',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.white,
+                              ),
+                            );
+                        }),
+                  )),
             ],
           ),
         ),
