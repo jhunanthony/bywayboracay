@@ -19,7 +19,6 @@ class DistanceAndDurationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     double meterperpeso = 180.00;
     double estimatedfare = distancevalue / meterperpeso;
-   
 
     return Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,7 +77,6 @@ class DistanceAndDurationWidget extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            
             Text(
               ' in Transit',
               style: TextStyle(
@@ -101,58 +99,66 @@ class DistanceAndDurationWidget extends StatelessWidget {
             ),
 
             //since 20.00 is minimum fare then return 20 pesos
-            estimatedfare <= 20.00 ?
-            Text(
-              '20.00',
-              style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold),
-            ) : estimatedfare > 20.00 && estimatedfare <= 25.00 ?
-            Text(
-              '25.00',
-              style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold),
-            ) : estimatedfare > 25.00 && estimatedfare <= 30.00 ?
-            //return 20.00 as minimum fare
-            Text(
-              '30.00',
-              style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold),
-            ) : estimatedfare > 30.00 && estimatedfare <= 35.00 ?
-            Text(
-              '35.00',
-              style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold),
-            ) : estimatedfare > 35.00 && estimatedfare <= 40.00 ?
-            Text(
-              '40.00',
-              style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold),
-            ) : estimatedfare > 40.00 && estimatedfare <= 45.00 ?
-            Text(
-              '45.00',
-              style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold),
-            ) :
-            Text(
-              estimatedfare.toStringAsFixed(2),
-              style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold),
-            ) 
+            estimatedfare <= 20.00
+                ? Text(
+                    '20.00',
+                    style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold),
+                  )
+                : estimatedfare > 20.00 && estimatedfare <= 25.00
+                    ? Text(
+                        '25.00',
+                        style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold),
+                      )
+                    : estimatedfare > 25.00 && estimatedfare <= 30.00
+                        ?
+                        //return 20.00 as minimum fare
+                        Text(
+                            '30.00',
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold),
+                          )
+                        : estimatedfare > 30.00 && estimatedfare <= 35.00
+                            ? Text(
+                                '35.00',
+                                style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            : estimatedfare > 35.00 && estimatedfare <= 40.00
+                                ? Text(
+                                    '40.00',
+                                    style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                : estimatedfare > 40.00 &&
+                                        estimatedfare <= 45.00
+                                    ? Text(
+                                        '45.00',
+                                        style: TextStyle(
+                                            color: Colors.blue,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    : Text(
+                                        estimatedfare.toStringAsFixed(2),
+                                        style: TextStyle(
+                                            color: Colors.blue,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold),
+                                      ),
 
+            
           ])
         ]);
   }
@@ -170,12 +176,11 @@ class DistanceAndDurationInfo {
 
   factory DistanceAndDurationInfo.fromJson(Map<String, dynamic> json) {
     return DistanceAndDurationInfo(
-     
       distancevalue: json['rows'][0]['elements'][0]['distance']['value'],
       distance: json['rows'][0]['elements'][0]['distance']['text'],
       duration: json['rows'][0]['elements'][0]['duration']['text'],
       //startlocation: json['origin_addresses'][0],
-       /*distancevalue: json['routes'][0][2]['legs'][0][0]['distance']['value'],
+      /*distancevalue: json['routes'][0][2]['legs'][0][0]['distance']['value'],
       distance: json['routes'][0][2]['legs'][0][0]['distance']['text'],
       duration: json['routes'][0][2]['legs'][0][1]['duration']['text'],
        startlocation: json['routes'][0]['legs'][0][4]['start_address'],*/

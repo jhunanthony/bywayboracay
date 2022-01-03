@@ -71,7 +71,7 @@ class TravelGuidelinesState extends State<TravelGuidelines> {
                 ],
               ),
             ),
-            Container(
+            /*Container(
               width: 50,
               height: 100,
               child: StreamBuilder(
@@ -127,7 +127,7 @@ class TravelGuidelinesState extends State<TravelGuidelines> {
                         ),
                       );
                   }),
-            ),
+            ),*/
             CarouselWithDotsPage(imgList: imgList),
             Card1(),
             Card2(),
@@ -1748,119 +1748,6 @@ class Card8 extends StatelessWidget {
 class Card9 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    buildItem(String label) {
-      return Container(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Text(label),
-        ),
-      );
-    }
-
-    buildList() {
-      return StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('website')
-              .doc('links')
-              .snapshots(),
-          builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-            if (snapshot.hasData) {
-              var userDocument = snapshot.data;
-
-              final List<LinkList> linklist = [];
-
-              userDocument['linklist'].forEach((value) {
-                linklist.add(LinkList(value['link'], value['name']));
-              });
-              return linklist.length > 0
-                  ? ListView.builder(
-                      itemCount: linklist.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return TextButton(
-                          onPressed: () async {
-                            String url = "${linklist[index].link}";
-                            if (await canLaunch(url)) {
-                              await launch(url);
-                            } else {
-                              showSimpleNotification(
-                                Text("Could not lunch $url"),
-                                background: Colors.green[400],
-                                position: NotificationPosition.bottom,
-                              );
-                            }
-                          },
-                          child: Text('${linklist[index].name}'),
-                        );
-                      })
-                  : linklist.length == null
-                      ? SizedBox()
-                      : SizedBox();
-            } else if (snapshot.hasError) {
-              return SizedBox();
-            } else
-              return Text(
-                'Loading',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.white,
-                ),
-              );
-          });
-      /*Link(
-                uri: Uri.parse(
-                    'https://pub.dev/documentation/url_launcher/latest/link/link-library.html'),
-                target: LinkTarget.blank,
-                builder: (ctx, openLink) {
-                  return TextButton(
-                    onPressed: openLink,
-                    child: const Text('Department of Tourism'),
-                  );
-                },
-              ),
-              Link(
-                uri: Uri.parse('http://beta.tourism.gov.ph/'),
-                target: LinkTarget.blank,
-                builder: (ctx, openLink) {
-                  return TextButton(
-                    onPressed: openLink,
-                    child: const Text('Boracay Tourism Office'),
-                  );
-                },
-              ),
-              Link(
-                uri: Uri.parse(
-                    'https://malay.gov.ph/index.php/contacts/lgu-offices'),
-                target: LinkTarget.blank,
-                builder: (ctx, openLink) {
-                  return TextButton(
-                    onPressed: openLink,
-                    child: const Text('LGU Malay'),
-                  );
-                },
-              ),
-              Link(
-                uri: Uri.parse(
-                    'https://touristboracay.com/?fbclid=IwAR1BZxLtQDgQQY89GC7oqDZwtgzdEY4S5xQqi-nYyWEQ2ldNiaBX0M9BNA0&AspxAutoDetectCookieSupport=1'),
-                target: LinkTarget.blank,
-                builder: (ctx, openLink) {
-                  return TextButton(
-                    onPressed: openLink,
-                    child: const Text('Tourist Boracay'),
-                  );
-                },
-              ),
-              Link(
-                uri: Uri.parse('https://aklan.gov.ph/local-government/'),
-                target: LinkTarget.blank,
-                builder: (ctx, openLink) {
-                  return TextButton(
-                    onPressed: openLink,
-                    child: const Text('Aklan Government'),
-                  );
-                },
-              ),*/
-    }
-
     return ExpandableNotifier(
         child: Padding(
       padding: const EdgeInsets.all(10),

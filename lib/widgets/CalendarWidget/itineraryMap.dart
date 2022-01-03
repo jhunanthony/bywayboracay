@@ -5,7 +5,9 @@ import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/utils.dart';
 import 'package:bywayborcay/widgets/MapWidgets/ItineraryDistanceAndDurationWidget.dart';
 import 'package:bywayborcay/widgets/MapWidgets/MapUpperInfo.dart';
+import 'package:bywayborcay/widgets/MapWidgets/Transitfare.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -410,20 +412,52 @@ class _ItineraryMapState extends State<ItineraryMap> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        FutureBuilder<ItineraryDestDurInfo>(
-                            future: futuredistanceandduration,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return ItineraryDistDur(
-                                  distancevalue: snapshot.data.distancevalue,
-                                  distance: snapshot.data.distance,
-                                  duration: snapshot.data.duration,
-                                );
-                              } else if (snapshot.hasError) {
-                                return Center(child: Text("${snapshot.error}"));
-                              }
-                              return Center(child: CircularProgressIndicator());
-                            }),
+                        Row(
+                          children: [
+                            FutureBuilder<ItineraryDestDurInfo>(
+                                future: futuredistanceandduration,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    return ItineraryDistDur(
+                                      distancevalue: snapshot.data.distancevalue,
+                                      distance: snapshot.data.distance,
+                                      duration: snapshot.data.duration,
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Center(child: Text("${snapshot.error}"));
+                                  }
+                                  return Center(child: CircularProgressIndicator());
+                                }),
+                                SizedBox(
+                      width: 5,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TransitfarePage()));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.white, //background
+                        onPrimary: Colors.blue,
+                        //foreground
+                        shape: CircleBorder(),
+                      ),
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 15,
+                        width: 15,
+                        child: Icon(
+                          CupertinoIcons.question,
+                          size: 13,
+                          color: Colors.blue,
+                        ),
+                      ),
+                      //capture the success flag with async and await
+                    ),
+                          ],
+                        ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               primary: Colors.blue[200], //background

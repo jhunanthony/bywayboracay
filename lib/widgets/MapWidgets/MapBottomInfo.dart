@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
+import 'package:bywayborcay/widgets/MapWidgets/Transitfare.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -175,20 +176,52 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                FutureBuilder<DistanceAndDurationInfo>(
-                    future: futuredistanceandduration,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return DistanceAndDurationWidget(
-                          distancevalue: snapshot.data.distancevalue,
-                          distance: snapshot.data.distance,
-                          duration: snapshot.data.duration,
-                        );
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text("${snapshot.error}"));
-                      }
-                      return Center(child: CircularProgressIndicator());
-                    }),
+                Row(
+                  children: [
+                    FutureBuilder<DistanceAndDurationInfo>(
+                        future: futuredistanceandduration,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return DistanceAndDurationWidget(
+                              distancevalue: snapshot.data.distancevalue,
+                              distance: snapshot.data.distance,
+                              duration: snapshot.data.duration,
+                            );
+                          } else if (snapshot.hasError) {
+                            return Center(child: Text("${snapshot.error}"));
+                          }
+                          return Center(child: CircularProgressIndicator());
+                        }),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TransitfarePage()));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.white, //background
+                        onPrimary: Colors.blue,
+                        //foreground
+                        shape: CircleBorder(),
+                      ),
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 15,
+                        width: 15,
+                        child: Icon(
+                          CupertinoIcons.question,
+                          size: 13,
+                          color: Colors.blue,
+                        ),
+                      ),
+                      //capture the success flag with async and await
+                    ),
+                  ],
+                ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       primary: Colors.blue[200], //background
