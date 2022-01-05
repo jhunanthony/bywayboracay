@@ -2,6 +2,7 @@ import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:bywayborcay/pages/SavePage.dart';
 import 'package:bywayborcay/services/savecategory.dart';
 import 'package:bywayborcay/services/loginservice.dart';
+import 'package:bywayborcay/widgets/Navigation/AboutUs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -235,10 +236,10 @@ class SideMenuBar extends StatelessWidget {
                           ),
                         ),
                         onPressed: () async {
-                          /*Navigator.push(
+                          Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => LikedPage()));*/
+                                  builder: (context) => AboutPage()));
                         },
                         child: Container(
                           padding: EdgeInsets.only(
@@ -272,7 +273,7 @@ class SideMenuBar extends StatelessWidget {
                           ),
                         ),
                         onPressed: () async {
-                        /*  Navigator.push(
+                          /*  Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => LikedPage()));*/

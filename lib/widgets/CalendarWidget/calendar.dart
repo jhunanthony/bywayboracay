@@ -501,7 +501,19 @@ class CalendarState extends State<CalendarPage> {
                         time_24H.hasMatch(timer.text))) {
                   showSimpleNotification(
                       Text("Please enter a valid time to the event"));
-                } else if (event.text.isEmpty) {
+                } /*else if (timer.text.contains('AM') ||
+                    timer.text.contains('am') ||
+                    timer.text.contains('pm') ||
+                    timer.text.contains('PM') == false) {
+                  showSimpleNotification(
+                      Text("Please enter a valid time (12 h) of event"));
+                } else if (int.parse(
+                        DateFormat("hh").parse(timer.text).toString()) >
+                    12) {
+                  showSimpleNotification(
+                      Text("Please enter a valid time (12 h) of event"));
+                }*/
+                else if (event.text.isEmpty) {
                   showSimpleNotification(
                       Text("Please enter a valid title to the event"));
                 } else if (desc.text.isEmpty) {
@@ -807,36 +819,6 @@ class CalendarState extends State<CalendarPage> {
                                     .compareTo(DateFormat("h:mm a")
                                         .parse(item2.timer)));
 
-                              /* if (value.length > 0) {
-                                value.forEach((Event value) {
-                                double total = double.parse(value.budget);
-
-                                  maintotal += total;
-
-                                  if (value.lat != "0.00") {
-                                    markerlist.add(Event(
-                                      value.title,
-                                      [
-                                        {
-                                          "${Auth().getCurrentUser().displayName}"
-                                        }
-                                      ],
-                                      value.desc,
-                                      value.timer,
-                                      value.budget,
-                                      value.website,
-                                      value.imgName,
-                                      value.lat,
-                                      value.long,
-                                      value.address,
-                                      value.itemname,
-                                      value.category,
-                                      "${Auth().getCurrentUser().displayName}",
-                                    ));
-                                  }
-                                });
-                              }*/
-
                               return Column(children: [
                                 Visibility(
                                   visible: index == 0,
@@ -994,9 +976,14 @@ class CalendarState extends State<CalendarPage> {
                                     ),
                                     Column(children: [
                                       Visibility(
-                                        replacement: SizedBox(
-                                          height: 25,
-                                          width: 25,
+                                        replacement: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 12, right: 12),
+                                          child: Dash(
+                                              direction: Axis.vertical,
+                                              length: 10,
+                                              dashLength: 15,
+                                              dashColor: Colors.grey),
                                         ),
                                         visible: value[index].lat != "0.00" &&
                                             value[index].long != "0.00",
@@ -1020,7 +1007,7 @@ class CalendarState extends State<CalendarPage> {
                                       ),
                                       Dash(
                                           direction: Axis.vertical,
-                                          length: 90,
+                                          length: 100,
                                           dashLength: 15,
                                           dashColor: Colors.grey),
                                     ]),
@@ -1163,7 +1150,7 @@ class CalendarState extends State<CalendarPage> {
                                           child: Container(
                                               margin: const EdgeInsets.only(
                                                   right: 10,
-                                                  bottom: 10,
+                                                  bottom: 5,
                                                   left: 10),
                                               decoration: BoxDecoration(
                                                 borderRadius:
@@ -1190,7 +1177,7 @@ class CalendarState extends State<CalendarPage> {
                                                 children: [
                                                   Container(
                                                       height: 100,
-                                                      width: 90,
+                                                      width: 88,
                                                       decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius.only(
@@ -1495,10 +1482,9 @@ class CalendarState extends State<CalendarPage> {
                     onPressed: () async {
                       FlutterSocialContentShare.share(
                           type: ShareType.facebookWithoutImage,
-                          url:
-                              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/null_photos%2FHighlight2.jpg?alt=media&token=4d9d4510-3450-4bf8-92ea-8dddc68ba312",
+                          url: "${itemevents[0].website}",
                           quote:
-                              "Itinerary • ${DateFormat('MMMM dd, yyyy').format(_selectedDay)}\n\n$sharecomment");
+                              "Itinerary • ${DateFormat('MMMM dd, yyyy').format(_selectedDay)}\n$sharecomment");
                     },
                     child: Container(
                       padding: EdgeInsets.only(
@@ -1534,10 +1520,9 @@ class CalendarState extends State<CalendarPage> {
                     onPressed: () async {
                       FlutterSocialContentShare.share(
                           type: ShareType.instagramWithImageUrl,
-                          imageUrl:
-                              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/null_photos%2FHighlight2.jpg?alt=media&token=4d9d4510-3450-4bf8-92ea-8dddc68ba312",
+                          imageUrl: "${itemevents[0].website}",
                           quote:
-                              "Itinerary • ${DateFormat('MMMM dd, yyyy').format(_selectedDay)}\n\n$sharecomment");
+                              "Itinerary • ${DateFormat('MMMM dd, yyyy').format(_selectedDay)}\n$sharecomment");
                     },
                     child: Container(
                       padding: EdgeInsets.only(
@@ -1576,7 +1561,7 @@ class CalendarState extends State<CalendarPage> {
                     ),
                     onPressed: () async {
                       FlutterSocialContentShare.shareOnWhatsapp("xxxxxx",
-                          "Itinerary • ${DateFormat('MMMM dd, yyyy').format(_selectedDay)}\n\n$sharecomment");
+                          "Itinerary • ${DateFormat('MMMM dd, yyyy').format(_selectedDay)}\n$sharecomment");
                     },
                     child: Container(
                       padding: EdgeInsets.only(
@@ -1619,7 +1604,7 @@ class CalendarState extends State<CalendarPage> {
                           subject:
                               "Hey, check this awesome places in Boracay Island!",
                           body:
-                              "Itinerary • ${DateFormat('MMMM dd, yyyy').format(_selectedDay)}\n\n$sharecomment",
+                              "Itinerary • ${DateFormat('MMMM dd, yyyy').format(_selectedDay)}\n$sharecomment",
                           isHTML: true); //default isHTML: False
                     },
                     child: Container(
@@ -1657,7 +1642,7 @@ class CalendarState extends State<CalendarPage> {
                       FlutterSocialContentShare.shareOnSMS(
                           recipients: ["xxxxxx"],
                           text:
-                              "Itinerary • ${DateFormat('MMMM dd, yyyy').format(_selectedDay)}\n\n$sharecomment");
+                              "Itinerary • ${DateFormat('MMMM dd, yyyy').format(_selectedDay)}\n$sharecomment");
                     },
                     child: Container(
                       padding: EdgeInsets.only(
