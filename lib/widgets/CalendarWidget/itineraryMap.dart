@@ -412,76 +412,71 @@ class _ItineraryMapState extends State<ItineraryMap> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        FutureBuilder<ItineraryDestDurInfo>(
+                            future: futuredistanceandduration,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return ItineraryDistDur(
+                                  distancevalue: snapshot.data.distancevalue,
+                                  distance: snapshot.data.distance,
+                                  duration: snapshot.data.duration,
+                                );
+                              } else if (snapshot.hasError) {
+                                return Center(child: Text("${snapshot.error}"));
+                              }
+                              return Center(child: CircularProgressIndicator());
+                            }),
                         Row(
                           children: [
-                            FutureBuilder<ItineraryDestDurInfo>(
-                                future: futuredistanceandduration,
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    return ItineraryDistDur(
-                                      distancevalue: snapshot.data.distancevalue,
-                                      distance: snapshot.data.distance,
-                                      duration: snapshot.data.duration,
-                                    );
-                                  } else if (snapshot.hasError) {
-                                    return Center(child: Text("${snapshot.error}"));
-                                  }
-                                  return Center(child: CircularProgressIndicator());
-                                }),
-                                SizedBox(
-                      width: 5,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => TransitfarePage()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white, //background
-                        onPrimary: Colors.blue,
-                        //foreground
-                        shape: CircleBorder(),
-                      ),
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 15,
-                        width: 15,
-                        child: Icon(
-                          CupertinoIcons.question,
-                          size: 13,
-                          color: Colors.blue,
-                        ),
-                      ),
-                      //capture the success flag with async and await
-                    ),
-                          ],
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.blue[200], //background
-                              onPrimary: Colors.white,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 17, vertical: 17), //foreground
-                              shape: CircleBorder()),
-                          child: Center(
-                            child: Icon(
-                              Icons.directions_rounded,
-                              size: 25,
-                              color: Colors.white,
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            TransitfarePage()));
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 15,
+                                width: 15,
+                                child: Icon(
+                                  CupertinoIcons.question,
+                                  size: 13,
+                                  color: Colors.blue,
+                                ),
+                              ),
                             ),
-                          ),
-                          onPressed: () async {
-                            String googleUrl =
-                                'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocationref.latitude},${destinationLocationref.longitude}&travelmode=walking&dir_action=navigate';
+                            SizedBox(
+                              width: 10,
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.blue[200], //background
+                                  onPrimary: Colors.white,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 17,
+                                      vertical: 17), //foreground
+                                  shape: CircleBorder()),
+                              child: Center(
+                                child: Icon(
+                                  Icons.directions_rounded,
+                                  size: 25,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onPressed: () async {
+                                String googleUrl =
+                                    'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocationref.latitude},${destinationLocationref.longitude}&travelmode=walking&dir_action=navigate';
 
-                            if (await canLaunch(googleUrl)) {
-                              await launch(googleUrl);
-                            } else {
-                              throw 'Could not launch $googleUrl';
-                            }
-                          },
+                                if (await canLaunch(googleUrl)) {
+                                  await launch(googleUrl);
+                                } else {
+                                  throw 'Could not launch $googleUrl';
+                                }
+                              },
+                            ),
+                          ],
                         ),
                       ],
                     ),

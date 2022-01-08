@@ -37,7 +37,6 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
 
   // wrapper around the location API
   Location locationref;
-  String googleAPI = 'AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE';
 
   @override
   void initState() {
@@ -69,16 +68,14 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
         Provider.of<CategorySelectionService>(context, listen: false);
     this.items = catSelection.items;
 
+    currentLocationref = await locationref.getLocation();
+
     LatLng destinationlatlong = LatLng(this.items.itemlat, this.items.itemlong);
     destinationLocation =
         LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
 
-    currentLocationref = await locationref.getLocation();
-
     final requestURL =
-        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocation.latitude},${destinationLocation.longitude}&key=$googleAPI";
-    //"https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${currentlocationlatlong.latitude},${currentlocationlatlong.longitude}&destinations=${destinationlatlong.latitude},${destinationlatlong.longitude}&travelmode=walking&dir_action=navigate&key=$googleAPI";
-    //"https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&key=$googleAPI";
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocation.latitude},${destinationLocation.longitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE";
 
     final response = await http.get(Uri.parse(requestURL));
 
@@ -176,38 +173,30 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                FutureBuilder<DistanceAndDurationInfo>(
+                    future: futuredistanceandduration,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return DistanceAndDurationWidget(
+                          distance: snapshot.data.distance,
+                          distancevalue: snapshot.data.distancevalue,
+                          duration: snapshot.data.duration,
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text("${snapshot.error}"));
+                      }
+
+                      return Center(child: CircularProgressIndicator());
+                    }),
                 Row(
                   children: [
-                    FutureBuilder<DistanceAndDurationInfo>(
-                        future: futuredistanceandduration,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return DistanceAndDurationWidget(
-                              distancevalue: snapshot.data.distancevalue,
-                              distance: snapshot.data.distance,
-                              duration: snapshot.data.duration,
-                            );
-                          } else if (snapshot.hasError) {
-                            return Center(child: Text("${snapshot.error}"));
-                          }
-                          return Center(child: CircularProgressIndicator());
-                        }),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
+                    GestureDetector(
+                      onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => TransitfarePage()));
                       },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white, //background
-                        onPrimary: Colors.blue,
-                        //foreground
-                        shape: CircleBorder(),
-                      ),
                       child: Container(
                         alignment: Alignment.center,
                         height: 15,
@@ -218,84 +207,40 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
                           color: Colors.blue,
                         ),
                       ),
-                      //capture the success flag with async and await
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: Colors.blue[200], //background
+                          onPrimary: Colors.white,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 17, vertical: 17), //foreground
+                          shape: CircleBorder()),
+                      child: Center(
+                        child: Icon(
+                          Icons.directions_rounded,
+                          size: 25,
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: () async {
+                        String googleUrl =
+                            'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&travelmode=walking&dir_action=navigate';
+
+                        if (await canLaunch(googleUrl)) {
+                          await launch(googleUrl);
+                        } else {
+                          throw 'Could not launch $googleUrl';
+                        }
+                      },
                     ),
                   ],
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      primary: Colors.blue[200], //background
-                      onPrimary: Colors.white,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 17, vertical: 17), //foreground
-                      shape: CircleBorder()),
-                  child: Center(
-                    child: Icon(
-                      Icons.directions_rounded,
-                      size: 25,
-                      color: Colors.white,
-                    ),
-                  ),
-                  onPressed: () async {
-                    String googleUrl =
-                        'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&travelmode=walking&dir_action=navigate';
-
-                    if (await canLaunch(googleUrl)) {
-                      await launch(googleUrl);
-                    } else {
-                      throw 'Could not launch $googleUrl';
-                    }
-                  },
                 ),
               ],
             ),
           )
-          /*Container(
-              child: Column(children: [
-            Row(children: [
-              SizedBox(width: 10),
-              Expanded(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                    
-                    Row(children: [
-                      //add drop down to personalize fare
-                      DropdownButton(
-                        value: farevalue,
-                        icon: Icon(Icons.keyboard_arrow_down),
-                        items: fareitems.map((String items) {
-                          return DropdownMenuItem(
-                              value: items, child: Text(items));
-                        }).toList(),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            farevalue = newValue;
-                          });
-                        },
-                      ),
-                      Text(
-                        ': Php 100.00',
-                      )
-                    ]),
-                  ])),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      primary: Colors.blue[200], //background
-                      onPrimary: Colors.white,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 15), //foreground
-                      shape: CircleBorder()),
-                  child: Center(
-                    child: Icon(
-                      CupertinoIcons.car_fill,
-                      size: 25,
-                      color: Colors.white,
-                    ),
-                  ),
-                  onPressed: () {}),
-            ])
-          ]))*/
         ]));
   }
 }

@@ -129,7 +129,6 @@ class _ItemsPageState extends State<ItemsPage> {
 
   List<String> tags = [];
   List<String> options = [
-    
     '1',
     '2',
     '3',
@@ -140,7 +139,6 @@ class _ItemsPageState extends State<ItemsPage> {
   ];
   List<String> tags2 = [];
   List<String> subcategoryoptions = [];
-
 
   void _openFilterDialog(Category selectedCategory) async {
     await FilterListDialog.display<Items>(
@@ -192,6 +190,9 @@ class _ItemsPageState extends State<ItemsPage> {
         Provider.of<RatingService>(context, listen: false);
 
     SaveService likedService = Provider.of<SaveService>(context, listen: false);
+    LoginService loginService =
+        Provider.of<LoginService>(context, listen: false);
+    bool userLoggedIn = loginService.loggedInUserModel != null;
 
     return SafeArea(
       child: Scaffold(
@@ -427,7 +428,6 @@ class _ItemsPageState extends State<ItemsPage> {
                                                 'WaterActivities',
                                                 'LandActivities',
                                                 'LocalServices',
-                                                
                                                 'Environmental',
                                                 'Social',
                                               ]
@@ -695,12 +695,10 @@ class _ItemsPageState extends State<ItemsPage> {
                                                               .hasError) {
                                                             return Text(
                                                               '',
-                                                              
                                                             );
                                                           } else
                                                             return Text(
                                                               '',
-                                                              
                                                             );
                                                         })
                                                   ],
@@ -1015,13 +1013,11 @@ class _ItemsPageState extends State<ItemsPage> {
                                                               .hasError) {
                                                             return Text(
                                                               '',
-                                                            
                                                             );
                                                           }
 
                                                           return Text(
                                                             '',
-                                                            
                                                           );
                                                         })
                                                   ],
@@ -1102,18 +1098,66 @@ class _ItemsPageState extends State<ItemsPage> {
                               })));
                 }
                 return Center(
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 300,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 200,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.white, //background
+                            onPrimary: Colors.blue,
+                            //foreground
+                            //remove border radius
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(10),
+                            ),
+                          ),
+                          onPressed: () async {
+                            if (userLoggedIn) {
+                              await loginService.signOut();
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  '/loginpage',
+                                  (Route<dynamic> route) => false);
+                            } else {
+                              bool success =
+                                  await loginService.signInWithGoogle();
+                              if (success) {
+                                Navigator.of(context)
+                                    .pushReplacementNamed('/mainpage');
+                              }
+                            }
+                          },
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                left: 20, right: 20, top: 15, bottom: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                //use userLoggedIn flag to change icon and text
+                                Icon(userLoggedIn ? Icons.logout : Icons.login,
+                                    color: Colors.blue, size: 20),
+                                SizedBox(width: 5),
+                                Text(userLoggedIn ? 'Sign Out' : 'Sign In',
+                                    style: TextStyle(
+                                        color: Colors.blue, fontSize: 20))
+                              ],
+                            ),
+                          ),
                         ),
-                        Text(' Login first to access items!',
-                            style: TextStyle(
-                              color: Colors.grey[400],
-                              fontSize: 20,
-                            )),
-                      ]),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(' Login first to access items!',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontSize: 20,
+                          )),
+                    ],
+                  ),
                 );
               })
             ]),

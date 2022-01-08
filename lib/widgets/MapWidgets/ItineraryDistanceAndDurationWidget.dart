@@ -170,14 +170,11 @@ class ItineraryDestDurInfo {
 
   factory ItineraryDestDurInfo.fromJson(Map<String, dynamic> json) {
     return ItineraryDestDurInfo(
-      /*distancevalue: json['routes'][0][2]['legs'][0][0]['distance']['value'],
-      distance: json['routes'][0][2]['legs'][0][0]['distance']['text'],
-      duration: json['routes'][0][2]['legs'][0][1]['duration']['text'],
-       startlocation: json['routes'][0]['legs'][0][4]['start_address'],*/
+
       distancevalue: json['rows'][0]['elements'][0]['distance']['value'],
       distance: json['rows'][0]['elements'][0]['distance']['text'],
       duration: json['rows'][0]['elements'][0]['duration']['text'],
-      //startlocation: json['origin_addresses'][0],
+
     );
   }
 

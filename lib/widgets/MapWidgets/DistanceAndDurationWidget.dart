@@ -157,8 +157,6 @@ class DistanceAndDurationWidget extends StatelessWidget {
                                             fontSize: 13,
                                             fontWeight: FontWeight.bold),
                                       ),
-
-            
           ])
         ]);
   }
@@ -168,22 +166,17 @@ class DistanceAndDurationInfo {
   //final startlocation;
 
   DistanceAndDurationInfo({
-    @required this.distancevalue,
     @required this.distance,
+    @required this.distancevalue,
     @required this.duration,
     //@required this.startlocation,
   });
 
   factory DistanceAndDurationInfo.fromJson(Map<String, dynamic> json) {
     return DistanceAndDurationInfo(
-      distancevalue: json['rows'][0]['elements'][0]['distance']['value'],
       distance: json['rows'][0]['elements'][0]['distance']['text'],
+      distancevalue: json['rows'][0]['elements'][0]['distance']['value'],
       duration: json['rows'][0]['elements'][0]['duration']['text'],
-      //startlocation: json['origin_addresses'][0],
-      /*distancevalue: json['routes'][0][2]['legs'][0][0]['distance']['value'],
-      distance: json['routes'][0][2]['legs'][0][0]['distance']['text'],
-      duration: json['routes'][0][2]['legs'][0][1]['duration']['text'],
-       startlocation: json['routes'][0]['legs'][0][4]['start_address'],*/
     );
   }
 

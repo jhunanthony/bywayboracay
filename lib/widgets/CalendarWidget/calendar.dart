@@ -1460,7 +1460,7 @@ class CalendarState extends State<CalendarPage> {
             contentPadding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 15.0),
             title: Column(
               children: [
-                Text('Share Itinerary To'),
+                Text('Share Daily Itinerary To'),
               ],
             ),
             content: SingleChildScrollView(

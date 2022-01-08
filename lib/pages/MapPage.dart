@@ -83,7 +83,7 @@ class _MapPageState extends State<MapPage> {
     // subscribe to changes in the user's location
     // by "listening" to the location's onLocationChanged event
     locationref.onLocationChanged.listen((LocationData cLoc) {
-      locationref.enableBackgroundMode(enable: true);
+      //locationref.enableBackgroundMode(enable: true);
       // cLoc contains the lat and long of the
       // current user's position in real time,
       // so we're holding on to it
@@ -100,6 +100,8 @@ class _MapPageState extends State<MapPage> {
     //for api distance and duration
     //futuredistanceandduration = getdistanceandduration();
   }
+
+  
 
   /// Disposes of the platform resources
 
@@ -255,11 +257,11 @@ class _MapPageState extends State<MapPage> {
             polylineId: PolylineId('polyLine'),
             color: widget.items.itemcategoryName == "ToStay"
                 ? Colors.purple[400]
-                :  widget.items.itemcategoryName  == "ToEat&Drink"
+                : widget.items.itemcategoryName == "ToEat&Drink"
                     ? Colors.red[400]
-                    :  widget.items.itemcategoryName  == "ToSee"
+                    : widget.items.itemcategoryName == "ToSee"
                         ? Colors.blue[400]
-                        :  widget.items.itemcategoryName  == "ToDo"
+                        : widget.items.itemcategoryName == "ToDo"
                             ? Colors.green[400]
                             : Colors.blue,
             points: polylineCoordinates));

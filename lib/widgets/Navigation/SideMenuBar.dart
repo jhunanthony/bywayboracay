@@ -3,8 +3,11 @@ import 'package:bywayborcay/pages/SavePage.dart';
 import 'package:bywayborcay/services/savecategory.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/Navigation/AboutUs.dart';
+import 'package:bywayborcay/widgets/Navigation/PrivacyPolicy.dart';
+import 'package:bywayborcay/widgets/Navigation/TermsandCon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../services/ratedservice.dart';
 
@@ -38,7 +41,7 @@ class SideMenuBar extends StatelessWidget {
               children: [
                 //show logo
                 Column(children: [
-                  Container(
+                  /* Container(
                     padding: EdgeInsets.all(3),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -57,7 +60,7 @@ class SideMenuBar extends StatelessWidget {
                       width: 35,
                       fit: BoxFit.scaleDown,
                     ),
-                  ),
+                  ),*/
 
                   //display user information
                   //user visibility to hide if empty
@@ -88,7 +91,7 @@ class SideMenuBar extends StatelessWidget {
                               Text('Hi, ' + userName,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 20)),
+                                      color: Colors.white, fontSize: 16)),
                               Consumer<RatingService>(
                                   //a function called when notifier changes
                                   builder: (context, rating, child) {
@@ -170,55 +173,12 @@ class SideMenuBar extends StatelessWidget {
                                     SizedBox(width: 5),
                                     Text("Saved Items",
                                         style: TextStyle(
-                                            color: Colors.blue, fontSize: 14)),
+                                            color: Colors.blue, fontSize: 12)),
                                   ],
                                 ),
                               ),
                             ),
                           );
-                          /* GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LikedPage()));
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  color: Colors.white, shape: BoxShape.circle),
-                              child: Stack(children: [
-                                SvgPicture.asset(
-                                  'assets/icons/' + AppIcons.LikesIcon + '.svg',
-                                  color: Colors.blue,
-                                  height: 30,
-                                  width: 30,
-                                ),
-                                //get the number of like values
-                                Positioned(
-                                  top: 0,
-                                  right: 0,
-                                  child: Visibility(
-                                    visible: like.items.length > 0,
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: Colors.yellow[50],
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                      child: Text(
-                                        '${like.items.length}',
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          color: Colors.blue,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          );*/
                         });
                       }
                       return SizedBox();
@@ -254,7 +214,7 @@ class SideMenuBar extends StatelessWidget {
                               SizedBox(width: 5),
                               Text("About Us",
                                   style: TextStyle(
-                                      color: Colors.blue, fontSize: 14)),
+                                      color: Colors.blue, fontSize: 12)),
                             ],
                           ),
                         ),
@@ -273,10 +233,10 @@ class SideMenuBar extends StatelessWidget {
                           ),
                         ),
                         onPressed: () async {
-                          /*  Navigator.push(
+                          Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => LikedPage()));*/
+                                  builder: (context) => PrivacyPolicyPage()));
                         },
                         child: Container(
                           padding: EdgeInsets.only(
@@ -289,9 +249,80 @@ class SideMenuBar extends StatelessWidget {
                                   color: Colors.blue, size: 25),
 
                               SizedBox(width: 5),
-                              Text("Terms & Policies",
+                              Text("Privacy Policy",
                                   style: TextStyle(
-                                      color: Colors.blue, fontSize: 14)),
+                                      color: Colors.blue, fontSize: 12)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white, //background
+                          onPrimary: Colors.blue,
+                          //foreground
+                          //remove border radius
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () async {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => TermsConditionPage()));
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              left: 10, right: 10, top: 15, bottom: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              //use userLoggedIn flag to change icon and text
+                              Icon(CupertinoIcons.doc_text_fill,
+                                  color: Colors.blue, size: 25),
+
+                              SizedBox(width: 5),
+                              Text("Terms & Conditions",
+                                  style: TextStyle(
+                                      color: Colors.blue, fontSize: 12)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white, //background
+                          onPrimary: Colors.blue,
+                          //foreground
+                          //remove border radius
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () async {
+                          SystemNavigator.pop();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              left: 10, right: 10, top: 15, bottom: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              //use userLoggedIn flag to change icon and text
+                              Icon(Icons.exit_to_app_rounded,
+                                  color: Colors.blue, size: 25),
+
+                              SizedBox(width: 5),
+                              Text("Exit",
+                                  style: TextStyle(
+                                      color: Colors.blue, fontSize: 12)),
                             ],
                           ),
                         ),
