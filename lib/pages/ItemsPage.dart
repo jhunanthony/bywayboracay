@@ -413,10 +413,10 @@ class _ItemsPageState extends State<ItemsPage> {
                                             "ToEat&Drink"
                                         ? subcategoryoptions = [
                                             'Restaurant',
-                                            'FastFood',
+                                            'Fast Food',
                                             'Cafe',
                                             'Bar',
-                                            'FoodHouse',
+                                            'Cuisines',
                                           ]
                                         : this
                                                     .widget

@@ -7,7 +7,11 @@ class CategoryIcon extends StatelessWidget {
   String iconName;
   double size;
 
-  CategoryIcon({this.color, this.iconName, this.size = 30});
+  CategoryIcon({
+    this.color,
+    this.iconName,
+    this.size = 30,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +23,11 @@ class CategoryIcon extends StatelessWidget {
           color: this.color,
           shape: BoxShape.circle,
         ),
-        child: SvgPicture.asset('assets/icons/' + this.iconName + '.svg', color: Colors.white, height: this.size * 0.40, width: this.size *0.40, ));
+        child: SvgPicture.asset(
+          'assets/icons/' + this.iconName + '.svg',
+          color: Colors.white,
+          height: this.size * 0.40,
+          width: this.size * 0.40,
+        ));
   }
 }

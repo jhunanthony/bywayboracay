@@ -32,37 +32,23 @@ class WeatherMainWidget extends StatelessWidget {
         padding: EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 0),
         decoration: BoxDecoration(
           boxShadow: [
-            BoxShadow(color: Colors.grey, blurRadius: 3, offset: Offset(2, 2)),
+            BoxShadow(
+                color: Colors.grey[300], blurRadius: 6, offset: Offset(2, 2)),
           ],
-          image: DecorationImage(
+          /*image: DecorationImage(
             image: NetworkImage(
               "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/null_photos%2FLogin_Beach.jpg?alt=media&token=b1ec35fb-7774-4640-9b8a-042995c83fd2",
             ),
             fit: BoxFit.fitWidth,
-          ),
+          ),*/
 
-          /*color: Colors.yellow[50],*/
+          color: Colors.white,
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Stack(children: [
-          Positioned.fill(
-            child: Container(
-                decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12.0),
-              gradient: LinearGradient(
-                begin: Alignment.centerRight,
-                end: Alignment.center,
-                colors: <Color>[
-                  Colors.transparent,
-                  Colors.black.withOpacity(0.3),
-                  Colors.black.withOpacity(0.5),
-                  Colors.black.withOpacity(0.7),
-                ],
-              ),
-            )),
-          ),
           Padding(
-            padding: const EdgeInsets.all(10),
+            padding:
+                const EdgeInsets.only(top: 0, left: 20, bottom: 0, right: 0),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -72,7 +58,7 @@ class WeatherMainWidget extends StatelessWidget {
                         Text(
                           '${temp.toInt().toString()}°C in ${location.toString()}',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.grey[800],
                             fontSize: 20,
                           ),
                         ),
@@ -80,18 +66,27 @@ class WeatherMainWidget extends StatelessWidget {
                         Text(
                           '${tempMax.toInt().toString()}°C / ${tempMin.toInt().toString()}°C · ${weather.toString().toUpperCase()}',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.grey[800],
                             fontSize: 10,
                           ),
                         ),
                       ]),
-                  Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                    Image.network(
-                        'http://openweathermap.org/img/wn/$weathericon@2x.png',
-                        //color: Colors.blue[200],
-                        height: 50,
-                        width: 50),
-                  ])
+                  Container(
+                    height: 65,
+                    width: 75,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(12),
+                            topRight: Radius.circular(12)),
+                        color: Colors.blue),
+                    child: Center(
+                      child: Image.network(
+                          'http://openweathermap.org/img/wn/$weathericon@2x.png',
+                          //color: Colors.blue[200],
+                          height: 50,
+                          width: 50),
+                    ),
+                  )
 
                   /*Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 

@@ -571,6 +571,10 @@ class CalendarState extends State<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    LoginService loginService =
+        Provider.of<LoginService>(context, listen: false);
+    bool userLoggedIn = loginService.loggedInUserModel != null;
     return Consumer<LoginService>(builder: (context, loginService, child) {
       if (loginService.isUserLoggedIn()) {
         //if logged
@@ -583,7 +587,7 @@ class CalendarState extends State<CalendarPage> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 70,
+                      height: 60,
                     ),
 
                     //display weather
@@ -636,8 +640,47 @@ class CalendarState extends State<CalendarPage> {
                         calendarFormat: _calendarFormat,
 
                         eventLoader: _getEventsForDay,
-
                         calendarStyle: CalendarStyle(
+                          outsideDaysVisible: true,
+                          markerDecoration: BoxDecoration(
+                              color: Colors.blue, shape: BoxShape.circle),
+                          markerSize: 5.00,
+                          markersMaxCount: 1,
+                        ),
+                        calendarBuilders: CalendarBuilders(
+                            todayBuilder: (context, DateTime t, DateTime f) {
+                          return Container(
+                            decoration: new BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                color: Colors.yellow[100],
+                                borderRadius: BorderRadius.circular(5)),
+                            margin: EdgeInsets.all(width / 100),
+                            width: width / 11,
+                            height: width / 11,
+                            child: Center(
+                              child: Text(
+                                '${t.day}',
+                              ),
+                            ),
+                          );
+                        }, selectedBuilder: (context, DateTime t, DateTime f) {
+                          return Container(
+                            decoration: new BoxDecoration(
+                                color: Colors.blue[100],
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(5)),
+                            margin: EdgeInsets.all(width / 100),
+                            width: width / 11,
+                            height: width / 11,
+                            child: Center(
+                              child: Text(
+                                '${t.day}',
+                              ),
+                            ),
+                          );
+                        }),
+
+                        /*calendarStyle: CalendarStyle(
                           outsideDaysVisible: true,
 
                           // Weekend dates color (Sat & Sun Column)
@@ -661,7 +704,7 @@ class CalendarState extends State<CalendarPage> {
                               color: Colors.blue, shape: BoxShape.circle),
                           markerSize: 3.00,
                           markersMaxCount: 8,
-                        ),
+                        ),*/
                         headerStyle: HeaderStyle(
                           formatButtonVisible: true,
                           formatButtonShowsNext: false,
@@ -751,16 +794,22 @@ class CalendarState extends State<CalendarPage> {
                                       onPrimary: Colors.white, //foreground
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(50))),
+                                              BorderRadius.circular(12))),
                                   child: Container(
-                                    padding: EdgeInsets.all(2),
+                                    padding: EdgeInsets.all(1),
                                     alignment: Alignment.center,
-                                    child: Text(
-                                      'add event',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w300),
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.add_circle_rounded,
+                                            color: Colors.white, size: 14),
+                                        Text(
+                                          '  add event',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w300),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   onPressed: () => _showAction(
@@ -1133,6 +1182,35 @@ class CalendarState extends State<CalendarPage> {
                                                       Icons.highlight_off,
                                                       color: Colors.red[300]),
                                                 ),
+                                                SizedBox(height: 10),
+                                                Visibility(
+                                                  visible: value[index]
+                                                              .website !=
+                                                          "No Website Linked" &&
+                                                      value[index].lat ==
+                                                          "0.00" &&
+                                                      value[index].long ==
+                                                          "0.00",
+                                                  child: GestureDetector(
+                                                    onTap: () async {
+                                                      if (await canLaunch(
+                                                          value[index]
+                                                              .website)) {
+                                                        await launch(
+                                                            value[index]
+                                                                .website);
+                                                      } else {
+                                                        throw SnackBar(
+                                                            content: Text(
+                                                                'Could not launch ${value[index].website}'));
+                                                      }
+                                                    },
+                                                    child: Icon(
+                                                        CupertinoIcons.globe,
+                                                        color:
+                                                            Colors.blue[300]),
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                           ]),
@@ -1231,7 +1309,11 @@ class CalendarState extends State<CalendarPage> {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
-                                                                fontSize: 18),
+                                                                fontSize:
+                                                                    value[index].category ==
+                                                                            "ToDo"
+                                                                        ? 14
+                                                                        : 18),
                                                           ),
                                                           SizedBox(
                                                             height: 5,
@@ -1245,7 +1327,11 @@ class CalendarState extends State<CalendarPage> {
                                                                         .fade,
                                                                 color: Colors
                                                                     .grey[700],
-                                                                fontSize: 14),
+                                                                fontSize:
+                                                                    value[index].category ==
+                                                                            "ToDo"
+                                                                        ? 10
+                                                                        : 14),
                                                           ),
                                                           SizedBox(
                                                             height: 2,
@@ -1370,7 +1456,7 @@ class CalendarState extends State<CalendarPage> {
                       ),
                     ),
                     SizedBox(
-                      height: 70,
+                      height: 65,
                     )
                   ],
                 ),
@@ -1385,46 +1471,56 @@ class CalendarState extends State<CalendarPage> {
           decoration: BoxDecoration(color: Colors.white),
           child: Center(
               child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                Column(
-                  children: [
-                    SizedBox(height: 80),
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      SvgPicture.asset(
-                        'assets/icons/' + AppIcons.ItineraryIcon + '.svg',
-                        color: Colors.grey[800],
-                        height: 14,
-                        width: 14,
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white, //background
+                      onPrimary: Colors.blue,
+                      //foreground
+                      //remove border radius
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10),
                       ),
-                      Text(
-                        " Itineray",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[800],
-                            fontWeight: FontWeight.w300),
-                      )
-                    ]),
-                  ],
+                    ),
+                    onPressed: () async {
+                      if (userLoggedIn) {
+                        await loginService.signOut();
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/loginpage', (Route<dynamic> route) => false);
+                      } else {
+                        bool success = await loginService.signInWithGoogle();
+                        if (success) {
+                          Navigator.of(context)
+                              .pushReplacementNamed('/mainpage');
+                        }
+                      }
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          left: 20, right: 20, top: 15, bottom: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //use userLoggedIn flag to change icon and text
+                          Icon(userLoggedIn ? Icons.logout : Icons.login,
+                              color: Colors.blue, size: 20),
+                          SizedBox(width: 5),
+                          Text(userLoggedIn ? 'Sign Out' : 'Sign In',
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 20))
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-                Column(
-                  children: [
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      SvgPicture.asset(
-                        'assets/icons/' + AppIcons.ItineraryIcon + '.svg',
-                        color: Colors.grey[700],
-                        height: 25,
-                        width: 25,
-                      ),
-                      Text(' Login and Start Planning!',
-                          style: TextStyle(
-                            color: Colors.grey[400],
-                            fontSize: 20,
-                          )),
-                    ]),
-                    SizedBox(height: 305),
-                  ],
-                )
+                Text(' Login and Start Planning!',
+                    style: TextStyle(
+                      color: Colors.grey[400],
+                      fontSize: 20,
+                    )),
               ])));
     });
   }

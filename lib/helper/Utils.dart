@@ -143,17 +143,30 @@ class Utils {
         caption:
             "Boracay Sto. Niño Ati-atihan is celebrated in the most festive way, starts with a fluvial parade of the image of Sto. Niño at the shores of Boracay followed by a High Mass spearheaded by the Parish of the Most Holy Rosary at Balabag Plaza.",
       ),
+      
+      CultureModel(
+        name: "Love Boracay",
+        imgName: 'Culture3',
+        caption:
+            "Laboracay has been rebranded to “Love Boracay” and the focus of the event changed. This weekend is full of events that promotes sustainable tourism.",
+      ),
+        CultureModel(
+        name: "Fiesta De Obreros",
+        imgName: 'Culture4',
+        caption:
+            "This festivity pays tribute to the real wealth of the municipality, the Malaynon workers and St. Joseph the Worker, Malay’s Patron Saint. The highlight is street dancing and merry-making participated by the labor sector, the barangays and the municipal government. The event also features PASADA, a showdown of dance presentations depicting the municipality’s livelihood and source of income of its people. Conceptualized in 2003, Fiesta de Obreros is now known to be among Malay’s attraction as a joyous occasion that brings people together in thanksgiving for the prosperity brought about by their tireless efforts for progress and development.",
+      ),
+       CultureModel(
+        name: "Malay Day",
+        imgName: 'Culture5',
+        caption:
+            " An annual celebration commemorating the formal separation of the municipality of Malay from Buruanga, held every June 15. The celebration is highlighted by various activities such as Discovery Tour, and Paraw Regatta.",
+      ),
       CultureModel(
         name: "Paraw",
         imgName: 'Culture2',
         caption:
             "Paraw Sailing is a local sail boat activity. The boats use two outriggers and two sails. Experience the traditional way of sailing and discover the best sites around the island.",
-      ),
-      CultureModel(
-        name: "Love Boracay Event",
-        imgName: 'Culture3',
-        caption:
-            "Laboracay has been rebranded to “Love Boracay” and the focus of the event changed. This weekend is full of events that promotes sustainable tourism.",
       ),
     ];
   }

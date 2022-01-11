@@ -112,7 +112,7 @@ class _ExplorePageState extends State<ExplorePage> {
 }
 
 class History extends StatelessWidget {
-     History({
+  History({
     Key key,
   }) : super(key: key);
   List<HistoryModel> _historymodel = Utils.getHistory();
@@ -207,7 +207,7 @@ class History extends StatelessWidget {
 }
 
 class Culture extends StatelessWidget {
-    Culture({
+  Culture({
     Key key,
   }) : super(key: key);
   List<CultureModel> _culturemodel = Utils.getculture();
@@ -216,6 +216,164 @@ class Culture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 10,
+        ),
+        Row(
+          children: [
+            SizedBox(
+              width: 20,
+            ),
+            Text('Culture and Traditions',
+                style: TextStyle(fontSize: 20, color: Colors.blue)),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+        ),
+
+        //wrap with stack to overlay other components
+        Container(
+            height: 200,
+            padding: EdgeInsets.only(top: 10, bottom: 10),
+            child: PageView(
+              physics: BouncingScrollPhysics(),
+              controller: _culturepageController,
+              scrollDirection: Axis.horizontal,
+              children: List.generate(
+                  _culturemodel.length,
+                  (int index) => Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: GestureDetector(
+                            onTap: () {
+                              showDialog<void>(
+                                  context: context,
+                                  builder: (context) {
+                                    //Iterable markers = [];
+                                    //use iterable to map true items and return markers
+
+                                    return AlertDialog(
+                                      title: Text(
+                                          "${_culturemodel[index].name}",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.grey[700])),
+                                      contentPadding: EdgeInsets.only(
+                                          left: 0,
+                                          right: 0,
+                                          top: 10,
+                                          bottom: 0),
+                                      content: SingleChildScrollView(
+                                        child: Column(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(10),
+                                              child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: Container(
+                                                      height: 200,
+                                                      decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                            image: AssetImage(
+                                                                'assets/images/${_culturemodel[index].imgName}.jpg'),
+                                                            fit: BoxFit.cover),
+                                                      ))),
+                                            ),
+                                            SizedBox(height: 10),
+                                            Padding(
+                                              padding: const EdgeInsets.all(10),
+                                              child: Text(
+                                                  "${_culturemodel[index].caption}",
+                                                  textAlign: TextAlign.justify,
+                                                  style: TextStyle(
+                                                      color: Colors.grey[700],
+                                                      fontSize: 15)),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  });
+                            },
+                            child: Container(
+                                width: MediaQuery.of(context).size.width - 5,
+                                height: 200,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/images/${_culturemodel[index].imgName}.jpg'),
+                                      fit: BoxFit.cover),
+                                ),
+                                child: Stack(
+                                  children: [
+                                    //add gradient
+                                    Positioned.fill(
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.centerRight,
+                                          end: Alignment.centerLeft,
+                                          colors: <Color>[
+                                            Colors.transparent,
+                                            Colors.blue[300].withOpacity(0.5),
+                                            Colors.blue,
+                                          ],
+                                        ),
+                                      )),
+                                    ),
+                                    Positioned(
+                                      bottom: 20,
+                                      left: 20,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: Container(
+                                          padding: EdgeInsets.all(5),
+                                          color: Colors.white,
+                                          child: Text(
+                                              ' ' +
+                                                  _culturemodel[index].name +
+                                                  ' ',
+                                              style: TextStyle(
+                                                color: Colors.grey[700],
+                                                fontSize: 14,
+                                              )),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )),
+                          ),
+                        ),
+                      )),
+            )),
+
+        SizedBox(
+          height: 10,
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: SmoothPageIndicator(
+            controller: _culturepageController,
+            count: _culturemodel.length,
+            effect: ExpandingDotsEffect(
+                activeDotColor: Colors.blue,
+                dotColor: Colors.grey[400],
+                dotHeight: 5,
+                dotWidth: 5,
+                spacing: 3),
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+      ],
+    );
+    /*Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
@@ -328,7 +486,7 @@ class Culture extends StatelessWidget {
           height: 10,
         ),
       ],
-    );
+    );*/
   }
 }
 
@@ -347,7 +505,9 @@ class AwardsAndRecognition extends StatelessWidget {
       Align(
         alignment: Alignment.centerLeft,
         child: Padding(
-          padding: const EdgeInsets.only(left: 20),
+          padding: const EdgeInsets.only(
+            left: 20,
+          ),
           child: Text('Awards and Recognition',
               style: TextStyle(fontSize: 20, color: Colors.blue)),
         ),
@@ -425,7 +585,8 @@ class AwardsAndRecognition extends StatelessWidget {
                               offset: Offset(2, 2)),
                         ]),
                     width: 125,
-                    margin: EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                    margin: EdgeInsets.only(
+                        left: 20, top: 10, bottom: 10, right: 5),
                     padding: EdgeInsets.all(5),
                     child: Column(
                       children: [
@@ -515,7 +676,7 @@ class Geography extends StatelessWidget {
 }
 
 class Highlights extends StatelessWidget {
-   Highlights({
+  Highlights({
     Key key,
   }) : super(key: key);
   List<HighlightModel> _highlightmodel = Utils.getHighlight();
@@ -568,8 +729,7 @@ class Highlights extends StatelessWidget {
                                           "${_highlightmodel[index].name}",
                                           style: TextStyle(
                                               fontSize: 20,
-                                              color: _highlightmodel[index]
-                                                  .color)),
+                                              color: Colors.grey[700])),
                                       contentPadding: EdgeInsets.only(
                                           left: 0,
                                           right: 0,
@@ -599,9 +759,7 @@ class Highlights extends StatelessWidget {
                                                   "${_highlightmodel[index].caption}",
                                                   textAlign: TextAlign.justify,
                                                   style: TextStyle(
-                                                      color:
-                                                          _highlightmodel[index]
-                                                              .color,
+                                                      color: Colors.grey[700],
                                                       fontSize: 15)),
                                             ),
                                           ],
@@ -651,8 +809,7 @@ class Highlights extends StatelessWidget {
                                                   _highlightmodel[index].name +
                                                   ' ',
                                               style: TextStyle(
-                                                color: _highlightmodel[index]
-                                                    .color,
+                                                color: Colors.grey[700],
                                                 fontSize: 14,
                                               )),
                                         ),
@@ -690,7 +847,7 @@ class Highlights extends StatelessWidget {
 }
 
 class ForYouTabs extends StatelessWidget {
-   ForYouTabs({
+  ForYouTabs({
     Key key,
   }) : super(key: key);
 
@@ -1133,6 +1290,4 @@ class Header extends StatelessWidget {
           ],
         ));
   }
-
-  
 }

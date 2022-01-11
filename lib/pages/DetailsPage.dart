@@ -663,22 +663,25 @@ class _DetailsPageState extends State<DetailsPage> {
                 child: Padding(
                   padding:
                       EdgeInsets.only(left: 20, bottom: 10, right: 20, top: 10),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.location_pin,
-                        color: Colors.blue,
-                        size: 20,
-                      ),
-                      SizedBox(width: 5),
-                      Text(
-                        widget.items.itemaddress,
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.blue,
-                            fontWeight: FontWeight.w300),
-                      ),
-                    ],
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.location_pin,
+                          color: Colors.blue,
+                          size: 20,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          widget.items.itemaddress,
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.blue,
+                              fontWeight: FontWeight.w300),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -719,35 +722,50 @@ class _DetailsPageState extends State<DetailsPage> {
                 ),
               ),
               //show get direction button here
-              Padding(
-                padding: EdgeInsets.only(left: 20, bottom: 10, right: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Icon(
-                      Icons.directions,
-                      color: Colors.blue,
-                      size: 20,
-                    ),
-                    SizedBox(width: 5),
-                    InkWell(
-                        borderRadius: BorderRadius.circular(30),
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20, bottom: 10, right: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: 10,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.all(3),
+                            primary: Colors.blue, //background
+                            onPrimary: Colors.blue, //foreground
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12))),
                         child: Container(
-                          padding: EdgeInsets.all(5),
-                          child: Text(
-                            'Get Directions',
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold),
+                          padding: EdgeInsets.only(
+                              top: 3, bottom: 3, left: 5, right: 5),
+                          alignment: Alignment.center,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.directions,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              Text(
+                                ' Directions',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        onTap: () {
-                          //use push replacement
-
+                        onPressed: () {
                           Navigator.of(context).pushNamed('/mappage');
-                        }),
-                  ],
+                        }, // on press animate to 6 th element
+                      ),
+                    ],
+                  ),
                 ),
               ),
 
@@ -787,7 +805,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             primary: Colors.blue, //background
                             onPrimary: Colors.white, //foreground
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50))),
+                                borderRadius: BorderRadius.circular(12))),
                         child: Container(
                           padding: EdgeInsets.only(
                               top: 3, bottom: 3, left: 5, right: 5),
@@ -928,13 +946,13 @@ class _DetailsPageState extends State<DetailsPage> {
                                     onPrimary: Colors.green, //foreground
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
-                                            BorderRadius.circular(50))),
+                                            BorderRadius.circular(12))),
                                 child: Container(
                                   padding: EdgeInsets.only(
                                       top: 3, bottom: 3, left: 5, right: 5),
                                   alignment: Alignment.center,
                                   child: Text(
-                                    'Submit a review',
+                                    '  Submit Review ',
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: Colors.green,
@@ -1110,7 +1128,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   children: [
                                     Icon(Icons.check,
                                         color: Colors.green[400], size: 20),
-                                    Text("Reviewed!",
+                                    Text(" Reviewed",
                                         style: TextStyle(
                                             color: Colors.green[400])),
                                   ],
@@ -1484,7 +1502,7 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 
-   Widget buildTextField(
+  Widget buildTextField(
       {String hint, @required TextEditingController controller}) {
     return TextField(
       controller: controller,

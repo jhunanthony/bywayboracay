@@ -80,33 +80,6 @@ class _SavedPageState extends State<SavedPage> {
           )
         ]),
         SizedBox(
-          height: 5,
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              SizedBox(height: 5),
-              Consumer<SaveService>(
-                  //a function called when notifier changes
-                  builder: (context, like, child) {
-                return
-                    //hide if 0 likes
-                    Visibility(
-                  visible: like.items.length > 0,
-                  child: Text(
-                    '$userName you have ${like.items.length} Saved item!',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.blue,
-                    ),
-                  ),
-                );
-              }),
-            ]),
-          ],
-        ),
-        SizedBox(
           height: 10,
         ),
         Expanded(
@@ -143,8 +116,19 @@ class _SavedPageState extends State<SavedPage> {
                           padding: EdgeInsets.all(10),
                           margin: EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
+                              color: itemslistinfo.itemcategoryName == "ToStay"
+                                  ? Colors.purple[100]
+                                  : itemslistinfo.itemcategoryName ==
+                                          "ToEat&Drink"
+                                      ? Colors.red[100]
+                                      : itemslistinfo.itemcategoryName ==
+                                              "ToSee"
+                                          ? Colors.blue[100]
+                                          : itemslistinfo.itemcategoryName ==
+                                                  "ToDo"
+                                              ? Colors.green[100]
+                                              : Colors.grey[200],
+                              borderRadius: BorderRadius.circular(12),
                               boxShadow: [
                                 BoxShadow(
                                     color: Colors.black.withOpacity(0.1),
@@ -181,14 +165,44 @@ class _SavedPageState extends State<SavedPage> {
                                     Text(
                                       itemslistinfo.name,
                                       style: TextStyle(
-                                          color: Colors.blue,
+                                          color: itemslistinfo
+                                                      .itemcategoryName ==
+                                                  "ToStay"
+                                              ? Colors.purple[400]
+                                              : itemslistinfo
+                                                          .itemcategoryName ==
+                                                      "ToEat&Drink"
+                                                  ? Colors.red[400]
+                                                  : itemslistinfo
+                                                              .itemcategoryName ==
+                                                          "ToSee"
+                                                      ? Colors.blue[400]
+                                                      : itemslistinfo
+                                                                  .itemcategoryName ==
+                                                              "ToDo"
+                                                          ? Colors.green[400]
+                                                          : Colors.grey[400],
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Text(
                                       itemslistinfo.itemaddress,
                                       style: TextStyle(
-                                        color: Colors.blue,
+                                        color: itemslistinfo.itemcategoryName ==
+                                                "ToStay"
+                                            ? Colors.purple[400]
+                                            : itemslistinfo.itemcategoryName ==
+                                                    "ToEat&Drink"
+                                                ? Colors.red[400]
+                                                : itemslistinfo
+                                                            .itemcategoryName ==
+                                                        "ToSee"
+                                                    ? Colors.blue[400]
+                                                    : itemslistinfo
+                                                                .itemcategoryName ==
+                                                            "ToDo"
+                                                        ? Colors.green[400]
+                                                        : Colors.grey[400],
                                         fontSize: 12,
                                       ),
                                     ),
@@ -197,19 +211,36 @@ class _SavedPageState extends State<SavedPage> {
                                           itemslistinfo.itempriceMin
                                               .toStringAsFixed(2),
                                       style: TextStyle(
-                                        color: Colors.blue,
+                                        color: itemslistinfo.itemcategoryName ==
+                                                "ToStay"
+                                            ? Colors.purple[400]
+                                            : itemslistinfo.itemcategoryName ==
+                                                    "ToEat&Drink"
+                                                ? Colors.red[400]
+                                                : itemslistinfo
+                                                            .itemcategoryName ==
+                                                        "ToSee"
+                                                    ? Colors.blue[400]
+                                                    : itemslistinfo
+                                                                .itemcategoryName ==
+                                                            "ToDo"
+                                                        ? Colors.green[400]
+                                                        : Colors.grey[400],
                                         fontSize: 12,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
+                              SizedBox(width: 15),
                               Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   GestureDetector(
                                     child: Icon(
                                       Icons.highlight_off,
-                                      color: Colors.blue,
+                                      color: Colors.red[400],
                                       size: 25,
                                     ),
                                     onTap: () {
@@ -222,7 +253,7 @@ class _SavedPageState extends State<SavedPage> {
                                   GestureDetector(
                                     child: Icon(
                                       CupertinoIcons.calendar,
-                                      color: Colors.blue[200],
+                                      color: Colors.blue[400],
                                       size: 25,
                                     ),
                                     onTap: () => _showAction(item),
@@ -505,8 +536,8 @@ class _SavedPageState extends State<SavedPage> {
   String imgName;
   String lat;
   String long;
-   String address;
-    String itemname;
+  String address;
+  String itemname;
   String category;
   DateTime _selectedDay = DateTime.now();
 
@@ -573,25 +604,24 @@ class _SavedPageState extends State<SavedPage> {
                 ),
                 SizedBox(height: 7),
                 TextField(
-                    controller: event..text = "${itemslistinfo.name}",
-                    textCapitalization: TextCapitalization.words,
-                    decoration: InputDecoration(
-                      labelText: 'Event',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 1.5),
-                        borderRadius: BorderRadius.circular(
-                          10.0,
-                        ),
+                  controller: event..text,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: InputDecoration(
+                    labelText: 'Event',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 1.5),
-                        borderRadius: BorderRadius.circular(
-                          10.0,
-                        ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
                       ),
                     ),
                   ),
-                
+                ),
 
                 SizedBox(height: 7),
                 TextField(
@@ -753,8 +783,8 @@ class _SavedPageState extends State<SavedPage> {
           "imgName": imgName,
           "lat": lat,
           "long": long,
-          "address" : address,
-          "itemname":itemname,
+          "address": address,
+          "itemname": itemname,
           "category": category,
           "CreatedBy": emails[0],
           "users": emails
