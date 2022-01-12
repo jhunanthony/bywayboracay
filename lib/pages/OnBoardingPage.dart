@@ -76,9 +76,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                           _content.length,
                           (index) => Container(
                             margin: EdgeInsets.all(20),
-                            padding: EdgeInsets.all(20),
+                            padding: EdgeInsets.all(0),
                             decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: Colors.blue,
                                 borderRadius: BorderRadius.circular(30),
                                 boxShadow: [
                                   BoxShadow(
@@ -86,87 +86,183 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                                       blurRadius: 20,
                                       offset: Offset.zero)
                                 ]),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                    child: Column(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Container(
-                                        padding: EdgeInsets.all(3),
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            begin: Alignment.center,
-                                            end: Alignment.bottomCenter,
-                                            colors: <Color>[
-                                              Colors.white.withOpacity(0.3),
-                                              Colors.white,
-                                            ],
-                                          ),
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Image.asset(
-                                          "assets/images/Logo_Test.png",
-                                          height: 35,
-                                          width: 35,
-                                          fit: BoxFit.scaleDown,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Image.asset(
-                                        'assets/images/${_content[index].imgName}.png'),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Text(
-                                      _content[index].message,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ],
-                                )),
-
-                                //enter button
-                                Visibility(
-                                  //use this to only show it on the last screen
-                                  visible: index == _content.length - 1,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        primary: Colors.blue, //background
-                                        onPrimary: Colors.white, //foreground
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12))),
+                            child: Stack(children: [
+                              Positioned.fill(
+                                child: ClipPath(
+                                    clipper: CustomClipPath(),
                                     child: Container(
-                                      height: 40,
-                                      width: 80,
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        'Enter App',
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w300),
+                                      margin: EdgeInsets.all(0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(30),
                                       ),
+                                    )),
+                              ),
+                              Positioned.fill(
+                                top: 80,
+                                child: ClipPath(
+                                    clipper: CustomClipPath(),
+                                    child: Container(
+                                      margin: EdgeInsets.all(0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                    )),
+                              ),
+                              Positioned.fill(
+                                top: 90,
+                                child: ClipPath(
+                                    clipper: CustomClipPath(),
+                                    child: Container(
+                                      margin: EdgeInsets.all(0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                    )),
+                              ),
+                              Positioned.fill(
+                                top: 120,
+                                child: ClipPath(
+                                    clipper: CustomClipPath(),
+                                    child: Container(
+                                      margin: EdgeInsets.all(0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue[200],
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                    )),
+                              ),
+                              Positioned.fill(
+                                top: 105,
+                                child: ClipPath(
+                                    clipper: CustomClipPath(),
+                                    child: Container(
+                                      margin: EdgeInsets.all(0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue[100],
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                    )),
+                              ),
+                              Positioned.fill(
+                                top: 95,
+                                child: ClipPath(
+                                    clipper: CustomClipPath(),
+                                    child: Container(
+                                      margin: EdgeInsets.all(0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                    )),
+                              ),
+                              Column(
+                                children: [
+                                  Expanded(
+                                      child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: Container(
+                                          padding: EdgeInsets.all(3),
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              begin: Alignment.center,
+                                              end: Alignment.bottomCenter,
+                                              colors: <Color>[
+                                                Colors.white.withOpacity(0.3),
+                                                Colors.white,
+                                              ],
+                                            ),
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Image.asset(
+                                            "assets/images/Logo_Test.png",
+                                            height: 30,
+                                            width: 30,
+                                            fit: BoxFit.scaleDown,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Image.asset(
+                                        'assets/images/${_content[index].imgName}.png',
+                                        height: 220,
+                                        width: 220,
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        _content[index].title,
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 15,
+                                            bottom: 15,
+                                            left: 20,
+                                            right: 20),
+                                        child: Text(
+                                          _content[index].message,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+
+                                  //enter button
+                                  Visibility(
+                                    //use this to only show it on the last screen
+                                    visible: index == _content.length - 1,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          primary: Colors.white, //background
+                                          onPrimary: Colors.blue, //foreground
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12))),
+                                      child: Container(
+                                        height: 40,
+                                        width: 80,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          'Enter App',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.w300),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MainPage()));
+                                      },
                                     ),
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  MainPage()));
-                                    },
                                   ),
-                                ),
-                              ],
-                            ),
+                                  SizedBox(
+                                    height: 30,
+                                  ),
+                                ],
+                              ),
+                            ]),
                           ),
                         ),
                       )),
@@ -194,7 +290,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                                           border: Border.all(
                                               width: 6,
                                               color: pageIndex == index
-                                                  ? Colors.blue[50]
+                                                  ? Colors.blue[100]
                                                   : Theme.of(context)
                                                       .canvasColor)),
                                     ),
@@ -234,4 +330,31 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               ]))),
     );
   }
+}
+
+class CustomClipPath extends CustomClipper<Path> {
+  var radius = 10.0;
+  @override
+  Path getClip(Size size) {
+    var path = new Path();
+    path.lineTo(0, size.height / 4.25);
+    var firstControlPoint = new Offset(size.width / 4, size.height / 3);
+    var firstEndPoint = new Offset(size.width / 2, size.height / 3 - 60);
+    var secondControlPoint =
+        new Offset(size.width - (size.width / 4), size.height / 4 - 65);
+    var secondEndPoint = new Offset(size.width, size.height / 3 - 40);
+
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
+        firstEndPoint.dx, firstEndPoint.dy);
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
+        secondEndPoint.dx, secondEndPoint.dy);
+
+    path.lineTo(size.width, size.height / 3);
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

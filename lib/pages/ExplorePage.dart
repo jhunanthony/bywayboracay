@@ -752,7 +752,6 @@ class Highlights extends StatelessWidget {
                                                             fit: BoxFit.cover),
                                                       ))),
                                             ),
-                                            SizedBox(height: 10),
                                             Padding(
                                               padding: const EdgeInsets.all(10),
                                               child: Text(

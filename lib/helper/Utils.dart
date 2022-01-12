@@ -12,22 +12,29 @@ class Utils {
   static List<OnBoardingContent> getOnBoarding() {
     return [
       OnBoardingContent(
+        title: "Explore Boracay",
         message:
-            'Explore Boracay and create your own tour plan with ease and flexibility.',
-        imgName: 'Planning',
-      ),
-      OnBoardingContent(
-        message: 'Navigate to your desired place with accuracy.',
-        imgName: 'Navigation',
-      ),
-      OnBoardingContent(
-        message: 'No more worries on budgeting hassles.',
+            'A great path is waiting for you. With Byway Boracay, explore great distinations and discover great deals! The sand and waves of Boracay is waiting for you.',
         imgName: 'Budgeting',
       ),
       OnBoardingContent(
-        message: 'Effective communication with BYWAY Boracay.',
+        title: "Browse Your Destination",
+        message:
+            'Come across establishments and sites that you can navigate with Byway Boracay. Find out how easy and precise our app is.',
+        imgName: 'Navigation',
+      ),
+      OnBoardingContent(
+        title: "Practice Sustainable Travel",
+        message:
+            'Byway Boracay promotes sustainable tourism. With sustainability, going local and low-cost travel can be achieved. Come and contribute!',
         imgName: 'Communication',
-      )
+      ),
+      OnBoardingContent(
+        title: 'Build Your Itinerary',
+        message:
+            "Create your tour plans with ease and flexibility. With Byway Boracay, you're only one click away to a great tour experience!",
+        imgName: 'Planning',
+      ),
     ];
   }
 
@@ -143,20 +150,19 @@ class Utils {
         caption:
             "Boracay Sto. Niño Ati-atihan is celebrated in the most festive way, starts with a fluvial parade of the image of Sto. Niño at the shores of Boracay followed by a High Mass spearheaded by the Parish of the Most Holy Rosary at Balabag Plaza.",
       ),
-      
       CultureModel(
         name: "Love Boracay",
         imgName: 'Culture3',
         caption:
             "Laboracay has been rebranded to “Love Boracay” and the focus of the event changed. This weekend is full of events that promotes sustainable tourism.",
       ),
-        CultureModel(
+      CultureModel(
         name: "Fiesta De Obreros",
         imgName: 'Culture4',
         caption:
             "This festivity pays tribute to the real wealth of the municipality, the Malaynon workers and St. Joseph the Worker, Malay’s Patron Saint. The highlight is street dancing and merry-making participated by the labor sector, the barangays and the municipal government. The event also features PASADA, a showdown of dance presentations depicting the municipality’s livelihood and source of income of its people. Conceptualized in 2003, Fiesta de Obreros is now known to be among Malay’s attraction as a joyous occasion that brings people together in thanksgiving for the prosperity brought about by their tireless efforts for progress and development.",
       ),
-       CultureModel(
+      CultureModel(
         name: "Malay Day",
         imgName: 'Culture5',
         caption:

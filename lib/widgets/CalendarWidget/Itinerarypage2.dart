@@ -42,7 +42,7 @@ class ItineraryPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                       Padding(
-                        padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.only(left: 100, right: 100),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             primary: Colors.white, //background
@@ -86,6 +86,7 @@ class ItineraryPage extends StatelessWidget {
                           ),
                         ),
                       ),
+                        SizedBox(height: 10),
                       Text(' Login and Start Planning!',
                           style: TextStyle(
                             color: Colors.grey[400],

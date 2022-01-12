@@ -123,7 +123,7 @@ class _LogInPageState extends State<LogInPage> {
                           filter: ImageFilter.blur(sigmaY: 20, sigmaX: 20),
                           child: Container(
                             padding: EdgeInsets.all(10),
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withOpacity(0.3),
                             child: Column(
                               children: [
                                 Text('WELCOME,',
@@ -132,7 +132,7 @@ class _LogInPageState extends State<LogInPage> {
                                         color: Colors.white,
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold)),
-                                Text('I am your new travel buddy!',
+                                Text("I'm your new travel buddy!",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: Colors.white,
@@ -143,7 +143,7 @@ class _LogInPageState extends State<LogInPage> {
                                   style: ElevatedButton.styleFrom(
                                       padding: EdgeInsets.all(0),
                                       primary: Colors.white, //background
-                                      onPrimary: Colors.white, //foreground
+                                      onPrimary: Colors.yellow, //foreground
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(50))),
@@ -190,7 +190,7 @@ class _LogInPageState extends State<LogInPage> {
                                   style: ElevatedButton.styleFrom(
                                       padding: EdgeInsets.all(0),
                                       primary: Colors.white, //background
-                                      onPrimary: Colors.white, //foreground
+                                      onPrimary: Colors.blue, //foreground
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(50))),

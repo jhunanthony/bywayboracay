@@ -12,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +38,8 @@ class ItemsPage extends StatefulWidget {
 }
 
 class _ItemsPageState extends State<ItemsPage> {
+  bool filteron = false;
+
   Completer<GoogleMapController> googlemapcontroller = Completer();
 
   //initiate map controller
@@ -196,261 +199,361 @@ class _ItemsPageState extends State<ItemsPage> {
 
     return SafeArea(
       child: Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.blue[50],
           body: Stack(children: [
             Column(children: [
-              Stack(children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 100,
-                  decoration: BoxDecoration(color: Colors.white),
-                ),
-                Positioned(
-                  top: 65,
-                  left: 0,
-                  right: 0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CategoryIcon(
-                        iconName: this.widget.selectedCategory.name,
-                        color: this.widget.selectedCategory.color,
-                        size: 30,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(this.widget.selectedCategory.name,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400)),
-                    ],
+              SizedBox(
+                height: 70,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CategoryIcon(
+                    iconName: this.widget.selectedCategory.name,
+                    color: this.widget.selectedCategory.color,
+                    size: 30,
                   ),
-                ),
-              ]),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(this.widget.selectedCategory.name,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.grey[700],
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold)),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                      this.widget.selectedCategory.items[0].itemcategoryName ==
+                              "ToStay"
+                          ? "Find a place to Check In and Breath out!"
+                          : this
+                                      .widget
+                                      .selectedCategory
+                                      .items[0]
+                                      .itemcategoryName ==
+                                  "ToEat&Drink"
+                              ? "Find a place to Eat Good & Feel Good!"
+                              : this
+                                          .widget
+                                          .selectedCategory
+                                          .items[0]
+                                          .itemcategoryName ==
+                                      "ToDo"
+                                  ? "Experience Exciting and Exhilarating activities to do!"
+                                  : this
+                                              .widget
+                                              .selectedCategory
+                                              .items[0]
+                                              .itemcategoryName ==
+                                          "ToSee"
+                                      ? "Wander and Discover places new to your eyes!"
+                                      : "",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          color: Colors.grey[700],
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400)),
+                ],
+              ),
               Consumer<LoginService>(builder: (context, loginService, child) {
                 if (loginService.isUserLoggedIn()) {
                   return Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.white, //background
-                              onPrimary: Colors.blue,
-                              //foreground
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 20, right: 20, top: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.white, //background
+                                onPrimary: Colors.blue,
+                                //foreground
+                              ),
+                              child: Container(
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.search_rounded,
+                                          size: 25, color: Colors.blue),
+                                      Text(
+                                          this
+                                                      .widget
+                                                      .selectedCategory
+                                                      .items[0]
+                                                      .itemcategoryName ==
+                                                  "ToStay"
+                                              ? "Book a place to stay!"
+                                              : this
+                                                          .widget
+                                                          .selectedCategory
+                                                          .items[0]
+                                                          .itemcategoryName ==
+                                                      "ToEat&Drink"
+                                                  ? "Craving for good food?"
+                                                  : this
+                                                              .widget
+                                                              .selectedCategory
+                                                              .items[0]
+                                                              .itemcategoryName ==
+                                                          "ToDo"
+                                                      ? "Looking for fun?"
+                                                      : this
+                                                                  .widget
+                                                                  .selectedCategory
+                                                                  .items[0]
+                                                                  .itemcategoryName ==
+                                                              "ToSee"
+                                                          ? "Wanting new sceneries?"
+                                                          : "",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.blue,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400)),
+                                    ],
+                                  )),
+                              //capture the success flag with async and await
+                              onPressed: () =>
+                                  _openFilterDialog(widget.selectedCategory),
                             ),
-                            child: Container(
+                            //fitler button
+                            filteron == false
+                                ? InkWell(
+                                    borderRadius: BorderRadius.circular(50),
+                                    highlightColor: Colors.red,
+                                    onTap: () {
+                                      setState(() {
+                                        filteron = true;
+                                      });
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: 35,
+                                      width: 35,
+                                      decoration: BoxDecoration(
+                                          color: Colors.red[300],
+                                          shape: BoxShape.circle),
+                                      child: SvgPicture.asset(
+                                        'assets/icons/funnel.svg',
+                                        color: Colors.white,
+                                        height: 23,
+                                        width: 23,
+                                      ),
+                                    ),
+                                  )
+                                : InkWell(
+                                    borderRadius: BorderRadius.circular(50),
+                                    highlightColor: Colors.red,
+                                    onTap: () {
+                                      setState(() {
+                                        filteron = false;
+                                      });
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: 35,
+                                      width: 35,
+                                      decoration: BoxDecoration(
+                                          color: Colors.red[600],
+                                          shape: BoxShape.circle),
+                                      child: SvgPicture.asset(
+                                        'assets/icons/funnel.svg',
+                                        color: Colors.blue[50],
+                                        height: 20,
+                                        width: 20,
+                                      ),
+                                    ),
+                                  ),
+                            //map button
+
+                            InkWell(
+                              borderRadius: BorderRadius.circular(50),
+                              highlightColor: Colors.green,
+                              onTap: () =>
+                                  _showMapWidget(widget.selectedCategory),
+                              child: Container(
                                 alignment: Alignment.center,
-                                padding: EdgeInsets.all(5),
+                                height: 35,
+                                width: 35,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50)),
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.search_rounded,
-                                        size: 25, color: Colors.blue),
-                                    Text(" Search Filter ",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: Colors.blue,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w400)),
-                                  ],
-                                )),
-                            //capture the success flag with async and await
-                            onPressed: () =>
-                                _openFilterDialog(widget.selectedCategory),
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.white, //background
-                              onPrimary: Colors.blue,
-                              //foreground
-                              shape: CircleBorder(),
-                            ),
-                            child: Container(
-                                alignment: Alignment.center,
-                                height: 30,
-                                width: 30,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
+                                    color: Colors.green[300],
+                                    shape: BoxShape.circle),
                                 child: Icon(Icons.map_rounded,
-                                    size: 25, color: Colors.blue)),
-                            //capture the success flag with async and await
-                            onPressed: () =>
-                                _showMapWidget(widget.selectedCategory),
-                          ),
-                        ],
-                      ),
-
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            SizedBox(width: 30),
-                            Text(
-                              "Station",
-                              overflow: TextOverflow.fade,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.blue,
+                                    size: 22, color: Colors.white),
                               ),
                             ),
-                            ChipsChoice<String>.multiple(
-                              choiceStyle: C2ChoiceStyle(
-                                  color: Colors.blue,
-                                  margin: EdgeInsets.only(left: 5)),
-                              value: tags,
-                              onChanged: (val) => setState(() {
-                                tags = val;
-
-                                Query _query = Query(station: val);
-                                List<Items> filter(
-                                    List<Items> items, Query query) {
-                                  return items
-                                      .where((items) =>
-                                          (query.station == null ||
-                                              query.station
-                                                  .contains(items.itemstation)))
-                                      .toList();
-                                }
-
-                                List<Items> results = filter(
-                                    this.widget.selectedCategory.items, _query);
-                                if (results != null) {
-                                  selectedCountList = List.from(results);
-
-                                  /*results.forEach((Items filtered) {
-
-
-                                  selectedCountList
-                                      .forEach((Items selecteditem) {
-                                    if (selecteditem.name != filtered.name) {
-                                      setState(() {
-                                        selectedCountList.add(filtered);
-                                      });
-                                    } else if (selecteditem.name ==
-                                        filtered.name) {
-                                      setState(() {
-                                        selectedCountList.remove(filtered);
-                                        selectedCountList.add(filtered);
-                                      });
-                                    }
-                                  });
-                                });*/
-                                }
-                              }),
-                              choiceItems: C2Choice.listFrom<String, String>(
-                                source: options,
-                                value: (i, v) => v,
-                                label: (i, v) => v,
-                              ),
-                            ),
+                            /* value
+                                ..sort((item1, item2) => DateFormat("h:mm a")
+                                    .parse(item1.timer)
+                                    .compareTo(DateFormat("h:mm a")
+                                        .parse(item2.timer)));*/
                           ],
                         ),
                       ),
+
+                      filteron == true
+                          ? SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  SizedBox(width: 30),
+                                  Text(
+                                    "Station",
+                                    overflow: TextOverflow.fade,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  ChipsChoice<String>.multiple(
+                                    choiceStyle: C2ChoiceStyle(
+                                        color: Colors.blue,
+                                        margin: EdgeInsets.only(left: 5)),
+                                    value: tags,
+                                    onChanged: (val) => setState(() {
+                                      tags = val;
+
+                                      Query _query = Query(station: val);
+                                      List<Items> filter(
+                                          List<Items> items, Query query) {
+                                        return items
+                                            .where((items) =>
+                                                (query.station == null ||
+                                                    query.station.contains(
+                                                        items.itemstation)))
+                                            .toList();
+                                      }
+
+                                      List<Items> results = filter(
+                                          this.widget.selectedCategory.items,
+                                          _query);
+                                      if (results != null) {
+                                        selectedCountList = List.from(results);
+                                      }
+                                    }),
+                                    choiceItems:
+                                        C2Choice.listFrom<String, String>(
+                                      source: options,
+                                      value: (i, v) => v,
+                                      label: (i, v) => v,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : SizedBox(),
                       //subcategory filter
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            SizedBox(width: 30),
-                            Text(
-                              "Subcategory",
-                              overflow: TextOverflow.fade,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            ChipsChoice<String>.multiple(
-                              choiceStyle: C2ChoiceStyle(
-                                  color: Colors.blue,
-                                  margin: EdgeInsets.only(left: 5)),
-                              value: tags2,
-                              onChanged: (val) => setState(() {
-                                tags2 = val;
+                      filteron == true
+                          ? SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  SizedBox(width: 30),
+                                  Text(
+                                    "Subcategory",
+                                    overflow: TextOverflow.fade,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  ChipsChoice<String>.multiple(
+                                    choiceStyle: C2ChoiceStyle(
+                                        color: Colors.blue,
+                                        margin: EdgeInsets.only(left: 5)),
+                                    value: tags2,
+                                    onChanged: (val) => setState(() {
+                                      tags2 = val;
 
-                                Query _query = Query(subcategory: val);
-                                List<Items> filter(
-                                    List<Items> items, Query query) {
-                                  return items
-                                      .where((items) =>
-                                          (query.subcategory == null ||
-                                              query.subcategory.contains(
-                                                  items.itemsubcategoryName)))
-                                      .toList();
-                                }
+                                      Query _query = Query(subcategory: val);
+                                      List<Items> filter(
+                                          List<Items> items, Query query) {
+                                        return items
+                                            .where((items) => (query
+                                                        .subcategory ==
+                                                    null ||
+                                                query.subcategory.contains(
+                                                    items.itemsubcategoryName)))
+                                            .toList();
+                                      }
 
-                                List<Items> results = filter(
-                                    this.widget.selectedCategory.items, _query);
-                                if (results != null) {
-                                  selectedCountList = List.from(results);
-                                }
-                              }),
-                              choiceItems: C2Choice.listFrom<String, String>(
-                                source: this
-                                            .widget
-                                            .selectedCategory
-                                            .items[0]
-                                            .itemcategoryName ==
-                                        "ToStay"
-                                    ? subcategoryoptions = [
-                                        'Hotel',
-                                        'Inn',
-                                        'Villas',
-                                        'Resort',
-                                      ]
-                                    : this
-                                                .widget
-                                                .selectedCategory
-                                                .items[0]
-                                                .itemcategoryName ==
-                                            "ToEat&Drink"
-                                        ? subcategoryoptions = [
-                                            'Restaurant',
-                                            'Fast Food',
-                                            'Cafe',
-                                            'Bar',
-                                            'Cuisines',
-                                          ]
-                                        : this
-                                                    .widget
-                                                    .selectedCategory
-                                                    .items[0]
-                                                    .itemcategoryName ==
-                                                "ToDo"
-                                            ? subcategoryoptions = [
-                                                'WaterActivities',
-                                                'LandActivities',
-                                                'LocalServices',
-                                                'Environmental',
-                                                'Social',
-                                              ]
-                                            : this
-                                                        .widget
-                                                        .selectedCategory
-                                                        .items[0]
-                                                        .itemcategoryName ==
-                                                    "ToSee"
-                                                ? subcategoryoptions = [
-                                                    'BeachSites',
-                                                    'WetLands',
-                                                    'LandMarks',
-                                                    'Museums',
-                                                  ]
-                                                : subcategoryoptions = [],
-                                value: (i, v) => v,
-                                label: (i, v) => v,
+                                      List<Items> results = filter(
+                                          this.widget.selectedCategory.items,
+                                          _query);
+                                      if (results != null) {
+                                        selectedCountList = List.from(results);
+                                      }
+                                    }),
+                                    choiceItems:
+                                        C2Choice.listFrom<String, String>(
+                                      source: this
+                                                  .widget
+                                                  .selectedCategory
+                                                  .items[0]
+                                                  .itemcategoryName ==
+                                              "ToStay"
+                                          ? subcategoryoptions = [
+                                              'Hotel',
+                                              'Inn',
+                                              'Villas',
+                                              'Resort',
+                                            ]
+                                          : this
+                                                      .widget
+                                                      .selectedCategory
+                                                      .items[0]
+                                                      .itemcategoryName ==
+                                                  "ToEat&Drink"
+                                              ? subcategoryoptions = [
+                                                  'Restaurant',
+                                                  'Fast Food',
+                                                  'Cafe',
+                                                  'Bar',
+                                                  'Cuisine',
+                                                ]
+                                              : this
+                                                          .widget
+                                                          .selectedCategory
+                                                          .items[0]
+                                                          .itemcategoryName ==
+                                                      "ToDo"
+                                                  ? subcategoryoptions = [
+                                                      'WaterActivities',
+                                                      'LandActivities',
+                                                      'LocalServices',
+                                                      'Environmental',
+                                                      'Social',
+                                                    ]
+                                                  : this
+                                                              .widget
+                                                              .selectedCategory
+                                                              .items[0]
+                                                              .itemcategoryName ==
+                                                          "ToSee"
+                                                      ? subcategoryoptions = [
+                                                          'BeachSites',
+                                                          'WetLands',
+                                                          'LandMarks',
+                                                          'Museums',
+                                                        ]
+                                                      : subcategoryoptions = [],
+                                      value: (i, v) => v,
+                                      label: (i, v) => v,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
+                            )
+                          : SizedBox(),
                     ],
                   );
                 }
@@ -458,9 +561,17 @@ class _ItemsPageState extends State<ItemsPage> {
               }),
 
               // create list builder to show subCategories this.selectedCategory.subCategory.length
+              //show list here
 
               Consumer<LoginService>(builder: (context, loginService, child) {
                 if (loginService.isUserLoggedIn()) {
+                  this.widget.selectedCategory.items
+                    ..sort((item1, item2) =>
+                        item1.itempriceMin.compareTo(item2.itempriceMin));
+                  selectedCountList
+                    ..sort((item1, item2) =>
+                        item1.itempriceMin.compareTo(item2.itempriceMin));
+
                   return Expanded(
                       child: selectedCountList == null ||
                               selectedCountList.length == 0
@@ -500,15 +611,9 @@ class _ItemsPageState extends State<ItemsPage> {
                                     Container(
                                       height: 250,
                                       width: 150,
+                                      padding: EdgeInsets.all(3),
                                       decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: NetworkImage(this
-                                                .widget
-                                                .selectedCategory
-                                                .items[index]
-                                                .imgName),
-                                            fit: BoxFit.cover,
-                                          ),
+                                          color: Colors.white,
                                           borderRadius:
                                               BorderRadius.circular(20),
                                           boxShadow: [
@@ -517,282 +622,303 @@ class _ItemsPageState extends State<ItemsPage> {
                                                 blurRadius: 3,
                                                 offset: Offset(2, 2)),
                                           ]),
-                                      //stack all descriptions values etc. here
-                                      child: Stack(children: [
-                                        Positioned.fill(
-                                          child: Container(
-                                              decoration: BoxDecoration(
+                                      child: Container(
+                                        height: 240,
+                                        width: 140,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: NetworkImage(this
+                                                  .widget
+                                                  .selectedCategory
+                                                  .items[index]
+                                                  .imgName),
+                                              fit: BoxFit.cover,
+                                            ),
                                             borderRadius:
                                                 BorderRadius.circular(20),
-                                            gradient: LinearGradient(
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                              colors: <Color>[
-                                                Colors.transparent,
-                                                Colors.black.withOpacity(0.3),
-                                                Colors.black.withOpacity(0.5),
-                                                Colors.black,
-                                              ],
-                                            ),
-                                          )),
-                                        ),
-                                        //add likes and number of likes
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Colors.grey,
+                                                  blurRadius: 3,
+                                                  offset: Offset(2, 2)),
+                                            ]),
+                                        //stack all descriptions values etc. here
+                                        child: Stack(children: [
+                                          Positioned.fill(
+                                            child: Container(
+                                                decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              gradient: LinearGradient(
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                                colors: <Color>[
+                                                  Colors.transparent,
+                                                  Colors.black.withOpacity(0.3),
+                                                  Colors.black.withOpacity(0.5),
+                                                  Colors.black,
+                                                ],
+                                              ),
+                                            )),
+                                          ),
+                                          //add likes and number of likes
 
-                                        //showname
-                                        // add sub cat name
-                                        Positioned(
-                                          bottom: 10,
-                                          left: 10,
-                                          right: 10,
-                                          child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                //wrap to expand if too long
+                                          //showname
+                                          // add sub cat name
+                                          Positioned(
+                                            bottom: 10,
+                                            left: 10,
+                                            right: 10,
+                                            child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  //wrap to expand if too long
 
-                                                Text(
-                                                  this
-                                                      .widget
-                                                      .selectedCategory
-                                                      .items[index]
-                                                      .name,
-                                                  overflow: TextOverflow.fade,
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
+                                                  Text(
+                                                    this
+                                                        .widget
+                                                        .selectedCategory
+                                                        .items[index]
+                                                        .name,
+                                                    overflow: TextOverflow.fade,
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
 
-                                                SizedBox(
-                                                  height: 5,
-                                                ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
 
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      padding:
-                                                          EdgeInsets.all(2),
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(3),
-                                                          border: Border.all(
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                            EdgeInsets.all(2),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                color: Colors
+                                                                    .blue[400],
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            3),
+                                                                border:
+                                                                    Border.all(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  width: 1,
+                                                                )),
+                                                        child: Text(
+                                                          this
+                                                              .widget
+                                                              .selectedCategory
+                                                              .items[index]
+                                                              .itemsubcategoryName,
+                                                          style: TextStyle(
+                                                            fontSize: 12,
                                                             color: Colors.white,
-                                                            width: 1,
-                                                          )),
-                                                      child: Text(
-                                                        this
-                                                            .widget
-                                                            .selectedCategory
-                                                            .items[index]
-                                                            .itemsubcategoryName,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "  • ",
                                                         style: TextStyle(
                                                           fontSize: 12,
                                                           color: Colors.white,
                                                         ),
                                                       ),
-                                                    ),
-                                                    Text(
-                                                      "  • ",
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                    StreamBuilder(
-                                                        stream: FirebaseFirestore
-                                                            .instance
-                                                            .collection(
-                                                                'ratings')
-                                                            .doc(
-                                                                '${this.widget.selectedCategory.items[index].itemcategoryName}')
-                                                            .snapshots(),
-                                                        builder: (context,
-                                                            AsyncSnapshot<
-                                                                    DocumentSnapshot>
-                                                                snapshot) {
-                                                          if (snapshot
-                                                              .hasData) {
-                                                            var userDocument =
-                                                                snapshot.data;
+                                                      StreamBuilder(
+                                                          stream: FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'ratings')
+                                                              .doc(
+                                                                  '${this.widget.selectedCategory.items[index].itemcategoryName}')
+                                                              .snapshots(),
+                                                          builder: (context,
+                                                              AsyncSnapshot<
+                                                                      DocumentSnapshot>
+                                                                  snapshot) {
+                                                            if (snapshot
+                                                                .hasData) {
+                                                              var userDocument =
+                                                                  snapshot.data;
 
-                                                            double itemrating =
-                                                                double.parse(
-                                                                    userDocument[
-                                                                            "${this.widget.selectedCategory.items[index].name}.itemrating"]
-                                                                        .toString());
+                                                              double
+                                                                  itemrating =
+                                                                  double.parse(
+                                                                      userDocument[
+                                                                              "${this.widget.selectedCategory.items[index].name}.itemrating"]
+                                                                          .toString());
 
-                                                            double
-                                                                itemratingnum =
-                                                                double.parse(
-                                                                    userDocument[
-                                                                            "${this.widget.selectedCategory.items[index].name}.itemratingnum"]
-                                                                        .toString());
-                                                            double rating =
-                                                                itemrating /
-                                                                    itemratingnum;
+                                                              double
+                                                                  itemratingnum =
+                                                                  double.parse(
+                                                                      userDocument[
+                                                                              "${this.widget.selectedCategory.items[index].name}.itemratingnum"]
+                                                                          .toString());
+                                                              double rating =
+                                                                  itemrating /
+                                                                      itemratingnum;
 
-                                                            return rating > 0
-                                                                ? Row(
-                                                                    children: [
-                                                                      Text(
-                                                                        " ${rating.toStringAsFixed(1)} ",
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Colors.green[400],
-                                                                          fontSize:
-                                                                              14,
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
+                                                              return rating > 0
+                                                                  ? Row(
+                                                                      children: [
+                                                                        Text(
+                                                                          " ${rating.toStringAsFixed(1)} ",
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.green[400],
+                                                                            fontSize:
+                                                                                14,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                          ),
                                                                         ),
-                                                                      ),
-                                                                      RatingBarIndicator(
-                                                                        rating:
-                                                                            rating /
-                                                                                5,
-                                                                        itemBuilder:
-                                                                            (context, index) =>
-                                                                                Icon(
+                                                                        RatingBarIndicator(
+                                                                          rating:
+                                                                              rating / 5,
+                                                                          itemBuilder: (context, index) =>
+                                                                              Icon(
+                                                                            Icons.eco_rounded,
+                                                                            color:
+                                                                                Colors.green[400],
+                                                                          ),
+                                                                          itemCount:
+                                                                              1,
+                                                                          itemSize:
+                                                                              18,
+                                                                          direction:
+                                                                              Axis.horizontal,
+                                                                          unratedColor:
+                                                                              Colors.grey[400],
+                                                                        ),
+                                                                      ],
+                                                                    )
+                                                                  : rating ==
+                                                                          null
+                                                                      ? Icon(
                                                                           Icons
                                                                               .eco_rounded,
+                                                                          size:
+                                                                              18,
                                                                           color:
-                                                                              Colors.green[400],
-                                                                        ),
-                                                                        itemCount:
-                                                                            1,
-                                                                        itemSize:
-                                                                            18,
-                                                                        direction:
-                                                                            Axis.horizontal,
-                                                                        unratedColor:
-                                                                            Colors.grey[400],
-                                                                      ),
-                                                                    ],
-                                                                  )
-                                                                : rating == null
-                                                                    ? Icon(
-                                                                        Icons
-                                                                            .eco_rounded,
-                                                                        size:
-                                                                            18,
-                                                                        color: Colors
-                                                                            .grey,
-                                                                      )
-                                                                    : Icon(
-                                                                        Icons
-                                                                            .eco_rounded,
-                                                                        size:
-                                                                            18,
-                                                                        color: Colors
-                                                                            .grey,
-                                                                      );
-                                                          } else if (snapshot
-                                                              .hasError) {
-                                                            return Text(
-                                                              '',
-                                                            );
-                                                          } else
-                                                            return Text(
-                                                              '',
-                                                            );
-                                                        })
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height: 5,
-                                                ),
+                                                                              Colors.grey,
+                                                                        )
+                                                                      : Icon(
+                                                                          Icons
+                                                                              .eco_rounded,
+                                                                          size:
+                                                                              18,
+                                                                          color:
+                                                                              Colors.grey,
+                                                                        );
+                                                            } else if (snapshot
+                                                                .hasError) {
+                                                              return Text(
+                                                                '',
+                                                              );
+                                                            } else
+                                                              return Text(
+                                                                '',
+                                                              );
+                                                          })
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
 
-                                                /*Icon(
-                                                        Icons.location_pin,
-                                                        color: Colors.white,
-                                                        size: 10,
-                                                      ),
-                                                      SizedBox(width: 3),*/
-                                                Text(
-                                                  this
-                                                      .widget
-                                                      .selectedCategory
-                                                      .items[index]
-                                                      .itemaddress,
-                                                  style: TextStyle(
-                                                      overflow:
-                                                          TextOverflow.fade,
-                                                      fontSize: 12,
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w300),
-                                                ),
-                                              ]),
-                                        ),
-                                        Positioned(
-                                          top: 10,
-                                          right: 10,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Visibility(
-                                                visible: this
-                                                            .widget
-                                                            .selectedCategory
-                                                            .items[index]
-                                                            .itempriceMin !=
-                                                        0 ||
-                                                    this
-                                                            .widget
-                                                            .selectedCategory
-                                                            .items[index]
-                                                            .itempriceMin !=
-                                                        0.00,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(3),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.blue,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            3),
-                                                  ),
-                                                  child: Text(
-                                                    "₱ " +
-                                                        this
-                                                            .widget
-                                                            .selectedCategory
-                                                            .items[index]
-                                                            .itempriceMin
-                                                            .toStringAsFixed(2),
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.normal),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(
-                                                "Open " +
+                                                  Text(
                                                     this
                                                         .widget
                                                         .selectedCategory
                                                         .items[index]
-                                                        .itemopenTime,
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.normal),
-                                              ),
-                                            ],
+                                                        .itemaddress,
+                                                    style: TextStyle(
+                                                        overflow:
+                                                            TextOverflow.fade,
+                                                        fontSize: 12,
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w300),
+                                                  ),
+                                                ]),
                                           ),
-                                        )
-                                      ]),
+                                          Positioned(
+                                            top: 10,
+                                            right: 10,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Visibility(
+                                                  visible: this
+                                                              .widget
+                                                              .selectedCategory
+                                                              .items[index]
+                                                              .itempriceMin !=
+                                                          0 ||
+                                                      this
+                                                              .widget
+                                                              .selectedCategory
+                                                              .items[index]
+                                                              .itempriceMin !=
+                                                          0.00,
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(3),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.blue,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              3),
+                                                    ),
+                                                    child: Text(
+                                                      "from ₱ " +
+                                                          this
+                                                              .widget
+                                                              .selectedCategory
+                                                              .items[index]
+                                                              .itempriceMin
+                                                              .toStringAsFixed(
+                                                                  2),
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          color: Colors.white,
+                                                          fontWeight: FontWeight
+                                                              .normal),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Text(
+                                                  "Open " +
+                                                      this
+                                                          .widget
+                                                          .selectedCategory
+                                                          .items[index]
+                                                          .itemopenTime,
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.normal),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ]),
+                                      ),
                                     ),
                                   ]),
                                 );
@@ -1063,7 +1189,7 @@ class _ItemsPageState extends State<ItemsPage> {
                                                             3),
                                                   ),
                                                   child: Text(
-                                                    "₱ " +
+                                                    "from ₱ " +
                                                         selectedCountList[index]
                                                             .itempriceMin
                                                             .toStringAsFixed(2),
@@ -1104,11 +1230,12 @@ class _ItemsPageState extends State<ItemsPage> {
                         height: 200,
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.only(left: 100, right: 100),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             primary: Colors.white, //background
                             onPrimary: Colors.blue,
+                            padding: EdgeInsets.all(0),
                             //foreground
                             //remove border radius
                             shape: new RoundedRectangleBorder(
@@ -1131,8 +1258,7 @@ class _ItemsPageState extends State<ItemsPage> {
                             }
                           },
                           child: Container(
-                            padding: EdgeInsets.only(
-                                left: 20, right: 20, top: 15, bottom: 15),
+                            padding: EdgeInsets.all(20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [

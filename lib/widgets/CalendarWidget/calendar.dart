@@ -1474,7 +1474,7 @@ class CalendarState extends State<CalendarPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.only(left: 100, right: 100),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       primary: Colors.white, //background
@@ -1507,7 +1507,7 @@ class CalendarState extends State<CalendarPage> {
                           //use userLoggedIn flag to change icon and text
                           Icon(userLoggedIn ? Icons.logout : Icons.login,
                               color: Colors.blue, size: 20),
-                          SizedBox(width: 5),
+                          SizedBox(width: 20),
                           Text(userLoggedIn ? 'Sign Out' : 'Sign In',
                               style:
                                   TextStyle(color: Colors.blue, fontSize: 20))
@@ -1516,6 +1516,7 @@ class CalendarState extends State<CalendarPage> {
                     ),
                   ),
                 ),
+                SizedBox(height: 10),
                 Text(' Login and Start Planning!',
                     style: TextStyle(
                       color: Colors.grey[400],
