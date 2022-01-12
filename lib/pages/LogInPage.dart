@@ -275,49 +275,7 @@ class _LogInPageState extends State<LogInPage> {
                                           fontStyle: FontStyle.italic,
                                           fontWeight: FontWeight.w200)),
                                 ),
-                                /*Text(
-                                  '- Login with Google - ',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w200),
-                                ),*/
-
-                                /* ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Colors.white, //background
-                                      onPrimary: Colors.blue,
-                                      //foreground
-                                      shape: CircleBorder(),
-                                    ),
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      height: 70,
-                                      width: 70,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            color: Colors.blue,
-                                            width: 2,
-                                          )),
-                                      child: SvgPicture.asset(
-                                          'assets/icons/google.svg',
-                                          height: 30,
-                                          width: 30),
-                                    ),
-                                    //capture the success flag with async and await
-                                    onPressed: () async {
-                                      bool success =
-                                          await loginService.signInWithGoogle();
-
-                                      if (success) {
-                                        Auth().signInWithGoogle().then((user) {
-                                          checkIfExists(user);
-                                        });
-
-                                        // Navigator.of(context).pushReplacementNamed('/onboardingpage');
-                                      }
-                                    }),*/
+                             
                                 SizedBox(height: 20),
                               ],
                             ),

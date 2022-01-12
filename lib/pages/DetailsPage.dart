@@ -214,9 +214,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                         splashColor: Colors.white,
                                         onPressed: () {
                                           /*likeService.remove(
-                                              context,
-                                              LikedItem(
-                                                  category: widget.items));*/
+                                                context,
+                                                LikedItem(
+                                                    category: widget.items));*/
                                         }),
                                   ),
                                 );
@@ -423,24 +423,25 @@ class _DetailsPageState extends State<DetailsPage> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topRight: Radius.circular(40),
+                        topLeft: Radius.circular(40),
                       ),
                       color: Colors.white,
-                      /* boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.3),
-                                      blurRadius: 5,
-                                      offset: Offset(4, 0), // Shadow position
-                                    ),
-                                  ],*/
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          blurRadius: 5,
+                          offset: Offset(4, 0), // Shadow position
+                        ),
+                      ],
                     ),
                     child: Stack(
                       children: [
                         Padding(
                           padding: EdgeInsets.only(
                             top: 10,
-                            left: 20,
-                            right: 70,
-                            bottom: 20,
+                            left: 25,
+                            right: 25,
+                            bottom: 15,
                           ),
                           //use wrap horizontal to auto expand text
                           child: Text(
@@ -453,30 +454,6 @@ class _DetailsPageState extends State<DetailsPage> {
                                 fontWeight: FontWeight.normal),
                           ),
                         ),
-                        Positioned(
-                          right: 15,
-                          top: 5,
-                          child: Consumer<LoginService>(
-                              builder: (context, loginService, child) {
-                            if (loginService.isUserLoggedIn()) {
-                              return ClipOval(
-                                child: Material(
-                                  color: Colors.transparent,
-                                  child: IconButton(
-                                      padding: EdgeInsets.all(0),
-                                      icon: Icon(CupertinoIcons.calendar),
-                                      color: Colors.blue[200],
-                                      iconSize: 25,
-                                      splashColor: Colors.blue,
-                                      onPressed: () async {
-                                        _showAction(context);
-                                      }),
-                                ),
-                              );
-                            }
-                            return SizedBox();
-                          }),
-                        )
                       ],
                     ),
                   ),
@@ -484,7 +461,7 @@ class _DetailsPageState extends State<DetailsPage> {
               ]),
               //show ratings here
               Padding(
-                padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                padding: EdgeInsets.only(left: 20, right: 20, bottom: 5),
                 child: Row(children: [
                   StreamBuilder(
                       stream: FirebaseFirestore.instance
@@ -564,105 +541,12 @@ class _DetailsPageState extends State<DetailsPage> {
                       })
                 ]),
               ),
-
-              //show ratings1 here
-              Padding(
-                  padding:
-                      EdgeInsets.only(bottom: 10, left: 20, right: 20, top: 10),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(3),
-                              border: Border.all(
-                                color: Colors.blue,
-                                width: 1,
-                              )),
-                          child: Text(
-                            widget.items.itemsubcategoryName,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                      ])),
-
-              //Use EXapnding text widget
-              Padding(
-                padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.timer,
-                            color: Colors.blue,
-                            size: 20,
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            widget.items.itemopenTime,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Visibility(
-                        visible: widget.items.itempriceMin != 0 ||
-                            widget.items.itempriceMin != 0.00 ||
-                            widget.items.itempriceMin != null,
-                        child: Container(
-                          padding: EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            color: Colors.blue[300],
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                          child: Text(
-                            'from. ₱' +
-                                widget.items.itempriceMin.toStringAsFixed(2),
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ]),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 10,
-                  left: 20,
-                  right: 20,
-                  bottom: 15,
-                ),
-                child: ExpandableText(
-                  "       " + widget.items.itemdescription,
-                  expandText: 'show more',
-                  collapseText: 'show less',
-                  maxLines: 4,
-                  linkColor: Colors.blue,
-                  textAlign: TextAlign.justify,
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.normal),
-                ),
-              ),
-
               //show location here
               Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
                   padding:
-                      EdgeInsets.only(left: 20, bottom: 10, right: 20, top: 10),
+                      EdgeInsets.only(left: 20, bottom: 5, right: 20, top: 5),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -685,6 +569,84 @@ class _DetailsPageState extends State<DetailsPage> {
                   ),
                 ),
               ),
+
+              //show ratings1 here
+              Padding(
+                  padding:
+                      EdgeInsets.only(bottom: 10, left: 20, right: 20, top: 10),
+                  child: Row(children: [
+                    Container(
+                      padding: EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3),
+                          border: Border.all(
+                            color: Colors.blue,
+                            width: 1,
+                          )),
+                      child: Text(
+                        widget.items.itemsubcategoryName,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.timer,
+                          color: Colors.blue,
+                          size: 20,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          widget.items.itemopenTime,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ])),
+
+              //Use EXapnding text widget
+              Padding(
+                padding:
+                    EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 5),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  Text(
+                    'About',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.blue,
+                    ),
+                  ),
+                ]),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 10,
+                  left: 20,
+                  right: 20,
+                  bottom: 15,
+                ),
+                child: ExpandableText(
+                  "       " + widget.items.itemdescription,
+                  expandText: 'show more',
+                  collapseText: 'show less',
+                  maxLines: 4,
+                  linkColor: Colors.blue,
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.normal),
+                ),
+              ),
+
               //show map here
               Align(
                 alignment: Alignment.bottomLeft,
@@ -1160,20 +1122,7 @@ class _DetailsPageState extends State<DetailsPage> {
                         if (snapshot.hasData) {
                           var userDocument = snapshot.data;
                           var path = userDocument["${widget.items.name}.sets"];
-                          /*var username = path[0];
 
-                          return Text(
-                            "${username["username"].toString()} name this",
-                            style: TextStyle(
-                              color: Colors.green[400],
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            Text(
-                                    "${username["username"].toString()}",
-                                    style: TextStyle(
-                                        color: Colors.blue, fontSize: 14));
-                          );*/
                           return path.length > 0
                               ? ListView.builder(
                                   itemCount: path.length,
@@ -1271,7 +1220,7 @@ class _DetailsPageState extends State<DetailsPage> {
               ),
 
               SizedBox(
-                height: 10,
+                height: 100,
               )
             ],
           ),
@@ -1285,6 +1234,85 @@ class _DetailsPageState extends State<DetailsPage> {
             child: TopNavBar(
               colorbackground: Colors.transparent,
             )),
+        Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+                padding: EdgeInsets.all(10),
+                width: MediaQuery.of(context).size.width,
+                height: 70,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue.withOpacity(0.3),
+                      blurRadius: 5,
+                      offset: Offset(4, 0), // Shadow position
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Visibility(
+                      visible: widget.items.itempriceMin != 0 ||
+                          widget.items.itempriceMin != 0.00 ||
+                          widget.items.itempriceMin != null,
+                      child: Text(
+                        'from ₱' + widget.items.itempriceMin.toStringAsFixed(2),
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey[800],
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(0),
+                          primary: Colors.white, //background
+                          onPrimary: Colors.blue, //foreground
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50))),
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: <Color>[
+                              Colors.blue[100],
+                              Colors.blue[500],
+                              Colors.blue[700]
+                            ],
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(CupertinoIcons.calendar,
+                                size: 25, color: Colors.white),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Add to Itinerary',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                          ],
+                        ),
+                      ),
+                      onPressed: () async {
+                        _showAction(context);
+                      },
+                    ),
+                  ],
+                )))
       ]),
     ));
   }
