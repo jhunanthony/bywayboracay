@@ -163,6 +163,9 @@ class DistanceAndDurationWidget extends StatelessWidget {
 }
 
 class DistanceAndDurationInfo {
+  final distance;
+  final distancevalue;
+  final duration;
   //final startlocation;
 
   DistanceAndDurationInfo({
@@ -179,8 +182,4 @@ class DistanceAndDurationInfo {
       duration: json['rows'][0]['elements'][0]['duration']['text'],
     );
   }
-
-  final distance;
-  final distancevalue;
-  final duration;
 }

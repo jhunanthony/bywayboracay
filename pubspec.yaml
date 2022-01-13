@@ -68,6 +68,8 @@ dependencies:
   cloud_firestore: ^2.5.4
   #for calendar
   table_calendar: ^3.0.3
+
+
   
   date_utils: ^0.2.0
   intl: ^0.17.0
@@ -79,33 +81,18 @@ dependencies:
   #for filter list
   filter_list: ^1.0.0
   flutter_social_content_share: ^1.0.2
-  #for travel tips
+  #for badpage
   expandable: ^5.0.1
   carousel_slider: ^4.0.0
   flutter_linkify: ^5.0.2
   flutter_dash: ^0.0.1
 
+  #for icon
+  flutter_launcher_icons: ^0.9.2
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-  
-  
-  
-
+flutter_icons:
+  android: true
+  image_path: "assets/images/Logo_Test.png"
 
 
 dev_dependencies:

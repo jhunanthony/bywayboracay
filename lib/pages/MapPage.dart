@@ -32,9 +32,14 @@ class MapPage extends StatefulWidget {
   _MapPageState createState() => _MapPageState();
 }
 
-class _MapPageState extends State<MapPage> {
+class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
   //Google map Controller that controlls single instance of the google map
+
   Completer<GoogleMapController> _controller = Completer();
+  void onMapCreated(GoogleMapController controller) {
+    controller.setMapStyle(null);
+    _controller.complete(controller);
+  }
 
   //for costum marker pin
   //custom marker to costumize assets to be used
@@ -97,11 +102,8 @@ class _MapPageState extends State<MapPage> {
     //set up initial Locations & invoke the method
     this.setInitialLocation();
 
-    //for api distance and duration
-    //futuredistanceandduration = getdistanceandduration();
+    WidgetsBinding.instance.addObserver(this);
   }
-
-  
 
   /// Disposes of the platform resources
 
@@ -128,22 +130,33 @@ class _MapPageState extends State<MapPage> {
     CategorySelectionService catSelection =
         Provider.of<CategorySelectionService>(context, listen: false);
     widget.items = catSelection.items;
-    //add latlong value here
 
-    /*LatLng destinationlatlong =
-        LatLng(widget.items.itemlat, widget.items.itemlong);*/
-    // set the initial location by pulling the user's
-    // current location from the location's getLocation()
     currentLocationref = await locationref.getLocation();
-
-    /*sourceLocation =
-        LatLng(SOURCE_LOCATION.latitude, SOURCE_LOCATION.longitude);*/
-    //display latlong value here
-
-    /*destinationLocation =
-        LatLng(destinationlatlong.latitude, destinationlatlong.longitude);*/
     destinationLocationref = LocationData.fromMap(
         {"latitude": widget.items.itemlat, "longitude": widget.items.itemlong});
+  }
+
+  //observe phone status
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.inactive:
+        print('appLifeCycleState inactive');
+        break;
+      case AppLifecycleState.resumed:
+        //Add These lines
+        final GoogleMapController controller = await _controller.future;
+        onMapCreated(controller);
+        print('appLifeCycleState resumed');
+        break;
+      case AppLifecycleState.paused:
+        print('appLifeCycleState paused');
+        break;
+      case AppLifecycleState.detached:
+        print('appLifeCycleState detached');
+        break;
+    }
   }
 
   @override

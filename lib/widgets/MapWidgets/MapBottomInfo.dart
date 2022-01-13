@@ -27,9 +27,8 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
 
   Items items;
 
-  Future<DistanceAndDurationInfo> futuredistanceandduration;
-
   LatLng destinationLocation;
+  LatLng currentLocation;
   // the user's initial location and current location
   // as it moves
   LocationData currentLocationref;
@@ -38,44 +37,41 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
   // wrapper around the location API
   Location locationref;
 
+  Future<DistanceAndDurationInfo> futuredistanceandduration;
+
   @override
   void initState() {
     super.initState();
 
     // create an instance of Location
     locationref = new Location();
-
-    // subscribe to changes in the user's location
-    // by "listening" to the location's onLocationChanged event
     locationref.onLocationChanged.listen((LocationData cLoc) {
-      //locationref.enableBackgroundMode(enable: true);
-      // cLoc contains the lat and long of the
-      // current user's position in real time,
-      // so we're holding on to it
       currentLocationref = cLoc;
     });
 
     futuredistanceandduration = getdistanceandduration();
+    this.setInitialLocation();
   }
 
-  void getcurrentLocation() async {
+  void setInitialLocation() async {
     currentLocationref = await locationref.getLocation();
   }
 
-//get distance and duration using json parse
+  //get distance and duration using json parse
   Future<DistanceAndDurationInfo> getdistanceandduration() async {
+    currentLocationref = await locationref.getLocation();
+    currentLocation =
+        LatLng(currentLocationref.latitude, currentLocationref.longitude);
     CategorySelectionService catSelection =
         Provider.of<CategorySelectionService>(context, listen: false);
     this.items = catSelection.items;
-
-    currentLocationref = await locationref.getLocation();
 
     LatLng destinationlatlong = LatLng(this.items.itemlat, this.items.itemlong);
     destinationLocation =
         LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
 
     final requestURL =
-        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocation.latitude},${destinationLocation.longitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE";
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocation.latitude},${currentLocation.longitude}&destinations=${destinationLocation.latitude},${destinationLocation.longitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE";
 
     final response = await http.get(Uri.parse(requestURL));
 

@@ -160,6 +160,9 @@ class ItineraryDistDur extends StatelessWidget {
 
 class ItineraryDestDurInfo {
   //final startlocation;
+    final distance;
+  final distancevalue;
+  final duration;
 
   ItineraryDestDurInfo({
     @required this.distancevalue,
@@ -178,7 +181,5 @@ class ItineraryDestDurInfo {
     );
   }
 
-  final distance;
-  final distancevalue;
-  final duration;
+
 }

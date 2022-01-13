@@ -9,8 +9,7 @@ import 'package:provider/provider.dart';
 // ignore: must_be_immutable
 class MapUserInformation extends StatelessWidget {
   bool isSelected;
-  // get the location data with this
-  //LocationData currentLocationLatlong;
+
 
   MapUserInformation({
     this.isSelected,

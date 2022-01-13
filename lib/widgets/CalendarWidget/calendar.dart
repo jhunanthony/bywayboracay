@@ -62,11 +62,6 @@ class CalendarState extends State<CalendarPage> {
   String itemname;
   String category;
 
-  LocationData currentLocationref;
-  LocationData destinationLocationref;
-
-  // wrapper around the location API
-  Location locationref;
 
   //awaits weather report
   Future<WeatherInfo> futureWeather;
@@ -187,18 +182,8 @@ class CalendarState extends State<CalendarPage> {
       },
     );
 
-    // create an instance of Location
-    locationref = new Location();
+  
 
-    locationref.onLocationChanged.listen((LocationData cLoc) {
-      locationref.enableBackgroundMode(enable: true);
-
-      currentLocationref = cLoc;
-    });
-
-    //instantiate the polyline reference to call API
-
-    //set up initial Locations & invoke the method
   }
 
   @override

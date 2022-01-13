@@ -56,10 +56,13 @@ class ItineraryMap extends StatefulWidget {
   _ItineraryMapState createState() => _ItineraryMapState();
 }
 
-class _ItineraryMapState extends State<ItineraryMap> {
-  Future<ItineraryDestDurInfo> futuredistanceandduration;
-
+class _ItineraryMapState extends State<ItineraryMap>
+    with WidgetsBindingObserver {
   Completer<GoogleMapController> _controller = Completer();
+  void onMapCreated(GoogleMapController controller) {
+    controller.setMapStyle(null);
+    _controller.complete(controller);
+  }
 
   //control the state of bottom info position
   double pinBottomInfoPosition = PIN_VISIBLE_POSITION;
@@ -84,6 +87,7 @@ class _ItineraryMapState extends State<ItineraryMap> {
   Set<Polyline> _polylines = Set<Polyline>();
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints;
+  Future<ItineraryDestDurInfo> futuredistanceandduration;
 
   @override
   void initState() {
@@ -108,6 +112,8 @@ class _ItineraryMapState extends State<ItineraryMap> {
 
     //instantiate the polyline reference to call API
     polylinePoints = PolylinePoints();
+
+    WidgetsBinding.instance.addObserver(this);
   }
 
   void setInitialLocation() async {
@@ -224,6 +230,29 @@ class _ItineraryMapState extends State<ItineraryMap> {
       return ItineraryDestDurInfo.fromJson(jsonDecode(response.body));
     } else {
       throw Exception("Error Leoading request URL info.");
+    }
+  }
+
+  //observe phone status
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.inactive:
+        print('appLifeCycleState inactive');
+        break;
+      case AppLifecycleState.resumed:
+        //Add These lines
+        final GoogleMapController controller = await _controller.future;
+        onMapCreated(controller);
+        print('appLifeCycleState resumed');
+        break;
+      case AppLifecycleState.paused:
+        print('appLifeCycleState paused');
+        break;
+      case AppLifecycleState.detached:
+        print('appLifeCycleState detached');
+        break;
     }
   }
 
