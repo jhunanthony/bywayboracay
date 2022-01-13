@@ -4,69 +4,56 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../Navigation/TopNavBar.dart';
 
-class ToBringPage extends StatefulWidget {
+class LocalFoodPage extends StatefulWidget {
   @override
-  State<ToBringPage> createState() => _ToBringPageState();
+  State<LocalFoodPage> createState() => _LocalFoodPageState();
 }
 
-class _ToBringPageState extends State<ToBringPage> {
+class _LocalFoodPageState extends State<LocalFoodPage> {
   List tobringitems = [
     ({
       "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/null_photos%2Ftobring1.jpg?alt=media&token=473e73a0-0051-441f-8262-811711d01e1c",
-      "name": "Eco-Friendly Water Bottle",
+          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2Fmuffindd.jpg?alt=media&token=54d86e3c-65ad-427f-bf1e-5e1373d6935f",
+      "name": "Calamansi Muffin",
       "description":
-          "Plastics are already banned in the whole island, so it is advisable to bring your own water tumbler. It’s going to be your perfect companion while on the beach – whether during your activities or simply when you’re out for a stroll.",
+          "What is ‘calamansi’ ? (say “kah-lah-manh- see” ) Calamansi is the Filipino lime. Calamansi, the Philippine lime are small,green, round citrus fruits, measuring about quarter of an inch in diameter. They have the tart flavors of a mandarin orange, but are sour as much as they’re sweet.The calamansi also has a piercing sweet citrus scent. This fruit is used as a main ingredient to a very popular sweets in Boracay, the calamansi muffin. The muffin is said to be sweet, sour, soft, and savory at the same time. So try it out!",
     }),
     ({
       "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/null_photos%2Ftobring2.jpg?alt=media&token=c7f8aecf-e82b-4236-9a17-9a6cfe01e8b4",
-      "name": "Flip-flops",
+"https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2Fchicken-binakol-or-chicken-in-coconut-soup-recipe.jpg?alt=media&token=a4e1cabb-516d-45e9-b662-df953f74510d",    
+  "name": "BINAKOE/BINAKUL",
       "description":
-          "The beach is the perfect place to ditch your pair of sneakers and wear your favorite pair of flip-flops. Make sure to bring your most trusted and comfortable pair as it can either make or break your getaway – one that can stand long walks on a sandy shore or a wild night-out!",
+          "Traditional binakoe is cooked inside a fresh node of bamboo. Native chicken plus onions and lemongrass are added. For the souring agent, aeabihig leaves complete the mix. Think of this dish as similar to the sinigang and might appeal to Tagalog palates.A hot plate of rice plus steamig binakoe then paired with an ice cold soda would be the perfect lunch!",
     }),
     ({
       "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/null_photos%2Ftobring3.jpg?alt=media&token=997c4694-51ba-4742-8865-191ea4a6ee23",
-      "name": "Sunglasses",
+"https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2Fubad-22.jpg?alt=media&token=3baa9590-ab6b-43d4-a8f2-9f96b329a26b",
+      "name": "INUBARANG MANOK",
       "description":
-          "Make sure to protect your eyes from the harmful rays of the sun with a pair of sunnies, and look stylish all the same time! While most are made of plastics and metals – there are also those that are made of bamboo which are eco-friendlier especially if you are the type who has the tendency to drop them on the water while parasailing! So choose wisely and get those biodegradable wooden shades!",
+          "Do you know that the core of banana stalk (ubad) when cooked in coconut milk can be so good! Native chicken cooked with the said ingredient, gata and lemongrass results in a stew like dish that has a thickish soup. You will love the gata taste, the tenderness of the chicken and the hint of tanglad (lemongrass).",
     }),
     ({
       "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/null_photos%2Ftobring4.png?alt=media&token=ba6f5fce-d27b-4bc8-bf0e-37737ea82a6c",
-      "name": "Sunblock",
+          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2F60639307_2322508324695115_6011781293191200768_n.jpg?alt=media&token=e9956e9e-1550-46e0-b2d5-c6772f1c566e",
+      "name": "Tinumkan",
       "description":
-          "Too much exposure from the sun is always a bad idea, so always bring a sunblock that works well with your skin. If you are trying a new product, make sure to test it on yourself before your getaway so you won’t have to deal with allergies and breakouts during your trip! Dermatologists recommend using a SPF30 – better if you can get coral reef-safe sunscreens or those that do not contain oxybenzone, octinoxate and other harmful chemicals! Its extra safer for your skin and for the marine life!",
+          "a shrimp mix with local local herbs and spices, grinded and mix together using eosong and hae-o. The mixture is placed into a banana leaf  and cooked in water for 15 to 20 minutes.",
     }),
     ({
       "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/null_photos%2Ftobring5.jpg?alt=media&token=baa0ff53-c831-436d-a749-5d47e294cf92",
-      "name": "Swimwear",
+          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2F7I_everydayfood_chicken_adobo.jpg?alt=media&token=9c91de7c-8d53-4fcb-ae56-78ad983a84bb",
+      "name": "Adobo nga may Gata",
       "description":
-          "A trip to the beach won’t be complete without those bright and colorful swimsuits! Cover-ups will come in handy as it is still appropriate to have them on while dining on your favorite restaurant. ",
+          "A typical filipino dish with a twist, same process on how to cook adobo but Malaynons used coconut milk instead of soy sauce.",
     }),
     ({
       "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/null_photos%2Ftobring6.jpg?alt=media&token=cf7c8a22-ea1e-4331-ab1c-2cbc63ecfb70",
-      "name": "Dry Bag",
+          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2F148858635_113107147432735_460560278116641091_n.jpg?alt=media&token=cf11ff3c-92ba-4fbb-83da-edb9ff55c976",
+      "name": "Inumoe",
       "description":
-          "A dry bag will come in handy when you head out to explore the island. It will keep all of your beach essentials in place, safe and dry! They come in different sizes, but a small one would be enough to carry around the beach.",
+          " The inumoe is made of cooked rice (sinaing), yeast and powdered rice. After mixing thoroughly, it is then wrapped in a payaw plant (a family of caladium) and stored for 24 hours. It is best served chilled and tastes like fermented rice.",
     }),
-    ({
-      "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/null_photos%2Ftobring7.jfif?alt=media&token=87d11610-8a11-45a3-b628-c5e1d00e19c9",
-      "name": "Camera/Phone",
-      "description":
-          "A camera is a good way to immortalize moments! If you’re that type of person who wants to just capture some selfies, groufies, and random photos, a phone would be just fine. Just make sure to keep it out of the water since salt water can damage your gadgets.",
-    }),
-    ({
-      "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/null_photos%2Ftobring8.jpg?alt=media&token=8e64cfdb-2d90-4825-9ad7-198f1900556a",
-      "name": "Hat/Cap",
-      "description":
-          "When it’s too hot outside, a hat will keep your skin, hair, and eyes protected from the sun. It’s also a good way to hide your hair if you’re too lazy to fix it! Small or big, it’s one cool beach accessory that will definitely add flare to your OOTDs.",
-    }),
+   
   ];
 
   int pageIndex = 0;

@@ -1,3 +1,4 @@
+import 'package:bywayborcay/widgets/BagPageWidgets/local_foods.dart';
 import 'package:bywayborcay/widgets/BagPageWidgets/local_products/localproducts.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -447,57 +448,65 @@ class BagPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(
-                    height: 130,
-                    width: 95,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(
-                              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2Faklanon-food-6.jpg?alt=media&token=727b927d-4246-4ba4-90cf-c958359ad601"),
-                          fit: BoxFit.cover,
-                        ),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.grey,
-                              blurRadius: 6,
-                              offset: Offset(2, 2)),
-                        ]),
-                    child: Stack(
-                      children: [
-                        Positioned.fill(
-                          child: Container(
-                              height: 130,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                gradient: LinearGradient(
-                                  begin: Alignment.center,
-                                  end: Alignment.bottomCenter,
-                                  colors: <Color>[
-                                    Colors.transparent,
-                                    Colors.blue.withOpacity(0.3),
-                                    Colors.blue.withOpacity(0.5),
-                                    Colors.blue,
-                                  ],
-                                ),
-                              )),
-                        ),
-                        //use userLoggedIn flag to change icon and text
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LocalFoodPage()));
+                    },
+                    child: Container(
+                      height: 130,
+                      width: 95,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2Faklanon-food-6.jpg?alt=media&token=727b927d-4246-4ba4-90cf-c958359ad601"),
+                            fit: BoxFit.cover,
+                          ),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 6,
+                                offset: Offset(2, 2)),
+                          ]),
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: Container(
+                                height: 130,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.center,
+                                    end: Alignment.bottomCenter,
+                                    colors: <Color>[
+                                      Colors.transparent,
+                                      Colors.blue.withOpacity(0.3),
+                                      Colors.blue.withOpacity(0.5),
+                                      Colors.blue,
+                                    ],
+                                  ),
+                                )),
+                          ),
+                          //use userLoggedIn flag to change icon and text
 
-                        Positioned(
-                          bottom: 8,
-                          left: 3,
-                          right: 3,
-                          child: Text("Local\nFoods",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold)),
-                        )
-                      ],
+                          Positioned(
+                            bottom: 8,
+                            left: 3,
+                            right: 3,
+                            child: Text("Local\nFoods",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold)),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   GestureDetector(
