@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/BagPageWidgets/CurrencyConverter/currencywidget.dart';
+import '../widgets/BagPageWidgets/WeatherReportPage.dart';
 import '../widgets/BagPageWidgets/tobring.dart';
 import '../widgets/BagPageWidgets/travelguidelines.dart';
 import '../widgets/BagPageWidgets/commonphrase.dart';
@@ -20,6 +21,7 @@ class BagPage extends StatelessWidget {
       decoration: BoxDecoration(
         image: DecorationImage(
             image: AssetImage('assets/images/Explore_Beach.jpg'),
+            opacity: 0.5,
             fit: BoxFit.fitHeight),
       ),
       child: Scaffold(
@@ -33,255 +35,536 @@ class BagPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               SizedBox(
-                height: 180,
+                height: 80,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      shadowColor: Colors.black,
-                      elevation: 4,
-                      backgroundColor: Colors.white,
-                      primary: Colors.blue,
-                      padding: EdgeInsets.only(
-                          left: 50, right: 50, top: 20, bottom: 20),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0)),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TravelGuidelines()));
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text("To provide further\n assistance in your\n travels,",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.grey[800],
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                          "Byway Boracay is here to\nprovide you a set of tools\nthat might come-in hadly along\nthe way!",
+                          textAlign: TextAlign.left,
+                          style:
+                              TextStyle(fontSize: 12, color: Colors.grey[800])),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(0),
+                          shadowColor: Colors.black,
+                          elevation: 4,
+                          primary: Colors.blue[400], //background
+                          onPrimary: Colors.white,
+                          //foreground
+                          //remove border radius
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () {
+                          showDialog<void>(
+                              context: context,
+                              builder: (context) {
+                                //Iterable markers = [];
+                                //use iterable to map true items and return markers
 
-                      // Replace with a Row for horizontal icon + text
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Travel\nGuidelines",
-                                textAlign: TextAlign.center),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Icon(Icons.airplanemode_active_rounded),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      shadowColor: Colors.black,
-                      elevation: 4,
-                      backgroundColor: Colors.white,
-                      primary: Colors.blue,
-                      onSurface: Colors.grey,
-                      padding: EdgeInsets.only(
-                          left: 30, right: 30, top: 10, bottom: 10),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0)),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TravelTips()));
-                    },
-                    child: Column(
-                      // Replace with a Row for horizontal icon + text
-                      children: <Widget>[
-                        Icon(Icons.fact_check_rounded),
-                        Text("\Travel\nTips")
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      shadowColor: Colors.black,
-                      elevation: 4,
-                      primary: Colors.white,
-                      backgroundColor: Colors.red[300],
-                      padding: EdgeInsets.only(
-                          left: 50, right: 50, top: 20, bottom: 20),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0)),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EmergencyPage()));
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      // Replace with a Row for horizontal icon + text
-                      children: <Widget>[
-                        Text("\Emergency\nContacts"),
-                        SizedBox(
-                          width: 10,
+                                return WeatherReportPage();
+                              });
+                        },
+                        child: Container(
+                          height: 75,
+                          width: 180,
+                          padding: EdgeInsets.all(10),
+                          alignment: Alignment.center,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              //use userLoggedIn flag to change icon and text
+
+                              Text("Weather Report",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16)),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Icon(CupertinoIcons.cloud_sun_fill,
+                                  color: Colors.white, size: 20),
+                            ],
+                          ),
                         ),
-                        Icon(Icons.add_box_rounded),
-                      ],
-                    ),
-                  ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      shadowColor: Colors.black,
-                      elevation: 4,
-                      backgroundColor: Colors.white,
-                      primary: Colors.blue,
-                      padding: EdgeInsets.only(
-                          left: 24, right: 24, top: 14, bottom: 14),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0)),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ToBringPage()));
-                    },
-                    child: Column(
-                      // Replace with a Row for horizontal icon + text
-                      children: <Widget>[
-                        Icon(
-                          CupertinoIcons.bag,
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(0),
+                          shadowColor: Colors.black,
+                          elevation: 4,
+                          primary: Colors.blue[400], //background
+                          onPrimary: Colors.white,
+                          //foreground
+                          //remove border radius
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(20),
+                          ),
                         ),
-                        Text("\To Bring"),
-                      ],
-                    ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ToBringPage()));
+                        },
+                        child: Container(
+                          height: 75,
+                          width: 180,
+                          padding: EdgeInsets.all(10),
+                          alignment: Alignment.center,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              //use userLoggedIn flag to change icon and text
+
+                              Text("To Bring",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16)),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Icon(CupertinoIcons.bag,
+                                  color: Colors.white, size: 20),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(0),
+                          shadowColor: Colors.black,
+                          elevation: 4,
+                          primary: Colors.blue[400], //background
+                          onPrimary: Colors.white,
+                          //foreground
+                          //remove border radius
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CommonPhrasePage()));
+                        },
+                        child: Container(
+                          height: 75,
+                          width: 180,
+                          padding: EdgeInsets.all(10),
+                          alignment: Alignment.center,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              //use userLoggedIn flag to change icon and text
+
+                              Text("Common Phrases",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16)),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Icon(Icons.textsms_rounded,
+                                  color: Colors.white, size: 20),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(0),
+                          shadowColor: Colors.black,
+                          elevation: 4,
+                          primary: Colors.blue[400], //background
+                          onPrimary: Colors.white,
+                          //foreground
+                          //remove border radius
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => TravelGuidelines()));
+                        },
+                        child: Container(
+                          height: 95,
+                          width: 120,
+                          padding: EdgeInsets.all(10),
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              //use userLoggedIn flag to change icon and text
+                              Icon(Icons.airplanemode_active_rounded,
+                                  color: Colors.white, size: 20),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text("Travel\nGuidelines",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16))
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(0),
+                          shadowColor: Colors.black,
+                          elevation: 4,
+                          primary: Colors.blue[400], ////background
+                          onPrimary: Colors.white,
+                          //foreground
+                          //remove border radius
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => TravelTips()));
+                        },
+                        child: Container(
+                          height: 95,
+                          width: 120,
+                          padding: EdgeInsets.all(10),
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              //use userLoggedIn flag to change icon and text
+                              Icon(Icons.fact_check_rounded,
+                                  color: Colors.white, size: 20),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text("Travel\nTips",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16))
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(0),
+                          shadowColor: Colors.black,
+                          elevation: 4,
+                          primary: Colors.green[300], //background
+                          onPrimary: Colors.white,
+                          //foreground
+                          //remove border radius
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CurrencyPage()));
+                        },
+                        child: Container(
+                          height: 95,
+                          width: 120,
+                          padding: EdgeInsets.all(10),
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              //use userLoggedIn flag to change icon and text
+                              Icon(Icons.sync_outlined,
+                                  color: Colors.white, size: 20),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text("Currency\nConverter",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16))
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(0),
+                          shadowColor: Colors.black,
+                          elevation: 4,
+                          primary: Colors.red[400], //background
+                          onPrimary: Colors.white,
+                          //foreground
+                          //remove border radius
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EmergencyPage()));
+                        },
+                        child: Container(
+                          height: 95,
+                          width: 120,
+                          padding: EdgeInsets.all(10),
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              //use userLoggedIn flag to change icon and text
+                              Icon(Icons.add_box_rounded,
+                                  color: Colors.white, size: 20),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text("Emergency\nCalls",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16))
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
+              SizedBox(
+                height: 5,
+              ),
+
+              ///local
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      shadowColor: Colors.black,
-                      elevation: 4,
-                      backgroundColor: Colors.blue,
-                      primary: Colors.white,
-                      onSurface: Colors.grey,
-                      padding: EdgeInsets.only(
-                          left: 25, right: 25, top: 10, bottom: 10),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0)),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CommonPhrasePage()));
-                    },
-                    child: Column(
-                      // Replace with a Row for horizontal icon + text
-                      children: <Widget>[
-                        Icon(Icons.textsms_rounded),
-                        Text("\Common\nPhrases")
-                      ],
-                    ),
-                  ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      shadowColor: Colors.black,
-                      elevation: 4,
-                      backgroundColor: Colors.green[400],
-                      primary: Colors.white,
-                      padding: EdgeInsets.only(
-                          left: 50, right: 50, top: 20, bottom: 20),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0)),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CurrencyPage()));
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      // Replace with a Row for horizontal icon + text
-                      children: <Widget>[
-                        Text("", textAlign: TextAlign.center),
-                        Icon(Icons.sync_outlined),
-                        Text("\tCurrency\nConverter")
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      shadowColor: Colors.black,
-                      elevation: 4,
-                      backgroundColor: Colors.white,
-                      primary: Colors.blue,
-                      padding: EdgeInsets.only(
-                          left: 35, right: 35, top: 10, bottom: 10),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0)),
-                    ),
-                    onPressed: () {
+                  GestureDetector(
+                    onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => LocalEvents()));
                     },
-                    child: Column(
-                      // Replace with a Row for horizontal icon + text
-                      children: <Widget>[
-                        Icon(Icons.celebration_rounded),
-                        Text("\tLocal\nEvents")
+                    child: Container(
+                      height: 130,
+                      width: 95,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2Fmaxresdefault.jpg?alt=media&token=00a4f767-5aff-4ab0-8611-5dc622a15738"),
+                            fit: BoxFit.cover,
+                          ),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 6,
+                                offset: Offset(2, 2)),
+                          ]),
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: Container(
+                                height: 130,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.center,
+                                    end: Alignment.bottomCenter,
+                                    colors: <Color>[
+                                      Colors.transparent,
+                                      Colors.blue.withOpacity(0.3),
+                                      Colors.blue.withOpacity(0.5),
+                                      Colors.blue,
+                                    ],
+                                  ),
+                                )),
+                          ),
+                          //use userLoggedIn flag to change icon and text
+
+                          Positioned(
+                            bottom: 8,
+                            left: 3,
+                            right: 3,
+                            child: Text("Local\nEvents",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold)),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 130,
+                    width: 95,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(
+                              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2Faklanon-food-6.jpg?alt=media&token=727b927d-4246-4ba4-90cf-c958359ad601"),
+                          fit: BoxFit.cover,
+                        ),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey,
+                              blurRadius: 6,
+                              offset: Offset(2, 2)),
+                        ]),
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: Container(
+                              height: 130,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                gradient: LinearGradient(
+                                  begin: Alignment.center,
+                                  end: Alignment.bottomCenter,
+                                  colors: <Color>[
+                                    Colors.transparent,
+                                    Colors.blue.withOpacity(0.3),
+                                    Colors.blue.withOpacity(0.5),
+                                    Colors.blue,
+                                  ],
+                                ),
+                              )),
+                        ),
+                        //use userLoggedIn flag to change icon and text
+
+                        Positioned(
+                          bottom: 8,
+                          left: 3,
+                          right: 3,
+                          child: Text("Local\nFoods",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold)),
+                        )
                       ],
                     ),
                   ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      shadowColor: Colors.black,
-                      elevation: 4,
-                      backgroundColor: Colors.white,
-                      primary: Colors.blue,
-                      padding: EdgeInsets.only(
-                          left: 50, right: 50, top: 20, bottom: 20),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0)),
-                    ),
-                    onPressed: () {
+                  GestureDetector(
+                    onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => LocalProducts()));
                     },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      // Replace with a Row for horizontal icon + text
-                      children: <Widget>[
-                        Text("", textAlign: TextAlign.center),
-                        Icon(
-                          Icons.liquor_rounded,
-                        ),
-                        Text('\t\t\tLocal\nProducts')
-                      ],
+                    child: Container(
+                      height: 130,
+                      width: 95,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2Fmine_large.jpg?alt=media&token=60df0a81-06e0-4af9-9dfd-d444792e366f"),
+                            fit: BoxFit.cover,
+                          ),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 6,
+                                offset: Offset(2, 2)),
+                          ]),
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: Container(
+                                height: 130,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.center,
+                                    end: Alignment.bottomCenter,
+                                    colors: <Color>[
+                                      Colors.transparent,
+                                      Colors.blue.withOpacity(0.3),
+                                      Colors.blue.withOpacity(0.5),
+                                      Colors.blue,
+                                    ],
+                                  ),
+                                )),
+                          ),
+                          //use userLoggedIn flag to change icon and text
+
+                          Positioned(
+                            bottom: 8,
+                            left: 3,
+                            right: 3,
+                            child: Text("Local\nProducts",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold)),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
               SizedBox(
-                height: 70,
+                height: 75,
               ),
             ],
           ),

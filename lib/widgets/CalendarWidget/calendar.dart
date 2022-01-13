@@ -30,6 +30,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:flutter_dash/flutter_dash.dart';
 
+import '../BagPageWidgets/WeatherReportPage.dart';
 import '../CategoryWidgets/CategoryIcon.dart';
 import 'auth.dart';
 import 'datepicker.dart';
@@ -61,7 +62,6 @@ class CalendarState extends State<CalendarPage> {
   String address;
   String itemname;
   String category;
-
 
   //awaits weather report
   Future<WeatherInfo> futureWeather;
@@ -181,9 +181,6 @@ class CalendarState extends State<CalendarPage> {
         }
       },
     );
-
-  
-
   }
 
   @override
@@ -576,29 +573,41 @@ class CalendarState extends State<CalendarPage> {
                     ),
 
                     //display weather
-                    Container(
-                      padding: EdgeInsets.only(left: 10, right: 10),
-                      child: FutureBuilder<WeatherInfo>(
-                          future: futureWeather,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return WeatherMainWidget(
-                                location: snapshot.data.location,
-                                temp: snapshot.data.temp,
-                                tempMin: snapshot.data.tempMin,
-                                tempMax: snapshot.data.tempMax,
-                                weather: snapshot.data.weather,
-                                humidity: snapshot.data.humidity,
-                                windspeed: snapshot.data.windspeed,
-                                visibility: snapshot.data.visibility,
-                                airpressure: snapshot.data.airpressure,
-                                weathericon: snapshot.data.weathericon,
-                              );
-                            } else if (snapshot.hasError) {
-                              return Center(child: Text("${snapshot.error}"));
-                            }
-                            return CircularProgressIndicator();
-                          }),
+                    GestureDetector(
+                      onTap: () {
+                        showDialog<void>(
+                            context: context,
+                            builder: (context) {
+                              //Iterable markers = [];
+                              //use iterable to map true items and return markers
+
+                              return WeatherReportPage();
+                            });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(left: 10, right: 10),
+                        child: FutureBuilder<WeatherInfo>(
+                            future: futureWeather,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return WeatherMainWidget(
+                                  location: snapshot.data.location,
+                                  temp: snapshot.data.temp,
+                                  tempMin: snapshot.data.tempMin,
+                                  tempMax: snapshot.data.tempMax,
+                                  weather: snapshot.data.weather,
+                                  humidity: snapshot.data.humidity,
+                                  windspeed: snapshot.data.windspeed,
+                                  visibility: snapshot.data.visibility,
+                                  airpressure: snapshot.data.airpressure,
+                                  weathericon: snapshot.data.weathericon,
+                                );
+                              } else if (snapshot.hasError) {
+                                return Center(child: Text("${snapshot.error}"));
+                              }
+                              return CircularProgressIndicator();
+                            }),
+                      ),
                     ),
                     SizedBox(
                       height: 10,
