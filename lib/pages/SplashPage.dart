@@ -41,18 +41,18 @@ class SplashPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(13),
+                      padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                         gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: <Color>[
-                                Colors.white.withOpacity(0.5),
-                                Colors.white.withOpacity(0.8),
-                                Colors.white,
-                                Colors.white,
-                              ],
-                            ),
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: <Color>[
+                            Colors.white.withOpacity(0.5),
+                            Colors.white.withOpacity(0.8),
+                            Colors.white,
+                            Colors.white,
+                          ],
+                        ),
                         //color: Colors.white.withOpacity(0.2),
                         shape: BoxShape.circle,
                       ),

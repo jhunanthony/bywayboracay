@@ -25,12 +25,6 @@ class AboutPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-            Image.asset(
-              "assets/images/Logo_Test.png",
-              height: 35,
-              width: 35,
-              fit: BoxFit.scaleDown,
-            ),
             Padding(
               padding: const EdgeInsets.all(20),
               child: Text(

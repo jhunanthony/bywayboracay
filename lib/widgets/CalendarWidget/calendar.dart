@@ -1501,7 +1501,7 @@ class CalendarState extends State<CalendarPage> {
                           //use userLoggedIn flag to change icon and text
                           Icon(userLoggedIn ? Icons.logout : Icons.login,
                               color: Colors.blue, size: 20),
-                          SizedBox(width: 20),
+                          SizedBox(width: 5),
                           Text(userLoggedIn ? 'Sign Out' : 'Sign In',
                               style:
                                   TextStyle(color: Colors.blue, fontSize: 20))
@@ -1510,7 +1510,7 @@ class CalendarState extends State<CalendarPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 20),
                 Text(' Login and Start Planning!',
                     style: TextStyle(
                       color: Colors.grey[400],

@@ -70,7 +70,7 @@ class _LogInPageState extends State<LogInPage> {
                         height: 85,
                       ),
                       Container(
-                          padding: EdgeInsets.all(13),
+                          padding: EdgeInsets.all(20),
                           height: 200,
                           width: 200,
                           decoration: BoxDecoration(
