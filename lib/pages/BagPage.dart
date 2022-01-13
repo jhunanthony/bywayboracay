@@ -1,16 +1,16 @@
 import 'package:bywayborcay/widgets/BagPageWidgets/local_foods.dart';
-import 'package:bywayborcay/widgets/BagPageWidgets/local_products/localproducts.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
 
 import '../widgets/BagPageWidgets/CurrencyConverter/currencywidget.dart';
 import '../widgets/BagPageWidgets/WeatherReportPage.dart';
+import '../widgets/BagPageWidgets/local_events.dart';
+import '../widgets/BagPageWidgets/local_products.dart';
 import '../widgets/BagPageWidgets/tobring.dart';
 import '../widgets/BagPageWidgets/travelguidelines.dart';
 import '../widgets/BagPageWidgets/commonphrase.dart';
 import '../widgets/BagPageWidgets/emergencywidget.dart';
-import '../widgets/BagPageWidgets/local_events/localevents.dart';
+
 import '../widgets/BagPageWidgets/traveltips.dart';
 
 class BagPage extends StatelessWidget {
@@ -392,7 +392,7 @@ class BagPage extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LocalEvents()));
+                              builder: (context) => LocalEventsWidgetPage()));
                     },
                     child: Container(
                       height: 130,
@@ -514,7 +514,7 @@ class BagPage extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LocalProducts()));
+                              builder: (context) => LocalProductsWidgetPage()));
                     },
                     child: Container(
                       height: 130,

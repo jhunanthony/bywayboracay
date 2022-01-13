@@ -4,54 +4,43 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../Navigation/TopNavBar.dart';
 
-class LocalFoodPage extends StatefulWidget {
+class LocalProductsWidgetPage extends StatefulWidget {
   @override
-  State<LocalFoodPage> createState() => _LocalFoodPageState();
+  State<LocalProductsWidgetPage> createState() =>
+      _LocalProductsWidgetPageState();
 }
 
-class _LocalFoodPageState extends State<LocalFoodPage> {
+class _LocalProductsWidgetPageState extends State<LocalProductsWidgetPage> {
   List tobringitems = [
     ({
-      "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2Fmuffindd.jpg?alt=media&token=54d86e3c-65ad-427f-bf1e-5e1373d6935f",
-      "name": "Calamansi Muffin",
+      "name": 'Dried Mangoes',
+      "imgName": 'assets/images/localprod1.jpg',
       "description":
-          "What is ‘calamansi’ ? (say “kah-lah-manh- see” ) Calamansi is the Filipino lime. Calamansi, the Philippine lime are small,green, round citrus fruits, measuring about quarter of an inch in diameter. They have the tart flavors of a mandarin orange, but are sour as much as they’re sweet.The calamansi also has a piercing sweet citrus scent. This fruit is used as a main ingredient to a very popular sweets in Boracay, the calamansi muffin. The muffin is said to be sweet, sour, soft, and savory at the same time. So try it out!",
+          'Never go home without buying a couple of packs of dried mangoes and other candied fruits. These dried fruit candies will delight anyone who will have the pleasure to savor it. Made from export-quality mangoes from neighboring provinces, the dried mango candies of Boracay is a sure-fire hit as a pasalubong.',
     }),
     ({
-      "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2Fchicken-binakol-or-chicken-in-coconut-soup-recipe.jpg?alt=media&token=a4e1cabb-516d-45e9-b662-df953f74510d",
-      "name": "BINAKOE/BINAKUL",
+      "name": 'HANDMADE BAG',
+      "imgName": 'assets/images/localprod2.jpg',
       "description":
-          "Traditional binakoe is cooked inside a fresh node of bamboo. Native chicken plus onions and lemongrass are added. For the souring agent, aeabihig leaves complete the mix. Think of this dish as similar to the sinigang and might appeal to Tagalog palates.A hot plate of rice plus steamig binakoe then paired with an ice cold soda would be the perfect lunch!",
+          'Boracay’s version of Aklan’s Ati-Atih an on the second Sunday of January wows foreigners with the motley-colored bodily decorations of the dancers grooving to lively music.Made from materials sourced from local farmers and made by the finest local artisans, these bags lend a cool, native look to any outfit. ',
     }),
     ({
-      "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2Fubad-22.jpg?alt=media&token=3baa9590-ab6b-43d4-a8f2-9f96b329a26b",
-      "name": "INUBARANG MANOK",
+      "name": 'SEAFOODS',
+      "imgName": 'assets/images/localprod3.jpg',
       "description":
-          "Do you know that the core of banana stalk (ubad) when cooked in coconut milk can be so good! Native chicken cooked with the said ingredient, gata and lemongrass results in a stew like dish that has a thickish soup. You will love the gata taste, the tenderness of the chicken and the hint of tanglad (lemongrass).",
+          'Well, not exactly souvenirs, In D’ Talipapa Market, you can not only get bargain prices on your souvenirs, you can also buy freshly-caught seafood – fresh fish, fresh shellfish, lobsters, crabs, and so many more goodies – and have them cooked in the many dampa restaurants in the area.',
     }),
     ({
-      "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2F60639307_2322508324695115_6011781293191200768_n.jpg?alt=media&token=e9956e9e-1550-46e0-b2d5-c6772f1c566e",
-      "name": "Tinumkan",
+      "name": 'PUKA SHELLS',
+      "imgName": 'assets/images/localprod4.jpg',
       "description":
-          "a shrimp mix with local local herbs and spices, grinded and mix together using eosong and hae-o. The mixture is placed into a banana leaf  and cooked in water for 15 to 20 minutes.",
+          ' Boracay has a lot of sources of some of the world’s shiniest puka shells; very rarely do you see Boracay craftsmen putting lacquer on their puka shells for the color and shine. Get a few necklace + bracelet combos for the bros back home!',
     }),
     ({
-      "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2F7I_everydayfood_chicken_adobo.jpg?alt=media&token=9c91de7c-8d53-4fcb-ae56-78ad983a84bb",
-      "name": "Adobo nga may Gata",
+      "name": 'BEACH DRESSES',
+      "imgName": 'assets/images/localprod5.jpg',
       "description":
-          "A typical filipino dish with a twist, same process on how to cook adobo but Malaynons used coconut milk instead of soy sauce.",
-    }),
-    ({
-      "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2F148858635_113107147432735_460560278116641091_n.jpg?alt=media&token=cf11ff3c-92ba-4fbb-83da-edb9ff55c976",
-      "name": "Inumoe",
-      "description":
-          " The inumoe is made of cooked rice (sinaing), yeast and powdered rice. After mixing thoroughly, it is then wrapped in a payaw plant (a family of caladium) and stored for 24 hours. It is best served chilled and tastes like fermented rice.",
+          'The Island of Boracay has a lot of tropical-inspired beachwear to offer, be it for the conservative or adventurous type of women. Choose from a variety of designs, like Malay-themed dresses, with indigenous patterns, or just standard florals and waves ',
     }),
   ];
 
@@ -83,7 +72,7 @@ class _LocalFoodPageState extends State<LocalFoodPage> {
             child: Column(
               children: [
                 Text(
-                  "Local Foods",
+                  "Local Products",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20,
@@ -147,7 +136,7 @@ class _LocalFoodPageState extends State<LocalFoodPage> {
                                 SizedBox(
                                   height: 20,
                                 ),
-                                Image.network(
+                                Image.asset(
                                   "${tobringitems[index]['imgName']}",
                                   height: 300,
                                 ),

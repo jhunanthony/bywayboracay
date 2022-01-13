@@ -4,54 +4,36 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../Navigation/TopNavBar.dart';
 
-class LocalFoodPage extends StatefulWidget {
+class LocalEventsWidgetPage extends StatefulWidget {
   @override
-  State<LocalFoodPage> createState() => _LocalFoodPageState();
+  State<LocalEventsWidgetPage> createState() => _LocalEventsWidgetPageState();
 }
 
-class _LocalFoodPageState extends State<LocalFoodPage> {
+class _LocalEventsWidgetPageState extends State<LocalEventsWidgetPage> {
   List tobringitems = [
     ({
-      "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2Fmuffindd.jpg?alt=media&token=54d86e3c-65ad-427f-bf1e-5e1373d6935f",
-      "name": "Calamansi Muffin",
+      "name": 'DRAGON BOAT FESTIVAL',
+      "imgName": 'assets/images/dragon.jpg',
       "description":
-          "What is ‘calamansi’ ? (say “kah-lah-manh- see” ) Calamansi is the Filipino lime. Calamansi, the Philippine lime are small,green, round citrus fruits, measuring about quarter of an inch in diameter. They have the tart flavors of a mandarin orange, but are sour as much as they’re sweet.The calamansi also has a piercing sweet citrus scent. This fruit is used as a main ingredient to a very popular sweets in Boracay, the calamansi muffin. The muffin is said to be sweet, sour, soft, and savory at the same time. So try it out!",
+          'The Dragon Boat Festival includes competitions for teams of men, women, and mixed rowers who race to the finish line using a dragon-inspired, 15-meter-long boat.',
     }),
     ({
-      "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2Fchicken-binakol-or-chicken-in-coconut-soup-recipe.jpg?alt=media&token=a4e1cabb-516d-45e9-b662-df953f74510d",
-      "name": "BINAKOE/BINAKUL",
+      "name": 'ATIATIHAN FESTIVAL',
+      "imgName": 'assets/images/atiatihan.jpg',
       "description":
-          "Traditional binakoe is cooked inside a fresh node of bamboo. Native chicken plus onions and lemongrass are added. For the souring agent, aeabihig leaves complete the mix. Think of this dish as similar to the sinigang and might appeal to Tagalog palates.A hot plate of rice plus steamig binakoe then paired with an ice cold soda would be the perfect lunch!",
+          'Boracay’s version of Aklan’s Ati-Atihan on the second Sunday of January wows foreigners with the motley-colored bodily decorations of the dancers grooving to lively music.',
     }),
     ({
-      "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2Fubad-22.jpg?alt=media&token=3baa9590-ab6b-43d4-a8f2-9f96b329a26b",
-      "name": "INUBARANG MANOK",
+      "name": 'NEW YEAR',
+      "imgName": 'assets/images/newyear.jpeg',
       "description":
-          "Do you know that the core of banana stalk (ubad) when cooked in coconut milk can be so good! Native chicken cooked with the said ingredient, gata and lemongrass results in a stew like dish that has a thickish soup. You will love the gata taste, the tenderness of the chicken and the hint of tanglad (lemongrass).",
+          'Boracay entertains tourists in ushering in the New Year, just like a renowned tourist attraction must do. Colorful fireworks are set off in the last minutes of December 31 to welcome New Year.',
     }),
     ({
-      "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2F60639307_2322508324695115_6011781293191200768_n.jpg?alt=media&token=e9956e9e-1550-46e0-b2d5-c6772f1c566e",
-      "name": "Tinumkan",
+      "name": 'PARAW CUP',
+      "imgName": 'assets/images/paraw.jpg',
       "description":
-          "a shrimp mix with local local herbs and spices, grinded and mix together using eosong and hae-o. The mixture is placed into a banana leaf  and cooked in water for 15 to 20 minutes.",
-    }),
-    ({
-      "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2F7I_everydayfood_chicken_adobo.jpg?alt=media&token=9c91de7c-8d53-4fcb-ae56-78ad983a84bb",
-      "name": "Adobo nga may Gata",
-      "description":
-          "A typical filipino dish with a twist, same process on how to cook adobo but Malaynons used coconut milk instead of soy sauce.",
-    }),
-    ({
-      "imgName":
-          "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/local%2F148858635_113107147432735_460560278116641091_n.jpg?alt=media&token=cf11ff3c-92ba-4fbb-83da-edb9ff55c976",
-      "name": "Inumoe",
-      "description":
-          " The inumoe is made of cooked rice (sinaing), yeast and powdered rice. After mixing thoroughly, it is then wrapped in a payaw plant (a family of caladium) and stored for 24 hours. It is best served chilled and tastes like fermented rice.",
+          'Combining a cultural and sports event in one, the International Paraw Cup Challenge showcases locals’ skills in steering the native outrigger boats of the Philippines .',
     }),
   ];
 
@@ -83,7 +65,7 @@ class _LocalFoodPageState extends State<LocalFoodPage> {
             child: Column(
               children: [
                 Text(
-                  "Local Foods",
+                  "Local Events",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20,
@@ -147,7 +129,7 @@ class _LocalFoodPageState extends State<LocalFoodPage> {
                                 SizedBox(
                                   height: 20,
                                 ),
-                                Image.network(
+                                Image.asset(
                                   "${tobringitems[index]['imgName']}",
                                   height: 300,
                                 ),
