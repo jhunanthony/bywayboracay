@@ -31,6 +31,23 @@ final List<String> imgList = [
   'https://i1.wp.com/amazingplacesonearth.com/wp-content/uploads/2012/08/ss.jpg?ssl=1',
 ];
 
+List travelagencies = [
+  ({
+    "name": "B and C Island Leisure Tours",
+    "email": "bandcleisuretours@yahoo.com.ph"
+  }),
+  ({"name": "Bamboo Travel and Tours", "email": "bambootraveltours@gmail.com"}),
+  ({"name": "Boracay Adventures Inc.", "email": "info@boracayadventures.com"}),
+  ({
+    "name": "Blue Horizon Travel & Tours Inc.",
+    "email": "maritess.santiago@bluehorizons.travel"
+  }),
+  ({"name": "Debora Free Tour Inc.", "email": "mg12500@hanmail.net"}),
+  ({"name": "Easy Boracay Travel and Tours", "email": "easyboracay@gmail.com"}),
+  ({"name": "Horizon Tours", "email": "luzvillabondoc1964@gmail.com"}),
+  ({"name": "MBG travel and Tour Inc.", "email": "info@myboracayguide.com"}),
+];
+
 class TravelGuidelinesState extends State<TravelGuidelines> {
   @override
   Widget build(BuildContext context) {
@@ -71,63 +88,6 @@ class TravelGuidelinesState extends State<TravelGuidelines> {
                 ],
               ),
             ),
-            /*Container(
-              width: 50,
-              height: 100,
-              child: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection('website')
-                      .doc('links')
-                      .snapshots(),
-                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                    if (snapshot.hasData) {
-                      var userDocument = snapshot.data;
-
-                      final List<LinkList> linklist = [];
-
-                      userDocument['linklist'].forEach((value) {
-                        linklist.add(LinkList(value['link'], value['name']));
-                      });
-                      return linklist.length > 0
-                          ? Column(
-                              children: [
-                                Expanded(
-                                  child: ListView.builder(
-                                      scrollDirection: Axis.vertical,
-                                      itemCount: linklist.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return Column(
-                                          children: [
-                                            Text("${linklist[index].name}",
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15)),
-                                            Text("${linklist[index].link}",
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15))
-                                          ],
-                                        );
-                                      }),
-                                ),
-                              ],
-                            )
-                          : linklist.length == null
-                              ? SizedBox()
-                              : SizedBox();
-                    } else if (snapshot.hasError) {
-                      return SizedBox();
-                    } else
-                      return Text(
-                        'Loading',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.white,
-                        ),
-                      );
-                  }),
-            ),*/
             CarouselWithDotsPage(imgList: imgList),
             Card1(),
             Card2(),
@@ -137,6 +97,7 @@ class TravelGuidelinesState extends State<TravelGuidelines> {
             Card6(),
             Card7(),
             Card8(),
+            Card10(),
             Card9(),
           ],
         ),
@@ -1781,7 +1742,7 @@ class Card9 extends StatelessWidget {
                           ),
                           Expanded(
                             child: Text(
-                              "List of Sites",
+                              "Boracay Official Tourism Websites",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText1
@@ -1860,6 +1821,93 @@ class Card9 extends StatelessWidget {
                             );
                         }),
                   )),
+            ],
+          ),
+        ),
+      ),
+    ));
+  }
+}
+
+class Card10 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ExpandableNotifier(
+        child: Padding(
+      padding: const EdgeInsets.all(10),
+      child: ScrollOnExpand(
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            children: <Widget>[
+              ExpandablePanel(
+                  theme: const ExpandableThemeData(
+                    headerAlignment: ExpandablePanelHeaderAlignment.center,
+                    tapBodyToExpand: true,
+                    tapBodyToCollapse: true,
+                    hasIcon: false,
+                  ),
+                  header: Container(
+                    color: Color(0xff0470a2),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        children: [
+                          ExpandableIcon(
+                            theme: const ExpandableThemeData(
+                              expandIcon: Icons.arrow_right,
+                              collapseIcon: Icons.arrow_drop_down,
+                              iconColor: Colors.white,
+                              iconSize: 28.0,
+                              iconPadding: EdgeInsets.only(right: 5),
+                              hasIcon: false,
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              "DOT-Accredited Travel and Tour Agencies and Guides",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  .copyWith(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  collapsed: Container(),
+                  expanded: Container(
+                      height: 400,
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: ListView.builder(
+                                itemCount: travelagencies.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return TextButton(
+                                    onPressed: () async {
+                                      String mailto = "mailto:" +
+                                          "${travelagencies[index]['email']}" +
+                                          "?subject=Inquiry&body=Greetings!";
+                                      if (await canLaunch(mailto)) {
+                                        await launch(mailto);
+                                      } else {
+                                        showSimpleNotification(
+                                          Text("Could not lunch $mailto"),
+                                          background: Colors.green[400],
+                                          position: NotificationPosition.bottom,
+                                        );
+                                      }
+                                    },
+                                    child: Text(
+                                        "${travelagencies[index]['name']}"),
+                                  );
+                                }),
+                          ),
+                        ],
+                      ))),
             ],
           ),
         ),

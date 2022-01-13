@@ -53,6 +53,7 @@ class CategoryCard extends StatelessWidget {
                 child: CategoryIcon(
                   color: this.category.color,
                   iconName: this.category.name,
+                  hasborder: true,
                   size: 30,
                 )),
           ]),

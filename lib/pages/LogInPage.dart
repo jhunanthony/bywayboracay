@@ -67,21 +67,22 @@ class _LogInPageState extends State<LogInPage> {
                       child: Column(
                     children: [
                       SizedBox(
-                        height: 100,
+                        height: 85,
                       ),
                       Container(
-                          padding: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(13),
                           height: 200,
                           width: 200,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             gradient: LinearGradient(
-                              begin: Alignment.center,
+                              begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: <Color>[
-                                Colors.white.withOpacity(0.1),
-                                Colors.white.withOpacity(0.3),
                                 Colors.white.withOpacity(0.5),
+                                Colors.white.withOpacity(0.8),
+                                Colors.white,
+                                Colors.white,
                               ],
                             ),
                           ),
@@ -114,7 +115,7 @@ class _LogInPageState extends State<LogInPage> {
                   //use this as spacer
 
                   Positioned(
-                      bottom: 20,
+                      bottom: 25,
                       right: 20,
                       left: 20,
                       child: ClipRRect(
@@ -123,7 +124,7 @@ class _LogInPageState extends State<LogInPage> {
                           filter: ImageFilter.blur(sigmaY: 20, sigmaX: 20),
                           child: Container(
                             padding: EdgeInsets.all(10),
-                            color: Colors.black.withOpacity(0.3),
+                            color: Colors.black.withOpacity(0.12),
                             child: Column(
                               children: [
                                 Text('WELCOME,',
@@ -275,7 +276,6 @@ class _LogInPageState extends State<LogInPage> {
                                           fontStyle: FontStyle.italic,
                                           fontWeight: FontWeight.w200)),
                                 ),
-                             
                                 SizedBox(height: 20),
                               ],
                             ),

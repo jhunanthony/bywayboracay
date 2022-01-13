@@ -65,9 +65,10 @@ class _MainPageState extends State<MainPage> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(50),
               child: BottomNavyBar(
+               
                   iconSize: 30,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  backgroundColor: Colors.yellow[50],
+                  backgroundColor: Colors.white,
                   containerHeight: 68,
                   itemCornerRadius: 50,
                   selectedIndex: widget.currentIndex,
@@ -77,12 +78,7 @@ class _MainPageState extends State<MainPage> {
                   items: <BottomNavyBarItem>[
                     BottomNavyBarItem(
                       icon: Icon(CupertinoIcons.compass, size: 30),
-                      /* icon: SvgPicture.asset(
-                        'assets/icons/' + AppIcons.ExploreIcon + '.svg',
-                        color: Colors.blue,
-                        height: 30,
-                        width: 30,
-                      ),*/
+                    
                       title: Text('Explore'),
                       textAlign: TextAlign.center,
                       activeColor: Colors.blue,
@@ -90,12 +86,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                     BottomNavyBarItem(
                       icon: Icon(CupertinoIcons.calendar, size: 30),
-                      /*icon: SvgPicture.asset(
-                        'assets/icons/' + AppIcons.ItineraryIcon + '.svg',
-                        color: Colors.blue,
-                        height: 30,
-                        width: 30,
-                      ),*/
+                      
                       title: Text('Itinerary'),
                       textAlign: TextAlign.center,
                       activeColor: Colors.blue,

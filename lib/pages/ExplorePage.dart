@@ -63,7 +63,7 @@ class _ExplorePageState extends State<ExplorePage> {
 
     return SafeArea(
         child: Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blue[50],
       body: Stack(children: [
         ListView(controller: _controller, children: [
           Header(),
@@ -197,7 +197,7 @@ class History extends StatelessWidget {
             textAlign: TextAlign.justify,
             style: TextStyle(
                 fontSize: 14,
-                color: Colors.blue,
+                color: Colors.grey[800],
                 fontWeight: FontWeight.normal),
           ),
         ),
@@ -286,7 +286,10 @@ class Culture extends StatelessWidget {
                                             ),
                                             SizedBox(height: 10),
                                             Padding(
-                                              padding: const EdgeInsets.all(10),
+                                              padding: const EdgeInsets.only(
+                                                  left: 10,
+                                                  right: 10,
+                                                  bottom: 10),
                                               child: Text(
                                                   "${_culturemodel[index].caption}",
                                                   textAlign: TextAlign.justify,
@@ -514,7 +517,7 @@ class AwardsAndRecognition extends StatelessWidget {
       ),
       Container(
         height: 250,
-        color: Colors.white,
+        color: Colors.transparent,
         child: ListView.builder(
             physics: BouncingScrollPhysics(),
             controller: _awardspageController,
@@ -553,12 +556,14 @@ class AwardsAndRecognition extends StatelessWidget {
                                   ),
                                   SizedBox(height: 10),
                                   Padding(
-                                    padding: const EdgeInsets.all(10),
+                                    padding: const EdgeInsets.only(
+                                        left: 10, right: 10, bottom: 10),
                                     child: Text(
                                         "${_awardsmodel[index].caption}",
                                         textAlign: TextAlign.justify,
                                         style: TextStyle(
-                                            color: Colors.blue, fontSize: 15)),
+                                            color: Colors.grey[700],
+                                            fontSize: 15)),
                                   ),
                                 ],
                               ),
@@ -577,7 +582,7 @@ class AwardsAndRecognition extends StatelessWidget {
                             Colors.blue,
                           ],
                         ),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
                               color: Colors.grey,
@@ -645,7 +650,7 @@ class Geography extends StatelessWidget {
           children: [
             Icon(Icons.location_on_rounded, color: Colors.blue),
             Text(' Boracay Island, Malay, Aklan, 5608',
-                style: TextStyle(fontSize: 14, color: Colors.blue)),
+                style: TextStyle(fontSize: 14, color: Colors.grey[800])),
           ],
         ),
         SizedBox(
@@ -669,7 +674,7 @@ class Geography extends StatelessWidget {
         ),
         Text(AppContent.geography,
             textAlign: TextAlign.start,
-            style: TextStyle(fontSize: 14, color: Colors.blue)),
+            style: TextStyle(fontSize: 14, color: Colors.grey[800])),
       ]),
     );
   }
@@ -753,7 +758,10 @@ class Highlights extends StatelessWidget {
                                                       ))),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.all(10),
+                                              padding: const EdgeInsets.only(
+                                                  left: 10,
+                                                  right: 10,
+                                                  bottom: 10),
                                               child: Text(
                                                   "${_highlightmodel[index].caption}",
                                                   textAlign: TextAlign.justify,
@@ -1001,10 +1009,10 @@ class CategoryButtons extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Add something in your itinerary.',
+                'Add items in your itinerary!',
                 style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey,
+                    color: Colors.grey[800],
                     fontWeight: FontWeight.w300),
               ),
             ),
@@ -1045,7 +1053,7 @@ class ScrollButtons extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.transparent,
       ),
       child: Column(children: [
         Text(
@@ -1191,7 +1199,7 @@ class PromotionalVideo extends StatelessWidget {
     return Container(
         height: 200,
         width: MediaQuery.of(context).size.width,
-        color: Colors.white,
+        color: Colors.transparent,
         child: VideoAssetPlayer());
   }
 }
@@ -1244,6 +1252,9 @@ class Header extends StatelessWidget {
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 40,
+                            shadows: <Shadow>[
+                              Shadow(blurRadius: 3.0, color: Colors.grey[900]),
+                            ],
                             fontWeight: FontWeight.w400)),
                     SizedBox(
                       height: 5,
@@ -1254,6 +1265,9 @@ class Header extends StatelessWidget {
                             color: Colors.white,
                             fontStyle: FontStyle.italic,
                             fontSize: 25,
+                            shadows: <Shadow>[
+                              Shadow(blurRadius: 3.0, color: Colors.grey[900]),
+                            ],
                             fontWeight: FontWeight.w200)),
                     SizedBox(
                       height: 10,
@@ -1266,14 +1280,7 @@ class Header extends StatelessWidget {
                           topRight: Radius.circular(50),
                           topLeft: Radius.circular(50),
                         ),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
-                            blurRadius: 5,
-                            offset: Offset(4, 0), // Shadow position
-                          ),
-                        ],
+                        color: Colors.blue[50],
                       ),
                       child: Center(
                         child: Text('Saylo Kamo Iya!',

@@ -32,8 +32,6 @@ class TopNavBarState extends State<TopNavBar> {
       centerTitle: true,
       //able to tap and return to landing page
 
-      
-
       title: Visibility(
         visible: widget.showTopLogo,
         child: GestureDetector(
@@ -44,13 +42,15 @@ class TopNavBarState extends State<TopNavBar> {
               .popUntil((route) => route.settings.name == '/mainpage');*/
           },
           child: Container(
-            padding: EdgeInsets.all(3),
+            padding: EdgeInsets.all(4),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                begin: Alignment.center,
+                begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: <Color>[
-                  Colors.white.withOpacity(0.3),
+                  Colors.white.withOpacity(0.5),
+                  Colors.white.withOpacity(0.8),
+                  Colors.white,
                   Colors.white,
                 ],
               ),

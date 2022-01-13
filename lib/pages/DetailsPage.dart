@@ -403,7 +403,19 @@ class _DetailsPageState extends State<DetailsPage> {
                             controller: _pagecontroller,
                             count: widget.items.detailsimages.length,
                             effect: ExpandingDotsEffect(
-                                activeDotColor: widget.items.color,
+                                activeDotColor: widget.items.itemcategoryName ==
+                                        "ToStay"
+                                    ? Colors.purple[400]
+                                    : widget.items.itemcategoryName ==
+                                            "ToEat&Drink"
+                                        ? Colors.red[400]
+                                        : widget.items.itemcategoryName ==
+                                                "ToSee"
+                                            ? Colors.blue[400]
+                                            : widget.items.itemcategoryName ==
+                                                    "ToDo"
+                                                ? Colors.green[400]
+                                                : Colors.grey[700],
                                 dotColor: Colors.white,
                                 dotHeight: 5,
                                 dotWidth: 5,

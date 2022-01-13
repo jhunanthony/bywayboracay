@@ -41,16 +41,19 @@ class SplashPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(13),
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.center,
-                          end: Alignment.bottomCenter,
-                          colors: <Color>[
-                            Colors.white.withOpacity(0.3),
-                            Colors.white,
-                          ],
-                        ),
+                         gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: <Color>[
+                                Colors.white.withOpacity(0.5),
+                                Colors.white.withOpacity(0.8),
+                                Colors.white,
+                                Colors.white,
+                              ],
+                            ),
+                        //color: Colors.white.withOpacity(0.2),
                         shape: BoxShape.circle,
                       ),
                       child: Image.asset(
@@ -80,7 +83,7 @@ class SplashPage extends StatelessWidget {
                   child: CircularProgressIndicator(
                     strokeWidth: 10,
                     valueColor: AlwaysStoppedAnimation(
-                      Colors.blue.withOpacity(0.5),
+                      Colors.white.withOpacity(0.5),
                     ),
                   ),
                 ),

@@ -6,12 +6,10 @@ class CategoryIcon extends StatelessWidget {
   Color color;
   String iconName;
   double size;
+  bool hasborder;
 
-  CategoryIcon({
-    this.color,
-    this.iconName,
-    this.size = 30,
-  });
+  CategoryIcon(
+      {this.color, this.iconName, this.size = 30, this.hasborder = false});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +18,15 @@ class CategoryIcon extends StatelessWidget {
         width: this.size,
         alignment: Alignment.center,
         decoration: BoxDecoration(
+          border: this.hasborder == true
+              ? Border.all(
+                  color: Colors.yellow[50],
+                  width: 1.5,
+                )
+              : Border.all(
+                  color: Colors.transparent,
+                  width: 0,
+                ),
           color: this.color,
           shape: BoxShape.circle,
         ),

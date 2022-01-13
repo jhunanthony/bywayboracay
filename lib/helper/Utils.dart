@@ -86,7 +86,13 @@ class Utils {
           imgName: 'ForYou1',
           color: Colors.orange[800],
           caption:
-              "Boracay is famous for its White Beach and the powder-like sand that is unlike any other in the world. The breathtaking sunset view on this side of the island is equally adored that a Boracay holiday would not be complete without witnessing the most photographed subject in the island.")
+              "Boracay is famous for its White Beach and the powder-like sand that is unlike any other in the world. The breathtaking sunset view on this side of the island is equally adored that a Boracay holiday would not be complete without witnessing the most photographed subject in the island."),
+      HighlightModel(
+          name: 'Water Activities',
+          imgName: 'Highlight5',
+          color: Colors.yellow,
+          caption:"You have to try some of these highly recommended water activities when you're in Boracay. It's a way to get your adrenaline up and kicking! It's also an excellent way to bond with your friends and family."
+      )    
     ];
   }
 

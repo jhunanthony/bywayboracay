@@ -119,7 +119,15 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
                       right: -10,
                       child: CategoryIcon(
                         iconName: this.items.itemcategoryName,
-                        color: this.items.color,
+                        color: this.items.itemcategoryName == "ToStay"
+                            ? Colors.purple[400]
+                            : this.items.itemcategoryName == "ToEat&Drink"
+                                ? Colors.red[400]
+                                : this.items.itemcategoryName == "ToSee"
+                                    ? Colors.blue[400]
+                                    : this.items.itemcategoryName == "ToDo"
+                                        ? Colors.green[400]
+                                        : Colors.grey[700],
                         size: 30,
                       ),
                     ),

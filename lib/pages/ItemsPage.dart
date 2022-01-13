@@ -211,7 +211,7 @@ class _ItemsPageState extends State<ItemsPage> {
                   CategoryIcon(
                     iconName: this.widget.selectedCategory.name,
                     color: this.widget.selectedCategory.color,
-                    size: 30,
+                    size: 35,
                   ),
                   SizedBox(
                     height: 5,
@@ -340,6 +340,12 @@ class _ItemsPageState extends State<ItemsPage> {
                                       height: 35,
                                       width: 35,
                                       decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Colors.grey,
+                                                blurRadius: 3,
+                                                offset: Offset(2, 2)),
+                                          ],
                                           color: Colors.red[300],
                                           shape: BoxShape.circle),
                                       child: SvgPicture.asset(
@@ -363,6 +369,12 @@ class _ItemsPageState extends State<ItemsPage> {
                                       height: 35,
                                       width: 35,
                                       decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Colors.grey,
+                                                blurRadius: 3,
+                                                offset: Offset(2, 2)),
+                                          ],
                                           color: Colors.red[600],
                                           shape: BoxShape.circle),
                                       child: SvgPicture.asset(
@@ -385,6 +397,12 @@ class _ItemsPageState extends State<ItemsPage> {
                                 height: 35,
                                 width: 35,
                                 decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey,
+                                          blurRadius: 3,
+                                          offset: Offset(2, 2)),
+                                    ],
                                     color: Colors.green[300],
                                     shape: BoxShape.circle),
                                 child: Icon(Icons.map_rounded,
@@ -954,13 +972,9 @@ class _ItemsPageState extends State<ItemsPage> {
                                     Container(
                                       height: 250,
                                       width: 150,
+                                      padding: EdgeInsets.all(3),
                                       decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                                selectedCountList[index]
-                                                    .imgName),
-                                            fit: BoxFit.cover,
-                                          ),
+                                          color: Colors.white,
                                           borderRadius:
                                               BorderRadius.circular(20),
                                           boxShadow: [
@@ -969,255 +983,283 @@ class _ItemsPageState extends State<ItemsPage> {
                                                 blurRadius: 3,
                                                 offset: Offset(2, 2)),
                                           ]),
-                                      //stack all descriptions values etc. here
-                                      child: Stack(children: [
-                                        Positioned.fill(
-                                          child: Container(
-                                              decoration: BoxDecoration(
+                                      child: Container(
+                                        height: 240,
+                                        width: 140,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  selectedCountList[index]
+                                                      .imgName),
+                                              fit: BoxFit.cover,
+                                            ),
                                             borderRadius:
                                                 BorderRadius.circular(20),
-                                            gradient: LinearGradient(
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                              colors: <Color>[
-                                                Colors.transparent,
-                                                Colors.black.withOpacity(0.3),
-                                                Colors.black.withOpacity(0.5),
-                                                Colors.black,
-                                              ],
-                                            ),
-                                          )),
-                                        ),
-                                        //add likes and number of likes
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Colors.grey,
+                                                  blurRadius: 3,
+                                                  offset: Offset(2, 2)),
+                                            ]),
+                                        //stack all descriptions values etc. here
+                                        child: Stack(children: [
+                                          Positioned.fill(
+                                            child: Container(
+                                                decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              gradient: LinearGradient(
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                                colors: <Color>[
+                                                  Colors.transparent,
+                                                  Colors.black.withOpacity(0.3),
+                                                  Colors.black.withOpacity(0.5),
+                                                  Colors.black,
+                                                ],
+                                              ),
+                                            )),
+                                          ),
+                                          //add likes and number of likes
 
-                                        //showname
-                                        // add sub cat name
-                                        Positioned(
-                                          bottom: 10,
-                                          left: 10,
-                                          right: 10,
-                                          child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                //wrap to expand if too long
+                                          //showname
+                                          // add sub cat name
+                                          Positioned(
+                                            bottom: 10,
+                                            left: 10,
+                                            right: 10,
+                                            child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  //wrap to expand if too long
 
-                                                Text(
-                                                  selectedCountList[index].name,
-                                                  overflow: TextOverflow.fade,
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
+                                                  Text(
+                                                    selectedCountList[index]
+                                                        .name,
+                                                    overflow: TextOverflow.fade,
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
 
-                                                SizedBox(
-                                                  height: 5,
-                                                ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
 
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      padding:
-                                                          EdgeInsets.all(2),
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(3),
-                                                          border: Border.all(
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                            EdgeInsets.all(2),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                color: Colors
+                                                                    .blue[400],
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            3),
+                                                                border:
+                                                                    Border.all(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  width: 1,
+                                                                )),
+                                                        child: Text(
+                                                          selectedCountList[
+                                                                  index]
+                                                              .itemsubcategoryName,
+                                                          style: TextStyle(
+                                                            fontSize: 12,
                                                             color: Colors.white,
-                                                            width: 1,
-                                                          )),
-                                                      child: Text(
-                                                        "${selectedCountList[index].itemsubcategoryName}",
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "  • ",
                                                         style: TextStyle(
                                                           fontSize: 12,
                                                           color: Colors.white,
                                                         ),
                                                       ),
-                                                    ),
-                                                    Text(
-                                                      "  • ",
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                    StreamBuilder(
-                                                        stream: FirebaseFirestore
-                                                            .instance
-                                                            .collection(
-                                                                'ratings')
-                                                            .doc(
-                                                                '${selectedCountList[index].itemcategoryName}')
-                                                            .snapshots(),
-                                                        builder: (context,
-                                                            AsyncSnapshot<
-                                                                    DocumentSnapshot>
-                                                                snapshot) {
-                                                          if (snapshot
-                                                              .hasData) {
-                                                            var userDocument =
-                                                                snapshot.data;
+                                                      StreamBuilder(
+                                                          stream: FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'ratings')
+                                                              .doc(
+                                                                  '${selectedCountList[index].itemcategoryName}')
+                                                              .snapshots(),
+                                                          builder: (context,
+                                                              AsyncSnapshot<
+                                                                      DocumentSnapshot>
+                                                                  snapshot) {
+                                                            if (snapshot
+                                                                .hasData) {
+                                                              var userDocument =
+                                                                  snapshot.data;
 
-                                                            double itemrating =
-                                                                double.parse(
-                                                                    userDocument[
-                                                                            "${selectedCountList[index].name}.itemrating"]
-                                                                        .toString());
+                                                              double
+                                                                  itemrating =
+                                                                  double.parse(
+                                                                      userDocument[
+                                                                              "${selectedCountList[index].name}.itemrating"]
+                                                                          .toString());
 
-                                                            double
-                                                                itemratingnum =
-                                                                double.parse(
-                                                                    userDocument[
-                                                                            "${selectedCountList[index].name}.itemratingnum"]
-                                                                        .toString());
-                                                            double rating =
-                                                                itemrating /
-                                                                    itemratingnum;
+                                                              double
+                                                                  itemratingnum =
+                                                                  double.parse(
+                                                                      userDocument[
+                                                                              "${selectedCountList[index].name}.itemratingnum"]
+                                                                          .toString());
+                                                              double rating =
+                                                                  itemrating /
+                                                                      itemratingnum;
 
-                                                            return rating > 0
-                                                                ? Row(
-                                                                    children: [
-                                                                      Text(
-                                                                        " ${rating.toStringAsFixed(1)}",
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Colors.green[400],
-                                                                          fontSize:
-                                                                              14,
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
+                                                              return rating > 0
+                                                                  ? Row(
+                                                                      children: [
+                                                                        Text(
+                                                                          " ${rating.toStringAsFixed(1)} ",
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.green[400],
+                                                                            fontSize:
+                                                                                14,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                          ),
                                                                         ),
-                                                                      ),
-                                                                      RatingBarIndicator(
-                                                                        rating:
-                                                                            rating /
-                                                                                5,
-                                                                        itemBuilder:
-                                                                            (context, index) =>
-                                                                                Icon(
+                                                                        RatingBarIndicator(
+                                                                          rating:
+                                                                              rating / 5,
+                                                                          itemBuilder: (context, index) =>
+                                                                              Icon(
+                                                                            Icons.eco_rounded,
+                                                                            color:
+                                                                                Colors.green[400],
+                                                                          ),
+                                                                          itemCount:
+                                                                              1,
+                                                                          itemSize:
+                                                                              18,
+                                                                          direction:
+                                                                              Axis.horizontal,
+                                                                          unratedColor:
+                                                                              Colors.grey[400],
+                                                                        ),
+                                                                      ],
+                                                                    )
+                                                                  : rating ==
+                                                                          null
+                                                                      ? Icon(
                                                                           Icons
                                                                               .eco_rounded,
+                                                                          size:
+                                                                              18,
                                                                           color:
-                                                                              Colors.green[400],
-                                                                        ),
-                                                                        itemCount:
-                                                                            1,
-                                                                        itemSize:
-                                                                            18,
-                                                                        direction:
-                                                                            Axis.horizontal,
-                                                                        unratedColor:
-                                                                            Colors.grey[400],
-                                                                      ),
-                                                                    ],
-                                                                  )
-                                                                : rating == null
-                                                                    ? Icon(
-                                                                        Icons
-                                                                            .eco_rounded,
-                                                                        size:
-                                                                            18,
-                                                                        color: Colors
-                                                                            .grey,
-                                                                      )
-                                                                    : Icon(
-                                                                        Icons
-                                                                            .eco_rounded,
-                                                                        size:
-                                                                            18,
-                                                                        color: Colors
-                                                                            .grey,
-                                                                      );
-                                                          } else if (snapshot
-                                                              .hasError) {
-                                                            return Text(
-                                                              '',
-                                                            );
-                                                          }
+                                                                              Colors.grey,
+                                                                        )
+                                                                      : Icon(
+                                                                          Icons
+                                                                              .eco_rounded,
+                                                                          size:
+                                                                              18,
+                                                                          color:
+                                                                              Colors.grey,
+                                                                        );
+                                                            } else if (snapshot
+                                                                .hasError) {
+                                                              return Text(
+                                                                '',
+                                                              );
+                                                            } else
+                                                              return Text(
+                                                                '',
+                                                              );
+                                                          })
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
 
-                                                          return Text(
-                                                            '',
-                                                          );
-                                                        })
-                                                  ],
+                                                  Text(
+                                                    selectedCountList[index]
+                                                        .itemaddress,
+                                                    style: TextStyle(
+                                                        overflow:
+                                                            TextOverflow.fade,
+                                                        fontSize: 12,
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w300),
+                                                  ),
+                                                ]),
+                                          ),
+                                          Positioned(
+                                            top: 10,
+                                            right: 10,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Visibility(
+                                                  visible: selectedCountList[
+                                                                  index]
+                                                              .itempriceMin !=
+                                                          0 ||
+                                                      selectedCountList[index]
+                                                              .itempriceMin !=
+                                                          0.00,
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(3),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.blue,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              3),
+                                                    ),
+                                                    child: Text(
+                                                      "from ₱ " +
+                                                          selectedCountList[
+                                                                  index]
+                                                              .itempriceMin
+                                                              .toStringAsFixed(
+                                                                  2),
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          color: Colors.white,
+                                                          fontWeight: FontWeight
+                                                              .normal),
+                                                    ),
+                                                  ),
                                                 ),
                                                 SizedBox(
                                                   height: 5,
                                                 ),
-
                                                 Text(
-                                                  selectedCountList[index]
-                                                      .itemaddress,
+                                                  "Open " +
+                                                      selectedCountList[index]
+                                                          .itemopenTime,
                                                   style: TextStyle(
-                                                      overflow:
-                                                          TextOverflow.fade,
                                                       fontSize: 12,
                                                       color: Colors.white,
                                                       fontWeight:
-                                                          FontWeight.w300),
+                                                          FontWeight.normal),
                                                 ),
-                                              ]),
-                                        ),
-                                        Positioned(
-                                          top: 10,
-                                          right: 10,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Visibility(
-                                                visible:
-                                                    selectedCountList[index]
-                                                                .itempriceMin !=
-                                                            0 ||
-                                                        selectedCountList[index]
-                                                                .itempriceMin !=
-                                                            0.00,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(3),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.blue,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            3),
-                                                  ),
-                                                  child: Text(
-                                                    "from ₱ " +
-                                                        selectedCountList[index]
-                                                            .itempriceMin
-                                                            .toStringAsFixed(2),
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.normal),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(
-                                                "Open " +
-                                                    selectedCountList[index]
-                                                        .itemopenTime,
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.normal),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ]),
+                                              ],
+                                            ),
+                                          )
+                                        ]),
+                                      ),
                                     ),
                                   ]),
                                 );
