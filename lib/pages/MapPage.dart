@@ -12,6 +12,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/MapWidgets/DistanceAndDurationWidget.dart';
+
 //construct a widget that passes user location as source location
 //const LatLng DEST_LOCATION = LatLng(11.98189918417696, 121.9151854334716);
 //default location is central boracay
@@ -74,6 +76,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
   Set<Polyline> _polylines = Set<Polyline>();
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints;
+  StreamSubscription<LocationData> locationSubscription;
 
   @override
   void initState() {
@@ -98,7 +101,6 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
 
     //instantiate the polyline reference to call API
     polylinePoints = PolylinePoints();
-
     //set up initial Locations & invoke the method
     this.setInitialLocation();
 
@@ -157,6 +159,15 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
         print('appLifeCycleState detached');
         break;
     }
+  }
+
+  @override
+  void dispose() {
+    locationref.onLocationChanged.listen((LocationData cLoc) {
+      currentLocationref = cLoc;
+      updatePinOnMap();
+    }).cancel();
+    super.dispose();
   }
 
   @override

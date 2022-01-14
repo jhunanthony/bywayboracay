@@ -108,17 +108,20 @@ class _ItineraryMapState extends State<ItineraryMap>
     });
 
     this.setInitialLocation();
-    futuredistanceandduration = getdistanceandduration();
-
     //instantiate the polyline reference to call API
     polylinePoints = PolylinePoints();
+    futuredistanceandduration = getitinerarydistanceandduration();
 
     WidgetsBinding.instance.addObserver(this);
   }
 
   void setInitialLocation() async {
     currentLocationref = await locationref.getLocation();
+
+  
   }
+
+
 
   /// Disposes of the platform resources
 
@@ -211,27 +214,15 @@ class _ItineraryMapState extends State<ItineraryMap>
           }));
     });
   }
-
-  //get distance and duration using json parse
-  Future<ItineraryDestDurInfo> getdistanceandduration() async {
-    currentLocationref = await locationref.getLocation();
-
-    destinationLocationref = LocationData.fromMap({
-      "latitude": this.widget.dest.latitude,
-      "longitude": this.widget.dest.longitude,
-    });
-
-    final requestURL =
-        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE";
-
-    final response = await http.get(Uri.parse(requestURL));
-
-    if (response.statusCode == 200) {
-      return ItineraryDestDurInfo.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception("Error Leoading request URL info.");
-    }
+   @override
+  void dispose() {
+    locationref.onLocationChanged.listen((LocationData cLoc) {
+      currentLocationref = cLoc;
+      updatePinOnMap();
+    }).cancel();
+    super.dispose();
   }
+  
 
   //observe phone status
   @override
@@ -496,7 +487,7 @@ class _ItineraryMapState extends State<ItineraryMap>
                               ),
                               onPressed: () async {
                                 String googleUrl =
-                                    'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocationref.latitude},${destinationLocationref.longitude}&travelmode=walking&dir_action=navigate';
+                                    'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${this.widget.dest.latitude},${this.widget.dest.longitude}&travelmode=walking&dir_action=navigate';
 
                                 if (await canLaunch(googleUrl)) {
                                   await launch(googleUrl);
@@ -614,5 +605,28 @@ class _ItineraryMapState extends State<ItineraryMap>
             });
           }));
     });
+  }
+
+
+  //get distance and duration using json parse
+  Future<ItineraryDestDurInfo> getitinerarydistanceandduration() async {
+    currentLocationref = await locationref.getLocation();
+
+    destinationLocationref = LocationData.fromMap({
+      "latitude": this.widget.dest.latitude,
+      "longitude": this.widget.dest.longitude,
+    });
+
+
+    final requestURL =
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE";
+
+    final response = await http.get(Uri.parse(requestURL));
+
+    if (response.statusCode == 200) {
+      return ItineraryDestDurInfo.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Error Leoading request URL info.");
+    }
   }
 }

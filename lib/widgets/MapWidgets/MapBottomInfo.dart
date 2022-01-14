@@ -36,7 +36,6 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
 
   // wrapper around the location API
   Location locationref;
-
   Future<DistanceAndDurationInfo> futuredistanceandduration;
 
   @override
@@ -49,22 +48,31 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
       currentLocationref = cLoc;
     });
 
-    futuredistanceandduration = getdistanceandduration();
     this.setInitialLocation();
+    futuredistanceandduration = getdistanceandduration();
   }
+
+   
 
   void setInitialLocation() async {
-    currentLocationref = await locationref.getLocation();
-  }
-
-  //get distance and duration using json parse
-  Future<DistanceAndDurationInfo> getdistanceandduration() async {
-    currentLocationref = await locationref.getLocation();
-    currentLocation =
-        LatLng(currentLocationref.latitude, currentLocationref.longitude);
     CategorySelectionService catSelection =
         Provider.of<CategorySelectionService>(context, listen: false);
     this.items = catSelection.items;
+
+    currentLocationref = await locationref.getLocation();
+    LatLng destinationlatlong = LatLng(this.items.itemlat, this.items.itemlong);
+    destinationLocation =
+        LatLng(destinationlatlong.latitude, destinationlatlong.longitude);
+  }
+
+  //.get distance and duration using json parse
+  Future<DistanceAndDurationInfo> getdistanceandduration() async {
+    CategorySelectionService catSelection =
+        Provider.of<CategorySelectionService>(context, listen: false);
+    this.items = catSelection.items;
+    currentLocationref = await locationref.getLocation();
+    currentLocation =
+        LatLng(currentLocationref.latitude, currentLocationref.longitude);
 
     LatLng destinationlatlong = LatLng(this.items.itemlat, this.items.itemlong);
     destinationLocation =
@@ -81,6 +89,16 @@ class _MapBottomInfoState extends State<MapBottomInfo> {
       throw Exception("Error Leoading request URL info.");
     }
   }
+
+  @override
+  void dispose() {
+    locationref.onLocationChanged.listen((LocationData cLoc) {
+      currentLocationref = cLoc;
+   
+    }).cancel();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
