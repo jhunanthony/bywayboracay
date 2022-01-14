@@ -12,7 +12,9 @@ import 'package:bywayborcay/services/categoryservice.dart';
 import 'package:bywayborcay/widgets/CategoryWidgets/CategoryCard.dart';
 import 'package:bywayborcay/widgets/VideoPlayerWidgets/VideoAssetPlayer.dart';
 import 'package:expandable_text/expandable_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -131,7 +133,8 @@ class History extends StatelessWidget {
             SizedBox(
               width: 20,
             ),
-            Text('History', style: TextStyle(fontSize: 20, color: Colors.blue)),
+            Text('History',
+                style: TextStyle(fontSize: 20, color: Colors.grey[800])),
           ],
         ),
         SizedBox(
@@ -227,7 +230,7 @@ class Culture extends StatelessWidget {
               width: 20,
             ),
             Text('Culture and Traditions',
-                style: TextStyle(fontSize: 20, color: Colors.blue)),
+                style: TextStyle(fontSize: 20, color: Colors.grey[800])),
           ],
         ),
         SizedBox(
@@ -257,45 +260,63 @@ class Culture extends StatelessWidget {
                                     //use iterable to map true items and return markers
 
                                     return AlertDialog(
-                                      title: Text(
-                                          "${_culturemodel[index].name}",
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.grey[700])),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(30))),
+                                      elevation: 4,
                                       contentPadding: EdgeInsets.only(
-                                          left: 0,
-                                          right: 0,
-                                          top: 10,
-                                          bottom: 0),
+                                          left: 0, right: 0, top: 0, bottom: 0),
                                       content: SingleChildScrollView(
                                         child: Column(
                                           children: [
-                                            Padding(
-                                              padding: const EdgeInsets.all(10),
-                                              child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  child: Container(
-                                                      height: 200,
-                                                      decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: AssetImage(
-                                                                'assets/images/${_culturemodel[index].imgName}.jpg'),
-                                                            fit: BoxFit.cover),
-                                                      ))),
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(30),
+                                                  topRight:
+                                                      Radius.circular(30)),
+                                              child: Container(
+                                                  height: 200,
+                                                  width: 300,
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                        image: AssetImage(
+                                                            'assets/images/${_culturemodel[index].imgName}.jpg'),
+                                                        fit: BoxFit.cover),
+                                                  )),
                                             ),
-                                            SizedBox(height: 10),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  left: 10,
-                                                  right: 10,
-                                                  bottom: 10),
-                                              child: Text(
-                                                  "${_culturemodel[index].caption}",
-                                                  textAlign: TextAlign.justify,
-                                                  style: TextStyle(
-                                                      color: Colors.grey[700],
-                                                      fontSize: 15)),
+                                                  left: 15,
+                                                  right: 15,
+                                                  bottom: 15),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                      "${_culturemodel[index].name}",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.blue[800],
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                      "${_culturemodel[index].caption}",
+                                                      textAlign:
+                                                          TextAlign.justify,
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.grey[800],
+                                                          fontSize: 12)),
+                                                ],
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -376,120 +397,6 @@ class Culture extends StatelessWidget {
         ),
       ],
     );
-    /*Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: 10,
-        ),
-        Row(
-          children: [
-            SizedBox(
-              width: 20,
-            ),
-            Text('Culture', style: TextStyle(fontSize: 20, color: Colors.blue)),
-          ],
-        ),
-        SizedBox(
-          height: 10,
-        ),
-
-        //wrap with stack to overlay other components
-        Container(
-            height: 330,
-            padding: EdgeInsets.only(top: 10, bottom: 10),
-            child: PageView(
-              physics: BouncingScrollPhysics(),
-              controller: _culturepageController,
-              scrollDirection: Axis.horizontal,
-              children: List.generate(
-                  _culturemodel.length,
-                  (int index) => Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                              width: MediaQuery.of(context).size.width - 5,
-                              height: 330,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/${_culturemodel[index].imgName}.jpg'),
-                                    fit: BoxFit.cover),
-                              ),
-                              child: Stack(
-                                children: [
-                                  Positioned.fill(
-                                    child: Container(
-                                        decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: <Color>[
-                                          Colors.blue.withOpacity(0.1),
-                                          Colors.blue.withOpacity(0.2),
-                                          Colors.blue.withOpacity(0.5),
-                                          Colors.blue.withOpacity(1),
-                                          Colors.blue,
-                                        ],
-                                      ),
-                                    )),
-                                  ),
-                                  Positioned(
-                                      bottom: 10,
-                                      left: 10,
-                                      right: 10,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "${_culturemodel[index].name}",
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          Text(
-                                            "${_culturemodel[index].caption}",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.normal),
-                                          ),
-                                        ],
-                                      ))
-                                ],
-                              )),
-                        ),
-                      )),
-            )),
-
-        SizedBox(
-          height: 10,
-        ),
-        Align(
-          alignment: Alignment.center,
-          child: SmoothPageIndicator(
-            controller: _culturepageController,
-            count: _culturemodel.length,
-            effect: ExpandingDotsEffect(
-                activeDotColor: Colors.blue,
-                dotColor: Colors.grey[400],
-                dotHeight: 5,
-                dotWidth: 5,
-                spacing: 3),
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-      ],
-    );*/
   }
 }
 
@@ -499,8 +406,7 @@ class AwardsAndRecognition extends StatelessWidget {
   }) : super(key: key);
   List<AwardsModel> _awardsmodel = Utils.getawards();
 
-  final _awardspageController = ScrollController();
-
+  final _awardpagecontroller = PageController(viewportFraction: 0.877);
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -512,115 +418,163 @@ class AwardsAndRecognition extends StatelessWidget {
             left: 20,
           ),
           child: Text('Awards and Recognition',
-              style: TextStyle(fontSize: 20, color: Colors.blue)),
+              style: TextStyle(fontSize: 20, color: Colors.grey[800])),
         ),
       ),
+      //wrap with stack to overlay other components
       Container(
-        height: 250,
-        color: Colors.transparent,
-        child: ListView.builder(
+          height: 220,
+          padding: EdgeInsets.only(top: 10, bottom: 10),
+          child: PageView(
             physics: BouncingScrollPhysics(),
-            controller: _awardspageController,
+            controller: _awardpagecontroller,
             scrollDirection: Axis.horizontal,
-            itemCount: _awardsmodel.length,
-            itemBuilder: (BuildContext context, int index) {
-              //show photos here
-              return GestureDetector(
-                onTap: () {
-                  showDialog<void>(
-                      context: context,
-                      builder: (context) {
-                        //Iterable markers = [];
-                        //use iterable to map true items and return markers
+            children: List.generate(
+                _awardsmodel.length,
+                (int index) => Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: GestureDetector(
+                          onTap: () {
+                            showDialog<void>(
+                                context: context,
+                                builder: (context) {
+                                  //Iterable markers = [];
+                                  //use iterable to map true items and return markers
 
-                        return AlertDialog(
-                            title: Text("${_awardsmodel[index].name}",
-                                style: TextStyle(fontSize: 20)),
-                            contentPadding: EdgeInsets.only(
-                                left: 0, right: 0, top: 10, bottom: 0),
-                            content: SingleChildScrollView(
+                                  return AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30))),
+                                    elevation: 4,
+                                    contentPadding: EdgeInsets.only(
+                                        left: 0, right: 0, top: 0, bottom: 0),
+                                    content: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(30),
+                                                topRight: Radius.circular(30)),
+                                            child: Container(
+                                                height: 200,
+                                                width: 300,
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          'assets/images/${_awardsmodel[index].imgName}.jpg'),
+                                                      fit: BoxFit.cover),
+                                                )),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 15,
+                                                right: 15,
+                                                bottom: 15),
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                    "${_awardsmodel[index].name}",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color:
+                                                            Colors.yellow[800],
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                    "${_awardsmodel[index].caption}",
+                                                    textAlign:
+                                                        TextAlign.justify,
+                                                    style: TextStyle(
+                                                        color: Colors.grey[800],
+                                                        fontSize: 12)),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                });
+                          },
+                          child: Container(
+                              width: MediaQuery.of(context).size.width - 5,
+                              height: 220,
+                              padding: EdgeInsets.all(0),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                              ),
                               child: Column(
                                 children: [
+                                  //add gradient
+                                  Container(
+                                      padding: EdgeInsets.all(
+                                        10,
+                                      ),
+                                      width:
+                                          MediaQuery.of(context).size.width - 5,
+                                      height: 140,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(15),
+                                            topRight: Radius.circular(15)),
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                'assets/images/${_awardsmodel[index].imgName}.jpg'),
+                                            fit: BoxFit.cover),
+                                      ),
+                                      child: Align(
+                                        alignment: Alignment.bottomLeft,
+                                        child: SvgPicture.asset(
+                                          'assets/icons/award.svg',
+                                          color: Colors.yellow[600],
+                                          height: 40,
+                                          width: 40,
+                                        ),
+                                      )),
+
                                   Padding(
                                     padding: const EdgeInsets.all(10),
-                                    child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Container(
-                                            height: 200,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: AssetImage(
-                                                      'assets/images/${_awardsmodel[index].imgName}.jpg'),
-                                                  fit: BoxFit.cover),
-                                            ))),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, right: 10, bottom: 10),
-                                    child: Text(
-                                        "${_awardsmodel[index].caption}",
-                                        textAlign: TextAlign.justify,
+                                    child: Text(_awardsmodel[index].name,
+                                        textAlign: TextAlign.left,
                                         style: TextStyle(
-                                            color: Colors.grey[700],
-                                            fontSize: 15)),
+                                          color: Colors.yellow[900],
+                                          fontSize: 14,
+                                        )),
                                   ),
                                 ],
-                              ),
-                            ));
-                      });
-                },
-                child: Container(
-                    height: 250,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: <Color>[
-                            Colors.blue[100],
-                            Colors.blue[400],
-                            Colors.blue,
-                          ],
+                              )),
                         ),
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.grey,
-                              blurRadius: 3,
-                              offset: Offset(2, 2)),
-                        ]),
-                    width: 125,
-                    margin: EdgeInsets.only(
-                        left: 20, top: 10, bottom: 10, right: 5),
-                    padding: EdgeInsets.all(5),
-                    child: Column(
-                      children: [
-                        //add gradient
-                        SizedBox(height: 10),
-                        ClipOval(
-                            child: Container(
-                                height: 75,
-                                width: 75,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/${_awardsmodel[index].imgName}.jpg'),
-                                      fit: BoxFit.cover),
-                                ))),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(' ' + _awardsmodel[index].name + ' ',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                            )),
-                      ],
+                      ),
                     )),
-              );
-              //add spacing
-            }),
+          )),
+
+      SizedBox(
+        height: 10,
+      ),
+      Align(
+        alignment: Alignment.center,
+        child: SmoothPageIndicator(
+          controller: _awardpagecontroller,
+          count: _awardsmodel.length,
+          effect: ExpandingDotsEffect(
+              activeDotColor: Colors.blue,
+              dotColor: Colors.grey[400],
+              dotHeight: 5,
+              dotWidth: 5,
+              spacing: 3),
+        ),
+      ),
+      SizedBox(
+        height: 10,
       ),
     ]);
   }
@@ -642,7 +596,8 @@ class Geography extends StatelessWidget {
       padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
       width: MediaQuery.of(context).size.width,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text('Geography', style: TextStyle(fontSize: 20, color: Colors.blue)),
+        Text('Geography',
+            style: TextStyle(fontSize: 20, color: Colors.grey[800])),
         SizedBox(
           height: 20,
         ),
@@ -699,8 +654,8 @@ class Highlights extends StatelessWidget {
             SizedBox(
               width: 20,
             ),
-            Text('Highlight',
-                style: TextStyle(fontSize: 20, color: Colors.blue)),
+            Text('Highlights',
+                style: TextStyle(fontSize: 20, color: Colors.grey[800])),
           ],
         ),
         SizedBox(
@@ -709,7 +664,7 @@ class Highlights extends StatelessWidget {
 
         //wrap with stack to overlay other components
         Container(
-            height: 200,
+            height: 210,
             padding: EdgeInsets.only(top: 10, bottom: 10),
             child: PageView(
               physics: BouncingScrollPhysics(),
@@ -720,7 +675,7 @@ class Highlights extends StatelessWidget {
                   (int index) => Padding(
                         padding: const EdgeInsets.only(right: 20),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(15),
                           child: GestureDetector(
                             onTap: () {
                               showDialog<void>(
@@ -730,44 +685,65 @@ class Highlights extends StatelessWidget {
                                     //use iterable to map true items and return markers
 
                                     return AlertDialog(
-                                      title: Text(
-                                          "${_highlightmodel[index].name}",
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.grey[700])),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(30))),
+                                      elevation: 4,
                                       contentPadding: EdgeInsets.only(
-                                          left: 0,
-                                          right: 0,
-                                          top: 10,
-                                          bottom: 0),
+                                          left: 0, right: 0, top: 0, bottom: 0),
                                       content: SingleChildScrollView(
                                         child: Column(
                                           children: [
-                                            Padding(
-                                              padding: const EdgeInsets.all(10),
-                                              child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  child: Container(
-                                                      height: 200,
-                                                      decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: AssetImage(
-                                                                'assets/images/${_highlightmodel[index].imgName}.jpg'),
-                                                            fit: BoxFit.cover),
-                                                      ))),
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(30),
+                                                  topRight:
+                                                      Radius.circular(30)),
+                                              child: Container(
+                                                  height: 200,
+                                                  width: 300,
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                        image: AssetImage(
+                                                            'assets/images/${_highlightmodel[index].imgName}.jpg'),
+                                                        fit: BoxFit.cover),
+                                                  )),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  left: 10,
-                                                  right: 10,
-                                                  bottom: 10),
-                                              child: Text(
-                                                  "${_highlightmodel[index].caption}",
-                                                  textAlign: TextAlign.justify,
-                                                  style: TextStyle(
-                                                      color: Colors.grey[700],
-                                                      fontSize: 15)),
+                                                  left: 15,
+                                                  right: 15,
+                                                  bottom: 15),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                      "${_highlightmodel[index].name}",
+                                                      textAlign:
+                                                          TextAlign.justify,
+                                                      style: TextStyle(
+                                                          color:
+                                                              _highlightmodel[
+                                                                      index]
+                                                                  .color,
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                      "${_highlightmodel[index].caption}",
+                                                      textAlign:
+                                                          TextAlign.justify,
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.grey[800],
+                                                          fontSize: 12)),
+                                                ],
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -777,51 +753,38 @@ class Highlights extends StatelessWidget {
                             },
                             child: Container(
                                 width: MediaQuery.of(context).size.width - 5,
-                                height: 200,
+                                height: 210,
+                                padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/${_highlightmodel[index].imgName}.jpg'),
-                                      fit: BoxFit.cover),
+                                  color: Colors.white,
                                 ),
-                                child: Stack(
+                                child: Column(
                                   children: [
                                     //add gradient
-                                    Positioned.fill(
-                                      child: Container(
-                                          decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          begin: Alignment.centerRight,
-                                          end: Alignment.centerLeft,
-                                          colors: <Color>[
-                                            Colors.transparent,
-                                            _highlightmodel[index]
-                                                .color
-                                                .withOpacity(0.5),
-                                            _highlightmodel[index].color,
-                                          ],
-                                        ),
-                                      )),
+                                    Container(
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                5,
+                                        height: 140,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  'assets/images/${_highlightmodel[index].imgName}.jpg'),
+                                              fit: BoxFit.cover),
+                                        )),
+
+                                    SizedBox(
+                                      height: 10,
                                     ),
-                                    Positioned(
-                                      bottom: 20,
-                                      left: 20,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(50),
-                                        child: Container(
-                                          padding: EdgeInsets.all(5),
-                                          color: Colors.white,
-                                          child: Text(
-                                              ' ' +
-                                                  _highlightmodel[index].name +
-                                                  ' ',
-                                              style: TextStyle(
-                                                color: Colors.grey[700],
-                                                fontSize: 14,
-                                              )),
-                                        ),
-                                      ),
-                                    )
+
+                                    Text(_highlightmodel[index].name,
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          color: _highlightmodel[index].color,
+                                          fontSize: 14,
+                                        )),
                                   ],
                                 )),
                           ),
@@ -869,7 +832,8 @@ class ForYouTabs extends StatelessWidget {
       ),
       Row(children: [
         SizedBox(width: 20),
-        Text('For You!', style: TextStyle(fontSize: 20, color: Colors.blue))
+        Text('Recommended Places',
+            style: TextStyle(fontSize: 20, color: Colors.grey[800]))
       ]),
       SizedBox(
         height: 10,
@@ -883,69 +847,215 @@ class ForYouTabs extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             children: List.generate(
                 _foryoucontent.length,
-                (int index) => Container(
-                      margin: EdgeInsets.only(right: 20),
-                      width: MediaQuery.of(context).size.width - 5,
-                      height: 200,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage(
-                                  'assets/images/${_foryoucontent[index].imgName}.jpg'))),
-                      child: Stack(children: <Widget>[
-                        Positioned(
-                            bottom: 10,
-                            left: 10,
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: BackdropFilter(
-                                          filter: ImageFilter.blur(
-                                              sigmaY: 19.2, sigmaX: 19.2),
-                                          child: Container(
-                                              padding: EdgeInsets.all(10),
-                                              alignment: Alignment.center,
-                                              child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                        _foryoucontent[index]
-                                                            .name,
-                                                        style: TextStyle(
-                                                          color: Colors.white,
+                (int index) => GestureDetector(
+                      onTap: () {
+                        showDialog<void>(
+                            context: context,
+                            builder: (context) {
+                              //Iterable markers = [];
+                              //use iterable to map true items and return markers
+
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30))),
+                                elevation: 4,
+                                contentPadding: EdgeInsets.only(
+                                    left: 0, right: 0, top: 0, bottom: 0),
+                                content: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(30),
+                                            topRight: Radius.circular(30)),
+                                        child: Stack(children: [
+                                          SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                    height: 200,
+                                                    width: 300,
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: NetworkImage(
+                                                              _foryoucontent[
+                                                                      index]
+                                                                  .img1),
+                                                          fit: BoxFit.cover),
+                                                    )),
+                                                SizedBox(width: 5),
+                                                Container(
+                                                    height: 200,
+                                                    width: 300,
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: NetworkImage(
+                                                              _foryoucontent[
+                                                                      index]
+                                                                  .img2),
+                                                          fit: BoxFit.cover),
+                                                    )),
+                                                SizedBox(width: 5),
+                                                Container(
+                                                    height: 200,
+                                                    width: 300,
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: NetworkImage(
+                                                              _foryoucontent[
+                                                                      index]
+                                                                  .img3),
+                                                          fit: BoxFit.cover),
+                                                    )),
+                                              ],
+                                            ),
+                                          ),
+                                          Positioned(
+                                              bottom: 10,
+                                              right: 10,
+                                              child: Row(
+                                                children: [
+                                                  Text("swipe for more ➔",
+                                                      style: TextStyle(
                                                           fontSize: 14,
-                                                        )),
-                                                    SizedBox(
-                                                      height: 3,
-                                                    ),
-                                                    Row(
-                                                      children: <Widget>[
-                                                        Icon(
-                                                          Icons.location_on,
-                                                          color: Colors.white,
-                                                          size: 12,
-                                                        ),
-                                                        SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Text(
-                                                            _foryoucontent[
-                                                                    index]
-                                                                .address,
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 14,
-                                                            ))
-                                                      ],
-                                                    ),
-                                                  ])))),
-                                ]))
-                      ]),
+                                                          shadows: <Shadow>[
+                                                            Shadow(
+                                                                blurRadius: 3.0,
+                                                                color: Colors
+                                                                    .grey[900]),
+                                                          ],
+                                                          color: Colors.white)),
+                                                ],
+                                              ))
+                                        ]),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 15, right: 15, bottom: 15),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                                "${_foryoucontent[index].name}",
+                                                textAlign: TextAlign.justify,
+                                                style: TextStyle(
+                                                    color: Colors.grey[800],
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                                "${_foryoucontent[index].address}",
+                                                textAlign: TextAlign.justify,
+                                                style: TextStyle(
+                                                    color: Colors.grey[800],
+                                                    fontSize: 14)),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(
+                                                "${_foryoucontent[index].description}",
+                                                textAlign: TextAlign.justify,
+                                                style: TextStyle(
+                                                    color: Colors.grey[800],
+                                                    fontSize: 12)),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(right: 20),
+                        width: MediaQuery.of(context).size.width - 5,
+                        height: 200,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                    '${_foryoucontent[index].img1}'))),
+                        child: Stack(children: <Widget>[
+                          Positioned(
+                              bottom: 10,
+                              left: 10,
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: BackdropFilter(
+                                            filter: ImageFilter.blur(
+                                                sigmaY: 19.2, sigmaX: 19.2),
+                                            child: Container(
+                                                padding: EdgeInsets.all(10),
+                                                alignment: Alignment.center,
+                                                child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                          _foryoucontent[index]
+                                                              .name,
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 14,
+                                                            shadows: <Shadow>[
+                                                              Shadow(
+                                                                  blurRadius:
+                                                                      3.0,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      900]),
+                                                            ],
+                                                          )),
+                                                      SizedBox(
+                                                        height: 3,
+                                                      ),
+                                                      Row(
+                                                        children: <Widget>[
+                                                          Icon(
+                                                            Icons.location_on,
+                                                            color: Colors.white,
+                                                            size: 12,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 5,
+                                                          ),
+                                                          Text(
+                                                              _foryoucontent[
+                                                                      index]
+                                                                  .address,
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                shadows: <
+                                                                    Shadow>[
+                                                                  Shadow(
+                                                                      blurRadius:
+                                                                          3.0,
+                                                                      color: Colors
+                                                                              .grey[
+                                                                          900]),
+                                                                ],
+                                                                fontSize: 14,
+                                                              ))
+                                                        ],
+                                                      ),
+                                                    ])))),
+                                  ]))
+                        ]),
+                      ),
                     )),
           )),
       //pageindicator
@@ -990,16 +1100,19 @@ class CategoryButtons extends StatelessWidget {
         height: 175,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: Colors.yellow[50],
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey[300], blurRadius: 5, offset: Offset(2, 2)),
+            ]),
         //column
         child: Column(
           children: [
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Explore Now',
+                'Explore Now!',
                 style: TextStyle(
                     fontSize: 20,
                     color: Colors.blue,
@@ -1009,7 +1122,7 @@ class CategoryButtons extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Add items in your itinerary!',
+                'Browse and Personalize your Itinerary.',
                 style: TextStyle(
                     fontSize: 12,
                     color: Colors.grey[800],
@@ -1062,7 +1175,9 @@ class ScrollButtons extends StatelessWidget {
               fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w300),
         ),
         Padding(
-          padding: const EdgeInsets.only(right: 32),
+          padding: const EdgeInsets.only(
+            right: 30,
+          ),
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -1236,6 +1351,8 @@ class Header extends StatelessWidget {
                 colors: <Color>[
                   Colors.white.withOpacity(0.3),
                   Colors.transparent,
+                  Colors.transparent,
+                  Colors.blue.withOpacity(0.3),
                   Colors.blue.withOpacity(0.5),
                 ],
               ),
@@ -1255,7 +1372,7 @@ class Header extends StatelessWidget {
                             shadows: <Shadow>[
                               Shadow(blurRadius: 3.0, color: Colors.grey[900]),
                             ],
-                            fontWeight: FontWeight.w400)),
+                            fontWeight: FontWeight.bold)),
                     SizedBox(
                       height: 5,
                     ),
@@ -1264,13 +1381,13 @@ class Header extends StatelessWidget {
                         style: TextStyle(
                             color: Colors.white,
                             fontStyle: FontStyle.italic,
-                            fontSize: 25,
+                            fontSize: 20,
                             shadows: <Shadow>[
                               Shadow(blurRadius: 3.0, color: Colors.grey[900]),
                             ],
-                            fontWeight: FontWeight.w200)),
+                            fontWeight: FontWeight.w400)),
                     SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     Container(
                       height: 40,
@@ -1286,7 +1403,7 @@ class Header extends StatelessWidget {
                         child: Text('Saylo Kamo Iya!',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color: Colors.grey[700],
+                                color: Colors.grey[800],
                                 fontSize: 20,
                                 fontWeight: FontWeight.w400)),
                       ),

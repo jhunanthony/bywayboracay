@@ -20,7 +20,7 @@ class CategoryIcon extends StatelessWidget {
         decoration: BoxDecoration(
           border: this.hasborder == true
               ? Border.all(
-                  color: Colors.yellow[50],
+                  color: Colors.white,
                   width: 1.5,
                 )
               : Border.all(

@@ -186,7 +186,7 @@ class _LogInPageState extends State<LogInPage> {
                                         .pushNamed('/onboardingpage');
                                   },
                                 ),
-                                SizedBox(height: 25),
+                                SizedBox(height: 20),
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       padding: EdgeInsets.all(0),
@@ -259,7 +259,7 @@ class _LogInPageState extends State<LogInPage> {
                                     }
                                   },
                                 ),
-                                SizedBox(height: 15),
+                                SizedBox(height: 20),
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.push(

@@ -228,7 +228,7 @@ class _ItemsPageState extends State<ItemsPage> {
                   Text(
                       this.widget.selectedCategory.items[0].itemcategoryName ==
                               "ToStay"
-                          ? "Find a place to Check In and Breath out!"
+                          ? "Find a place to Check In and Breathe out!"
                           : this
                                       .widget
                                       .selectedCategory

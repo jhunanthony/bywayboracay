@@ -41,22 +41,82 @@ class Utils {
   static List<ForYouContent> getForyouContents() {
     return [
       ForYouContent(
-        name: 'White Beach',
-        imgName: 'ForYou1',
-        address: 'Balabag, Malay, Aklan',
-      ),
+          name: 'White Beach',
+          address: 'Balabag, Malay, Aklan',
+          description:
+              "White Beach is essentially Boracay Island. As the island's main attraction, this Boracay beach is one of the top tourist spots in the Philippines. Situated in the province of Aklan, White Beach is one of the best beaches in the Philippines and has always been the star of the show in Boracay Island.",
+          img1:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fboracay2.jpeg?alt=media&token=f12dd2b6-4b49-444b-b5cc-e55ca38103a8",
+          img2:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2FBoracay-Island-White-Sand-Beach.jpg?alt=media&token=7294e6ee-fdf6-4a4c-87cd-021242dd3149",
+          img3:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2F94a2dc91-92fe-42d6-abbb-3a2517e9803a.jpg?alt=media&token=2ef659be-bdbb-45a6-96ed-35406561644b"),
       ForYouContent(
-          name: 'New Coast Stone Hendge',
-          imgName: 'ForYou2',
-          address: 'Yapak, Malay, Aklan'),
+          name: "Willy’s Rock",
+          address: 'Balabag, Malay, Aklan',
+          description:
+              "Willy’s Rock is the most photographed landmark in Boracay. Also known to many as the ‘grotto’, it is characterized by a unique cluster of rock formation with a statue of the Virgin Mary. It is located at Station 1 and can be easily seen along the beach. It’s scenic any time of the day, with the clear blue skies or the golden sunset as your backdrop.",
+          img1:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fgroto1%20(1).jpg?alt=media&token=b98232ed-836b-4007-8575-33aefc0cf7a6",
+          img2:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fgroto2.jpeg?alt=media&token=c2c7fed7-9126-40da-96a7-c6b98021b21a",
+          img3:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fgroto3.jpg?alt=media&token=a0395e66-a8ae-4651-80dd-a1c42ff366c2"),
+      ForYouContent(
+          name: 'Key Hole',
+          address: 'Yapak, Malay, Aklan',
+          description:
+              "This rock formation is located at the northeastern part of Boracay island on Barangay Yapak, at the southern end of the Newcoast property. It features a large opening on a large rock formation that tapers toward the sea. At certain angles, it looks like a dragon taking a sip of water. ",
+          img1:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fstonehedge2.jpg?alt=media&token=47ecf643-fa0a-4043-9ffe-7cbc34d765e5",
+          img2:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fstonehedge3.jpg?alt=media&token=c7ce108e-965b-4000-bb1e-a28ba97e3966",
+          img3:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2FStonehedge1.jpg?alt=media&token=a25c1997-e2e4-4b07-a6c9-71c645014be0"),
       ForYouContent(
           name: 'Mt. Luho',
-          imgName: 'ForYou3',
-          address: 'Balabag, Malay, Aklan'),
+          address: 'Balabag, Malay, Aklan',
+          description:
+              "Mt. Luho is Boracay's highest peak that gives you a panoramic view of the island. Once you enter Mt. Luho you'll be greeted by a few animals (monkey's, birds, Tasmanian devil etc.), as Mt. Luho has a mini zoo for tourists to see. You'll be taking just a few stairs to reach the viewing deck and you'll be able to see the whole island. Do note that ​Mt. Luho isn't too high so you won't need any climbing equipment. The peak may be reached by a long walk or a tricycle ride that is always available to take you to the peak's entrance, or maybe try the ATV on the island and pass by Mt. Luho.",
+          img1:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fmtluho3.jpg?alt=media&token=d536a1c4-fe0b-4169-9aa9-efb123226f0e",
+          img2:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fmtluho2.jpeg?alt=media&token=b0a36f45-821e-4cf2-a272-e9222b940571",
+          img3:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fmtluho.jpg?alt=media&token=c030b0c6-bbae-4d0c-8231-298538856822"),
       ForYouContent(
           name: 'Puka Beach',
-          imgName: 'ForYou4',
-          address: 'Yapak, Malay, Aklan')
+          address: 'Yapak, Malay, Aklan',
+          description:
+              "Puka Beach is 800 meters long and fronted by a big cliff with a forest alongside it. At dusk you can see flying foxes (very big bats) flying across the top of the cliff. The sand is coarser than that of White Beach due to the small bits of coral mixed in with it. The beach also is known to have a coast with puka shells, which is where it got its name from.",
+          img2:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fpuka1.jpg?alt=media&token=4c9da265-173e-4462-9700-6e8353a5417f",
+          img1:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fpuka2.jpg?alt=media&token=712f1699-d72e-4aa0-b4f8-183404932906",
+          img3:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fpukkaaa3.jpg?alt=media&token=275838ca-6703-46ef-a918-b3a8ed95e0b7"),
+      ForYouContent(
+          name: "D'mall Boracay",
+          address: 'Balabag, Malay, Aklan',
+          description:
+              "D’Mall, Boracay’s main open-air mall, has a vibrant street market vibe which people find enjoyable. From Station 1, D’Mall Boracay is just a five-minute tricycle ride. It is also considered as the best commercial place to shop in Boracay; it has various shops, restaurants, and cafes, catering for your needs and tastebuds. ATM machines, banks, pawnshops, and money-changers are also located here. The mall serves as a reference point for meet-ups with booked tour guides and friends as well.",
+          img1:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fdmall2.jpeg?alt=media&token=9fea752c-1599-4065-9981-886565aefb0f",
+          img2:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fdmall3.jpg?alt=media&token=3ca36efe-5034-48e7-82f0-056934a96edb",
+          img3:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fdmall112.jpg?alt=media&token=800df8c4-a0a9-47ec-a827-b70d00207202"),
+      ForYouContent(
+          name: "Balabag Wetland Park",
+          address: 'Balabag, Malay, Aklan',
+          description:
+              "Balabag Wetland Park, also known as 'Laketown' and Wetland No. 4 in Barangay Balabag, Boracay, has been formally unveiled last October 15, 2018 during Boracay's pre-opening dry run. Key improvements include a 350-meter promenade that will fringe the wetland to further protect the area and allow locals and tourists a recreational amenity. Interpretive signage will be installed at key spots to identify plant species and illustrate how wetlands work. Rain gardens, and a new public plaza and wetland species will also be reintroduced on and at the water's edge.",
+          img2:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fwetlandpark2.jpg?alt=media&token=91540086-f3e9-4c7e-b724-489cf4fdbaa8",
+          img1:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fwetlandpark1.jpg?alt=media&token=382f5563-5c53-4fd3-9b14-140efaffc162",
+          img3:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fwetland3.jfif?alt=media&token=84845ee7-7330-4a35-8122-980a2cf9a954")
     ];
   }
 
@@ -90,9 +150,9 @@ class Utils {
       HighlightModel(
           name: 'Water Activities',
           imgName: 'Highlight5',
-          color: Colors.yellow,
-          caption:"You have to try some of these highly recommended water activities when you're in Boracay. It's a way to get your adrenaline up and kicking! It's also an excellent way to bond with your friends and family."
-      )    
+          color: Colors.yellow[700],
+          caption:
+              "You have to try some of these highly recommended water activities when you're in Boracay. It's a way to get your adrenaline up and kicking! It's also an excellent way to bond with your friends and family.")
     ];
   }
 

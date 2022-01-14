@@ -29,7 +29,7 @@ class CategoryCard extends StatelessWidget {
                 padding: EdgeInsets.only(
                   right: 10,
                   top: 5,
-                  bottom:5,
+                  bottom: 5,
                 ),
                 child: Container(
                   height: 65,
@@ -65,7 +65,9 @@ class CategoryCard extends StatelessWidget {
         child: Text(
           this.category.name,
           style: TextStyle(
-              fontSize: 12, color: Colors.black, fontWeight: FontWeight.w300),
+              fontSize: 12,
+              color: Colors.grey[800],
+              fontWeight: FontWeight.w400),
         ),
       ),
       SizedBox(height: 5),
