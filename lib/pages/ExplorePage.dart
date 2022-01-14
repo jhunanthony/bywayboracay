@@ -1335,7 +1335,7 @@ class Header extends StatelessWidget {
         decoration: BoxDecoration(
             image: DecorationImage(
           image: AssetImage(
-            'assets/images/Explore_Beach.jpg',
+            'assets/images/Highlight2.jpg',
           ),
           fit: BoxFit.fitHeight,
         )),
@@ -1349,7 +1349,6 @@ class Header extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: <Color>[
-                  Colors.white.withOpacity(0.3),
                   Colors.transparent,
                   Colors.transparent,
                   Colors.blue.withOpacity(0.3),
@@ -1387,7 +1386,7 @@ class Header extends StatelessWidget {
                             ],
                             fontWeight: FontWeight.w400)),
                     SizedBox(
-                      height: 20,
+                      height: 40,
                     ),
                     Container(
                       height: 40,

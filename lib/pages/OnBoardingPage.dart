@@ -37,6 +37,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                   image: DecorationImage(
+                opacity: 0.4,
                 image: AssetImage("assets/images/Login_Beach.jpg"),
                 fit: BoxFit.fitHeight,
               )),

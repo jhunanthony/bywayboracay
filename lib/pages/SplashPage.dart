@@ -33,7 +33,7 @@ class SplashPage extends StatelessWidget {
 
     return SafeArea(
         child: Scaffold(
-            backgroundColor: Colors.blue,
+            backgroundColor: Colors.blue[400],
             body: Stack(children: [
               Align(
                 alignment: Alignment.center,

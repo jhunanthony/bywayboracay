@@ -116,7 +116,18 @@ class Utils {
           img1:
               "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fwetlandpark1.jpg?alt=media&token=382f5563-5c53-4fd3-9b14-140efaffc162",
           img3:
-              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fwetland3.jfif?alt=media&token=84845ee7-7330-4a35-8122-980a2cf9a954")
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fwetland3.jfif?alt=media&token=84845ee7-7330-4a35-8122-980a2cf9a954"),
+      ForYouContent(
+          name: "Motag Living Museum",
+          address: 'Mainland, Motag, Malay, Aklan',
+          description:
+              "It’s “living,” because it’s the first interactive museum in the Philippines, a time machine which transposes you to another era when the island was known more for its quiet farming communities. It “lives,” because forgotten traditions and vestiges of a fading culture are brought back to life by those who still remember.  the Motag Living Museum, located at Bgy. Motag in Malay, Aklan, a 30-minute ride from Caticlan. Dressed in patadyong, a warmly-checked dress typical of farming attire, People in the museum reminds us what the island was known for years before: a main producer of dried and salted fish, tobacco, rice, and kopra.",
+          img2:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fmotaglivingmuseum.jpg?alt=media&token=fc2375cf-2b0b-474c-ae7b-a3f13964884b",
+          img1:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fmotaglivingmuseum2.jpg?alt=media&token=601d53ca-5200-4a1e-8ac9-d345f50a5d95",
+          img3:
+              "https://firebasestorage.googleapis.com/v0/b/bywayboracay-329114.appspot.com/o/explorepage%2Fmotagliving3.jpg?alt=media&token=e77f3ab3-5e54-4b22-847d-81a1fc3b78ce")
     ];
   }
 
@@ -220,7 +231,7 @@ class Utils {
         name: "Love Boracay",
         imgName: 'Culture3',
         caption:
-            "Laboracay has been rebranded to “Love Boracay” and the focus of the event changed. This weekend is full of events that promotes sustainable tourism.",
+            "Laboracay has been rebranded to “Love Boracay” and the focus of the event changed. This weekend is full of events that promotes sustainable tourism. Compared to #LaBoracay’s parties dusk till dawn, #LoveBoracay events are more on promoting environmental awareness not only to tourists but most specifically to residents to help protect and preserve the paradise of Boracay.",
       ),
       CultureModel(
         name: "Fiesta De Obreros",
