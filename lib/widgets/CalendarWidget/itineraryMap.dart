@@ -92,6 +92,7 @@ class _ItineraryMapState extends State<ItineraryMap>
   @override
   void initState() {
     super.initState();
+    
 
     // create an instance of Location
     locationref = new Location();
@@ -105,23 +106,44 @@ class _ItineraryMapState extends State<ItineraryMap>
       // so we're holding on to it
       currentLocationref = cLoc;
       updatePinOnMap();
+     
     });
 
-    this.setInitialLocation();
+    this.setInitialLocation(context);
     //instantiate the polyline reference to call API
     polylinePoints = PolylinePoints();
-    futuredistanceandduration = getitinerarydistanceandduration();
 
     WidgetsBinding.instance.addObserver(this);
+     futuredistanceandduration = getitinerarydistanceandduration();
   }
 
-  void setInitialLocation() async {
+  void setInitialLocation(BuildContext context) async {
     currentLocationref = await locationref.getLocation();
-
-  
+    destinationLocationref = LocationData.fromMap({
+      "latitude": this.widget.dest.latitude,
+      "longitude": this.widget.dest.longitude
+    });
   }
 
+  //get distance and duration using json parse
+  Future<ItineraryDestDurInfo> getitinerarydistanceandduration() async {
+    currentLocationref = await locationref.getLocation();
+    destinationLocationref = LocationData.fromMap({
+      "latitude": this.widget.dest.latitude,
+      "longitude": this.widget.dest.longitude
+    });
 
+    final requestURL =
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE";
+
+    final response = await http.get(Uri.parse(requestURL));
+
+    if (response.statusCode == 200) {
+      return ItineraryDestDurInfo.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Error Leoading request URL info.");
+    }
+  }
 
   /// Disposes of the platform resources
 
@@ -214,7 +236,8 @@ class _ItineraryMapState extends State<ItineraryMap>
           }));
     });
   }
-   @override
+
+  @override
   void dispose() {
     locationref.onLocationChanged.listen((LocationData cLoc) {
       currentLocationref = cLoc;
@@ -222,7 +245,6 @@ class _ItineraryMapState extends State<ItineraryMap>
     }).cancel();
     super.dispose();
   }
-  
 
   //observe phone status
   @override
@@ -605,28 +627,5 @@ class _ItineraryMapState extends State<ItineraryMap>
             });
           }));
     });
-  }
-
-
-  //get distance and duration using json parse
-  Future<ItineraryDestDurInfo> getitinerarydistanceandduration() async {
-    currentLocationref = await locationref.getLocation();
-
-    destinationLocationref = LocationData.fromMap({
-      "latitude": this.widget.dest.latitude,
-      "longitude": this.widget.dest.longitude,
-    });
-
-
-    final requestURL =
-        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE";
-
-    final response = await http.get(Uri.parse(requestURL));
-
-    if (response.statusCode == 200) {
-      return ItineraryDestDurInfo.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception("Error Leoading request URL info.");
-    }
   }
 }

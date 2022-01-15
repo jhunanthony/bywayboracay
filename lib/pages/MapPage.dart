@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
@@ -6,13 +7,17 @@ import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/MapWidgets/MapBottomInfo.dart';
 import 'package:bywayborcay/widgets/MapWidgets/MapUpperInfo.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-
+import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as https;
+import '../widgets/CategoryWidgets/CategoryIcon.dart';
 import '../widgets/MapWidgets/DistanceAndDurationWidget.dart';
+import '../widgets/MapWidgets/Transitfare.dart';
 
 //construct a widget that passes user location as source location
 //const LatLng DEST_LOCATION = LatLng(11.98189918417696, 121.9151854334716);
@@ -76,7 +81,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
   Set<Polyline> _polylines = Set<Polyline>();
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints;
-  StreamSubscription<LocationData> locationSubscription;
+  Future<DistanceAndDurationInfo> futuredistanceandduration;
 
   @override
   void initState() {
@@ -98,11 +103,13 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
       currentLocationref = cLoc;
       updatePinOnMap();
     });
+    this.setInitialLocation();
 
     //instantiate the polyline reference to call API
     polylinePoints = PolylinePoints();
     //set up initial Locations & invoke the method
-    this.setInitialLocation();
+
+    futuredistanceandduration = getdistanceandduration();
 
     WidgetsBinding.instance.addObserver(this);
   }
@@ -239,7 +246,171 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
             left: 0,
             right: 0,
             bottom: this.pinBottomInfoPosition,
-            child: MapBottomInfo()),
+            child: Container(
+                margin: EdgeInsets.all(20),
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(40),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 10,
+                          offset: Offset.zero)
+                    ]),
+                child: Column(children: [
+                  Container(
+                      color: Colors.transparent,
+                      child: Row(children: [
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            ClipOval(
+                                child: Image.network(widget.items.imgName,
+                                    width: 60, height: 60, fit: BoxFit.cover)),
+                            Positioned(
+                              bottom: -10,
+                              right: -10,
+                              child: CategoryIcon(
+                                iconName: widget.items.itemcategoryName,
+                                color: widget.items.itemcategoryName == "ToStay"
+                                    ? Colors.purple[400]
+                                    : widget.items.itemcategoryName ==
+                                            "ToEat&Drink"
+                                        ? Colors.red[400]
+                                        : widget.items.itemcategoryName ==
+                                                "ToSee"
+                                            ? Colors.blue[400]
+                                            : widget.items.itemcategoryName ==
+                                                    "ToDo"
+                                                ? Colors.green[400]
+                                                : Colors.grey[700],
+                                size: 30,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 20),
+                        Expanded(
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                  widget.items.name,
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                Text(
+                                  widget.items.itemaddress,
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ]),
+                        ),
+                        //marker
+                        Image.asset(
+                            'assets/images/' +
+                                widget.items.itemcategoryName +
+                                '.png',
+                            height: 40,
+                            width: 40),
+                        SizedBox(width: 15),
+
+                        /*Icon(Icons.location_pin,
+                    color: AppColors.accomodations, size: 50)*/
+                      ])),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.grey[400],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FutureBuilder<DistanceAndDurationInfo>(
+                            future: futuredistanceandduration,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return DistanceAndDurationWidget(
+                                  distance: snapshot.data.distance,
+                                  distancevalue: snapshot.data.distancevalue,
+                                  duration: snapshot.data.duration,
+                                );
+                              } else if (snapshot.hasError) {
+                                return Center(child: Text("${snapshot.error}"));
+                              }
+
+                              return Center(child: CircularProgressIndicator());
+                            }),
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            TransitfarePage()));
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 15,
+                                width: 15,
+                                child: Icon(
+                                  CupertinoIcons.question,
+                                  size: 13,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.blue[200], //background
+                                  onPrimary: Colors.white,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 17,
+                                      vertical: 17), //foreground
+                                  shape: CircleBorder()),
+                              child: Center(
+                                child: Icon(
+                                  Icons.directions_rounded,
+                                  size: 25,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onPressed: () async {
+                                String googleUrl =
+                                    'https://www.google.com/maps/dir/?api=1&origin=${currentLocationref.latitude},${currentLocationref.longitude}&destination=${destinationLocationref.latitude},${destinationLocationref.longitude}&travelmode=walking&dir_action=navigate';
+
+                                if (await canLaunch(googleUrl)) {
+                                  await launch(googleUrl);
+                                } else {
+                                  throw 'Could not launch $googleUrl';
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+                ]))),
         Positioned(
             top: 0,
             left: 0,
@@ -250,6 +421,28 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
             )),
       ])),
     );
+  }
+
+  Future<DistanceAndDurationInfo> getdistanceandduration() async {
+    CategorySelectionService catSelection =
+        Provider.of<CategorySelectionService>(context, listen: false);
+    widget.items = catSelection.items;
+
+    currentLocationref = await locationref.getLocation();
+    destinationLocationref = LocationData.fromMap(
+        {"latitude": widget.items.itemlat, "longitude": widget.items.itemlong});
+
+    final requestURL =
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE";
+
+    final response = await https.get(Uri.parse(requestURL));
+
+    if (response.statusCode == 200) {
+      return DistanceAndDurationInfo.fromJson(jsonDecode(response.body));
+    } else {
+      print("error distance matrix");
+      throw Exception("Error Leoading request URL info.");
+    }
   }
 
   //this method will perform network call from the API

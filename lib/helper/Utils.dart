@@ -14,7 +14,7 @@ class Utils {
       OnBoardingContent(
         title: "Explore Boracay",
         message:
-            'A great path is waiting for you. With Byway Boracay, explore great distinations and discover great deals! The sand and waves of Boracay is waiting for you.',
+            'A great path is waiting for you. With Byway Boracay, explore great destinations and discover great deals! The sand and waves of Boracay are waiting for you.',
         imgName: 'Budgeting',
       ),
       OnBoardingContent(
@@ -26,7 +26,7 @@ class Utils {
       OnBoardingContent(
         title: "Practice Sustainable Travel",
         message:
-            'Byway Boracay promotes sustainable tourism. With sustainability, going local and low-cost travel can be achieved. Come and contribute!',
+            'Byway Boracay promotes sustainable tourism. With sustainability, going local, and low-cost travel can be achieved. Come and contribute!',
         imgName: 'Communication',
       ),
       OnBoardingContent(

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
+
 class DistanceAndDurationWidget extends StatelessWidget {
   //final startlocation;
 
@@ -162,24 +164,4 @@ class DistanceAndDurationWidget extends StatelessWidget {
   }
 }
 
-class DistanceAndDurationInfo {
-  final distance;
-  final distancevalue;
-  final duration;
-  //final startlocation;
 
-  DistanceAndDurationInfo({
-    @required this.distance,
-    @required this.distancevalue,
-    @required this.duration,
-    //@required this.startlocation,
-  });
-
-  factory DistanceAndDurationInfo.fromJson(Map<String, dynamic> json) {
-    return DistanceAndDurationInfo(
-      distance: json['rows'][0]['elements'][0]['distance']['text'],
-      distancevalue: json['rows'][0]['elements'][0]['distance']['value'],
-      duration: json['rows'][0]['elements'][0]['duration']['text'],
-    );
-  }
-}

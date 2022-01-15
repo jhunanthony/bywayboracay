@@ -603,25 +603,7 @@ class _SavedPageState extends State<SavedPage> {
                       hintText: "Enter Time"),
                 ),
                 SizedBox(height: 7),
-                TextField(
-                  controller: event..text,
-                  textCapitalization: TextCapitalization.words,
-                  decoration: InputDecoration(
-                    labelText: 'Event',
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
-                      borderRadius: BorderRadius.circular(
-                        10.0,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
-                      borderRadius: BorderRadius.circular(
-                        10.0,
-                      ),
-                    ),
-                  ),
-                ),
+                buildTextField(controller: budget, hint: 'Event'),
 
                 SizedBox(height: 7),
                 TextField(
@@ -644,28 +626,10 @@ class _SavedPageState extends State<SavedPage> {
                   ),
                 ),
                 SizedBox(height: 7),
-                TextField(
-                  keyboardType: TextInputType.numberWithOptions(),
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  controller: budget
-                    ..text = "${itemslistinfo.itempriceMin.toStringAsFixed(2)}",
-                  textCapitalization: TextCapitalization.words,
-                  decoration: InputDecoration(
-                    labelText: 'Budget',
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
-                      borderRadius: BorderRadius.circular(
-                        10.0,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
-                      borderRadius: BorderRadius.circular(
-                        10.0,
-                      ),
-                    ),
-                  ),
-                ),
+                buildTextField(
+                    controller: budget,
+                    hint: 'Event from ${itemslistinfo.itempriceMin}'),
+
                 SizedBox(height: 7),
                 TextField(
                   controller: website..text = "${itemslistinfo.itemwebsite}",
@@ -746,6 +710,29 @@ class _SavedPageState extends State<SavedPage> {
           ],
         );
       },
+    );
+  }
+
+  Widget buildTextField(
+      {String hint, @required TextEditingController controller}) {
+    return TextField(
+      controller: controller,
+      textCapitalization: TextCapitalization.words,
+      decoration: InputDecoration(
+        labelText: hint ?? '',
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue, width: 1.5),
+          borderRadius: BorderRadius.circular(
+            10.0,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue, width: 1.5),
+          borderRadius: BorderRadius.circular(
+            10.0,
+          ),
+        ),
+      ),
     );
   }
 

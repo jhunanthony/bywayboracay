@@ -771,7 +771,8 @@ class _DetailsPageState extends State<DetailsPage> {
                   children: [
                     //column for text call and fb
                     Visibility(
-                      visible: widget.items.itemcontactNumber != "none" ||
+                      visible: widget.items.itemcontactNumber != "N" ||
+                          widget.items.itemcontactNumber != "none" ||
                           widget.items.itemcontactNumber != "None" ||
                           widget.items.itemcontactNumber != null,
                       child: ElevatedButton(
@@ -1438,28 +1439,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   ),
                 ),
                 SizedBox(height: 7),
-                TextField(
-                  keyboardType: TextInputType.numberWithOptions(),
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  controller: budget
-                    ..text = "${widget.items.itempriceMin.toString()}",
-                  textCapitalization: TextCapitalization.words,
-                  decoration: InputDecoration(
-                    labelText: 'Budget',
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
-                      borderRadius: BorderRadius.circular(
-                        10.0,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
-                      borderRadius: BorderRadius.circular(
-                        10.0,
-                      ),
-                    ),
-                  ),
-                ),
+               buildTextField(controller: budget, hint: 'Event from ${widget.items.itempriceMin}'),
                 SizedBox(height: 7),
                 TextField(
                   controller: website..text = "${widget.items.itemwebsite}",
