@@ -1,18 +1,28 @@
+import 'package:bywayborcay/models/UserLogInModel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/link.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../services/loginservice.dart';
 import '../Navigation/TopNavBar.dart';
 
 class LinkList {
   String link;
   String name;
   LinkList(this.link, this.name);
+}
+
+class TravelList {
+  String step;
+  String description;
+  String website;
+  TravelList(this.step, this.description, this.website);
 }
 
 class TravelGuidelines extends StatefulWidget {
@@ -56,15 +66,8 @@ class TravelGuidelinesState extends State<TravelGuidelines> {
       appBar: TopNavBar(
         colorbackground: Colors.transparent,
       ),
-      body: ExpandableTheme(
-        data: const ExpandableThemeData(
-          iconColor: Colors.blue,
-          useInkWell: true,
-        ),
-        child: ListView(
-          physics: const BouncingScrollPhysics(),
-          children: <Widget>[
-            SizedBox(
+      body:
+          /* SizedBox(
               height: 10,
             ),
             Padding(
@@ -88,20 +91,209 @@ class TravelGuidelinesState extends State<TravelGuidelines> {
                 ],
               ),
             ),
-            CarouselWithDotsPage(imgList: imgList),
-            Card1(),
-            Card2(),
-            Card3(),
-            Card4(),
-            Card5(),
-            Card6(),
-            Card7(),
-            Card8(),
-            Card10(),
-            Card9(),
-          ],
-        ),
-      ),
+            CarouselWithDotsPage(imgList: imgList),*/
+          StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('travelguidelines')
+                  .doc('steps')
+                  .snapshots(),
+              builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if (snapshot.hasData) {
+                  var userDocument = snapshot.data;
+
+                  final List<TravelList> travellist = [];
+
+                  userDocument['travelprocedures'].forEach((value) {
+                    travellist.add(TravelList(
+                        value['step'], value['description'], value['website']));
+                  });
+                  return travellist.length > 0
+                      ? ListView.builder(
+                          itemCount: travellist.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Column(children: [
+                              Visibility(
+                                  visible: index == 0,
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 40.0),
+                                        child: Row(
+                                          children: const [
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(top: 10.0),
+                                              child: Icon(
+                                                  Icons.airplanemode_active,
+                                                  color: Colors.blue,
+                                                  size: 25),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(top: 15.0),
+                                              child: Center(
+                                                  child:
+                                                      Text('TRAVEL GUIDELINES',
+                                                          style: TextStyle(
+                                                            color: Colors.blue,
+                                                            fontSize: 25.0,
+                                                          ))),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      CarouselWithDotsPage(imgList: imgList),
+                                    ],
+                                  )),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 20, right: 20, top: 10, bottom: 10),
+                                child: Container(
+                                  color: const Color(0xffb1ebfa),
+                                  child: ExpandableNotifier(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Column(
+                                        children: <Widget>[
+                                          ScrollOnExpand(
+                                            scrollOnExpand: true,
+                                            scrollOnCollapse: false,
+                                            child: ExpandablePanel(
+                                              theme: const ExpandableThemeData(
+                                                headerAlignment:
+                                                    ExpandablePanelHeaderAlignment
+                                                        .center,
+                                                tapBodyToCollapse: true,
+                                              ),
+                                              // ignore: prefer_const_constructors
+                                              header: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(10),
+                                                  child: Text(
+                                                    "${travellist[index].step}",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  )),
+                                              collapsed: const Text(
+                                                step1,
+                                                softWrap: true,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              expanded: Container(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                margin:
+                                                    EdgeInsets.only(bottom: 10),
+                                                padding: EdgeInsets.all(10),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  // ignore: prefer_const_literals_to_create_immutables
+                                                  children: <Widget>[
+                                                    RichText(
+                                                      text: TextSpan(children: [
+                                                        TextSpan(
+                                                            text:
+                                                                "${travellist[index].description}",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black)),
+                                                        TextSpan(
+                                                            text: "Link",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.blue,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .underline),
+                                                            recognizer:
+                                                                TapGestureRecognizer()
+                                                                  ..onTap =
+                                                                      () async {
+                                                                    if (await canLaunch(
+                                                                            "${travellist[index].website}") ==
+                                                                        true) {
+                                                                      launch(
+                                                                          "${travellist[index].website}");
+                                                                    } else {
+                                                                      print(
+                                                                          "Can't launch URL");
+                                                                    }
+                                                                  })
+                                                      ]),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              builder:
+                                                  (_, collapsed, expanded) {
+                                                return Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 10,
+                                                      right: 10,
+                                                      bottom: 10),
+                                                  child: Expandable(
+                                                    collapsed: collapsed,
+                                                    expanded: expanded,
+                                                    theme:
+                                                        const ExpandableThemeData(
+                                                            crossFadePoint: 0),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Visibility(
+                                  visible: index == travellist.length - 1,
+                                  child: Column(
+                                    children: [Card10(), Card9()],
+                                  )),
+                            ]);
+                          })
+                      : travellist.length == null
+                          ? SizedBox()
+                          : SizedBox();
+                } else if (snapshot.hasError) {
+                  return Text(
+                    'Loading',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                  );
+                } else
+                  return Text(
+                    'Loading',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                  );
+              }),
+
+      /*Card1(),
+              Card2(),
+              Card3(),
+              Card4(),
+              Card5(),
+              Card6(),
+              Card7(),
+              Card8(),
+              Card10(),
+              Card9(),*/
     );
   }
 }
@@ -1781,26 +1973,31 @@ class Card9 extends StatelessWidget {
                                             itemCount: linklist.length,
                                             itemBuilder: (BuildContext context,
                                                 int index) {
-                                              return TextButton(
-                                                onPressed: () async {
-                                                  String url =
-                                                      "${linklist[index].link}";
-                                                  if (await canLaunch(url)) {
-                                                    await launch(url);
-                                                  } else {
-                                                    showSimpleNotification(
-                                                      Text(
-                                                          "Could not lunch $url"),
-                                                      background:
-                                                          Colors.green[400],
-                                                      position:
-                                                          NotificationPosition
-                                                              .bottom,
-                                                    );
-                                                  }
-                                                },
-                                                child: Text(
-                                                    '${linklist[index].name}'),
+                                              return Column(
+                                                children: [
+                                                  TextButton(
+                                                    onPressed: () async {
+                                                      String url =
+                                                          "${linklist[index].link}";
+                                                      if (await canLaunch(
+                                                          url)) {
+                                                        await launch(url);
+                                                      } else {
+                                                        showSimpleNotification(
+                                                          Text(
+                                                              "Could not lunch $url"),
+                                                          background:
+                                                              Colors.green[400],
+                                                          position:
+                                                              NotificationPosition
+                                                                  .bottom,
+                                                        );
+                                                      }
+                                                    },
+                                                    child: Text(
+                                                        '${linklist[index].name}'),
+                                                  ),
+                                                ],
                                               );
                                             }),
                                       ),
@@ -1832,6 +2029,11 @@ class Card9 extends StatelessWidget {
 class Card10 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    LoginService loginService =
+        Provider.of<LoginService>(context, listen: false);
+    UserLogInModel userModel = loginService.loggedInUserModel;
+
+    String uid = userModel != null ? userModel.uid : '';
     return ExpandableNotifier(
         child: Padding(
       padding: const EdgeInsets.all(10),
@@ -1886,23 +2088,28 @@ class Card10 extends StatelessWidget {
                             child: ListView.builder(
                                 itemCount: travelagencies.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return TextButton(
-                                    onPressed: () async {
-                                      String mailto = "mailto:" +
-                                          "${travelagencies[index]['email']}" +
-                                          "?subject=Inquiry&body=Greetings!";
-                                      if (await canLaunch(mailto)) {
-                                        await launch(mailto);
-                                      } else {
-                                        showSimpleNotification(
-                                          Text("Could not lunch $mailto"),
-                                          background: Colors.green[400],
-                                          position: NotificationPosition.bottom,
-                                        );
-                                      }
-                                    },
-                                    child: Text(
-                                        "${travelagencies[index]['name']}"),
+                                  return Column(
+                                    children: [
+                                      TextButton(
+                                        onPressed: () async {
+                                          String mailto = "mailto:" +
+                                              "${travelagencies[index]['email']}" +
+                                              "?subject=Inquiry&body=Greetings!";
+                                          if (await canLaunch(mailto)) {
+                                            await launch(mailto);
+                                          } else {
+                                            showSimpleNotification(
+                                              Text("Could not lunch $mailto"),
+                                              background: Colors.green[400],
+                                              position:
+                                                  NotificationPosition.bottom,
+                                            );
+                                          }
+                                        },
+                                        child: Text(
+                                            "${travelagencies[index]['name']}"),
+                                      ),
+                                    ],
                                   );
                                 }),
                           ),
