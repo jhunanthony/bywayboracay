@@ -75,6 +75,13 @@ class _DetailsPageState extends State<DetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    RatingService ratingService =
+        Provider.of<RatingService>(context, listen: false);
+    //fetch liked items and load on likepage
+    ratingService.loadRatedItemsFromFirebase(context);
+SaveService likeService = Provider.of<SaveService>(context, listen: false);
+  
+
     CategorySelectionService catSelection =
         Provider.of<CategorySelectionService>(context, listen: false);
     widget.items = catSelection.items;
@@ -95,9 +102,9 @@ class _DetailsPageState extends State<DetailsPage> {
         target: destinationLocation);
 
     //to activate change notifier on saves
-    SaveService likeService = Provider.of<SaveService>(context, listen: false);
-    RatingService ratingService =
-        Provider.of<RatingService>(context, listen: false);
+    
+    /*RatingService ratingService =
+        Provider.of<RatingService>(context, listen: false);*/
     LoginService loginService =
         Provider.of<LoginService>(context, listen: false);
     UserLogInModel userModel = loginService.loggedInUserModel;
@@ -239,8 +246,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                         onPressed: () {
                                           /*likeService.remove(
                                                 context,
-                                                LikedItem(
+                                                SavedItem(
                                                     category: widget.items));*/
+                                       
                                         }),
                                   ),
                                 );
@@ -1290,6 +1298,10 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                         .imgName,
                                                                     username[
                                                                         "uid"]);
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pushReplacementNamed(
+                                                                    '/detailspage');
                                                           },
                                                           icon: Icon(
                                                               Icons.delete,
@@ -1365,6 +1377,10 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                             .items
                                                                             .imgName,
                                                                         useruid);
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pushReplacementNamed(
+                                                                        '/detailspage');
                                                               },
                                                               icon: Icon(
                                                                   Icons.delete,

@@ -39,10 +39,10 @@ class _MainPageState extends State<MainPage> {
     //fetch liked items and load on likepage
     likeService.loadLikedItemsFromFirebase(context);
 
-    RatingService ratingService =
+   /* RatingService ratingService =
         Provider.of<RatingService>(context, listen: false);
     //fetch liked items and load on likepage
-    ratingService.loadRatedItemsFromFirebase(context);
+    ratingService.loadRatedItemsFromFirebase(context);*/
 
     return SafeArea(
       child: Scaffold(
