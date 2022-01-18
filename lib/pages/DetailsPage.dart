@@ -1223,146 +1223,156 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   SizedBox(
                                                     width: 20,
                                                   ),
-                                                 useruid == "x19aFGBbXBaXTZY92Al8f8UbWyX2" ?  IconButton(
-                                                        onPressed: () async {
-                                                          FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'ratings')
-                                                              .doc(
-                                                                  '${widget.items.itemcategoryName}')
-                                                              .update({
-                                                            "${widget.items.name}.itemrating":
-                                                                FieldValue.increment(
-                                                                    -username[
-                                                                        "rating"])
-                                                          });
+                                                  useruid ==
+                                                          "x19aFGBbXBaXTZY92Al8f8UbWyX2"
+                                                      ? IconButton(
+                                                          onPressed: () async {
+                                                            FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'ratings')
+                                                                .doc(
+                                                                    '${widget.items.itemcategoryName}')
+                                                                .update({
+                                                              "${widget.items.name}.itemrating":
+                                                                  FieldValue.increment(
+                                                                      -username[
+                                                                          "rating"])
+                                                            });
 
-                                                          //update data on itemratingnum
-                                                          FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'ratings')
-                                                              .doc(
-                                                                  '${widget.items.itemcategoryName}')
-                                                              .update({
-                                                            "${widget.items.name}.itemratingnum":
-                                                                FieldValue
-                                                                    .increment(
-                                                                        -1)
-                                                          });
-                                                          FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'ratings')
-                                                              .doc(
-                                                                  '${widget.items.itemcategoryName}')
-                                                              .update({
-                                                            "${widget.items.name}.sets":
-                                                                FieldValue
-                                                                    .arrayRemove([
-                                                              {
-                                                                "username":
-                                                                    username[
-                                                                        "username"],
-                                                                "userimg":
-                                                                    username[
-                                                                        "userimg"],
-                                                                "rating":
-                                                                    username[
-                                                                        "rating"],
-                                                                "comment":
-                                                                    username[
-                                                                        "comment"],
-                                                                "uid": username[
-                                                                    "uid"]
-                                                              }
-                                                            ])
-                                                          });
+                                                            //update data on itemratingnum
+                                                            FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'ratings')
+                                                                .doc(
+                                                                    '${widget.items.itemcategoryName}')
+                                                                .update({
+                                                              "${widget.items.name}.itemratingnum":
+                                                                  FieldValue
+                                                                      .increment(
+                                                                          -1)
+                                                            });
+                                                            FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'ratings')
+                                                                .doc(
+                                                                    '${widget.items.itemcategoryName}')
+                                                                .update({
+                                                              "${widget.items.name}.sets":
+                                                                  FieldValue
+                                                                      .arrayRemove([
+                                                                {
+                                                                  "username":
+                                                                      username[
+                                                                          "username"],
+                                                                  "userimg":
+                                                                      username[
+                                                                          "userimg"],
+                                                                  "rating":
+                                                                      username[
+                                                                          "rating"],
+                                                                  "comment":
+                                                                      username[
+                                                                          "comment"],
+                                                                  "uid":
+                                                                      username[
+                                                                          "uid"]
+                                                                }
+                                                              ])
+                                                            });
 
-                                                          ratingService
-                                                              .removerecord(
-                                                                  context,
-                                                                  widget.items
-                                                                      .imgName,
-                                                                  username["uid"]
-                                                                      
-                                                                      );
-                                                        },
-                                                        icon: Icon(Icons.delete,
-                                                            size: 20,
-                                                            color: Colors
-                                                                .red[300])) : Visibility(
-                                                    visible: username["uid"] ==
-                                                        useruid,
-                                                    child: IconButton(
-                                                        onPressed: () async {
-                                                          FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'ratings')
-                                                              .doc(
-                                                                  '${widget.items.itemcategoryName}')
-                                                              .update({
-                                                            "${widget.items.name}.itemrating":
-                                                                FieldValue.increment(
-                                                                    -username[
-                                                                        "rating"])
-                                                          });
+                                                            ratingService
+                                                                .removerecord(
+                                                                    context,
+                                                                    widget.items
+                                                                        .imgName,
+                                                                    username[
+                                                                        "uid"]);
+                                                          },
+                                                          icon: Icon(
+                                                              Icons.delete,
+                                                              size: 20,
+                                                              color: Colors
+                                                                  .red[300]))
+                                                      : Visibility(
+                                                          visible:
+                                                              username["uid"] ==
+                                                                  useruid,
+                                                          child: IconButton(
+                                                              onPressed:
+                                                                  () async {
+                                                                FirebaseFirestore
+                                                                    .instance
+                                                                    .collection(
+                                                                        'ratings')
+                                                                    .doc(
+                                                                        '${widget.items.itemcategoryName}')
+                                                                    .update({
+                                                                  "${widget.items.name}.itemrating":
+                                                                      FieldValue
+                                                                          .increment(
+                                                                              -username["rating"])
+                                                                });
 
-                                                          //update data on itemratingnum
-                                                          FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'ratings')
-                                                              .doc(
-                                                                  '${widget.items.itemcategoryName}')
-                                                              .update({
-                                                            "${widget.items.name}.itemratingnum":
-                                                                FieldValue
-                                                                    .increment(
-                                                                        -1)
-                                                          });
-                                                          FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'ratings')
-                                                              .doc(
-                                                                  '${widget.items.itemcategoryName}')
-                                                              .update({
-                                                            "${widget.items.name}.sets":
-                                                                FieldValue
-                                                                    .arrayRemove([
-                                                              {
-                                                                "username":
-                                                                    username[
-                                                                        "username"],
-                                                                "userimg":
-                                                                    username[
-                                                                        "userimg"],
-                                                                "rating":
-                                                                    username[
-                                                                        "rating"],
-                                                                "comment":
-                                                                    username[
-                                                                        "comment"],
-                                                                "uid": username[
-                                                                    "uid"]
-                                                              }
-                                                            ])
-                                                          });
+                                                                //update data on itemratingnum
+                                                                FirebaseFirestore
+                                                                    .instance
+                                                                    .collection(
+                                                                        'ratings')
+                                                                    .doc(
+                                                                        '${widget.items.itemcategoryName}')
+                                                                    .update({
+                                                                  "${widget.items.name}.itemratingnum":
+                                                                      FieldValue
+                                                                          .increment(
+                                                                              -1)
+                                                                });
+                                                                FirebaseFirestore
+                                                                    .instance
+                                                                    .collection(
+                                                                        'ratings')
+                                                                    .doc(
+                                                                        '${widget.items.itemcategoryName}')
+                                                                    .update({
+                                                                  "${widget.items.name}.sets":
+                                                                      FieldValue
+                                                                          .arrayRemove([
+                                                                    {
+                                                                      "username":
+                                                                          username[
+                                                                              "username"],
+                                                                      "userimg":
+                                                                          username[
+                                                                              "userimg"],
+                                                                      "rating":
+                                                                          username[
+                                                                              "rating"],
+                                                                      "comment":
+                                                                          username[
+                                                                              "comment"],
+                                                                      "uid": username[
+                                                                          "uid"]
+                                                                    }
+                                                                  ])
+                                                                });
 
-                                                          ratingService
-                                                              .removerecord(
-                                                                  context,
-                                                                  widget.items
-                                                                      .imgName, useruid);
-                                                        },
-                                                        icon: Icon(Icons.delete,
-                                                            size: 20,
-                                                            color: Colors
-                                                                .red[300])),
-                                                  ),
+                                                                ratingService
+                                                                    .removerecord(
+                                                                        context,
+                                                                        widget
+                                                                            .items
+                                                                            .imgName,
+                                                                        useruid);
+                                                              },
+                                                              icon: Icon(
+                                                                  Icons.delete,
+                                                                  size: 20,
+                                                                  color: Colors
+                                                                          .red[
+                                                                      300])),
+                                                        ),
                                                 ])),
                                         Divider(
                                           thickness: 1,
@@ -1621,9 +1631,30 @@ class _DetailsPageState extends State<DetailsPage> {
                   ),
                 ),
                 SizedBox(height: 7),
-                buildTextField(
-                    controller: budget,
-                    hint: 'Event from ${widget.items.itempriceMin}'),
+                TextField(
+                  keyboardType: TextInputType.numberWithOptions(),
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^(\d+)?\.?\d{0,2}'))
+                  ],
+                  controller: budget,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: InputDecoration(
+                    labelText: 'Budget',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                  ),
+                ),
                 SizedBox(height: 7),
                 TextField(
                   controller: website..text = "${widget.items.itemwebsite}",

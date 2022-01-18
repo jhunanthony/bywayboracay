@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/link.dart';
@@ -262,6 +263,9 @@ class TravelGuidelinesState extends State<TravelGuidelines> {
                                                                               TextField(
                                                                                 controller: stepindex..text = "${travellist[index].index}",
                                                                                 textCapitalization: TextCapitalization.words,
+                                                                                inputFormatters: <TextInputFormatter>[
+                                                                                  FilteringTextInputFormatter.digitsOnly
+                                                                                ], // Only numbers can be entered
                                                                                 decoration: InputDecoration(
                                                                                   labelStyle: TextStyle(color: Colors.grey),
                                                                                   labelText: 'Step Number',

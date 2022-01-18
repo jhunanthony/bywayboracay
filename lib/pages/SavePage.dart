@@ -626,9 +626,30 @@ class _SavedPageState extends State<SavedPage> {
                   ),
                 ),
                 SizedBox(height: 7),
-                buildTextField(
-                    controller: budget,
-                    hint: 'Event from ${itemslistinfo.itempriceMin}'),
+                TextField(
+                  keyboardType: TextInputType.numberWithOptions(),
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^(\d+)?\.?\d{0,2}'))
+                  ],
+                  controller: budget,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: InputDecoration(
+                    labelText: 'Budget',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                      borderRadius: BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                  ),
+                ),
 
                 SizedBox(height: 7),
                 TextField(
