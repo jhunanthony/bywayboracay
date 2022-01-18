@@ -22,7 +22,8 @@ class TravelList {
   String step;
   String description;
   String website;
-  TravelList(this.step, this.description, this.website);
+  String index;
+  TravelList(this.step, this.description, this.website, this.index);
 }
 
 class TravelGuidelines extends StatefulWidget {
@@ -41,26 +42,14 @@ final List<String> imgList = [
   'https://i1.wp.com/amazingplacesonearth.com/wp-content/uploads/2012/08/ss.jpg?ssl=1',
 ];
 
-List travelagencies = [
-  ({
-    "name": "B and C Island Leisure Tours",
-    "email": "bandcleisuretours@yahoo.com.ph"
-  }),
-  ({"name": "Bamboo Travel and Tours", "email": "bambootraveltours@gmail.com"}),
-  ({"name": "Boracay Adventures Inc.", "email": "info@boracayadventures.com"}),
-  ({
-    "name": "Blue Horizon Travel & Tours Inc.",
-    "email": "maritess.santiago@bluehorizons.travel"
-  }),
-  ({"name": "Debora Free Tour Inc.", "email": "mg12500@hanmail.net"}),
-  ({"name": "Easy Boracay Travel and Tours", "email": "easyboracay@gmail.com"}),
-  ({"name": "Horizon Tours", "email": "luzvillabondoc1964@gmail.com"}),
-  ({"name": "MBG travel and Tour Inc.", "email": "info@myboracayguide.com"}),
-];
-
 class TravelGuidelinesState extends State<TravelGuidelines> {
   @override
   Widget build(BuildContext context) {
+    LoginService loginService =
+        Provider.of<LoginService>(context, listen: false);
+    UserLogInModel userModel = loginService.loggedInUserModel;
+
+    String uid = userModel != null ? userModel.uid : '';
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: TopNavBar(
@@ -105,8 +94,16 @@ class TravelGuidelinesState extends State<TravelGuidelines> {
 
                   userDocument['travelprocedures'].forEach((value) {
                     travellist.add(TravelList(
-                        value['step'], value['description'], value['website']));
+                        value['step'],
+                        value['description'],
+                        value['website'],
+                        value['index']));
                   });
+
+                  travellist
+                    ..sort(
+                        (item1, item2) => item1.index.compareTo(item2.index));
+
                   return travellist.length > 0
                       ? ListView.builder(
                           itemCount: travellist.length,
@@ -171,7 +168,7 @@ class TravelGuidelinesState extends State<TravelGuidelines> {
                                                   padding:
                                                       const EdgeInsets.all(10),
                                                   child: Text(
-                                                    "${travellist[index].step}",
+                                                    "Step ${travellist[index].index} : ${travellist[index].step}",
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold),
@@ -228,7 +225,202 @@ class TravelGuidelinesState extends State<TravelGuidelines> {
                                                                     }
                                                                   })
                                                       ]),
-                                                    )
+                                                    ),
+                                                    Visibility(
+                                                      visible: uid ==
+                                                          "x19aFGBbXBaXTZY92Al8f8UbWyX2",
+                                                      child: TextButton(
+                                                        onPressed: () async {
+                                                          TextEditingController
+                                                              step =
+                                                              TextEditingController();
+                                                          TextEditingController
+                                                              description =
+                                                              TextEditingController();
+                                                          TextEditingController
+                                                              website =
+                                                              TextEditingController();
+                                                          TextEditingController
+                                                              stepindex =
+                                                              TextEditingController();
+
+                                                          showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (context) =>
+                                                                      AlertDialog(
+                                                                        title: Text(
+                                                                            "Admin: Edit This Step",
+                                                                            style:
+                                                                                TextStyle(fontSize: 25, color: Colors.blue[400])),
+                                                                        content:
+                                                                            SingleChildScrollView(
+                                                                          child:
+                                                                              Column(
+                                                                            children: [
+                                                                              //field to comment
+                                                                              TextField(
+                                                                                controller: stepindex..text = "${travellist[index].index}",
+                                                                                textCapitalization: TextCapitalization.words,
+                                                                                decoration: InputDecoration(
+                                                                                  labelStyle: TextStyle(color: Colors.grey),
+                                                                                  labelText: 'Step Number',
+                                                                                  focusedBorder: OutlineInputBorder(
+                                                                                    borderSide: BorderSide(color: Colors.blue[400], width: 1.5),
+                                                                                    borderRadius: BorderRadius.circular(
+                                                                                      10.0,
+                                                                                    ),
+                                                                                  ),
+                                                                                  enabledBorder: OutlineInputBorder(
+                                                                                    borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                                                                                    borderRadius: BorderRadius.circular(
+                                                                                      10.0,
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 10,
+                                                                              ),
+                                                                              TextField(
+                                                                                controller: step..text = "${travellist[index].step}",
+                                                                                textCapitalization: TextCapitalization.words,
+                                                                                decoration: InputDecoration(
+                                                                                  labelStyle: TextStyle(color: Colors.grey),
+                                                                                  labelText: 'Step Index and Name',
+                                                                                  focusedBorder: OutlineInputBorder(
+                                                                                    borderSide: BorderSide(color: Colors.blue[400], width: 1.5),
+                                                                                    borderRadius: BorderRadius.circular(
+                                                                                      10.0,
+                                                                                    ),
+                                                                                  ),
+                                                                                  enabledBorder: OutlineInputBorder(
+                                                                                    borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                                                                                    borderRadius: BorderRadius.circular(
+                                                                                      10.0,
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 10,
+                                                                              ),
+                                                                              TextField(
+                                                                                keyboardType: TextInputType.multiline,
+                                                                                minLines: 1,
+                                                                                maxLines: 20,
+                                                                                maxLength: 1000,
+                                                                                controller: description..text = "${travellist[index].description}",
+                                                                                textCapitalization: TextCapitalization.words,
+                                                                                decoration: InputDecoration(
+                                                                                  labelStyle: TextStyle(color: Colors.grey),
+                                                                                  labelText: 'Description',
+                                                                                  focusedBorder: OutlineInputBorder(
+                                                                                    borderSide: BorderSide(color: Colors.blue[400], width: 1.5),
+                                                                                    borderRadius: BorderRadius.circular(
+                                                                                      10.0,
+                                                                                    ),
+                                                                                  ),
+                                                                                  enabledBorder: OutlineInputBorder(
+                                                                                    borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                                                                                    borderRadius: BorderRadius.circular(
+                                                                                      10.0,
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 10,
+                                                                              ),
+
+                                                                              TextField(
+                                                                                controller: website..text = "${travellist[index].website}",
+                                                                                textCapitalization: TextCapitalization.words,
+                                                                                decoration: InputDecoration(
+                                                                                  labelStyle: TextStyle(color: Colors.grey),
+                                                                                  labelText: 'Link attachment',
+                                                                                  focusedBorder: OutlineInputBorder(
+                                                                                    borderSide: BorderSide(color: Colors.blue[400], width: 1.5),
+                                                                                    borderRadius: BorderRadius.circular(
+                                                                                      10.0,
+                                                                                    ),
+                                                                                  ),
+                                                                                  enabledBorder: OutlineInputBorder(
+                                                                                    borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                                                                                    borderRadius: BorderRadius.circular(
+                                                                                      10.0,
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                        actions: [
+                                                                          TextButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              step.clear();
+                                                                              description.clear();
+                                                                              website.clear();
+                                                                              Navigator.pop(context);
+                                                                            },
+                                                                            child:
+                                                                                Text(
+                                                                              'Cancel',
+                                                                              style: TextStyle(color: Colors.grey, fontSize: 18),
+                                                                            ),
+                                                                          ),
+                                                                          TextButton(
+                                                                            onPressed:
+                                                                                () async {
+                                                                              FirebaseFirestore.instance.collection('travelguidelines').doc('steps').update({
+                                                                                "travelprocedures": FieldValue.arrayRemove([
+                                                                                  {
+                                                                                    "step": "${travellist[index].step}",
+                                                                                    "description": "${travellist[index].description}",
+                                                                                    "website": "${travellist[index].website}",
+                                                                                    "index": "${travellist[index].index}"
+                                                                                  }
+                                                                                ])
+                                                                              });
+                                                                              FirebaseFirestore.instance.collection('travelguidelines').doc('steps').update({
+                                                                                "travelprocedures": FieldValue.arrayUnion([
+                                                                                  {
+                                                                                    "step": "${step.text}",
+                                                                                    "description": "${description.text}",
+                                                                                    "website": "${website.text}",
+                                                                                    "index": "${stepindex.text}"
+                                                                                  }
+                                                                                ])
+                                                                              });
+                                                                              Navigator.pop(context);
+                                                                              showSimpleNotification(
+                                                                                Text("Step Updated"),
+                                                                                background: Colors.green[400],
+                                                                                position: NotificationPosition.bottom,
+                                                                              );
+                                                                            },
+                                                                            child:
+                                                                                Text(
+                                                                              'Submit',
+                                                                              style: TextStyle(
+                                                                                color: Colors.teal,
+                                                                                fontSize: 18,
+                                                                                fontWeight: FontWeight.bold,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ));
+                                                        },
+                                                        child: Text(
+                                                            'Admin: Edit this Step',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .red[400])),
+                                                      ),
+                                                    ),
                                                   ],
                                                 ),
                                               ),
@@ -1901,6 +2093,11 @@ class Card8 extends StatelessWidget {
 class Card9 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    LoginService loginService =
+        Provider.of<LoginService>(context, listen: false);
+    UserLogInModel userModel = loginService.loggedInUserModel;
+
+    String useruid = userModel != null ? userModel.uid : '';
     return ExpandableNotifier(
         child: Padding(
       padding: const EdgeInsets.all(10),
@@ -1975,27 +2172,212 @@ class Card9 extends StatelessWidget {
                                                 int index) {
                                               return Column(
                                                 children: [
-                                                  TextButton(
-                                                    onPressed: () async {
-                                                      String url =
-                                                          "${linklist[index].link}";
-                                                      if (await canLaunch(
-                                                          url)) {
-                                                        await launch(url);
-                                                      } else {
-                                                        showSimpleNotification(
-                                                          Text(
-                                                              "Could not lunch $url"),
-                                                          background:
-                                                              Colors.green[400],
-                                                          position:
-                                                              NotificationPosition
-                                                                  .bottom,
-                                                        );
-                                                      }
-                                                    },
-                                                    child: Text(
-                                                        '${linklist[index].name}'),
+                                                  Visibility(
+                                                    visible: useruid ==
+                                                            "x19aFGBbXBaXTZY92Al8f8UbWyX2" &&
+                                                        index == 0,
+                                                    child: TextButton(
+                                                      onPressed: () async {
+                                                        TextEditingController
+                                                            link =
+                                                            TextEditingController();
+                                                        TextEditingController
+                                                            name =
+                                                            TextEditingController();
+
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (context) =>
+                                                                    AlertDialog(
+                                                                      title: Text(
+                                                                          "Admin: Add New Link",
+                                                                          style: TextStyle(
+                                                                              fontSize: 25,
+                                                                              color: Colors.blue[400])),
+                                                                      content:
+                                                                          SingleChildScrollView(
+                                                                        child:
+                                                                            Column(
+                                                                          children: [
+                                                                            //field to comment
+                                                                            TextField(
+                                                                              controller: name,
+                                                                              textCapitalization: TextCapitalization.words,
+                                                                              decoration: InputDecoration(
+                                                                                labelStyle: TextStyle(color: Colors.grey),
+                                                                                labelText: 'Website Name',
+                                                                                focusedBorder: OutlineInputBorder(
+                                                                                  borderSide: BorderSide(color: Colors.blue[400], width: 1.5),
+                                                                                  borderRadius: BorderRadius.circular(
+                                                                                    10.0,
+                                                                                  ),
+                                                                                ),
+                                                                                enabledBorder: OutlineInputBorder(
+                                                                                  borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                                                                                  borderRadius: BorderRadius.circular(
+                                                                                    10.0,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            SizedBox(
+                                                                              height: 10,
+                                                                            ),
+                                                                            TextField(
+                                                                              controller: link,
+                                                                              textCapitalization: TextCapitalization.words,
+                                                                              decoration: InputDecoration(
+                                                                                labelStyle: TextStyle(color: Colors.grey),
+                                                                                labelText: 'Link',
+                                                                                focusedBorder: OutlineInputBorder(
+                                                                                  borderSide: BorderSide(color: Colors.blue[400], width: 1.5),
+                                                                                  borderRadius: BorderRadius.circular(
+                                                                                    10.0,
+                                                                                  ),
+                                                                                ),
+                                                                                enabledBorder: OutlineInputBorder(
+                                                                                  borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                                                                                  borderRadius: BorderRadius.circular(
+                                                                                    10.0,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      actions: [
+                                                                        TextButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            name.clear();
+                                                                            link.clear();
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                          child:
+                                                                              Text(
+                                                                            'Cancel',
+                                                                            style:
+                                                                                TextStyle(color: Colors.grey, fontSize: 18),
+                                                                          ),
+                                                                        ),
+                                                                        TextButton(
+                                                                          onPressed:
+                                                                              () async {
+                                                                            FirebaseFirestore.instance.collection('website').doc('links').update({
+                                                                              "linklist": FieldValue.arrayUnion([
+                                                                                {
+                                                                                  "name": "${name.text}",
+                                                                                  "link": "${link.text}"
+                                                                                }
+                                                                              ])
+                                                                            });
+                                                                            Navigator.pop(context);
+                                                                            showSimpleNotification(
+                                                                              Text("Review has been submitted!"),
+                                                                              background: Colors.green[400],
+                                                                              position: NotificationPosition.bottom,
+                                                                            );
+                                                                          },
+                                                                          child:
+                                                                              Text(
+                                                                            'Submit',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: Colors.teal,
+                                                                              fontSize: 18,
+                                                                              fontWeight: FontWeight.bold,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ));
+                                                      },
+                                                      child: Text(
+                                                          'Admin: Add New Official Link',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .red[400])),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 10,
+                                                            left: 20),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        TextButton(
+                                                          onPressed: () async {
+                                                            String url =
+                                                                "${linklist[index].link}";
+                                                            if (await canLaunch(
+                                                                url)) {
+                                                              await launch(url);
+                                                            } else {
+                                                              showSimpleNotification(
+                                                                Text(
+                                                                    "Could not lunch $url"),
+                                                                background:
+                                                                    Colors.green[
+                                                                        400],
+                                                                position:
+                                                                    NotificationPosition
+                                                                        .bottom,
+                                                              );
+                                                            }
+                                                          },
+                                                          child: Text(
+                                                              '${linklist[index].name}'),
+                                                        ),
+                                                        Visibility(
+                                                          visible: useruid ==
+                                                              "x19aFGBbXBaXTZY92Al8f8UbWyX2",
+                                                          child: IconButton(
+                                                            onPressed:
+                                                                () async {
+                                                              FirebaseFirestore
+                                                                  .instance
+                                                                  .collection(
+                                                                      'website')
+                                                                  .doc('links')
+                                                                  .update({
+                                                                "linklist":
+                                                                    FieldValue
+                                                                        .arrayRemove([
+                                                                  {
+                                                                    "name":
+                                                                        "${linklist[index].name}",
+                                                                    "link":
+                                                                        "${linklist[index].link}"
+                                                                  }
+                                                                ])
+                                                              });
+
+                                                              showSimpleNotification(
+                                                                Text(
+                                                                    "Link removed"),
+                                                                background:
+                                                                    Colors.green[
+                                                                        400],
+                                                                position:
+                                                                    NotificationPosition
+                                                                        .bottom,
+                                                              );
+                                                            },
+                                                            icon: Icon(
+                                                                Icons.delete,
+                                                                size: 16,
+                                                                color: Colors
+                                                                    .red[400]),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ],
                                               );
@@ -2080,41 +2462,268 @@ class Card10 extends StatelessWidget {
                   ),
                   collapsed: Container(),
                   expanded: Container(
-                      height: 400,
-                      width: MediaQuery.of(context).size.width,
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: ListView.builder(
-                                itemCount: travelagencies.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Column(
+                    height: 400,
+                    width: MediaQuery.of(context).size.width,
+                    child: StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('travelagency')
+                            .doc('travelagencylist')
+                            .snapshots(),
+                        builder: (context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.hasData) {
+                            var userDocument = snapshot.data;
+
+                            final List<LinkList> linklist = [];
+
+                            userDocument['agencylist'].forEach((value) {
+                              linklist
+                                  .add(LinkList(value['email'], value['name']));
+                            });
+                            return linklist.length > 0
+                                ? Column(
                                     children: [
-                                      TextButton(
-                                        onPressed: () async {
-                                          String mailto = "mailto:" +
-                                              "${travelagencies[index]['email']}" +
-                                              "?subject=Inquiry&body=Greetings!";
-                                          if (await canLaunch(mailto)) {
-                                            await launch(mailto);
-                                          } else {
-                                            showSimpleNotification(
-                                              Text("Could not lunch $mailto"),
-                                              background: Colors.green[400],
-                                              position:
-                                                  NotificationPosition.bottom,
-                                            );
-                                          }
-                                        },
-                                        child: Text(
-                                            "${travelagencies[index]['name']}"),
+                                      Expanded(
+                                        child: ListView.builder(
+                                            itemCount: linklist.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return Column(
+                                                children: [
+                                                  Visibility(
+                                                    visible: uid ==
+                                                            "x19aFGBbXBaXTZY92Al8f8UbWyX2" &&
+                                                        index == 0,
+                                                    child: TextButton(
+                                                      onPressed: () async {
+                                                        TextEditingController
+                                                            email =
+                                                            TextEditingController();
+                                                        TextEditingController
+                                                            name =
+                                                            TextEditingController();
+
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (context) =>
+                                                                    AlertDialog(
+                                                                      title: Text(
+                                                                          "Admin: Add New Agency / Guide",
+                                                                          style: TextStyle(
+                                                                              fontSize: 25,
+                                                                              color: Colors.blue[400])),
+                                                                      content:
+                                                                          SingleChildScrollView(
+                                                                        child:
+                                                                            Column(
+                                                                          children: [
+                                                                            //field to comment
+                                                                            TextField(
+                                                                              controller: name,
+                                                                              textCapitalization: TextCapitalization.words,
+                                                                              decoration: InputDecoration(
+                                                                                labelStyle: TextStyle(color: Colors.grey),
+                                                                                labelText: 'Agency Name',
+                                                                                focusedBorder: OutlineInputBorder(
+                                                                                  borderSide: BorderSide(color: Colors.blue[400], width: 1.5),
+                                                                                  borderRadius: BorderRadius.circular(
+                                                                                    10.0,
+                                                                                  ),
+                                                                                ),
+                                                                                enabledBorder: OutlineInputBorder(
+                                                                                  borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                                                                                  borderRadius: BorderRadius.circular(
+                                                                                    10.0,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            SizedBox(
+                                                                              height: 10,
+                                                                            ),
+                                                                            TextField(
+                                                                              controller: email,
+                                                                              textCapitalization: TextCapitalization.words,
+                                                                              decoration: InputDecoration(
+                                                                                labelStyle: TextStyle(color: Colors.grey),
+                                                                                labelText: 'Email',
+                                                                                focusedBorder: OutlineInputBorder(
+                                                                                  borderSide: BorderSide(color: Colors.blue[400], width: 1.5),
+                                                                                  borderRadius: BorderRadius.circular(
+                                                                                    10.0,
+                                                                                  ),
+                                                                                ),
+                                                                                enabledBorder: OutlineInputBorder(
+                                                                                  borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                                                                                  borderRadius: BorderRadius.circular(
+                                                                                    10.0,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      actions: [
+                                                                        TextButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            name.clear();
+                                                                            email.clear();
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                          child:
+                                                                              Text(
+                                                                            'Cancel',
+                                                                            style:
+                                                                                TextStyle(color: Colors.grey, fontSize: 18),
+                                                                          ),
+                                                                        ),
+                                                                        TextButton(
+                                                                          onPressed:
+                                                                              () async {
+                                                                            FirebaseFirestore.instance.collection('travelagency').doc('travelagencylist').update({
+                                                                              "agencylist": FieldValue.arrayUnion([
+                                                                                {
+                                                                                  "name": "${name.text}",
+                                                                                  "email": "${email.text}"
+                                                                                }
+                                                                              ])
+                                                                            });
+                                                                            Navigator.pop(context);
+                                                                            showSimpleNotification(
+                                                                              Text("Review has been submitted!"),
+                                                                              background: Colors.green[400],
+                                                                              position: NotificationPosition.bottom,
+                                                                            );
+                                                                          },
+                                                                          child:
+                                                                              Text(
+                                                                            'Submit',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: Colors.teal,
+                                                                              fontSize: 18,
+                                                                              fontWeight: FontWeight.bold,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ));
+                                                      },
+                                                      child: Text(
+                                                          'Admin: Add New Official Link',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .red[400])),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 20,
+                                                            right: 10),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        TextButton(
+                                                          onPressed: () async {
+                                                            String mailto =
+                                                                "mailto:" +
+                                                                    linklist[
+                                                                            index]
+                                                                        .link +
+                                                                    "?subject=Inquiry&body=Greetings!";
+                                                            if (await canLaunch(
+                                                                mailto)) {
+                                                              await launch(
+                                                                  mailto);
+                                                            } else {
+                                                              showSimpleNotification(
+                                                                Text(
+                                                                    "Could not lunch $mailto"),
+                                                                background:
+                                                                    Colors.green[
+                                                                        400],
+                                                                position:
+                                                                    NotificationPosition
+                                                                        .bottom,
+                                                              );
+                                                            }
+                                                          },
+                                                          child: Text(
+                                                              '${linklist[index].name}'),
+                                                        ),
+                                                        Visibility(
+                                                          visible: uid ==
+                                                              "x19aFGBbXBaXTZY92Al8f8UbWyX2",
+                                                          child: IconButton(
+                                                            onPressed:
+                                                                () async {
+                                                              FirebaseFirestore
+                                                                  .instance
+                                                                  .collection(
+                                                                      'travelagency')
+                                                                  .doc(
+                                                                      'travelagencylist')
+                                                                  .update({
+                                                                "agencylist":
+                                                                    FieldValue
+                                                                        .arrayRemove([
+                                                                  {
+                                                                    "name":
+                                                                        "${linklist[index].name}",
+                                                                    "email":
+                                                                        "${linklist[index].link}"
+                                                                  }
+                                                                ])
+                                                              });
+
+                                                              showSimpleNotification(
+                                                                Text(
+                                                                    "Link removed"),
+                                                                background:
+                                                                    Colors.green[
+                                                                        400],
+                                                                position:
+                                                                    NotificationPosition
+                                                                        .bottom,
+                                                              );
+                                                            },
+                                                            icon: Icon(
+                                                                Icons.delete,
+                                                                size: 16,
+                                                                color: Colors
+                                                                    .red[400]),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            }),
                                       ),
                                     ],
-                                  );
-                                }),
-                          ),
-                        ],
-                      ))),
+                                  )
+                                : linklist.length == null
+                                    ? SizedBox()
+                                    : SizedBox();
+                          } else if (snapshot.hasError) {
+                            return SizedBox();
+                          } else
+                            return Text(
+                              'Loading',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.white,
+                              ),
+                            );
+                        }),
+                  )),
             ],
           ),
         ),
@@ -2122,3 +2731,20 @@ class Card10 extends StatelessWidget {
     ));
   }
 }
+
+/*List travelagencies = [
+  ({
+    "name": "B and C Island Leisure Tours",
+    "email": "bandcleisuretours@yahoo.com.ph"
+  }),
+  ({"name": "Bamboo Travel and Tours", "email": "bambootraveltours@gmail.com"}),
+  ({"name": "Boracay Adventures Inc.", "email": "info@boracayadventures.com"}),
+  ({
+    "name": "Blue Horizon Travel & Tours Inc.",
+    "email": "maritess.santiago@bluehorizons.travel"
+  }),
+  ({"name": "Debora Free Tour Inc.", "email": "mg12500@hanmail.net"}),
+  ({"name": "Easy Boracay Travel and Tours", "email": "easyboracay@gmail.com"}),
+  ({"name": "Horizon Tours", "email": "luzvillabondoc1964@gmail.com"}),
+  ({"name": "MBG travel and Tour Inc.", "email": "info@myboracayguide.com"}),
+];*/
