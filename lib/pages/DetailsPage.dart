@@ -102,7 +102,7 @@ class _DetailsPageState extends State<DetailsPage> {
         Provider.of<LoginService>(context, listen: false);
     UserLogInModel userModel = loginService.loggedInUserModel;
 
-    String uid = userModel != null ? userModel.uid : '';
+    String useruid = userModel != null ? userModel.uid : '';
 
     //canvas starts here
 
@@ -1158,6 +1158,9 @@ class _DetailsPageState extends State<DetailsPage> {
                           (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                         if (snapshot.hasData) {
                           var userDocument = snapshot.data;
+                          double itemrating = double.parse(
+                              userDocument["${widget.items.name}.itemrating"]
+                                  .toString());
                           var path = userDocument["${widget.items.name}.sets"];
 
                           return path.length > 0
@@ -1167,6 +1170,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                     var username = path[index];
                                     double userrating = double.parse(
                                         username["rating"].toString());
+
                                     return Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(children: [
@@ -1216,7 +1220,80 @@ class _DetailsPageState extends State<DetailsPage> {
                                                           width: 35,
                                                           height: 35,
                                                           fit: BoxFit.cover)),
-                                                  SizedBox()
+                                                  SizedBox(
+                                                    width: 20,
+                                                  ),
+                                                  Visibility(
+                                                    visible: username["uid"] ==
+                                                        useruid,
+                                                    child: IconButton(
+                                                        onPressed: () async {
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'ratings')
+                                                              .doc(
+                                                                  '${widget.items.itemcategoryName}')
+                                                              .update({
+                                                            "${widget.items.name}.itemrating":
+                                                                FieldValue.increment(
+                                                                    -username[
+                                                                        "rating"])
+                                                          });
+
+                                                          //update data on itemratingnum
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'ratings')
+                                                              .doc(
+                                                                  '${widget.items.itemcategoryName}')
+                                                              .update({
+                                                            "${widget.items.name}.itemratingnum":
+                                                                FieldValue
+                                                                    .increment(
+                                                                        -1)
+                                                          });
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'ratings')
+                                                              .doc(
+                                                                  '${widget.items.itemcategoryName}')
+                                                              .update({
+                                                            "${widget.items.name}.sets":
+                                                                FieldValue
+                                                                    .arrayRemove([
+                                                              {
+                                                                "username":
+                                                                    username[
+                                                                        "username"],
+                                                                "userimg":
+                                                                    username[
+                                                                        "userimg"],
+                                                                "rating":
+                                                                    username[
+                                                                        "rating"],
+                                                                "comment":
+                                                                    username[
+                                                                        "comment"],
+                                                                "uid": username[
+                                                                    "uid"]
+                                                              }
+                                                            ])
+                                                          });
+
+                                                          ratingService
+                                                              .removerecord(
+                                                                  context,
+                                                                  widget.items
+                                                                      .imgName);
+                                                        },
+                                                        icon: Icon(Icons.delete,
+                                                            size: 20,
+                                                            color: Colors
+                                                                .red[300])),
+                                                  ),
                                                 ])),
                                         Divider(
                                           thickness: 1,

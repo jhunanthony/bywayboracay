@@ -26,9 +26,10 @@ class SideMenuBar extends StatelessWidget {
     String userImg = userModel != null ? userModel.photoUrl : '';
     String userName = userModel != null ? userModel.displayName : '';
     String userEmail = userModel != null ? userModel.email : '';
+        String userId = userModel != null ? userModel.uid : '';
 
     bool showUserInfo = userImg.isNotEmpty && userName.isNotEmpty;
-
+//x19aFGBbXBaXTZY92Al8f8UbWyX2
     //bool if a user is currently logged in
     bool userLoggedIn = loginService.loggedInUserModel != null;
     //RatingService ratingService = Provider.of<RatingService>(context, listen: false);
@@ -67,7 +68,10 @@ class SideMenuBar extends StatelessWidget {
                                   style:
                                       TextStyle(color: Colors.white, fontSize: 20)),*/
                             SizedBox(height: 12),
-                            Text(userName,
+                            userId == "x19aFGBbXBaXTZY92Al8f8UbWyX2" ? Text("Admin_bywayboracay",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16)) :Text(userName,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 16)),

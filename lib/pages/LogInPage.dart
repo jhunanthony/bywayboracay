@@ -99,7 +99,7 @@ class _LogInPageState extends State<LogInPage> {
                               Shadow(blurRadius: 3.0, color: Colors.grey[900]),
                             ],
                           )),
-                      Text('Venture with Precision',
+                      Text('Travel with Flexibility',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,

@@ -37,6 +37,8 @@ class RatingService extends ChangeNotifier {
     String userImg = userModel != null ? userModel.photoUrl : '';
     String userName = userModel != null ? userModel.displayName : '';
 
+    String userId = userModel != null ? userModel.uid : '';
+
     Map<String, int> ratedMap = Map();
     _rateditems.forEach((RatedItems item) {
       ratedMap[item.category.imgName] = (item.category as Items).amount;
@@ -80,7 +82,8 @@ class RatingService extends ChangeNotifier {
           "username": userName,
           "userimg": userImg,
           "rating": ratingval,
-          "comment": commentval
+          "comment": commentval,
+          "uid": userId
         }
       ])
     }).then((value) {
@@ -117,6 +120,31 @@ class RatingService extends ChangeNotifier {
         .collection('ratings')
         .doc('${item.category.itemcategoryName}')
         .update({"${item.category.name}.sets": FieldValue.arrayUnion([])}).then(
+            (value) {
+      notifyListeners();
+    });
+  }
+
+  //add record to firebase
+  void removerecord(
+    BuildContext context,
+    String imgname,
+  ) {
+    LoginService loginService =
+        Provider.of<LoginService>(context, listen: false);
+
+    //grab the
+    UserLogInModel userModel = loginService.loggedInUserModel;
+
+    String userId = userModel != null ? userModel.uid : '';
+
+    FirebaseFirestore.instance.collection('ratedItem').doc(userId)
+        //user client data as bool to save
+        .set({
+      'RatedItem': FieldValue.arrayRemove([
+        {"$imgname": "0"}
+      ])
+    }).then(
             (value) {
       notifyListeners();
     });
