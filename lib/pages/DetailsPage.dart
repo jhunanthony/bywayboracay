@@ -1223,7 +1223,76 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   SizedBox(
                                                     width: 20,
                                                   ),
-                                                  Visibility(
+                                                 useruid == "x19aFGBbXBaXTZY92Al8f8UbWyX2" ?  IconButton(
+                                                        onPressed: () async {
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'ratings')
+                                                              .doc(
+                                                                  '${widget.items.itemcategoryName}')
+                                                              .update({
+                                                            "${widget.items.name}.itemrating":
+                                                                FieldValue.increment(
+                                                                    -username[
+                                                                        "rating"])
+                                                          });
+
+                                                          //update data on itemratingnum
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'ratings')
+                                                              .doc(
+                                                                  '${widget.items.itemcategoryName}')
+                                                              .update({
+                                                            "${widget.items.name}.itemratingnum":
+                                                                FieldValue
+                                                                    .increment(
+                                                                        -1)
+                                                          });
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'ratings')
+                                                              .doc(
+                                                                  '${widget.items.itemcategoryName}')
+                                                              .update({
+                                                            "${widget.items.name}.sets":
+                                                                FieldValue
+                                                                    .arrayRemove([
+                                                              {
+                                                                "username":
+                                                                    username[
+                                                                        "username"],
+                                                                "userimg":
+                                                                    username[
+                                                                        "userimg"],
+                                                                "rating":
+                                                                    username[
+                                                                        "rating"],
+                                                                "comment":
+                                                                    username[
+                                                                        "comment"],
+                                                                "uid": username[
+                                                                    "uid"]
+                                                              }
+                                                            ])
+                                                          });
+
+                                                          ratingService
+                                                              .removerecord(
+                                                                  context,
+                                                                  widget.items
+                                                                      .imgName,
+                                                                  username["uid"]
+                                                                      
+                                                                      );
+                                                        },
+                                                        icon: Icon(Icons.delete,
+                                                            size: 20,
+                                                            color: Colors
+                                                                .red[300])) : Visibility(
                                                     visible: username["uid"] ==
                                                         useruid,
                                                     child: IconButton(
@@ -1287,7 +1356,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                               .removerecord(
                                                                   context,
                                                                   widget.items
-                                                                      .imgName);
+                                                                      .imgName, useruid);
                                                         },
                                                         icon: Icon(Icons.delete,
                                                             size: 20,

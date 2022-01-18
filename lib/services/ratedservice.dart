@@ -129,14 +129,9 @@ class RatingService extends ChangeNotifier {
   void removerecord(
     BuildContext context,
     String imgname,
+    String userId,
   ) {
-    LoginService loginService =
-        Provider.of<LoginService>(context, listen: false);
-
-    //grab the
-    UserLogInModel userModel = loginService.loggedInUserModel;
-
-    String userId = userModel != null ? userModel.uid : '';
+   
 
     FirebaseFirestore.instance.collection('ratedItem').doc(userId)
         //user client data as bool to save
