@@ -478,12 +478,12 @@ class CalendarState extends State<CalendarPage> {
                 address = "none";
                 itemname = "none";
 
-                if (timer.text.isEmpty ||
+            if (timer.text.isEmpty ||
                     !(time_12H.hasMatch(timer.text) ||
                         time_24H.hasMatch(timer.text))) {
                   showSimpleNotification(
                       Text("Please enter a valid time to the event"));
-                } /*else if (timer.text.contains('AM') ||
+                }  /*else if (timer.text.contains('AM') ||
                     timer.text.contains('am') ||
                     timer.text.contains('pm') ||
                     timer.text.contains('PM') == false) {

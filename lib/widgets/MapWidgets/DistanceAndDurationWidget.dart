@@ -49,25 +49,8 @@ class DistanceAndDurationWidget extends StatelessWidget {
                       fontSize: 13,
                     ),
                   ),
-            /*Visibility(
-          //if distancevalue is less than 500 show walking distance
-          visible: distancevalue < 500,
-          child: Text(
-            ' • Walking Distance',
-            style: TextStyle(
-              color: Colors.blue,
-              fontSize: 13,
-            ),
-          ),
-        ),*/
           ]),
-          /*Text(
-        '${distancevalue.toString()}',
-        style: TextStyle(
-          color: Colors.blue,
-          fontSize: 12,
-        ),
-      ),*/
+      
           Row(children: [
             Icon(Icons.emoji_transportation_rounded,
                 size: 13, color: Colors.blue),

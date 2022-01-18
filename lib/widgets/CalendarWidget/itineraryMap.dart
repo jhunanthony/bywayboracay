@@ -134,7 +134,7 @@ class _ItineraryMapState extends State<ItineraryMap>
     });
 
     final requestURL =
-        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE";
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=transit_mode&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE";
 
     final response = await http.get(Uri.parse(requestURL));
 

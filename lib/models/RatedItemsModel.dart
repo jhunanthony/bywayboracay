@@ -8,3 +8,4 @@ class RatedItems {
     this.units = 0,
   });
 }
+

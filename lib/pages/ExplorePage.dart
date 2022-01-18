@@ -1375,7 +1375,7 @@ class Header extends StatelessWidget {
                     SizedBox(
                       height: 5,
                     ),
-                    Text('Venture with Precision',
+                    Text('Travel with Flexibility',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Colors.white,

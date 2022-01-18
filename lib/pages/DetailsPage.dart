@@ -1608,8 +1608,7 @@ class _DetailsPageState extends State<DetailsPage> {
               background: Colors.white,
               position: NotificationPosition.bottom,
             );
-            /* FunctionUtils()
-                .sendEmail(email, date, events[0]["time"], emails[0]);*/
+          
           } else {
             snapShot.set({'EventList': events});
             showSimpleNotification(
@@ -1617,8 +1616,6 @@ class _DetailsPageState extends State<DetailsPage> {
               background: Colors.white,
               position: NotificationPosition.bottom,
             );
-            /*FunctionUtils()
-                .sendEmail(email, date, events[0]["time"], emails[0]);*/
           }
         } else {
           showSimpleNotification(
@@ -1845,3 +1842,5 @@ class _DetailsPageState extends State<DetailsPage> {
             ))));
   }
 }
+
+

@@ -14,7 +14,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:http/http.dart' as https;
+import 'package:http/http.dart' as http;
 import '../widgets/CategoryWidgets/CategoryIcon.dart';
 import '../widgets/MapWidgets/DistanceAndDurationWidget.dart';
 import '../widgets/MapWidgets/Transitfare.dart';
@@ -345,15 +345,13 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 return DistanceAndDurationWidget(
-                                  distance: snapshot.data.distance,
-                                  distancevalue: snapshot.data.distancevalue,
-                                  duration: snapshot.data.duration,
-                                );
+                                    distancevalue: snapshot.data.distancevalue,
+                                    distance: snapshot.data.distance,
+                                    duration: snapshot.data.duration);
                               } else if (snapshot.hasError) {
                                 return Center(child: Text("${snapshot.error}"));
                               }
-
-                              return Center(child: CircularProgressIndicator());
+                              return CircularProgressIndicator();
                             }),
                         Row(
                           children: [
@@ -433,9 +431,9 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
         {"latitude": widget.items.itemlat, "longitude": widget.items.itemlong});
 
     final requestURL =
-        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=Transit&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE";
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=transit_mode&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE";
 
-    final response = await https.get(Uri.parse(requestURL));
+    final response = await http.get(Uri.parse(requestURL));
 
     if (response.statusCode == 200) {
       return DistanceAndDurationInfo.fromJson(jsonDecode(response.body));

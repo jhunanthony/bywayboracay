@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bywayborcay/models/CategoryModel.dart';
 import 'package:bywayborcay/models/ItemsModel.dart';
+import 'package:bywayborcay/services/adminservice.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/savecategory.dart';
 import 'package:bywayborcay/services/loginservice.dart';
@@ -195,6 +196,7 @@ class _ItemsPageState extends State<ItemsPage> {
     SaveService likedService = Provider.of<SaveService>(context, listen: false);
     LoginService loginService =
         Provider.of<LoginService>(context, listen: false);
+
     bool userLoggedIn = loginService.loggedInUserModel != null;
 
     return SafeArea(
@@ -259,6 +261,7 @@ class _ItemsPageState extends State<ItemsPage> {
                           fontWeight: FontWeight.w400)),
                 ],
               ),
+
               Consumer<LoginService>(builder: (context, loginService, child) {
                 if (loginService.isUserLoggedIn()) {
                   return Column(
@@ -577,6 +580,14 @@ class _ItemsPageState extends State<ItemsPage> {
                 }
                 return SizedBox();
               }),
+              /*this.widget.selectedCategory.items[0].itemcategoryName == "ToStay"
+                  ? Text("Listed are DOT-accredited accomodations.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                        fontSize: 12,
+                      ))
+                  : SizedBox(),*/
 
               // create list builder to show subCategories this.selectedCategory.subCategory.length
               //show list here

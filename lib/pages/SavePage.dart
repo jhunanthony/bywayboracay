@@ -603,7 +603,7 @@ class _SavedPageState extends State<SavedPage> {
                       hintText: "Enter Time"),
                 ),
                 SizedBox(height: 7),
-                buildTextField(controller: budget, hint: 'Event'),
+                buildTextField(controller: event, hint: 'Event'),
 
                 SizedBox(height: 7),
                 TextField(
