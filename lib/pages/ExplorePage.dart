@@ -78,8 +78,23 @@ class _ExplorePageState extends State<ExplorePage> {
           AwardsAndRecognition(),
           Culture(),
           History(),
+          Padding(
+            padding:
+                const EdgeInsets.only(top: 20, bottom: 10, left: 5, right: 5),
+            child: Text(
+                'Disclaimer: The app contains affiliated links,\n and photos that Byway Boracay do not own.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 12,
+                    shadows: <Shadow>[
+                      Shadow(blurRadius: 3.0, color: Colors.grey[900]),
+                    ],
+                    fontWeight: FontWeight.bold)),
+          ),
           SizedBox(
-            height: 120,
+            height: 130,
           ),
         ]),
         Positioned(

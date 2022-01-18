@@ -142,15 +142,39 @@ class _DetailsPageState extends State<DetailsPage> {
                                     Positioned.fill(
                                       child: Container(
                                           decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          begin: Alignment.center,
-                                          end: Alignment.centerRight,
-                                          colors: <Color>[
-                                            Colors.transparent,
-                                            Colors.black.withOpacity(0.5),
-                                          ],
-                                        ),
-                                      )),
+                                            gradient: LinearGradient(
+                                              begin: Alignment.center,
+                                              end: Alignment.centerRight,
+                                              colors: <Color>[
+                                                Colors.transparent,
+                                                Colors.black.withOpacity(0.5),
+                                              ],
+                                            ),
+                                          ),
+                                          child: Visibility(
+                                            visible: index ==
+                                                widget.items.detailsimages
+                                                        .length -
+                                                    1,
+                                            child: Center(
+                                              child: Text(
+                                                  'Disclaimer: The photos presented is not owned\n by Byway Boracay or any organization/establishment\n in relations to the developers.',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                      fontSize: 12,
+                                                      shadows: <Shadow>[
+                                                        Shadow(
+                                                            blurRadius: 3.0,
+                                                            color: Colors
+                                                                .grey[900]),
+                                                      ],
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                            ),
+                                          )),
                                     ),
                                   ],
                                 ))))),
@@ -1232,8 +1256,20 @@ class _DetailsPageState extends State<DetailsPage> {
                 ),
               ),
 
+              Text(
+                  'Disclaimer: This app contains affiliated links and contacts.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 12,
+                      shadows: <Shadow>[
+                        Shadow(blurRadius: 3.0, color: Colors.grey[900]),
+                      ],
+                      fontWeight: FontWeight.bold)),
+
               SizedBox(
-                height: 100,
+                height: 80,
               )
             ],
           ),
@@ -1439,7 +1475,9 @@ class _DetailsPageState extends State<DetailsPage> {
                   ),
                 ),
                 SizedBox(height: 7),
-               buildTextField(controller: budget, hint: 'Event from ${widget.items.itempriceMin}'),
+                buildTextField(
+                    controller: budget,
+                    hint: 'Event from ${widget.items.itempriceMin}'),
                 SizedBox(height: 7),
                 TextField(
                   controller: website..text = "${widget.items.itemwebsite}",
@@ -1608,7 +1646,6 @@ class _DetailsPageState extends State<DetailsPage> {
               background: Colors.white,
               position: NotificationPosition.bottom,
             );
-          
           } else {
             snapShot.set({'EventList': events});
             showSimpleNotification(
@@ -1842,5 +1879,3 @@ class _DetailsPageState extends State<DetailsPage> {
             ))));
   }
 }
-
-

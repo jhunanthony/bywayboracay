@@ -1338,7 +1338,7 @@ class _ItemsPageState extends State<ItemsPage> {
                     ],
                   ),
                 );
-              })
+              }),
             ]),
             Positioned(
               top: 0,
