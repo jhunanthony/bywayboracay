@@ -670,6 +670,232 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                   ])),
 
+              //addstatus
+              Visibility(
+                visible: widget.items.itemcategoryName == "ToStay",
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20, right: 20, bottom: 5),
+                  child: Row(children: [
+                    StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('status')
+                            .doc('${widget.items.itemcategoryName}')
+                            .snapshots(),
+                        builder: (context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.hasData) {
+                            var userDocument = snapshot.data;
+
+                            double itemstatus = double.parse(
+                                userDocument["${widget.items.name}.itemstatus"]
+                                    .toString());
+
+                            //1 true,
+                            //0 false,
+
+                            return itemstatus != null
+                                ? Row(
+                                    children: [
+                                      itemstatus > 0
+                                          ? Container(
+                                              padding: EdgeInsets.all(4),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(3),
+                                                  color: Colors.blue),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    "✓ DOT-Accredited",
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.white,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          : SizedBox(),
+                                      Visibility(
+                                        visible: useruid ==
+                                            "x19aFGBbXBaXTZY92Al8f8UbWyX2",
+                                        child: TextButton(
+                                          onPressed: () async {
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    AlertDialog(
+                                                      content:
+                                                          SingleChildScrollView(
+                                                        child: Column(
+                                                          children: [
+                                                            //field to comment
+                                                            Text(
+                                                                "Admin: Is the establishment currently accredited by DOT?",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        25,
+                                                                    color: Colors
+                                                                            .blue[
+                                                                        400])),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () async {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text(
+                                                            'Cancel',
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.blue,
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () async {
+                                                            if (userDocument[
+                                                                    "${widget.items.name}.itemstatus"] >
+                                                                0) {
+                                                              FirebaseFirestore
+                                                                  .instance
+                                                                  .collection(
+                                                                      'status')
+                                                                  .doc(
+                                                                      '${widget.items.itemcategoryName}')
+                                                                  .update({
+                                                                "${widget.items.name}.itemstatus":
+                                                                    FieldValue
+                                                                        .increment(
+                                                                            -1)
+                                                              });
+                                                              Navigator.pop(
+                                                                  context);
+
+                                                              showSimpleNotification(
+                                                                Text(
+                                                                    "Status Updated"),
+                                                                background:
+                                                                    Colors.green[
+                                                                        400],
+                                                                position:
+                                                                    NotificationPosition
+                                                                        .bottom,
+                                                              );
+                                                            } else {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            }
+                                                          },
+                                                          child: Text(
+                                                            'No',
+                                                            style: TextStyle(
+                                                              color: Colors
+                                                                  .red[400],
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () async {
+                                                            if (userDocument[
+                                                                    "${widget.items.name}.itemstatus"] <=
+                                                                0) {
+                                                              FirebaseFirestore
+                                                                  .instance
+                                                                  .collection(
+                                                                      'status')
+                                                                  .doc(
+                                                                      '${widget.items.itemcategoryName}')
+                                                                  .update({
+                                                                "${widget.items.name}.itemstatus":
+                                                                    FieldValue
+                                                                        .increment(
+                                                                            1)
+                                                              });
+                                                              Navigator.pop(
+                                                                  context);
+
+                                                              showSimpleNotification(
+                                                                Text(
+                                                                    "Status Updated"),
+                                                                background:
+                                                                    Colors.green[
+                                                                        400],
+                                                                position:
+                                                                    NotificationPosition
+                                                                        .bottom,
+                                                              );
+                                                            } else {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            }
+                                                          },
+                                                          child: Text(
+                                                            'Yes',
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.teal,
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ));
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Text("Edit Accreditation Status",
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.grey[700])),
+                                              SizedBox(width: 10),
+                                              Icon(Icons.edit,
+                                                  size: 16,
+                                                  color: Colors.red[400]),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : itemstatus == null
+                                    ? SizedBox()
+                                    : SizedBox();
+                          } else if (snapshot.hasError) {
+                            return Text(
+                              'Unrated',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.green,
+                              ),
+                            );
+                          } else
+                            return Text(
+                              'Loading',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.green,
+                              ),
+                            );
+                        })
+                  ]),
+                ),
+              ),
+
               //Use EXapnding text widget
               Padding(
                 padding:
@@ -1171,7 +1397,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
               SingleChildScrollView(
                 child: Container(
-                  height: 200,
+                  height: 300,
                   width: MediaQuery.of(context).size.width,
                   child: StreamBuilder(
                       stream: FirebaseFirestore.instance

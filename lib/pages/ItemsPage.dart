@@ -623,6 +623,22 @@ class _ItemsPageState extends State<ItemsPage> {
                                               .selectedCategory
                                               .items[index]),
                                     );
+
+                                    if (this
+                                            .widget
+                                            .selectedCategory
+                                            .items[index]
+                                            .itemcategoryName ==
+                                        "ToStay") {
+                                      FirebaseFirestore.instance
+                                          .collection('status')
+                                          .doc(
+                                              '${this.widget.selectedCategory.items[index].itemcategoryName}')
+                                          .update({
+                                        "${this.widget.selectedCategory.items[index].name}.itemstatus":
+                                            FieldValue.increment(0)
+                                      });
+                                    }
                                     //check if added already or not
                                     var itemcat = this
                                         .widget
@@ -969,6 +985,19 @@ class _ItemsPageState extends State<ItemsPage> {
                                       RatedItems(
                                           category: selectedCountList[index]),
                                     );
+
+                                    if (selectedCountList[index]
+                                            .itemcategoryName ==
+                                        "ToStay") {
+                                      FirebaseFirestore.instance
+                                          .collection('status')
+                                          .doc(
+                                              '${selectedCountList[index].itemcategoryName}')
+                                          .update({
+                                        "${selectedCountList[index].name}.itemstatus":
+                                            FieldValue.increment(0)
+                                      });
+                                    }
                                     //check if added already or not
                                     var itemcat = selectedCountList[index];
                                     catSelection.items = likedService
