@@ -2059,7 +2059,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   controller: budget,
                   textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
-                    labelText: 'Budget',
+                    labelText: "Budget from ${widget.items.itempriceMin}",
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.blue, width: 1.5),
                       borderRadius: BorderRadius.circular(

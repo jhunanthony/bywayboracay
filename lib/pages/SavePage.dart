@@ -244,7 +244,8 @@ class _SavedPageState extends State<SavedPage> {
                                       size: 25,
                                     ),
                                     onTap: () {
-                                      like.remove(context, item, itemslistinfo.imgName);
+                                      like.remove(
+                                          context, item, itemslistinfo.imgName);
                                     },
                                   ),
                                   SizedBox(
@@ -635,7 +636,7 @@ class _SavedPageState extends State<SavedPage> {
                   controller: budget,
                   textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
-                    labelText: 'Budget',
+                    labelText: "Budget from ${itemslistinfo.itempriceMin}",
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.blue, width: 1.5),
                       borderRadius: BorderRadius.circular(
