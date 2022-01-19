@@ -244,7 +244,7 @@ class _SavedPageState extends State<SavedPage> {
                                       size: 25,
                                     ),
                                     onTap: () {
-                                      like.remove(context, item);
+                                      like.remove(context, item, itemslistinfo.imgName);
                                     },
                                   ),
                                   SizedBox(

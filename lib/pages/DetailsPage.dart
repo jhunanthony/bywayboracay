@@ -79,8 +79,10 @@ class _DetailsPageState extends State<DetailsPage> {
         Provider.of<RatingService>(context, listen: false);
     //fetch liked items and load on likepage
     ratingService.loadRatedItemsFromFirebase(context);
-SaveService likeService = Provider.of<SaveService>(context, listen: false);
-  
+
+    SaveService likeService = Provider.of<SaveService>(context, listen: false);
+    //fetch liked items and load on likepage
+    likeService.loadLikedItemsFromFirebase(context);
 
     CategorySelectionService catSelection =
         Provider.of<CategorySelectionService>(context, listen: false);
@@ -102,7 +104,7 @@ SaveService likeService = Provider.of<SaveService>(context, listen: false);
         target: destinationLocation);
 
     //to activate change notifier on saves
-    
+
     /*RatingService ratingService =
         Provider.of<RatingService>(context, listen: false);*/
     LoginService loginService =
@@ -228,6 +230,11 @@ SaveService likeService = Provider.of<SaveService>(context, listen: false);
                                       onPressed: () {
                                         likeService.add(context,
                                             SavedItem(category: widget.items));
+                                        showSimpleNotification(
+                                          Text("Item Saved to Save Page!"),
+                                          background: Colors.green[400],
+                                          position: NotificationPosition.bottom,
+                                        );
                                       },
                                     ),
                                   ),
@@ -244,11 +251,19 @@ SaveService likeService = Provider.of<SaveService>(context, listen: false);
                                         iconSize: 25,
                                         splashColor: Colors.white,
                                         onPressed: () {
-                                          /*likeService.remove(
-                                                context,
-                                                SavedItem(
-                                                    category: widget.items));*/
-                                       
+                                          likeService.remove(
+                                              context,
+                                              SavedItem(category: widget.items),
+                                              widget.items.imgName);
+                                          Navigator.of(context)
+                                              .pushReplacementNamed(
+                                                  '/detailspage');
+                                          showSimpleNotification(
+                                            Text("Item Unsaved."),
+                                            background: Colors.green[400],
+                                            position:
+                                                NotificationPosition.bottom,
+                                          );
                                         }),
                                   ),
                                 );
@@ -1235,73 +1250,66 @@ SaveService likeService = Provider.of<SaveService>(context, listen: false);
                                                           "x19aFGBbXBaXTZY92Al8f8UbWyX2"
                                                       ? IconButton(
                                                           onPressed: () async {
-                                                            FirebaseFirestore
-                                                                .instance
-                                                                .collection(
-                                                                    'ratings')
-                                                                .doc(
-                                                                    '${widget.items.itemcategoryName}')
-                                                                .update({
-                                                              "${widget.items.name}.itemrating":
-                                                                  FieldValue.increment(
-                                                                      -username[
-                                                                          "rating"])
-                                                            });
-
-                                                            //update data on itemratingnum
-                                                            FirebaseFirestore
-                                                                .instance
-                                                                .collection(
-                                                                    'ratings')
-                                                                .doc(
-                                                                    '${widget.items.itemcategoryName}')
-                                                                .update({
-                                                              "${widget.items.name}.itemratingnum":
-                                                                  FieldValue
-                                                                      .increment(
-                                                                          -1)
-                                                            });
-                                                            FirebaseFirestore
-                                                                .instance
-                                                                .collection(
-                                                                    'ratings')
-                                                                .doc(
-                                                                    '${widget.items.itemcategoryName}')
-                                                                .update({
-                                                              "${widget.items.name}.sets":
-                                                                  FieldValue
-                                                                      .arrayRemove([
-                                                                {
-                                                                  "username":
-                                                                      username[
-                                                                          "username"],
-                                                                  "userimg":
-                                                                      username[
-                                                                          "userimg"],
-                                                                  "rating":
-                                                                      username[
-                                                                          "rating"],
-                                                                  "comment":
-                                                                      username[
-                                                                          "comment"],
-                                                                  "uid":
-                                                                      username[
-                                                                          "uid"]
-                                                                }
-                                                              ])
-                                                            });
-
-                                                            ratingService
-                                                                .removerecord(
+                                                            showDialog(
+                                                                context:
                                                                     context,
-                                                                    widget.items
-                                                                        .imgName,
-                                                                    username[
-                                                                        "uid"]);
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pushReplacementNamed(
-                                                                    '/detailspage');
+                                                                builder:
+                                                                    (context) =>
+                                                                        AlertDialog(
+                                                                          content:
+                                                                              SingleChildScrollView(
+                                                                            child:
+                                                                                Column(
+                                                                              children: [
+                                                                                //field to comment
+                                                                                Text("Admin: Do you really want to delete the review?", style: TextStyle(fontSize: 25, color: Colors.blue[400])),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          actions: [
+                                                                            TextButton(
+                                                                              onPressed: () async {
+                                                                                FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                  "${widget.items.name}.itemrating": FieldValue.increment(-username["rating"])
+                                                                                });
+
+                                                                                //update data on itemratingnum
+                                                                                FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                  "${widget.items.name}.itemratingnum": FieldValue.increment(-1)
+                                                                                });
+                                                                                FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                  "${widget.items.name}.sets": FieldValue.arrayRemove([
+                                                                                    {
+                                                                                      "username": username["username"],
+                                                                                      "userimg": username["userimg"],
+                                                                                      "rating": username["rating"],
+                                                                                      "comment": username["comment"],
+                                                                                      "uid": username["uid"]
+                                                                                    }
+                                                                                  ])
+                                                                                });
+
+                                                                                ratingService.removerecord(context, widget.items.imgName, username["uid"]);
+                                                                                Navigator.pop(context);
+                                                                                Navigator.of(context).pushReplacementNamed('/detailspage');
+
+                                                                                showSimpleNotification(
+                                                                                  Text("Review removed"),
+                                                                                  background: Colors.green[400],
+                                                                                  position: NotificationPosition.bottom,
+                                                                                );
+                                                                              },
+                                                                              child: Text(
+                                                                                'Delete',
+                                                                                style: TextStyle(
+                                                                                  color: Colors.teal,
+                                                                                  fontSize: 18,
+                                                                                  fontWeight: FontWeight.bold,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ));
                                                           },
                                                           icon: Icon(
                                                               Icons.delete,
@@ -1315,72 +1323,64 @@ SaveService likeService = Provider.of<SaveService>(context, listen: false);
                                                           child: IconButton(
                                                               onPressed:
                                                                   () async {
-                                                                FirebaseFirestore
-                                                                    .instance
-                                                                    .collection(
-                                                                        'ratings')
-                                                                    .doc(
-                                                                        '${widget.items.itemcategoryName}')
-                                                                    .update({
-                                                                  "${widget.items.name}.itemrating":
-                                                                      FieldValue
-                                                                          .increment(
-                                                                              -username["rating"])
-                                                                });
-
-                                                                //update data on itemratingnum
-                                                                FirebaseFirestore
-                                                                    .instance
-                                                                    .collection(
-                                                                        'ratings')
-                                                                    .doc(
-                                                                        '${widget.items.itemcategoryName}')
-                                                                    .update({
-                                                                  "${widget.items.name}.itemratingnum":
-                                                                      FieldValue
-                                                                          .increment(
-                                                                              -1)
-                                                                });
-                                                                FirebaseFirestore
-                                                                    .instance
-                                                                    .collection(
-                                                                        'ratings')
-                                                                    .doc(
-                                                                        '${widget.items.itemcategoryName}')
-                                                                    .update({
-                                                                  "${widget.items.name}.sets":
-                                                                      FieldValue
-                                                                          .arrayRemove([
-                                                                    {
-                                                                      "username":
-                                                                          username[
-                                                                              "username"],
-                                                                      "userimg":
-                                                                          username[
-                                                                              "userimg"],
-                                                                      "rating":
-                                                                          username[
-                                                                              "rating"],
-                                                                      "comment":
-                                                                          username[
-                                                                              "comment"],
-                                                                      "uid": username[
-                                                                          "uid"]
-                                                                    }
-                                                                  ])
-                                                                });
-
-                                                                ratingService
-                                                                    .removerecord(
+                                                                showDialog(
+                                                                    context:
                                                                         context,
-                                                                        widget
-                                                                            .items
-                                                                            .imgName,
-                                                                        useruid);
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pushReplacementNamed(
-                                                                        '/detailspage');
+                                                                    builder:
+                                                                        (context) =>
+                                                                            AlertDialog(
+                                                                              content: SingleChildScrollView(
+                                                                                child: Column(
+                                                                                  children: [
+                                                                                    //field to comment
+                                                                                    Text("Admin: Do you really want to delete your review?", style: TextStyle(fontSize: 25, color: Colors.blue[400])),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                              actions: [
+                                                                                TextButton(
+                                                                                  onPressed: () async {
+                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                      "${widget.items.name}.itemrating": FieldValue.increment(-username["rating"])
+                                                                                    });
+
+                                                                                    //update data on itemratingnum
+                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                      "${widget.items.name}.itemratingnum": FieldValue.increment(-1)
+                                                                                    });
+                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                      "${widget.items.name}.sets": FieldValue.arrayRemove([
+                                                                                        {
+                                                                                          "username": username["username"],
+                                                                                          "userimg": username["userimg"],
+                                                                                          "rating": username["rating"],
+                                                                                          "comment": username["comment"],
+                                                                                          "uid": username["uid"]
+                                                                                        }
+                                                                                      ])
+                                                                                    });
+
+                                                                                    ratingService.removerecord(context, widget.items.imgName, useruid);
+                                                                                    Navigator.pop(context);
+                                                                                    Navigator.of(context).pushReplacementNamed('/detailspage');
+
+                                                                                    showSimpleNotification(
+                                                                                      Text("Review removed"),
+                                                                                      background: Colors.green[400],
+                                                                                      position: NotificationPosition.bottom,
+                                                                                    );
+                                                                                  },
+                                                                                  child: Text(
+                                                                                    'Delete',
+                                                                                    style: TextStyle(
+                                                                                      color: Colors.teal,
+                                                                                      fontSize: 18,
+                                                                                      fontWeight: FontWeight.bold,
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ));
                                                               },
                                                               icon: Icon(
                                                                   Icons.delete,

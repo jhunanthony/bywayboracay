@@ -52,13 +52,28 @@ class SaveService extends ChangeNotifier {
   }
 
   //method to remove item individually
-  void remove(BuildContext context, SavedItem item) {
+  void remove(
+    BuildContext context,
+    SavedItem item,
+    String imgname,
+  ) {
     //fetch login service
     LoginService loginService =
         Provider.of<LoginService>(context, listen: false);
-    Items itemref = (item.category as Items);
+
 
     FirebaseFirestore.instance
+        .collection('tourist')
+        .doc(loginService.loggedInUserModel.uid)
+        //user client data as bool to save
+        .set({
+      'LikedItems': FieldValue.arrayRemove([
+        {"$imgname": "0"}
+      ])
+    }).then((value) {
+      notifyListeners();
+    });
+    /*FirebaseFirestore.instance
         .collection('tourist')
         .doc(loginService.loggedInUserModel.uid)
         .update({
@@ -67,7 +82,7 @@ class SaveService extends ChangeNotifier {
       (item.category as Items).amount = 0;
       _items.remove(item);
       notifyListeners();
-    });
+    });*/
   }
 
   //method to remove all item on the list

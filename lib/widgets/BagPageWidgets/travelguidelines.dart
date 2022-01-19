@@ -144,6 +144,315 @@ class TravelGuidelinesState extends State<TravelGuidelines> {
                                       CarouselWithDotsPage(imgList: imgList),
                                     ],
                                   )),
+                              //add new step
+                              Visibility(
+                                  visible:
+                                      uid == "x19aFGBbXBaXTZY92Al8f8UbWyX2" &&
+                                          index == 0,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 20,
+                                        right: 20,
+                                        top: 10,
+                                        bottom: 10),
+                                    child: TextButton(
+                                      onPressed: () async {
+                                        TextEditingController step =
+                                            TextEditingController();
+                                        TextEditingController description =
+                                            TextEditingController();
+                                        TextEditingController website =
+                                            TextEditingController();
+                                        TextEditingController stepindex =
+                                            TextEditingController();
+
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                                  title: Text(
+                                                      "Admin: Add New Step",
+                                                      style: TextStyle(
+                                                          fontSize: 25,
+                                                          color: Colors
+                                                              .blue[400])),
+                                                  content:
+                                                      SingleChildScrollView(
+                                                    child: Column(
+                                                      children: [
+                                                        //field to comment
+                                                        TextField(
+                                                          controller: stepindex,
+                                                          textCapitalization:
+                                                              TextCapitalization
+                                                                  .words,
+                                                          inputFormatters: <
+                                                              TextInputFormatter>[
+                                                            FilteringTextInputFormatter
+                                                                .digitsOnly
+                                                          ], // Only numbers can be entered
+                                                          decoration:
+                                                              InputDecoration(
+                                                            labelStyle:
+                                                                TextStyle(
+                                                                    color: Colors
+                                                                        .grey),
+                                                            labelText:
+                                                                'Step Number',
+                                                            focusedBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: Colors
+                                                                          .blue[
+                                                                      400],
+                                                                  width: 1.5),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                10.0,
+                                                              ),
+                                                            ),
+                                                            enabledBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                      color:
+                                                                          Colors
+                                                                              .blue,
+                                                                      width:
+                                                                          1.5),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                10.0,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        TextField(
+                                                          controller: step,
+                                                          textCapitalization:
+                                                              TextCapitalization
+                                                                  .words,
+                                                          decoration:
+                                                              InputDecoration(
+                                                            labelStyle:
+                                                                TextStyle(
+                                                                    color: Colors
+                                                                        .grey),
+                                                            labelText:
+                                                                'Step Index and Name',
+                                                            focusedBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: Colors
+                                                                          .blue[
+                                                                      400],
+                                                                  width: 1.5),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                10.0,
+                                                              ),
+                                                            ),
+                                                            enabledBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                      color:
+                                                                          Colors
+                                                                              .blue,
+                                                                      width:
+                                                                          1.5),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                10.0,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        TextField(
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .multiline,
+                                                          minLines: 1,
+                                                          maxLines: 20,
+                                                          maxLength: 1000,
+                                                          controller:
+                                                              description,
+                                                          textCapitalization:
+                                                              TextCapitalization
+                                                                  .words,
+                                                          decoration:
+                                                              InputDecoration(
+                                                            labelStyle:
+                                                                TextStyle(
+                                                                    color: Colors
+                                                                        .grey),
+                                                            labelText:
+                                                                'Description',
+                                                            focusedBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: Colors
+                                                                          .blue[
+                                                                      400],
+                                                                  width: 1.5),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                10.0,
+                                                              ),
+                                                            ),
+                                                            enabledBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                      color:
+                                                                          Colors
+                                                                              .blue,
+                                                                      width:
+                                                                          1.5),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                10.0,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+
+                                                        TextField(
+                                                          controller: website,
+                                                          textCapitalization:
+                                                              TextCapitalization
+                                                                  .words,
+                                                          decoration:
+                                                              InputDecoration(
+                                                            labelStyle:
+                                                                TextStyle(
+                                                                    color: Colors
+                                                                        .grey),
+                                                            labelText:
+                                                                'Link attachment',
+                                                            focusedBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: Colors
+                                                                          .blue[
+                                                                      400],
+                                                                  width: 1.5),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                10.0,
+                                                              ),
+                                                            ),
+                                                            enabledBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                      color:
+                                                                          Colors
+                                                                              .blue,
+                                                                      width:
+                                                                          1.5),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                10.0,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        step.clear();
+                                                        description.clear();
+                                                        website.clear();
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text(
+                                                        'Cancel',
+                                                        style: TextStyle(
+                                                            color: Colors.grey,
+                                                            fontSize: 18),
+                                                      ),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'travelguidelines')
+                                                            .doc('steps')
+                                                            .update({
+                                                          "travelprocedures":
+                                                              FieldValue
+                                                                  .arrayUnion([
+                                                            {
+                                                              "step":
+                                                                  "${step.text}",
+                                                              "description":
+                                                                  "${description.text}",
+                                                              "website":
+                                                                  "${website.text}",
+                                                              "index":
+                                                                  "${stepindex.text}"
+                                                            }
+                                                          ])
+                                                        });
+                                                        Navigator.pop(context);
+                                                        showSimpleNotification(
+                                                          Text(
+                                                              "New Step Added"),
+                                                          background:
+                                                              Colors.green[400],
+                                                          position:
+                                                              NotificationPosition
+                                                                  .bottom,
+                                                        );
+                                                      },
+                                                      child: Text(
+                                                        'Submit',
+                                                        style: TextStyle(
+                                                          color: Colors.teal,
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ));
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.add,
+                                              size: 16, color: Colors.red[400]),
+                                          SizedBox(width: 5),
+                                          Text('Admin: Add New Step',
+                                              style: TextStyle(
+                                                  color: Colors.red[400])),
+                                        ],
+                                      ),
+                                    ),
+                                  )),
                               Padding(
                                 padding: const EdgeInsets.only(
                                     left: 20, right: 20, top: 10, bottom: 10),
@@ -227,6 +536,7 @@ class TravelGuidelinesState extends State<TravelGuidelines> {
                                                                   })
                                                       ]),
                                                     ),
+                                                    //edit step
                                                     Visibility(
                                                       visible: uid ==
                                                           "x19aFGBbXBaXTZY92Al8f8UbWyX2",
@@ -418,11 +728,121 @@ class TravelGuidelinesState extends State<TravelGuidelines> {
                                                                         ],
                                                                       ));
                                                         },
-                                                        child: Text(
-                                                            'Admin: Edit this Step',
-                                                            style: TextStyle(
+                                                        child: Row(
+                                                          children: [
+                                                            Icon(Icons.edit,
+                                                                size: 16,
                                                                 color: Colors
-                                                                    .red[400])),
+                                                                    .red[400]),
+                                                            SizedBox(width: 5),
+                                                            Text(
+                                                                'Admin: Edit this Step',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                            .red[
+                                                                        400])),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    //delete step
+                                                    Visibility(
+                                                      visible: uid ==
+                                                          "x19aFGBbXBaXTZY92Al8f8UbWyX2",
+                                                      child: TextButton(
+                                                        onPressed: () async {
+                                                          TextEditingController
+                                                              step =
+                                                              TextEditingController();
+                                                          TextEditingController
+                                                              description =
+                                                              TextEditingController();
+                                                          TextEditingController
+                                                              website =
+                                                              TextEditingController();
+                                                          TextEditingController
+                                                              stepindex =
+                                                              TextEditingController();
+
+                                                          showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (context) =>
+                                                                      AlertDialog(
+                                                                        content:
+                                                                            SingleChildScrollView(
+                                                                          child:
+                                                                              Column(
+                                                                            children: [
+                                                                              //field to comment
+                                                                              Text("Admin: Do you really want to delete this step?", style: TextStyle(fontSize: 25, color: Colors.blue[400])),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                        actions: [
+                                                                          TextButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              step.clear();
+                                                                              description.clear();
+                                                                              website.clear();
+                                                                              Navigator.pop(context);
+                                                                            },
+                                                                            child:
+                                                                                Text(
+                                                                              'Cancel',
+                                                                              style: TextStyle(color: Colors.grey, fontSize: 18),
+                                                                            ),
+                                                                          ),
+                                                                          TextButton(
+                                                                            onPressed:
+                                                                                () async {
+                                                                              FirebaseFirestore.instance.collection('travelguidelines').doc('steps').update({
+                                                                                "travelprocedures": FieldValue.arrayRemove([
+                                                                                  {
+                                                                                    "step": "${travellist[index].step}",
+                                                                                    "description": "${travellist[index].description}",
+                                                                                    "website": "${travellist[index].website}",
+                                                                                    "index": "${travellist[index].index}"
+                                                                                  }
+                                                                                ])
+                                                                              });
+
+                                                                              Navigator.pop(context);
+                                                                              showSimpleNotification(
+                                                                                Text("Step Deleted"),
+                                                                                background: Colors.green[400],
+                                                                                position: NotificationPosition.bottom,
+                                                                              );
+                                                                            },
+                                                                            child:
+                                                                                Text(
+                                                                              'Submit',
+                                                                              style: TextStyle(
+                                                                                color: Colors.teal,
+                                                                                fontSize: 18,
+                                                                                fontWeight: FontWeight.bold,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ));
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            Icon(Icons.delete,
+                                                                size: 16,
+                                                                color: Colors
+                                                                    .red[400]),
+                                                            SizedBox(width: 5),
+                                                            Text(
+                                                                'Admin: Delete this Step',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                            .red[
+                                                                        400])),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ],
@@ -2309,7 +2729,7 @@ class Card9 extends StatelessWidget {
                                                     padding:
                                                         const EdgeInsets.only(
                                                             right: 10,
-                                                            left: 20),
+                                                            left: 10),
                                                     child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -2336,49 +2756,202 @@ class Card9 extends StatelessWidget {
                                                             }
                                                           },
                                                           child: Text(
-                                                              '${linklist[index].name}'),
+                                                              '${linklist[index].name}',
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      12)),
                                                         ),
-                                                        Visibility(
-                                                          visible: useruid ==
-                                                              "x19aFGBbXBaXTZY92Al8f8UbWyX2",
-                                                          child: IconButton(
-                                                            onPressed:
-                                                                () async {
-                                                              FirebaseFirestore
-                                                                  .instance
-                                                                  .collection(
-                                                                      'website')
-                                                                  .doc('links')
-                                                                  .update({
-                                                                "linklist":
-                                                                    FieldValue
-                                                                        .arrayRemove([
-                                                                  {
-                                                                    "name":
-                                                                        "${linklist[index].name}",
-                                                                    "link":
-                                                                        "${linklist[index].link}"
-                                                                  }
-                                                                ])
-                                                              });
+                                                        Row(
+                                                          children: [
+                                                            Visibility(
+                                                              visible: useruid ==
+                                                                  "x19aFGBbXBaXTZY92Al8f8UbWyX2",
+                                                              child: IconButton(
+                                                                onPressed:
+                                                                    () async {
+                                                                  TextEditingController
+                                                                      website =
+                                                                      TextEditingController();
+                                                                  TextEditingController
+                                                                      name =
+                                                                      TextEditingController();
 
-                                                              showSimpleNotification(
-                                                                Text(
-                                                                    "Link removed"),
-                                                                background:
-                                                                    Colors.green[
-                                                                        400],
-                                                                position:
-                                                                    NotificationPosition
-                                                                        .bottom,
-                                                              );
-                                                            },
-                                                            icon: Icon(
-                                                                Icons.delete,
-                                                                size: 16,
-                                                                color: Colors
-                                                                    .red[400]),
-                                                          ),
+                                                                  showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (context) =>
+                                                                              AlertDialog(
+                                                                                title: Text("Admin: Edit Official Links", style: TextStyle(fontSize: 25, color: Colors.blue[400])),
+                                                                                content: SingleChildScrollView(
+                                                                                  child: Column(
+                                                                                    children: [
+                                                                                      //field to comment
+                                                                                      TextField(
+                                                                                        controller: name..text = "${linklist[index].name}",
+                                                                                        textCapitalization: TextCapitalization.words,
+                                                                                        decoration: InputDecoration(
+                                                                                          labelStyle: TextStyle(color: Colors.grey),
+                                                                                          labelText: 'Website Name',
+                                                                                          focusedBorder: OutlineInputBorder(
+                                                                                            borderSide: BorderSide(color: Colors.blue[400], width: 1.5),
+                                                                                            borderRadius: BorderRadius.circular(
+                                                                                              10.0,
+                                                                                            ),
+                                                                                          ),
+                                                                                          enabledBorder: OutlineInputBorder(
+                                                                                            borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                                                                                            borderRadius: BorderRadius.circular(
+                                                                                              10.0,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                      SizedBox(
+                                                                                        height: 10,
+                                                                                      ),
+                                                                                      TextField(
+                                                                                        controller: website..text = "${linklist[index].link}",
+                                                                                        textCapitalization: TextCapitalization.words,
+                                                                                        decoration: InputDecoration(
+                                                                                          labelStyle: TextStyle(color: Colors.grey),
+                                                                                          labelText: 'Link',
+                                                                                          focusedBorder: OutlineInputBorder(
+                                                                                            borderSide: BorderSide(color: Colors.blue[400], width: 1.5),
+                                                                                            borderRadius: BorderRadius.circular(
+                                                                                              10.0,
+                                                                                            ),
+                                                                                          ),
+                                                                                          enabledBorder: OutlineInputBorder(
+                                                                                            borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                                                                                            borderRadius: BorderRadius.circular(
+                                                                                              10.0,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                                actions: [
+                                                                                  TextButton(
+                                                                                    onPressed: () {
+                                                                                      name.clear();
+                                                                                      website.clear();
+                                                                                      Navigator.pop(context);
+                                                                                    },
+                                                                                    child: Text(
+                                                                                      'Cancel',
+                                                                                      style: TextStyle(color: Colors.grey, fontSize: 18),
+                                                                                    ),
+                                                                                  ),
+                                                                                  TextButton(
+                                                                                    onPressed: () async {
+                                                                                      FirebaseFirestore.instance.collection('website').doc('links').update({
+                                                                                        "linklist": FieldValue.arrayRemove([
+                                                                                          {
+                                                                                            "name": "${linklist[index].name}",
+                                                                                            "link": "${linklist[index].link}"
+                                                                                          }
+                                                                                        ])
+                                                                                      });
+
+                                                                                      FirebaseFirestore.instance.collection('website').doc('links').update({
+                                                                                        "linklist": FieldValue.arrayUnion([
+                                                                                          {
+                                                                                            "name": "${name.text}",
+                                                                                            "link": "${website.text}"
+                                                                                          }
+                                                                                        ])
+                                                                                      });
+                                                                                      Navigator.pop(context);
+                                                                                      showSimpleNotification(
+                                                                                        Text("List has been edited"),
+                                                                                        background: Colors.green[400],
+                                                                                        position: NotificationPosition.bottom,
+                                                                                      );
+                                                                                    },
+                                                                                    child: Text(
+                                                                                      'Submit',
+                                                                                      style: TextStyle(
+                                                                                        color: Colors.teal,
+                                                                                        fontSize: 18,
+                                                                                        fontWeight: FontWeight.bold,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ));
+                                                                },
+                                                                icon: Icon(
+                                                                    Icons.edit,
+                                                                    size: 16,
+                                                                    color: Colors
+                                                                            .red[
+                                                                        400]),
+                                                              ),
+                                                            ),
+                                                            Visibility(
+                                                              visible: useruid ==
+                                                                  "x19aFGBbXBaXTZY92Al8f8UbWyX2",
+                                                              child: IconButton(
+                                                                onPressed:
+                                                                    () async {
+                                                                  showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (context) =>
+                                                                              AlertDialog(
+                                                                                content: SingleChildScrollView(
+                                                                                  child: Column(
+                                                                                    children: [
+                                                                                      //field to comment
+                                                                                      Text("Admin: Do you really want to delete this item?", style: TextStyle(fontSize: 25, color: Colors.blue[400])),
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                                actions: [
+                                                                                  TextButton(
+                                                                                    onPressed: () async {
+                                                                                      FirebaseFirestore.instance.collection('website').doc('links').update({
+                                                                                        "linklist": FieldValue.arrayRemove([
+                                                                                          {
+                                                                                            "name": "${linklist[index].name}",
+                                                                                            "link": "${linklist[index].link}"
+                                                                                          }
+                                                                                        ])
+                                                                                      });
+                                                                                      Navigator.pop(context);
+
+                                                                                      showSimpleNotification(
+                                                                                        Text("Link removed"),
+                                                                                        background: Colors.green[400],
+                                                                                        position: NotificationPosition.bottom,
+                                                                                      );
+                                                                                    },
+                                                                                    child: Text(
+                                                                                      'Delete',
+                                                                                      style: TextStyle(
+                                                                                        color: Colors.teal,
+                                                                                        fontSize: 18,
+                                                                                        fontWeight: FontWeight.bold,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ));
+                                                                },
+                                                                icon: Icon(
+                                                                    Icons
+                                                                        .delete,
+                                                                    size: 16,
+                                                                    color: Colors
+                                                                            .red[
+                                                                        400]),
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
                                                       ],
                                                     ),
@@ -2597,7 +3170,7 @@ class Card10 extends StatelessWidget {
                                                                             });
                                                                             Navigator.pop(context);
                                                                             showSimpleNotification(
-                                                                              Text("Review has been submitted!"),
+                                                                              Text("A new item has been added!"),
                                                                               background: Colors.green[400],
                                                                               position: NotificationPosition.bottom,
                                                                             );
@@ -2626,7 +3199,7 @@ class Card10 extends StatelessWidget {
                                                   Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            left: 20,
+                                                            left: 10,
                                                             right: 10),
                                                     child: Row(
                                                       mainAxisAlignment:
@@ -2661,48 +3234,198 @@ class Card10 extends StatelessWidget {
                                                           child: Text(
                                                               '${linklist[index].name}'),
                                                         ),
-                                                        Visibility(
-                                                          visible: uid ==
-                                                              "x19aFGBbXBaXTZY92Al8f8UbWyX2",
-                                                          child: IconButton(
-                                                            onPressed:
-                                                                () async {
-                                                              FirebaseFirestore
-                                                                  .instance
-                                                                  .collection(
-                                                                      'travelagency')
-                                                                  .doc(
-                                                                      'travelagencylist')
-                                                                  .update({
-                                                                "agencylist":
-                                                                    FieldValue
-                                                                        .arrayRemove([
-                                                                  {
-                                                                    "name":
-                                                                        "${linklist[index].name}",
-                                                                    "email":
-                                                                        "${linklist[index].link}"
-                                                                  }
-                                                                ])
-                                                              });
+                                                        //edit and delete agency
+                                                        Row(
+                                                          children: [
+                                                            Visibility(
+                                                              visible: uid ==
+                                                                  "x19aFGBbXBaXTZY92Al8f8UbWyX2",
+                                                              child: IconButton(
+                                                                onPressed:
+                                                                    () async {
+                                                                  TextEditingController
+                                                                      email =
+                                                                      TextEditingController();
+                                                                  TextEditingController
+                                                                      name =
+                                                                      TextEditingController();
 
-                                                              showSimpleNotification(
-                                                                Text(
-                                                                    "Link removed"),
-                                                                background:
-                                                                    Colors.green[
-                                                                        400],
-                                                                position:
-                                                                    NotificationPosition
-                                                                        .bottom,
-                                                              );
-                                                            },
-                                                            icon: Icon(
-                                                                Icons.delete,
-                                                                size: 16,
-                                                                color: Colors
-                                                                    .red[400]),
-                                                          ),
+                                                                  showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (context) =>
+                                                                              AlertDialog(
+                                                                                title: Text("Admin: Edit Agency / Guide", style: TextStyle(fontSize: 25, color: Colors.blue[400])),
+                                                                                content: SingleChildScrollView(
+                                                                                  child: Column(
+                                                                                    children: [
+                                                                                      //field to comment
+                                                                                      TextField(
+                                                                                        controller: name..text = "${linklist[index].name}",
+                                                                                        textCapitalization: TextCapitalization.words,
+                                                                                        decoration: InputDecoration(
+                                                                                          labelStyle: TextStyle(color: Colors.grey),
+                                                                                          labelText: 'Agency Name',
+                                                                                          focusedBorder: OutlineInputBorder(
+                                                                                            borderSide: BorderSide(color: Colors.blue[400], width: 1.5),
+                                                                                            borderRadius: BorderRadius.circular(
+                                                                                              10.0,
+                                                                                            ),
+                                                                                          ),
+                                                                                          enabledBorder: OutlineInputBorder(
+                                                                                            borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                                                                                            borderRadius: BorderRadius.circular(
+                                                                                              10.0,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                      SizedBox(
+                                                                                        height: 10,
+                                                                                      ),
+                                                                                      TextField(
+                                                                                        controller: email..text = "${linklist[index].link}",
+                                                                                        textCapitalization: TextCapitalization.words,
+                                                                                        decoration: InputDecoration(
+                                                                                          labelStyle: TextStyle(color: Colors.grey),
+                                                                                          labelText: 'Email',
+                                                                                          focusedBorder: OutlineInputBorder(
+                                                                                            borderSide: BorderSide(color: Colors.blue[400], width: 1.5),
+                                                                                            borderRadius: BorderRadius.circular(
+                                                                                              10.0,
+                                                                                            ),
+                                                                                          ),
+                                                                                          enabledBorder: OutlineInputBorder(
+                                                                                            borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                                                                                            borderRadius: BorderRadius.circular(
+                                                                                              10.0,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                                actions: [
+                                                                                  TextButton(
+                                                                                    onPressed: () {
+                                                                                      name.clear();
+                                                                                      email.clear();
+                                                                                      Navigator.pop(context);
+                                                                                    },
+                                                                                    child: Text(
+                                                                                      'Cancel',
+                                                                                      style: TextStyle(color: Colors.grey, fontSize: 18),
+                                                                                    ),
+                                                                                  ),
+                                                                                  TextButton(
+                                                                                    onPressed: () async {
+                                                                                      FirebaseFirestore.instance.collection('travelagency').doc('travelagencylist').update({
+                                                                                        "agencylist": FieldValue.arrayRemove([
+                                                                                          {
+                                                                                            "name": "${linklist[index].name}",
+                                                                                            "email": "${linklist[index].link}"
+                                                                                          }
+                                                                                        ])
+                                                                                      });
+
+                                                                                      FirebaseFirestore.instance.collection('travelagency').doc('travelagencylist').update({
+                                                                                        "agencylist": FieldValue.arrayUnion([
+                                                                                          {
+                                                                                            "name": "${name.text}",
+                                                                                            "email": "${email.text}"
+                                                                                          }
+                                                                                        ])
+                                                                                      });
+                                                                                      Navigator.pop(context);
+                                                                                      showSimpleNotification(
+                                                                                        Text("List has been edited"),
+                                                                                        background: Colors.green[400],
+                                                                                        position: NotificationPosition.bottom,
+                                                                                      );
+                                                                                    },
+                                                                                    child: Text(
+                                                                                      'Submit',
+                                                                                      style: TextStyle(
+                                                                                        color: Colors.teal,
+                                                                                        fontSize: 18,
+                                                                                        fontWeight: FontWeight.bold,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ));
+                                                                },
+                                                                icon: Icon(
+                                                                    Icons.edit,
+                                                                    size: 16,
+                                                                    color: Colors
+                                                                            .red[
+                                                                        400]),
+                                                              ),
+                                                            ),
+                                                            Visibility(
+                                                              visible: uid ==
+                                                                  "x19aFGBbXBaXTZY92Al8f8UbWyX2",
+                                                              child: IconButton(
+                                                                onPressed:
+                                                                    () async {
+                                                                  showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (context) =>
+                                                                              AlertDialog(
+                                                                                content: SingleChildScrollView(
+                                                                                  child: Column(
+                                                                                    children: [
+                                                                                      //field to comment
+                                                                                      Text("Admin: Do you really want to delete this item?", style: TextStyle(fontSize: 25, color: Colors.blue[400])),
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                                actions: [
+                                                                                  TextButton(
+                                                                                    onPressed: () async {
+                                                                                      FirebaseFirestore.instance.collection('travelagency').doc('travelagencylist').update({
+                                                                                        "agencylist": FieldValue.arrayRemove([
+                                                                                          {
+                                                                                            "name": "${linklist[index].name}",
+                                                                                            "email": "${linklist[index].link}"
+                                                                                          }
+                                                                                        ])
+                                                                                      });
+                                                                                      Navigator.pop(context);
+
+                                                                                      showSimpleNotification(
+                                                                                        Text("Item removed"),
+                                                                                        background: Colors.green[400],
+                                                                                        position: NotificationPosition.bottom,
+                                                                                      );
+                                                                                    },
+                                                                                    child: Text(
+                                                                                      'Delete',
+                                                                                      style: TextStyle(
+                                                                                        color: Colors.teal,
+                                                                                        fontSize: 18,
+                                                                                        fontWeight: FontWeight.bold,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ));
+                                                                },
+                                                                icon: Icon(
+                                                                    Icons
+                                                                        .delete,
+                                                                    size: 16,
+                                                                    color: Colors
+                                                                            .red[
+                                                                        400]),
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
                                                       ],
                                                     ),
