@@ -982,6 +982,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   ),
                                 ),
                                 onPressed: () {
+                                  //submitreview
                                   double itemratingval = 0;
                                   TextEditingController comment =
                                       TextEditingController();
@@ -1195,15 +1196,27 @@ class _DetailsPageState extends State<DetailsPage> {
                                         username["rating"].toString());
 
                                     return Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                      padding: const EdgeInsets.only(
+                                          left: 20,
+                                          right: 10,
+                                          top: 10,
+                                          bottom: 10),
                                       child: Column(children: [
-                                        ListTile(
-                                            leading: Text(
+                                        Row(children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 10,
+                                                right: 25,
+                                                top: 10,
+                                                bottom: 10),
+                                            child: Text(
                                                 "${username["rating"].toString()}",
                                                 style: TextStyle(
                                                     color: Colors.green[400],
                                                     fontSize: 20)),
-                                            title: Column(
+                                          ),
+                                          Expanded(
+                                            child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
@@ -1225,109 +1238,494 @@ class _DetailsPageState extends State<DetailsPage> {
                                                     style: TextStyle(
                                                         color: Colors.grey[400],
                                                         fontSize: 12)),
+                                                Text(
+                                                    "${username["comment"].toString()}",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 14)),
                                               ],
                                             ),
-                                            subtitle: Text(
-                                                "${username["comment"].toString()}",
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 14)),
-                                            trailing: Wrap(
-                                                direction: Axis.vertical,
-                                                spacing:
-                                                    10, // space between two icons
-                                                children: <Widget>[
-                                                  ClipOval(
-                                                      child: Image.network(
-                                                          "${username["userimg"].toString()}",
-                                                          width: 35,
-                                                          height: 35,
-                                                          fit: BoxFit.cover)),
-                                                  SizedBox(
-                                                    width: 20,
-                                                  ),
-                                                  useruid ==
-                                                          "x19aFGBbXBaXTZY92Al8f8UbWyX2"
-                                                      ? IconButton(
-                                                          onPressed: () async {
-                                                            showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (context) =>
-                                                                        AlertDialog(
-                                                                          content:
-                                                                              SingleChildScrollView(
-                                                                            child:
-                                                                                Column(
-                                                                              children: [
-                                                                                //field to comment
-                                                                                Text("Admin: Do you really want to delete the review?", style: TextStyle(fontSize: 25, color: Colors.blue[400])),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-                                                                          actions: [
-                                                                            TextButton(
-                                                                              onPressed: () async {
-                                                                                FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
-                                                                                  "${widget.items.name}.itemrating": FieldValue.increment(-username["rating"])
-                                                                                });
+                                          ),
+                                          Row(children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(10),
+                                              child: ClipOval(
+                                                  child: Image.network(
+                                                      "${username["userimg"].toString()}",
+                                                      width: 35,
+                                                      height: 35,
+                                                      fit: BoxFit.cover)),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            useruid ==
+                                                    "x19aFGBbXBaXTZY92Al8f8UbWyX2"
+                                                ? Column(
+                                                    children: [
+                                                      Visibility(
+                                                        visible:
+                                                            username["uid"] ==
+                                                                useruid,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 5,
+                                                                  right: 10,
+                                                                  top: 15,
+                                                                  bottom: 10),
+                                                          child:
+                                                              GestureDetector(
+                                                                  onTap:
+                                                                      () async {
+                                                                    double
+                                                                        itemratingval =
+                                                                        0;
+                                                                    TextEditingController
+                                                                        comment =
+                                                                        TextEditingController();
 
-                                                                                //update data on itemratingnum
-                                                                                FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
-                                                                                  "${widget.items.name}.itemratingnum": FieldValue.increment(-1)
-                                                                                });
-                                                                                FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
-                                                                                  "${widget.items.name}.sets": FieldValue.arrayRemove([
-                                                                                    {
-                                                                                      "username": username["username"],
-                                                                                      "userimg": username["userimg"],
-                                                                                      "rating": username["rating"],
-                                                                                      "comment": username["comment"],
-                                                                                      "uid": username["uid"]
-                                                                                    }
-                                                                                  ])
-                                                                                });
+                                                                    showDialog(
+                                                                        context:
+                                                                            context,
+                                                                        builder: (context) =>
+                                                                            AlertDialog(
+                                                                              title: Text("Edit Review", style: TextStyle(fontSize: 25, color: Colors.blue[400])),
+                                                                              content: SingleChildScrollView(
+                                                                                child: Column(
+                                                                                  children: [
+                                                                                    //field to comment
+                                                                                    RatingBar.builder(
+                                                                                        wrapAlignment: WrapAlignment.center,
+                                                                                        glowColor: Colors.green,
+                                                                                        itemSize: 35,
+                                                                                        initialRating: double.parse(username["rating"].toString()),
+                                                                                        minRating: 1,
+                                                                                        direction: Axis.horizontal,
+                                                                                        allowHalfRating: true,
+                                                                                        itemCount: 5,
+                                                                                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                                                                        itemBuilder: (context, _) => Icon(
+                                                                                              Icons.eco_rounded,
+                                                                                              color: Colors.green[400],
+                                                                                            ),
+                                                                                        updateOnDrag: true,
+                                                                                        onRatingUpdate: (rating) {
+                                                                                          setState(() {
+                                                                                            itemratingval = rating;
+                                                                                          });
+                                                                                        }),
 
-                                                                                ratingService.removerecord(context, widget.items.imgName, username["uid"]);
-                                                                                Navigator.pop(context);
-                                                                                Navigator.of(context).pushReplacementNamed('/detailspage');
+                                                                                    SizedBox(
+                                                                                      height: 10,
+                                                                                    ),
+                                                                                    Text("Tell us about the socio-economic and/or environmental impact practiced by this business.", style: TextStyle(fontSize: 12, color: Colors.grey)),
 
-                                                                                showSimpleNotification(
-                                                                                  Text("Review removed"),
-                                                                                  background: Colors.green[400],
-                                                                                  position: NotificationPosition.bottom,
-                                                                                );
-                                                                              },
-                                                                              child: Text(
-                                                                                'Delete',
-                                                                                style: TextStyle(
-                                                                                  color: Colors.teal,
-                                                                                  fontSize: 18,
-                                                                                  fontWeight: FontWeight.bold,
+                                                                                    SizedBox(
+                                                                                      height: 10,
+                                                                                    ),
+                                                                                    //field to comment
+                                                                                    TextField(
+                                                                                      controller: comment..text = "${username["comment"]}",
+                                                                                      textCapitalization: TextCapitalization.words,
+                                                                                      minLines: 1,
+                                                                                      maxLines: 20,
+                                                                                      maxLength: 1000,
+                                                                                      decoration: InputDecoration(
+                                                                                        labelStyle: TextStyle(color: Colors.grey),
+                                                                                        labelText: 'Review',
+                                                                                        focusedBorder: OutlineInputBorder(
+                                                                                          borderSide: BorderSide(color: Colors.green[400], width: 1.5),
+                                                                                          borderRadius: BorderRadius.circular(
+                                                                                            10.0,
+                                                                                          ),
+                                                                                        ),
+                                                                                        enabledBorder: OutlineInputBorder(
+                                                                                          borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                                                                                          borderRadius: BorderRadius.circular(
+                                                                                            10.0,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                    SizedBox(
+                                                                                      height: 10,
+                                                                                    ),
+                                                                                    Text("Topics you may include; Environmental Awareness, Water/Energy/Paper Savings, Food Waste Reduction, Proper Waste Management, Cultural Promotion, Employees well-being, Support on Charitable Projects, Responsible Tourist Advice, Child Protection, Local Support, etc. ", style: TextStyle(fontSize: 12, color: Colors.grey)),
+                                                                                    SizedBox(
+                                                                                      height: 10,
+                                                                                    ),
+                                                                                    Text("Note: This is not a certification. No on-site inspection has been conducted nor an assesment by an organization. This is a user-based peer rating system that gathers user perspectives on how the business deals with sustainable tourism based on the user's personal experiences.", style: TextStyle(fontSize: 10, color: Colors.red[400])),
+                                                                                  ],
                                                                                 ),
                                                                               ),
+                                                                              actions: [
+                                                                                TextButton(
+                                                                                  onPressed: () {
+                                                                                    comment.clear();
+                                                                                    Navigator.pop(context);
+                                                                                  },
+                                                                                  child: Text(
+                                                                                    'Cancel',
+                                                                                    style: TextStyle(color: Colors.grey, fontSize: 18),
+                                                                                  ),
+                                                                                ),
+                                                                                TextButton(
+                                                                                  onPressed: () async {
+                                                                                    //delete old comment
+                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                      "${widget.items.name}.itemrating": FieldValue.increment(-username["rating"])
+                                                                                    });
+
+                                                                                    //update data on itemratingnum
+                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                      "${widget.items.name}.itemratingnum": FieldValue.increment(-1)
+                                                                                    });
+                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                      "${widget.items.name}.sets": FieldValue.arrayRemove([
+                                                                                        {
+                                                                                          "username": username["username"],
+                                                                                          "userimg": username["userimg"],
+                                                                                          "rating": username["rating"],
+                                                                                          "comment": username["comment"],
+                                                                                          "uid": username["uid"]
+                                                                                        }
+                                                                                      ])
+                                                                                    });
+
+                                                                                    //add new comment
+                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                      "${widget.items.name}.itemrating": FieldValue.increment(itemratingval == 0 ? username["rating"] : itemratingval)
+                                                                                    });
+                                                                                    //update data on itemratingnum
+                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                      "${widget.items.name}.itemratingnum": FieldValue.increment(1)
+                                                                                    });
+                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                      "${widget.items.name}.sets": FieldValue.arrayUnion([
+                                                                                        {
+                                                                                          "username": username["username"],
+                                                                                          "userimg": username["userimg"],
+                                                                                          "rating": itemratingval == 0 ? username["rating"] : itemratingval,
+                                                                                          "comment": comment.text,
+                                                                                          "uid": username["uid"]
+                                                                                        }
+                                                                                      ])
+                                                                                    });
+                                                                                    //add to rating list
+
+                                                                                    Navigator.pop(context);
+                                                                                    showSimpleNotification(
+                                                                                      Text("List has been edited"),
+                                                                                      background: Colors.green[400],
+                                                                                      position: NotificationPosition.bottom,
+                                                                                    );
+                                                                                  },
+                                                                                  child: Text(
+                                                                                    'Submit',
+                                                                                    style: TextStyle(
+                                                                                      color: Colors.teal,
+                                                                                      fontSize: 18,
+                                                                                      fontWeight: FontWeight.bold,
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ));
+                                                                  },
+                                                                  child: Icon(
+                                                                      Icons
+                                                                          .edit,
+                                                                      size: 20,
+                                                                      color: Colors
+                                                                              .red[
+                                                                          300])),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 5,
+                                                                right: 10,
+                                                                top: 10,
+                                                                bottom: 10),
+                                                        child: GestureDetector(
+                                                            onTap: () async {
+                                                              showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (context) =>
+                                                                          AlertDialog(
+                                                                            content:
+                                                                                SingleChildScrollView(
+                                                                              child: Column(
+                                                                                children: [
+                                                                                  //field to comment
+                                                                                  Text("Admin: Do you really want to delete the review?", style: TextStyle(fontSize: 25, color: Colors.blue[400])),
+                                                                                ],
+                                                                              ),
                                                                             ),
-                                                                          ],
-                                                                        ));
-                                                          },
-                                                          icon: Icon(
-                                                              Icons.delete,
-                                                              size: 20,
-                                                              color: Colors
-                                                                  .red[300]))
-                                                      : Visibility(
-                                                          visible:
-                                                              username["uid"] ==
-                                                                  useruid,
-                                                          child: IconButton(
-                                                              onPressed:
-                                                                  () async {
-                                                                showDialog(
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (context) =>
+                                                                            actions: [
+                                                                              TextButton(
+                                                                                onPressed: () async {
+                                                                                  FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                    "${widget.items.name}.itemrating": FieldValue.increment(-username["rating"])
+                                                                                  });
+
+                                                                                  //update data on itemratingnum
+                                                                                  FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                    "${widget.items.name}.itemratingnum": FieldValue.increment(-1)
+                                                                                  });
+                                                                                  FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                    "${widget.items.name}.sets": FieldValue.arrayRemove([
+                                                                                      {
+                                                                                        "username": username["username"],
+                                                                                        "userimg": username["userimg"],
+                                                                                        "rating": username["rating"],
+                                                                                        "comment": username["comment"],
+                                                                                        "uid": username["uid"]
+                                                                                      }
+                                                                                    ])
+                                                                                  });
+
+                                                                                  ratingService.removerecord(context, widget.items.imgName, username["uid"]);
+                                                                                  Navigator.pop(context);
+                                                                                  Navigator.of(context).pushReplacementNamed('/detailspage');
+
+                                                                                  showSimpleNotification(
+                                                                                    Text("Review removed"),
+                                                                                    background: Colors.green[400],
+                                                                                    position: NotificationPosition.bottom,
+                                                                                  );
+                                                                                },
+                                                                                child: Text(
+                                                                                  'Delete',
+                                                                                  style: TextStyle(
+                                                                                    color: Colors.teal,
+                                                                                    fontSize: 18,
+                                                                                    fontWeight: FontWeight.bold,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ));
+                                                            },
+                                                            child: Icon(
+                                                                Icons.delete,
+                                                                size: 20,
+                                                                color: Colors
+                                                                    .red[300])),
+                                                      ),
+                                                    ],
+                                                  )
+                                                //if normal user
+                                                : Column(
+                                                    children: [
+                                                      //edituserrating
+                                                      Visibility(
+                                                        visible:
+                                                            username["uid"] ==
+                                                                useruid,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 5,
+                                                                  right: 10,
+                                                                  top: 15,
+                                                                  bottom: 10),
+                                                          child:
+                                                              GestureDetector(
+                                                                  onTap:
+                                                                      () async {
+                                                                    double
+                                                                        itemratingval =
+                                                                        0;
+                                                                    TextEditingController
+                                                                        comment =
+                                                                        TextEditingController();
+
+                                                                    showDialog(
+                                                                        context:
+                                                                            context,
+                                                                        builder: (context) =>
+                                                                            AlertDialog(
+                                                                              title: Text("Edit Review", style: TextStyle(fontSize: 25, color: Colors.blue[400])),
+                                                                              content: SingleChildScrollView(
+                                                                                child: Column(
+                                                                                  children: [
+                                                                                    //field to comment
+                                                                                    RatingBar.builder(
+                                                                                        wrapAlignment: WrapAlignment.center,
+                                                                                        glowColor: Colors.green,
+                                                                                        itemSize: 35,
+                                                                                        initialRating: double.parse(username["rating"].toString()),
+                                                                                        minRating: 1,
+                                                                                        direction: Axis.horizontal,
+                                                                                        allowHalfRating: true,
+                                                                                        itemCount: 5,
+                                                                                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                                                                        itemBuilder: (context, _) => Icon(
+                                                                                              Icons.eco_rounded,
+                                                                                              color: Colors.green[400],
+                                                                                            ),
+                                                                                        updateOnDrag: true,
+                                                                                        onRatingUpdate: (rating) {
+                                                                                          setState(() {
+                                                                                            itemratingval = rating;
+                                                                                          });
+                                                                                        }),
+
+                                                                                    SizedBox(
+                                                                                      height: 10,
+                                                                                    ),
+                                                                                    Text("Tell us about the socio-economic and/or environmental impact practiced by this business.", style: TextStyle(fontSize: 12, color: Colors.grey)),
+
+                                                                                    SizedBox(
+                                                                                      height: 10,
+                                                                                    ),
+                                                                                    //field to comment
+                                                                                    TextField(
+                                                                                      controller: comment..text = "${username["comment"]}",
+                                                                                      textCapitalization: TextCapitalization.words,
+                                                                                      minLines: 1,
+                                                                                      maxLines: 20,
+                                                                                      maxLength: 1000,
+                                                                                      decoration: InputDecoration(
+                                                                                        labelStyle: TextStyle(color: Colors.grey),
+                                                                                        labelText: 'Review',
+                                                                                        focusedBorder: OutlineInputBorder(
+                                                                                          borderSide: BorderSide(color: Colors.green[400], width: 1.5),
+                                                                                          borderRadius: BorderRadius.circular(
+                                                                                            10.0,
+                                                                                          ),
+                                                                                        ),
+                                                                                        enabledBorder: OutlineInputBorder(
+                                                                                          borderSide: BorderSide(color: Colors.blue, width: 1.5),
+                                                                                          borderRadius: BorderRadius.circular(
+                                                                                            10.0,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                    SizedBox(
+                                                                                      height: 10,
+                                                                                    ),
+                                                                                    Text("Topics you may include; Environmental Awareness, Water/Energy/Paper Savings, Food Waste Reduction, Proper Waste Management, Cultural Promotion, Employees well-being, Support on Charitable Projects, Responsible Tourist Advice, Child Protection, Local Support, etc. ", style: TextStyle(fontSize: 12, color: Colors.grey)),
+                                                                                    SizedBox(
+                                                                                      height: 10,
+                                                                                    ),
+                                                                                    Text("Note: This is not a certification. No on-site inspection has been conducted nor an assesment by an organization. This is a user-based peer rating system that gathers user perspectives on how the business deals with sustainable tourism based on the user's personal experiences.", style: TextStyle(fontSize: 10, color: Colors.red[400])),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                              actions: [
+                                                                                TextButton(
+                                                                                  onPressed: () {
+                                                                                    comment.clear();
+                                                                                    Navigator.pop(context);
+                                                                                  },
+                                                                                  child: Text(
+                                                                                    'Cancel',
+                                                                                    style: TextStyle(color: Colors.grey, fontSize: 18),
+                                                                                  ),
+                                                                                ),
+                                                                                TextButton(
+                                                                                  onPressed: () async {
+                                                                                    //delete old comment
+                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                      "${widget.items.name}.itemrating": FieldValue.increment(-username["rating"])
+                                                                                    });
+
+                                                                                    //update data on itemratingnum
+                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                      "${widget.items.name}.itemratingnum": FieldValue.increment(-1)
+                                                                                    });
+                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                      "${widget.items.name}.sets": FieldValue.arrayRemove([
+                                                                                        {
+                                                                                          "username": username["username"],
+                                                                                          "userimg": username["userimg"],
+                                                                                          "rating": username["rating"],
+                                                                                          "comment": username["comment"],
+                                                                                          "uid": username["uid"]
+                                                                                        }
+                                                                                      ])
+                                                                                    });
+
+                                                                                    //add new comment
+                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                      "${widget.items.name}.itemrating": FieldValue.increment(itemratingval == 0 ? username["rating"] : itemratingval)
+                                                                                    });
+                                                                                    //update data on itemratingnum
+                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                      "${widget.items.name}.itemratingnum": FieldValue.increment(1)
+                                                                                    });
+                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                      "${widget.items.name}.sets": FieldValue.arrayUnion([
+                                                                                        {
+                                                                                          "username": username["username"],
+                                                                                          "userimg": username["userimg"],
+                                                                                          "rating": itemratingval == 0 ? username["rating"] : itemratingval,
+                                                                                          "comment": comment.text,
+                                                                                          "uid": username["uid"]
+                                                                                        }
+                                                                                      ])
+                                                                                    });
+                                                                                    //add to rating list
+
+                                                                                    Navigator.pop(context);
+                                                                                    showSimpleNotification(
+                                                                                      Text("List has been edited"),
+                                                                                      background: Colors.green[400],
+                                                                                      position: NotificationPosition.bottom,
+                                                                                    );
+                                                                                  },
+                                                                                  child: Text(
+                                                                                    'Submit',
+                                                                                    style: TextStyle(
+                                                                                      color: Colors.teal,
+                                                                                      fontSize: 18,
+                                                                                      fontWeight: FontWeight.bold,
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ));
+                                                                  },
+                                                                  child: Icon(
+                                                                      Icons
+                                                                          .edit,
+                                                                      size: 20,
+                                                                      color: Colors
+                                                                              .red[
+                                                                          300])),
+                                                        ),
+                                                      ),
+                                                      //delete as a user
+                                                      Visibility(
+                                                        visible:
+                                                            username["uid"] ==
+                                                                useruid,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 5,
+                                                                  right: 10,
+                                                                  top: 10,
+                                                                  bottom: 10),
+                                                          child:
+                                                              GestureDetector(
+                                                                  onTap:
+                                                                      () async {
+                                                                    showDialog(
+                                                                        context:
+                                                                            context,
+                                                                        builder: (context) =>
                                                                             AlertDialog(
                                                                               content: SingleChildScrollView(
                                                                                 child: Column(
@@ -1381,15 +1779,20 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                                 ),
                                                                               ],
                                                                             ));
-                                                              },
-                                                              icon: Icon(
-                                                                  Icons.delete,
-                                                                  size: 20,
-                                                                  color: Colors
-                                                                          .red[
-                                                                      300])),
+                                                                  },
+                                                                  child: Icon(
+                                                                      Icons
+                                                                          .delete,
+                                                                      size: 20,
+                                                                      color: Colors
+                                                                              .red[
+                                                                          300])),
                                                         ),
-                                                ])),
+                                                      ),
+                                                    ],
+                                                  ),
+                                          ])
+                                        ]),
                                         Divider(
                                           thickness: 1,
                                           color: Colors.grey[400],
@@ -2071,4 +2474,14 @@ class _DetailsPageState extends State<DetailsPage> {
               ],
             ))));
   }
+}
+
+class Ratinglist {
+  String username;
+  String imgname;
+  String rating;
+  String comment;
+  String userid;
+  Ratinglist(
+      this.username, this.imgname, this.rating, this.comment, this.userid);
 }
