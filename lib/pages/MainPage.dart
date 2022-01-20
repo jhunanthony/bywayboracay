@@ -35,14 +35,14 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     //implement a method that clears likeitems when users log out and new user come in
-   /* SaveService likeService = Provider.of<SaveService>(context, listen: false);
+    SaveService likeService = Provider.of<SaveService>(context, listen: false);
     //fetch liked items and load on likepage
-    likeService.loadLikedItemsFromFirebase(context);*/
+   //likeService.loadLikedItemsFromFirebase(context);
 
-   /* RatingService ratingService =
+    RatingService ratingService =
         Provider.of<RatingService>(context, listen: false);
     //fetch liked items and load on likepage
-    ratingService.loadRatedItemsFromFirebase(context);*/
+   //ratingService.loadRatedItemsFromFirebase(context);
 
     return SafeArea(
       child: Scaffold(

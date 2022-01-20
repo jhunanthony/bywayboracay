@@ -20,6 +20,7 @@ import 'package:provider/provider.dart';
 import 'package:filter_list/filter_list.dart';
 
 import '../models/RatedItemsModel.dart';
+import '../models/UserLogInModel.dart';
 import '../services/ratedservice.dart';
 
 const double PIN_NOTVISIBLE_POSITION = -50;
@@ -182,6 +183,14 @@ class _ItemsPageState extends State<ItemsPage> {
 
   @override
   Widget build(BuildContext context) {
+    RatingService ratingService =
+        Provider.of<RatingService>(context, listen: false);
+    //fetch liked items and load on likepage
+//ratingService.loadRatedItemsFromFirebase(context);
+    SaveService likedService = Provider.of<SaveService>(context, listen: false);
+
+    //fetch liked items and load on likepage
+    //likedService.loadLikedItemsFromFirebase(context);
     CategorySelectionService catSelection =
         Provider.of<CategorySelectionService>(context, listen: false);
     widget.selectedCategory = catSelection.selectedCategory;
@@ -190,12 +199,13 @@ class _ItemsPageState extends State<ItemsPage> {
     //SaveService saveService = Provider.of<SaveService>(context, listen: false);
 
     //access like service
-    RatingService ratingService =
-        Provider.of<RatingService>(context, listen: false);
 
-    SaveService likedService = Provider.of<SaveService>(context, listen: false);
     LoginService loginService =
         Provider.of<LoginService>(context, listen: false);
+
+    UserLogInModel userModel = loginService.loggedInUserModel;
+
+    String useruid = userModel != null ? userModel.uid : '';
 
     bool userLoggedIn = loginService.loggedInUserModel != null;
 
@@ -615,14 +625,24 @@ class _ItemsPageState extends State<ItemsPage> {
                                   (index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    ratingService.addrecord(
-                                      context,
-                                      RatedItems(
-                                          category: this
-                                              .widget
-                                              .selectedCategory
-                                              .items[index]),
-                                    );
+                                    /*if (useruid ==
+                                        "x19aFGBbXBaXTZY92Al8f8UbWyX2") {
+                                      ratingService.addrecord(
+                                        context,
+                                        RatedItems(
+                                            category: this
+                                                .widget
+                                                .selectedCategory
+                                                .items[index]),
+                                      );
+                                    }*/
+                                       ratingService.addrecord(context,
+                                        RatedItems(
+                                            category: this
+                                                .widget
+                                                .selectedCategory
+                                                .items[index]),
+                                      );
 
                                     if (this
                                             .widget
@@ -868,13 +888,9 @@ class _ItemsPageState extends State<ItemsPage> {
                                                                         );
                                                             } else if (snapshot
                                                                 .hasError) {
-                                                              return Text(
-                                                                '',
-                                                              );
+                                                              return SizedBox();
                                                             } else
-                                                              return Text(
-                                                                '',
-                                                              );
+                                                              return SizedBox();
                                                           })
                                                     ],
                                                   ),
@@ -980,11 +996,20 @@ class _ItemsPageState extends State<ItemsPage> {
                                   (index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    ratingService.addrecord(
-                                      context,
-                                      RatedItems(
-                                          category: selectedCountList[index]),
-                                    );
+                                    /*if (useruid ==
+                                        "x19aFGBbXBaXTZY92Al8f8UbWyX2") {
+                                      ratingService.addrecord(
+                                        context,
+                                        RatedItems(
+                                            category: selectedCountList[index]),
+                                      );
+                                    }*/
+
+                                     ratingService.addrecord(
+                                        context,
+                                        RatedItems(
+                                            category: selectedCountList[index]),
+                                      );
 
                                     if (selectedCountList[index]
                                             .itemcategoryName ==

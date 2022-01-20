@@ -22,7 +22,7 @@ class SaveService extends ChangeNotifier {
   UnmodifiableListView<SavedItem> get items => UnmodifiableListView(_items);
 
   //brodcast that something is changed
-  void add(BuildContext context, SavedItem item) {
+  void add(BuildContext context, SavedItem item) async {
     //add locally and then add on firebase
     _items.add(item);
 
@@ -56,23 +56,12 @@ class SaveService extends ChangeNotifier {
     BuildContext context,
     SavedItem item,
     String imgname,
-  ) {
+  ) async {
     //fetch login service
     LoginService loginService =
         Provider.of<LoginService>(context, listen: false);
+   // Items itemref = (item.category as Items);
 
-
-    FirebaseFirestore.instance
-        .collection('tourist')
-        .doc(loginService.loggedInUserModel.uid)
-        //user client data as bool to save
-        .set({
-      'LikedItems': FieldValue.arrayRemove([
-        {"$imgname": "0"}
-      ])
-    }).then((value) {
-      notifyListeners();
-    });
     /*FirebaseFirestore.instance
         .collection('tourist')
         .doc(loginService.loggedInUserModel.uid)
@@ -83,10 +72,28 @@ class SaveService extends ChangeNotifier {
       _items.remove(item);
       notifyListeners();
     });*/
+
+ 
+
+
+    FirebaseFirestore.instance
+        .collection('tourist')
+        .doc(loginService.loggedInUserModel.uid)
+        //user client data as bool to save
+        .set({
+      'LikedItems': FieldValue.arrayRemove([
+        {"$imgname": "0"}
+      ])
+
+    }).then((value) {
+      (item.category as Items).amount = 0;
+      _items.remove(item);
+      notifyListeners();
+    });
   }
 
   //method to remove all item on the list
-  void removeAll(BuildContext context) {
+  void removeAll(BuildContext context) async {
     //fetch login service
     LoginService loginService =
         Provider.of<LoginService>(context, listen: false);
@@ -120,7 +127,7 @@ class SaveService extends ChangeNotifier {
   }
 
   //create a method to load data
-  void loadLikedItemsFromFirebase(BuildContext context) {
+  void loadLikedItemsFromFirebase(BuildContext context) async {
     //clear items if a user logged previously
     if (_items.length > 0) {
       _items.clear();

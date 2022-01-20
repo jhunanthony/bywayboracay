@@ -24,7 +24,7 @@ class RatingService extends ChangeNotifier {
 
   //add rated item to database
   void addrateditem(
-      BuildContext context, RatedItems item, ratingval, commentval) {
+      BuildContext context, RatedItems item, ratingval, commentval) async {
     //add locally and then add on firebase
     _rateditems.add(item);
 
@@ -95,7 +95,7 @@ class RatingService extends ChangeNotifier {
   void addrecord(
     BuildContext context,
     RatedItems item,
-  ) {
+  ) async {
     //update data on itemrating
     FirebaseFirestore.instance
         .collection('ratings')
@@ -130,12 +130,19 @@ class RatingService extends ChangeNotifier {
     BuildContext context,
     String imgname,
     String userId,
-    
-
-
-
-  ) {
-   
+    RatedItems item,
+  ) async {
+    LoginService loginService =
+        Provider.of<LoginService>(context, listen: false);
+    //Items itemref = (item.category as Items);
+    /*FirebaseFirestore.instance
+        .collection('ratedItem')
+        .doc(userId)
+        .update({'RatedItem.$imgname': FieldValue.delete()}).then((value) {
+      (item.category as Items).amount = 0;
+      _rateditems.remove(item);
+      notifyListeners();
+    });*/
 
     FirebaseFirestore.instance.collection('ratedItem').doc(userId)
         //user client data as bool to save
@@ -143,8 +150,8 @@ class RatingService extends ChangeNotifier {
       'RatedItem': FieldValue.arrayRemove([
         {"$imgname": "0"}
       ])
-    }).then(
-            (value) {
+    }).then((value) {
+      _rateditems.remove(item);
       notifyListeners();
     });
   }
@@ -172,7 +179,7 @@ class RatingService extends ChangeNotifier {
   }
   //fetch data
 
-  void loadRatedItemsFromFirebase(BuildContext context) {
+  void loadRatedItemsFromFirebase(BuildContext context) async {
     //clear items if a user logged previously
     if (_rateditems.length > 0) {
       _rateditems.clear();

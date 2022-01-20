@@ -77,10 +77,14 @@ class _DetailsPageState extends State<DetailsPage> {
   Widget build(BuildContext context) {
     RatingService ratingService =
         Provider.of<RatingService>(context, listen: false);
+    //ratingService.loadRatedItemsFromFirebase(context);
+
     //fetch liked items and load on likepage
     ratingService.loadRatedItemsFromFirebase(context);
 
     SaveService likeService = Provider.of<SaveService>(context, listen: false);
+    //likeService.loadLikedItemsFromFirebase(context);
+
     //fetch liked items and load on likepage
     likeService.loadLikedItemsFromFirebase(context);
 
@@ -250,14 +254,18 @@ class _DetailsPageState extends State<DetailsPage> {
                                         color: Colors.blue[200],
                                         iconSize: 25,
                                         splashColor: Colors.white,
-                                        onPressed: () {
+                                        onPressed: () async {
                                           likeService.remove(
                                               context,
                                               SavedItem(category: widget.items),
                                               widget.items.imgName);
+
+                                          //fetch liked items and load on likepage
+
+                                          //Navigator.of(context).pop();\
                                           Navigator.of(context)
-                                              .pushReplacementNamed(
-                                                  '/detailspage');
+                                              .popAndPushNamed('/detailspage');
+
                                           showSimpleNotification(
                                             Text("Item Unsaved."),
                                             background: Colors.green[400],
@@ -350,6 +358,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   var userDocument = snapshot.data;
                                   var path =
                                       userDocument["${widget.items.name}.sets"];
+
                                   return path.length > 0
                                       ? Column(
                                           children: [
@@ -872,25 +881,11 @@ class _DetailsPageState extends State<DetailsPage> {
                                       ),
                                     ],
                                   )
-                                : itemstatus == null
-                                    ? SizedBox()
-                                    : SizedBox();
+                                : SizedBox();
                           } else if (snapshot.hasError) {
-                            return Text(
-                              'Unrated',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.green,
-                              ),
-                            );
+                            return SizedBox();
                           } else
-                            return Text(
-                              'Loading',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.green,
-                              ),
-                            );
+                            return SizedBox();
                         })
                   ]),
                 ),
@@ -1207,9 +1202,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                         fontWeight: FontWeight.w300),
                                   ),
                                 ),
-                                onPressed: () {
+                                onPressed: () async {
                                   //submitreview
-                                  double itemratingval = 0;
+                                  double itemratingval = 1;
                                   TextEditingController comment =
                                       TextEditingController();
 
@@ -1270,6 +1265,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                                     textCapitalization:
                                                         TextCapitalization
                                                             .words,
+                                                    minLines: 1,
+                                                    maxLines: 20,
+                                                    maxLength: 1000,
                                                     decoration: InputDecoration(
                                                       labelStyle: TextStyle(
                                                           color: Colors.grey),
@@ -1333,27 +1331,37 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 ),
                                               ),
                                               TextButton(
-                                                onPressed: () {
+                                                onPressed: () async {
                                                   if (comment.text.isEmpty) {
-                                                    desc.text = '';
+                                                    desc.text = " ";
+                                                  } else if (itemratingval ==
+                                                      0) {
+                                                    itemratingval = 1;
+                                                  } else if (itemratingval ==
+                                                      null) {
+                                                    itemratingval = 1;
+                                                  } else {
+                                                    ratingService.addrateditem(
+                                                        context,
+                                                        RatedItems(
+                                                            category:
+                                                                widget.items),
+                                                        itemratingval,
+                                                        comment.text);
+                                                    Navigator.of(context).pop();
+                                                    Navigator.of(context)
+                                                        .popAndPushNamed(
+                                                            '/detailspage');
+                                                    showSimpleNotification(
+                                                      Text(
+                                                          "Review has been submitted!"),
+                                                      background:
+                                                          Colors.green[400],
+                                                      position:
+                                                          NotificationPosition
+                                                              .bottom,
+                                                    );
                                                   }
-                                                  ratingService.addrateditem(
-                                                      context,
-                                                      RatedItems(
-                                                          category:
-                                                              widget.items),
-                                                      itemratingval,
-                                                      comment.text);
-                                                  Navigator.pop(context);
-                                                  showSimpleNotification(
-                                                    Text(
-                                                        "Review has been submitted!"),
-                                                    background:
-                                                        Colors.green[400],
-                                                    position:
-                                                        NotificationPosition
-                                                            .bottom,
-                                                  );
                                                 },
                                                 child: Text(
                                                   'Submit',
@@ -1408,9 +1416,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                         if (snapshot.hasData) {
                           var userDocument = snapshot.data;
-                          double itemrating = double.parse(
-                              userDocument["${widget.items.name}.itemrating"]
-                                  .toString());
+
                           var path = userDocument["${widget.items.name}.sets"];
 
                           return path.length > 0
@@ -1507,7 +1513,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                       () async {
                                                                     double
                                                                         itemratingval =
-                                                                        0;
+                                                                        double.parse(
+                                                                            username["rating"].toString());
                                                                     TextEditingController
                                                                         comment =
                                                                         TextEditingController();
@@ -1521,12 +1528,12 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                               content: SingleChildScrollView(
                                                                                 child: Column(
                                                                                   children: [
-                                                                                    //field to comment
+                                                                                    //edit review as admin
                                                                                     RatingBar.builder(
                                                                                         wrapAlignment: WrapAlignment.center,
                                                                                         glowColor: Colors.green,
                                                                                         itemSize: 35,
-                                                                                        initialRating: double.parse(username["rating"].toString()),
+                                                                                        initialRating: itemratingval,
                                                                                         minRating: 1,
                                                                                         direction: Axis.horizontal,
                                                                                         allowHalfRating: true,
@@ -1599,54 +1606,58 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                                 ),
                                                                                 TextButton(
                                                                                   onPressed: () async {
-                                                                                    //delete old comment
-                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
-                                                                                      "${widget.items.name}.itemrating": FieldValue.increment(-username["rating"])
-                                                                                    });
+                                                                                    if (comment.text.isEmpty) {
+                                                                                      comment.text = " ";
+                                                                                    } else if (itemratingval == 0) {
+                                                                                      itemratingval = 1;
+                                                                                    } else if (itemratingval == null) {
+                                                                                      itemratingval = 1;
+                                                                                    } else {
+                                                                                      //delete old comment
+                                                                                      FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                        "${widget.items.name}.itemrating": FieldValue.increment(-username["rating"])
+                                                                                      });
 
-                                                                                    //update data on itemratingnum
-                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
-                                                                                      "${widget.items.name}.itemratingnum": FieldValue.increment(-1)
-                                                                                    });
-                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
-                                                                                      "${widget.items.name}.sets": FieldValue.arrayRemove([
-                                                                                        {
-                                                                                          "username": username["username"],
-                                                                                          "userimg": username["userimg"],
-                                                                                          "rating": username["rating"],
-                                                                                          "comment": username["comment"],
-                                                                                          "uid": username["uid"]
-                                                                                        }
-                                                                                      ])
-                                                                                    });
+                                                                                      FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                        "${widget.items.name}.sets": FieldValue.arrayRemove([
+                                                                                          {
+                                                                                            "username": username["username"],
+                                                                                            "userimg": username["userimg"],
+                                                                                            "rating": username["rating"],
+                                                                                            "comment": username["comment"],
+                                                                                            "uid": username["uid"],
+                                                                                          }
+                                                                                        ])
+                                                                                      });
 
-                                                                                    //add new comment
-                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
-                                                                                      "${widget.items.name}.itemrating": FieldValue.increment(itemratingval == 0 ? username["rating"] : itemratingval)
-                                                                                    });
-                                                                                    //update data on itemratingnum
-                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
-                                                                                      "${widget.items.name}.itemratingnum": FieldValue.increment(1)
-                                                                                    });
-                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
-                                                                                      "${widget.items.name}.sets": FieldValue.arrayUnion([
-                                                                                        {
-                                                                                          "username": username["username"],
-                                                                                          "userimg": username["userimg"],
-                                                                                          "rating": itemratingval == 0 ? username["rating"] : itemratingval,
-                                                                                          "comment": comment.text,
-                                                                                          "uid": username["uid"]
-                                                                                        }
-                                                                                      ])
-                                                                                    });
-                                                                                    //add to rating list
+                                                                                      //add new comment
+                                                                                      FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                        "${widget.items.name}.itemrating": FieldValue.increment(itemratingval)
+                                                                                      });
 
-                                                                                    Navigator.pop(context);
-                                                                                    showSimpleNotification(
-                                                                                      Text("List has been edited"),
-                                                                                      background: Colors.green[400],
-                                                                                      position: NotificationPosition.bottom,
-                                                                                    );
+                                                                                      FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                        "${widget.items.name}.sets": FieldValue.arrayUnion([
+                                                                                          {
+                                                                                            "username": username["username"],
+                                                                                            "userimg": username["userimg"],
+                                                                                            "rating": itemratingval,
+                                                                                            "comment": comment.text,
+                                                                                            "uid": username["uid"],
+                                                                                          }
+                                                                                        ])
+                                                                                      });
+                                                                                      //addtoratinglist
+
+                                                                                      Navigator.pop(context);
+                                                                                      // ratingService.loadRatedItemsFromFirebase(context);
+                                                                                      Navigator.of(context).popAndPushNamed('/detailspage');
+
+                                                                                      showSimpleNotification(
+                                                                                        Text("Reviews has been edited"),
+                                                                                        background: Colors.green[400],
+                                                                                        position: NotificationPosition.bottom,
+                                                                                      );
+                                                                                    }
                                                                                   },
                                                                                   child: Text(
                                                                                     'Submit',
@@ -1712,14 +1723,18 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                                         "userimg": username["userimg"],
                                                                                         "rating": username["rating"],
                                                                                         "comment": username["comment"],
-                                                                                        "uid": username["uid"]
+                                                                                        "uid": username["uid"],
                                                                                       }
                                                                                     ])
                                                                                   });
 
-                                                                                  ratingService.removerecord(context, widget.items.imgName, username["uid"]);
+                                                                                  ratingService.removerecord(context, widget.items.imgName, username["uid"], RatedItems(category: widget.items));
+                                                                                  //fetch liked items and load on likepage
+
+                                                                                  //refresh list
                                                                                   Navigator.pop(context);
-                                                                                  Navigator.of(context).pushReplacementNamed('/detailspage');
+                                                                                  // ratingService.loadRatedItemsFromFirebase(context);
+                                                                                  Navigator.of(context).popAndPushNamed('/detailspage');
 
                                                                                   showSimpleNotification(
                                                                                     Text("Review removed"),
@@ -1750,7 +1765,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 //if normal user
                                                 : Column(
                                                     children: [
-                                                      //edituserrating
+                                                      //edit user rating
                                                       Visibility(
                                                         visible:
                                                             username["uid"] ==
@@ -1769,7 +1784,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                       () async {
                                                                     double
                                                                         itemratingval =
-                                                                        0;
+                                                                        double.parse(
+                                                                            username["rating"].toString());
                                                                     TextEditingController
                                                                         comment =
                                                                         TextEditingController();
@@ -1788,7 +1804,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                                         wrapAlignment: WrapAlignment.center,
                                                                                         glowColor: Colors.green,
                                                                                         itemSize: 35,
-                                                                                        initialRating: double.parse(username["rating"].toString()),
+                                                                                        initialRating: itemratingval,
                                                                                         minRating: 1,
                                                                                         direction: Axis.horizontal,
                                                                                         allowHalfRating: true,
@@ -1861,54 +1877,58 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                                 ),
                                                                                 TextButton(
                                                                                   onPressed: () async {
-                                                                                    //delete old comment
-                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
-                                                                                      "${widget.items.name}.itemrating": FieldValue.increment(-username["rating"])
-                                                                                    });
+                                                                                    if (comment.text.isEmpty) {
+                                                                                      comment.text = " ";
+                                                                                    } else if (itemratingval == 0) {
+                                                                                      itemratingval = 1;
+                                                                                    } else if (itemratingval == null) {
+                                                                                      itemratingval = 1;
+                                                                                    } else {
+                                                                                      //delete old comment
+                                                                                      FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                        "${widget.items.name}.itemrating": FieldValue.increment(-username["rating"])
+                                                                                      });
 
-                                                                                    //update data on itemratingnum
-                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
-                                                                                      "${widget.items.name}.itemratingnum": FieldValue.increment(-1)
-                                                                                    });
-                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
-                                                                                      "${widget.items.name}.sets": FieldValue.arrayRemove([
-                                                                                        {
-                                                                                          "username": username["username"],
-                                                                                          "userimg": username["userimg"],
-                                                                                          "rating": username["rating"],
-                                                                                          "comment": username["comment"],
-                                                                                          "uid": username["uid"]
-                                                                                        }
-                                                                                      ])
-                                                                                    });
+                                                                                      FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                        "${widget.items.name}.sets": FieldValue.arrayRemove([
+                                                                                          {
+                                                                                            "username": username["username"],
+                                                                                            "userimg": username["userimg"],
+                                                                                            "rating": username["rating"],
+                                                                                            "comment": username["comment"],
+                                                                                            "uid": username["uid"],
+                                                                                          }
+                                                                                        ])
+                                                                                      });
 
-                                                                                    //add new comment
-                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
-                                                                                      "${widget.items.name}.itemrating": FieldValue.increment(itemratingval == 0 ? username["rating"] : itemratingval)
-                                                                                    });
-                                                                                    //update data on itemratingnum
-                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
-                                                                                      "${widget.items.name}.itemratingnum": FieldValue.increment(1)
-                                                                                    });
-                                                                                    FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
-                                                                                      "${widget.items.name}.sets": FieldValue.arrayUnion([
-                                                                                        {
-                                                                                          "username": username["username"],
-                                                                                          "userimg": username["userimg"],
-                                                                                          "rating": itemratingval == 0 ? username["rating"] : itemratingval,
-                                                                                          "comment": comment.text,
-                                                                                          "uid": username["uid"]
-                                                                                        }
-                                                                                      ])
-                                                                                    });
-                                                                                    //add to rating list
+                                                                                      //add new comment
+                                                                                      FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                        "${widget.items.name}.itemrating": FieldValue.increment(itemratingval)
+                                                                                      });
 
-                                                                                    Navigator.pop(context);
-                                                                                    showSimpleNotification(
-                                                                                      Text("List has been edited"),
-                                                                                      background: Colors.green[400],
-                                                                                      position: NotificationPosition.bottom,
-                                                                                    );
+                                                                                      FirebaseFirestore.instance.collection('ratings').doc('${widget.items.itemcategoryName}').update({
+                                                                                        "${widget.items.name}.sets": FieldValue.arrayUnion([
+                                                                                          {
+                                                                                            "username": username["username"],
+                                                                                            "userimg": username["userimg"],
+                                                                                            "rating": itemratingval,
+                                                                                            "comment": comment.text,
+                                                                                            "uid": username["uid"],
+                                                                                          }
+                                                                                        ])
+                                                                                      });
+                                                                                      //add to rating list
+
+                                                                                      Navigator.pop(context);
+                                                                                      // ratingService.loadRatedItemsFromFirebase(context);
+                                                                                      Navigator.of(context).popAndPushNamed('/detailspage');
+
+                                                                                      showSimpleNotification(
+                                                                                        Text("List has been edited"),
+                                                                                        background: Colors.green[400],
+                                                                                        position: NotificationPosition.bottom,
+                                                                                      );
+                                                                                    }
                                                                                   },
                                                                                   child: Text(
                                                                                     'Submit',
@@ -1984,9 +2004,12 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                                       ])
                                                                                     });
 
-                                                                                    ratingService.removerecord(context, widget.items.imgName, useruid);
+                                                                                    ratingService.removerecord(context, widget.items.imgName, useruid, RatedItems(category: widget.items));
                                                                                     Navigator.pop(context);
-                                                                                    Navigator.of(context).pushReplacementNamed('/detailspage');
+                                                                                    //refresh list
+                                                                                    // ratingService.loadRatedItemsFromFirebase(context);
+
+                                                                                    Navigator.of(context).popAndPushNamed('/detailspage');
 
                                                                                     showSimpleNotification(
                                                                                       Text("Review removed"),
