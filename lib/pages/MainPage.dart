@@ -1,5 +1,4 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
-import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/pages/BagPage.dart';
 import 'package:bywayborcay/pages/ExplorePage.dart';
 
@@ -9,7 +8,6 @@ import 'package:bywayborcay/widgets/CalendarWidget/Itinerarypage2.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/Navigation/SideMenuBar.dart';

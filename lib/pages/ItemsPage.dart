@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bywayborcay/models/CategoryModel.dart';
 import 'package:bywayborcay/models/ItemsModel.dart';
-import 'package:bywayborcay/services/adminservice.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/savecategory.dart';
 import 'package:bywayborcay/services/loginservice.dart';
@@ -10,12 +9,10 @@ import 'package:bywayborcay/widgets/CategoryWidgets/CategoryIcon.dart';
 import 'package:bywayborcay/widgets/Navigation/TopNavBar.dart';
 import 'package:chips_choice_null_safety/chips_choice_null_safety.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:filter_list/filter_list.dart';
 

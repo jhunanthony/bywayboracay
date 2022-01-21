@@ -4,7 +4,6 @@ import 'package:bywayborcay/pages/ItemsPage.dart';
 import 'package:bywayborcay/pages/LogInPage.dart';
 import 'package:bywayborcay/pages/MapPage.dart';
 import 'package:bywayborcay/pages/OnBoardingPage.dart';
-import 'package:bywayborcay/services/adminservice.dart';
 import 'package:bywayborcay/services/categoryselectionservice.dart';
 import 'package:bywayborcay/services/categoryservice.dart';
 

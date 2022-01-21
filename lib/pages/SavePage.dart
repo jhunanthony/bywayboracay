@@ -1,15 +1,13 @@
 import 'dart:async';
-import 'dart:ui';
+
 
 import 'package:bywayborcay/helper/AppIcons.dart';
 import 'package:bywayborcay/models/ItemsModel.dart';
 import 'package:bywayborcay/models/SavedItemModel.dart';
 import 'package:bywayborcay/models/UserLogInModel.dart';
-import 'package:bywayborcay/pages/DetailsPage.dart';
 
 import 'package:bywayborcay/services/savecategory.dart';
 import 'package:bywayborcay/services/loginservice.dart';
-import 'package:bywayborcay/services/ratedservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/auth.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/datepicker.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/utils.dart';

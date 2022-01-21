@@ -1,6 +1,5 @@
 //this is a temporary mock data generator
 
-import 'dart:math';
 
 import 'package:bywayborcay/models/ExplorePageModels.dart';
 

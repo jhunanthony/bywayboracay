@@ -1,6 +1,5 @@
 import 'package:bywayborcay/models/UserLogInModel.dart';
-import 'package:bywayborcay/pages/LogInPage.dart';
-import 'package:bywayborcay/pages/MainPage.dart';
+
 import 'package:bywayborcay/widgets/CalendarWidget/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

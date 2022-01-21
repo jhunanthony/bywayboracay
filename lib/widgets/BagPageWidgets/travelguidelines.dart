@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/link.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../services/loginservice.dart';

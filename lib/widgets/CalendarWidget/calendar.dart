@@ -4,7 +4,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:bywayborcay/helper/AppIcons.dart';
+
 import 'package:bywayborcay/pages/MainPage.dart';
 import 'package:bywayborcay/services/loginservice.dart';
 import 'package:bywayborcay/widgets/CalendarWidget/itineraryMap.dart';
@@ -22,7 +22,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:intl/intl.dart';
-import 'package:location/location.dart';
+
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
