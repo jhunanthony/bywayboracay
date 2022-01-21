@@ -1,6 +1,4 @@
-
 import 'package:flutter/material.dart';
-
 
 import '../Navigation/TopNavBar.dart';
 
@@ -180,6 +178,20 @@ class _LocalEventsWidgetPageState extends State<LocalEventsWidgetPage> {
                                             : Theme.of(context).canvasColor)),
                               ),
                             ))),
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Text(
+                      'Disclaimer: This app contains photos \n Byway Boracay do not own.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 12,
+                          shadows: <Shadow>[
+                            Shadow(blurRadius: 3.0, color: Colors.grey[900]),
+                          ],
+                          fontWeight: FontWeight.bold)),
+                ),
               ],
             ),
           ))),

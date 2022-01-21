@@ -186,6 +186,20 @@ class _TravelTipsState extends State<TravelTips> {
                         ),
                       );
                     }),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Text(
+                      'Disclaimer: This app contains photos that Byway Boracay\n do not own.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 12,
+                          shadows: <Shadow>[
+                            Shadow(blurRadius: 3.0, color: Colors.grey[900]),
+                          ],
+                          fontWeight: FontWeight.bold)),
+                ),
               ],
             ),
           ],

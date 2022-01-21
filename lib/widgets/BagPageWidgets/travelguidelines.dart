@@ -878,19 +878,22 @@ class TravelGuidelinesState extends State<TravelGuidelines> {
                                     children: [
                                       Card10(),
                                       Card9(),
-                                      Text(
-                                          'Disclaimer: This app contains affiliated links and contacts.',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontStyle: FontStyle.italic,
-                                              fontSize: 12,
-                                              shadows: <Shadow>[
-                                                Shadow(
-                                                    blurRadius: 3.0,
-                                                    color: Colors.grey[900]),
-                                              ],
-                                              fontWeight: FontWeight.bold)),
+                                      Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: Text(
+                                            'Disclaimer: This app contains affiliated links and contacts.',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontStyle: FontStyle.italic,
+                                                fontSize: 12,
+                                                shadows: <Shadow>[
+                                                  Shadow(
+                                                      blurRadius: 3.0,
+                                                      color: Colors.grey[900]),
+                                                ],
+                                                fontWeight: FontWeight.bold)),
+                                      ),
                                     ],
                                   )),
                             ]);
