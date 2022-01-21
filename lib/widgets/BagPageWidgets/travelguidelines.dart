@@ -875,7 +875,23 @@ class TravelGuidelinesState extends State<TravelGuidelines> {
                               Visibility(
                                   visible: index == travellist.length - 1,
                                   child: Column(
-                                    children: [Card10(), Card9()],
+                                    children: [
+                                      Card10(),
+                                      Card9(),
+                                      Text(
+                                          'Disclaimer: This app contains affiliated links and contacts.',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontStyle: FontStyle.italic,
+                                              fontSize: 12,
+                                              shadows: <Shadow>[
+                                                Shadow(
+                                                    blurRadius: 3.0,
+                                                    color: Colors.grey[900]),
+                                              ],
+                                              fontWeight: FontWeight.bold)),
+                                    ],
                                   )),
                             ]);
                           })

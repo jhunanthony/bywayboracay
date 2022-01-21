@@ -1977,7 +1977,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                                 child: Column(
                                                                                   children: [
                                                                                     //field to comment
-                                                                                    Text("Admin: Do you really want to delete your review?", style: TextStyle(fontSize: 25, color: Colors.blue[400])),
+                                                                                    Text("Do you really want to delete your review?", style: TextStyle(fontSize: 25, color: Colors.blue[400])),
                                                                                   ],
                                                                                 ),
                                                                               ),
