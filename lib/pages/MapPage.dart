@@ -92,7 +92,6 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
 
     // create an instance of Location
     locationref = new Location();
-
     // subscribe to changes in the user's location
     // by "listening" to the location's onLocationChanged event
     locationref.onLocationChanged.listen((LocationData cLoc) {
@@ -427,13 +426,15 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
     widget.items = catSelection.items;
 
     currentLocationref = await locationref.getLocation();
+    LatLng currentref =
+        LatLng(currentLocationref.latitude, currentLocationref.longitude);
     destinationLocationref = LocationData.fromMap(
         {"latitude": widget.items.itemlat, "longitude": widget.items.itemlong});
+    LatLng destinationref = LatLng(
+        destinationLocationref.latitude, destinationLocationref.longitude);
 
-    final requestURL =
-        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=transit_mode&origins=${currentLocationref.latitude},${currentLocationref.longitude}&destinations=${destinationLocationref.latitude},${destinationLocationref.longitude}&key=AIzaSyCnOiLJleUXIFKrzM5TTcCjSybFRCDvdJE";
-
-    final response = await http.get(Uri.parse(requestURL));
+    final response = await http.get(Uri.parse(
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=transit_mode&origins=${currentref.latitude},${currentref.longitude}&destinations=${destinationref.latitude},${destinationref.longitude}&key=AIzaSyAc4HDU4CgCD6C0mGRLIuzEtMEfSfz0HPk"));
 
     if (response.statusCode == 200) {
       return DistanceAndDurationInfo.fromJson(jsonDecode(response.body));
