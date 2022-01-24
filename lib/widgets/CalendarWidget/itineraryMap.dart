@@ -216,15 +216,6 @@ class _ItineraryMapState extends State<ItineraryMap>
     });
   }
 
-  @override
-  void dispose() {
-    locationref.onLocationChanged.listen((LocationData cLoc) {
-      currentLocationref = cLoc;
-      updatePinOnMap();
-    }).cancel();
-    super.dispose();
-  }
-
   //observe phone status
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {

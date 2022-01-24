@@ -167,14 +167,6 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
     }
   }
 
-  @override
-  void dispose() {
-    locationref.onLocationChanged.listen((LocationData cLoc) {
-      currentLocationref = cLoc;
-      updatePinOnMap();
-    }).cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
