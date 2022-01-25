@@ -124,6 +124,28 @@ class _ItineraryMapState extends State<ItineraryMap>
     });
   }
 
+  //get distance and duration using json parse
+  Future<ItineraryDestDurInfo> getitinerarydistanceandduration() async {
+    currentLocationref = await locationref.getLocation();
+    LatLng currentref =
+        LatLng(currentLocationref.latitude, currentLocationref.longitude);
+    destinationLocationref = LocationData.fromMap({
+      "latitude": this.widget.dest.latitude,
+      "longitude": this.widget.dest.longitude
+    });
+    LatLng destinationref = LatLng(
+        destinationLocationref.latitude, destinationLocationref.longitude);
+
+    final response = await http.get(Uri.parse(
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=transit_mode&origins=${currentref.latitude},${currentref.longitude}&destinations=${destinationref.latitude},${destinationref.longitude}&key=AIzaSyAlTZWNMZ063LrIy9yOlQzdS38zBT9utgc"));
+
+    if (response.statusCode == 200) {
+      return ItineraryDestDurInfo.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Error Leoading request URL info.");
+    }
+  }
+
   /// Disposes of the platform resources
 
   // location custom marker
@@ -506,27 +528,7 @@ class _ItineraryMapState extends State<ItineraryMap>
     );
   }
 
-  //get distance and duration using json parse
-  Future<ItineraryDestDurInfo> getitinerarydistanceandduration() async {
-    currentLocationref = await locationref.getLocation();
-    LatLng currentref =
-        LatLng(currentLocationref.latitude, currentLocationref.longitude);
-    destinationLocationref = LocationData.fromMap({
-      "latitude": this.widget.dest.latitude,
-      "longitude": this.widget.dest.longitude
-    });
-    LatLng destinationref = LatLng(
-        destinationLocationref.latitude, destinationLocationref.longitude);
-
-    final response = await http.get(Uri.parse(
-        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=transit_mode&origins=${currentref.latitude},${currentref.longitude}&destinations=${destinationref.latitude},${destinationref.longitude}&key=AIzaSyAc4HDU4CgCD6C0mGRLIuzEtMEfSfz0HPk"));
-
-    if (response.statusCode == 200) {
-      return ItineraryDestDurInfo.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception("Error Leoading request URL info.");
-    }
-  }
+  
 
   //this method will perform network call from the API
   void setPolylines() async {

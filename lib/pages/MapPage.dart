@@ -144,6 +144,30 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
         {"latitude": widget.items.itemlat, "longitude": widget.items.itemlong});
   }
 
+   Future<DistanceAndDurationInfo> getdistanceandduration() async {
+    CategorySelectionService catSelection =
+        Provider.of<CategorySelectionService>(context, listen: false);
+    widget.items = catSelection.items;
+
+    currentLocationref = await locationref.getLocation();
+    LatLng currentref =
+        LatLng(currentLocationref.latitude, currentLocationref.longitude);
+    destinationLocationref = LocationData.fromMap(
+        {"latitude": widget.items.itemlat, "longitude": widget.items.itemlong});
+    LatLng destinationref = LatLng(
+        destinationLocationref.latitude, destinationLocationref.longitude);
+
+    final response = await http.get(Uri.parse(
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=transit_mode&origins=${currentref.latitude},${currentref.longitude}&destinations=${destinationref.latitude},${destinationref.longitude}&key=AIzaSyAlTZWNMZ063LrIy9yOlQzdS38zBT9utgc"));
+
+    if (response.statusCode == 200) {
+      return DistanceAndDurationInfo.fromJson(jsonDecode(response.body));
+    } else {
+      print("error distance matrix");
+      throw Exception("Error Leoading request URL info.");
+    }
+  }
+
   //observe phone status
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
@@ -412,29 +436,7 @@ class _MapPageState extends State<MapPage> with WidgetsBindingObserver {
     );
   }
 
-  Future<DistanceAndDurationInfo> getdistanceandduration() async {
-    CategorySelectionService catSelection =
-        Provider.of<CategorySelectionService>(context, listen: false);
-    widget.items = catSelection.items;
-
-    currentLocationref = await locationref.getLocation();
-    LatLng currentref =
-        LatLng(currentLocationref.latitude, currentLocationref.longitude);
-    destinationLocationref = LocationData.fromMap(
-        {"latitude": widget.items.itemlat, "longitude": widget.items.itemlong});
-    LatLng destinationref = LatLng(
-        destinationLocationref.latitude, destinationLocationref.longitude);
-
-    final response = await http.get(Uri.parse(
-        "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=transit_mode&origins=${currentref.latitude},${currentref.longitude}&destinations=${destinationref.latitude},${destinationref.longitude}&key=AIzaSyAc4HDU4CgCD6C0mGRLIuzEtMEfSfz0HPk"));
-
-    if (response.statusCode == 200) {
-      return DistanceAndDurationInfo.fromJson(jsonDecode(response.body));
-    } else {
-      print("error distance matrix");
-      throw Exception("Error Leoading request URL info.");
-    }
-  }
+ 
 
   //this method will perform network call from the API
   void setPolylines() async {
